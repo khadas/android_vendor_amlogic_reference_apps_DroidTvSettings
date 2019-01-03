@@ -33,6 +33,7 @@ import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.ListAdapter;
 
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.R;
@@ -119,16 +120,20 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
             List<TvInputInfo> inputList = mTvInputManager.getTvInputList();
             for (TvInputInfo input : inputList) {
                 if (!input.getId().contains(DROIDLOGIC_TVINPUT)) {
-                    continue;
+                    //continue;
                 }
-
                 if (sourcePreference.getKey().equals(input.getId())) {
                     if (DEBUG) Log.d(TAG, "onPreferenceTreeClick:  info=" + input);
-                    if (TextUtils.equals(sourcePreference.getTitle(), mContext.getResources().getString(R.string.input_atv))) {
-                        DroidLogicTvUtils.setSearchType(mContext, 0);
-                    } else if (TextUtils.equals(sourcePreference.getTitle(), mContext.getResources().getString(R.string.input_dtv))) {
-                        DroidLogicTvUtils.setSearchType(mContext, 1);
+                    DroidLogicTvUtils.setCurrentInputId(mContext, input.getId());
+                    if (!input.isPassthroughInput()) {
+                        DroidLogicTvUtils.setSearchInputId(mContext, input.getId(), false);
+                        if (TextUtils.equals(sourcePreference.getTitle(), mContext.getResources().getString(R.string.input_atv))) {
+                            DroidLogicTvUtils.setSearchType(mContext, 0);
+                        } else if (TextUtils.equals(sourcePreference.getTitle(), mContext.getResources().getString(R.string.input_dtv))) {
+                            DroidLogicTvUtils.setSearchType(mContext, 1);
+                        }
                     }
+
                     Settings.System.putInt(mContext.getContentResolver(), DroidLogicTvUtils.TV_CURRENT_DEVICE_ID,
                             DroidLogicTvUtils.getHardwareDeviceId(input));
                     if (mStartMode == 1) {
@@ -155,6 +160,7 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
                     }*/
                     // getPreferenceManager().getContext().startActivity(intent);
                    ((Activity)mContext).finish();
+                    break;
                 }
             }
         return super.onPreferenceTreeClick(preference);
@@ -173,8 +179,9 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
         TvInputInfo dtvInputInfo = null;
         for (TvInputInfo input : inputList) {
             if (!input.getId().contains(DROIDLOGIC_TVINPUT)) {
-                continue;
+                //continue;
             }
+            Log.d(TAG,"updatePreferenceFragment input " + input + "-->" + input.getType());
 
             Preference sourcePreference = new Preference(themedContext);
             sourcePreference.setKey(input.getId());
@@ -215,12 +222,25 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
                 }
                 needDTV = false;
             } else {
-                sourcePreference.setTitle(DroidLogicTvUtils.isChina(themedContext) ? R.string.input_atv : R.string.input_long_label_for_tuner);
-                needDTV = true;
-                dtvInputInfo = input;
+                if (input.getType() == TvInputInfo.TYPE_TUNER) {
+                    int deviceId = DroidLogicTvUtils.getHardwareDeviceId(input);
+                    if (!input.getServiceInfo().packageName.equals("com.droidlogic.tvinput")) {
+                        //tuner but no device id
+                        sourcePreference.setIcon(R.drawable.ic_dtv_connected);
+                        sourcePreference.setTitle(input.getServiceInfo().name);
+                    } else {
+                        sourcePreference.setTitle(DroidLogicTvUtils.isChina(themedContext) ? R.string.input_atv : R.string.input_long_label_for_tuner);
+                        needDTV = true;
+                        dtvInputInfo = input;
+                    }
+                } else {
+                    sourcePreference.setIcon(R.drawable.ic_dtv_connected);
+                    sourcePreference.setTitle(input.getServiceInfo().name);
+                }
             }
             preferenceList.add(sourcePreference);
             if (DroidLogicTvUtils.isChina(themedContext) && needDTV && dtvInputInfo != null) {
+                needDTV = false;
                 Preference sourcePreferenceDtv = new Preference(themedContext);
                 sourcePreferenceDtv.setKey(dtvInputInfo.getId());
                 sourcePreferenceDtv.setPersistent(false);
