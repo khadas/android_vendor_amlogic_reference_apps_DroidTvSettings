@@ -130,8 +130,12 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
             avParentalControls.setSummary(AV_PARENTAL_CONTROLS_OFF);
         }
         final ListPreference startupseting = (ListPreference) findPreference(STARTUP_SETTING);
-        startupseting.setValueIndex(mTvOptionSettingManager.getStartupSettingStatus());
-        startupseting.setOnPreferenceChangeListener(this);
+        if (!DroidUtils.hasGtvsUiMode()) {
+            startupseting.setValueIndex(mTvOptionSettingManager.getStartupSettingStatus());
+            startupseting.setOnPreferenceChangeListener(this);
+        } else {
+            startupseting.setVisible(false);
+        }
         final ListPreference menutime = (ListPreference) findPreference(MENU_TIME);
         menutime.setValueIndex(mTvOptionSettingManager.getMenuTimeStatus());
         menutime.setOnPreferenceChangeListener(this);
