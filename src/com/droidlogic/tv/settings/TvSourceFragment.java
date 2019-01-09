@@ -222,20 +222,42 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
                 }
                 needDTV = false;
             } else {
+                CharSequence label = input.loadLabel(themedContext);
+                CharSequence customLabel = input.loadCustomLabel(themedContext);
+                Log.d(TAG, "label = " + label + ", customLabel = " + customLabel);
+                if (TextUtils.isEmpty(customLabel) || customLabel.equals(label)) {
+                    sourcePreference.setTitle(label);
+                } else {
+                    sourcePreference.setTitle(customLabel);
+                }
                 if (input.getType() == TvInputInfo.TYPE_TUNER) {
                     int deviceId = DroidLogicTvUtils.getHardwareDeviceId(input);
-                    if (!input.getServiceInfo().packageName.equals("com.droidlogic.tvinput")) {
+                    if (input.getServiceInfo().packageName.equals("org.dtvkit.inputsource")) {
                         //tuner but no device id
                         sourcePreference.setIcon(R.drawable.ic_dtv_connected);
-                        sourcePreference.setTitle(input.getServiceInfo().name);
-                    } else {
+                        if (TextUtils.isEmpty(label) && TextUtils.isEmpty(customLabel)) {
+                            sourcePreference.setTitle(R.string.input_dtv_kit);
+                        }
+                    } else if (input.getServiceInfo().packageName.equals("com.google.android.videos")) {
+                        sourcePreference.setIcon(R.drawable.ic_dtv_connected);
+                        if (TextUtils.isEmpty(label) && TextUtils.isEmpty(customLabel)) {
+                            sourcePreference.setTitle(R.string.input_google_channel);
+                        }
+                    } else if (input.getServiceInfo().packageName.equals("com.droidlogic.tvinput")) {
                         sourcePreference.setTitle(DroidLogicTvUtils.isChina(themedContext) ? R.string.input_atv : R.string.input_long_label_for_tuner);
                         needDTV = true;
                         dtvInputInfo = input;
+                    } else {
+                        sourcePreference.setIcon(R.drawable.ic_dtv_connected);
+                        if (TextUtils.isEmpty(label) && TextUtils.isEmpty(customLabel)) {
+                            sourcePreference.setTitle(input.getServiceInfo().name);
+                        }
                     }
                 } else {
                     sourcePreference.setIcon(R.drawable.ic_dtv_connected);
-                    sourcePreference.setTitle(input.getServiceInfo().name);
+                    if (TextUtils.isEmpty(label) && TextUtils.isEmpty(customLabel)) {
+                        sourcePreference.setTitle(input.getServiceInfo().name);
+                    }
                 }
             }
             preferenceList.add(sourcePreference);
