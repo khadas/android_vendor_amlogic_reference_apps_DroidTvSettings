@@ -226,6 +226,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
 
     @Override
     public void onStop() {
+        getActivity().getApplicationContext().unregisterReceiver(esnReceiver);
         super.onStop();
     }
 
