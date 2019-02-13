@@ -44,6 +44,7 @@ import java.util.List;
 
 import com.droidlogic.app.tv.TvControlManager;
 import com.droidlogic.app.tv.DroidLogicTvUtils;
+import com.droidlogic.app.tv.TvScanConfig;
 import android.hardware.hdmi.HdmiControlManager;
 import android.hardware.hdmi.HdmiTvClient;
 import android.media.tv.TvInputHardwareInfo;
@@ -128,9 +129,11 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
                     if (!input.isPassthroughInput()) {
                         DroidLogicTvUtils.setSearchInputId(mContext, input.getId(), false);
                         if (TextUtils.equals(sourcePreference.getTitle(), mContext.getResources().getString(R.string.input_atv))) {
-                            DroidLogicTvUtils.setSearchType(mContext, 0);
+                            DroidLogicTvUtils.setSearchType(mContext, TvScanConfig.TV_SEARCH_TYPE.get(TvScanConfig.TV_SEARCH_TYPE_ATV_INDEX));
                         } else if (TextUtils.equals(sourcePreference.getTitle(), mContext.getResources().getString(R.string.input_dtv))) {
-                            DroidLogicTvUtils.setSearchType(mContext, 1);
+                            String country = DroidLogicTvUtils.getCountry(mContext);
+                            ArrayList<String> dtvList = TvScanConfig.GetTvDtvSystemList(country);
+                            DroidLogicTvUtils.setSearchType(mContext, dtvList.get(0));
                         }
                     }
 
