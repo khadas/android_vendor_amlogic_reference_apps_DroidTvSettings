@@ -254,7 +254,7 @@ public class TvOptionSettingManager {
     }
 
     public int getSwitchChannelStatus () {
-        if (mTvControlManager.getBlackoutEnalbe() == 0)
+        if (mTvControlManager.getBlackoutEnable() == 0)
             return 0;
         else
             return 1;
@@ -406,8 +406,8 @@ public class TvOptionSettingManager {
         }
     }
 
-    public void setBlackoutEnable(int status) {
-        mTvControlManager.setBlackoutEnable(status);
+    public void setBlackoutEnable(int status, int isSave) {
+        mTvControlManager.setBlackoutEnable(status, isSave);
     }
 
     public void setADMix (int step) {
