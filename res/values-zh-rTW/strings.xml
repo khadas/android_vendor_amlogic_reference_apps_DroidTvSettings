@@ -31,6 +31,18 @@
     <string name="audio_mixing">"音頻混合"</string>
     <string name="audio_mixing_summary_on">支持杜比5.1聲道</string>
     <string name="audio_mixing_summary_off">支持杜比7.1聲道</string>
+    <string name="dolby_audio_processing">杜比音效</string>
+    <string name="sound_mode">音效</string>
+    <string name="dap_detail">用戶調整</string>
+    <string name="dap_volume_leveler">音量調整</string>
+    <string name="dap_dialog_enhancer">對白增強</string>
+    <string name="dap_geq_gains">均衡器</string>
+    <string name="dap_geq_band1">低頻</string>
+    <string name="dap_geq_band2">中低頻</string>
+    <string name="dap_geq_band3">中頻</string>
+    <string name="dap_geq_band4">高頻</string>
+    <string name="dap_geq_band5">超高頻</string>
+
     <string name="device_rotation_land">"橫屏拉伸"</string>
     <string name="device_sound_digital">"數字音頻"</string>
     <string name="device_sound_digital_auto">"自動檢測"</string>

@@ -41,6 +41,7 @@ import android.content.DialogInterface.OnDismissListener;
 
 import com.droidlogic.tv.soundeffectsettings.R;
 import com.droidlogic.app.tv.AudioEffectManager;
+import com.droidlogic.app.OutputModeManager;
 
 public class SoundModeFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener, SeekBar.OnSeekBarChangeListener {
 
@@ -53,9 +54,11 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
     private static final String TV_VIRTUAL_SURROUND_SETTINGS = "tv_sound_virtual_surround";
     private static final String TV_SOUND_OUT = "tv_sound_output_device";
     private static final String TV_AGC = "effect_agc";
+    private static final String DAP_MODE = "dap_sound";
 
     private AudioEffectManager mAudioEffectManager;
     private SoundParameterSettingManager mSoundParameterSettingManager;
+    private OutputModeManager mOutputModeManager;
 
     private static final int UI_LOAD_TIMEOUT = 50;//100ms
     private static final int LOAD_UI = 0;
@@ -90,10 +93,6 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
         super.onResume();
         if (mAudioEffectManager != null) {
             final ListPreference eqmode = (ListPreference) findPreference(TV_EQ_MODE);
-            if (mAudioEffectManager.getSoundModule() == AudioEffectManager.DAP_MODULE) {
-                eqmode.setEntries(getArrayString(R.array.tv_sound_mode_extend_entries));
-                eqmode.setEntryValues(getArrayString(R.array.tv_sound_mode_extend_entry_values));
-            }
             eqmode.setValueIndex(mAudioEffectManager.getSoundModeStatus());
             final Preference treblebass = (Preference) findPreference(TV_TREBLE_BASS_SETTINGS);
             String treblebasssummary = getShowString(R.string.tv_treble, mAudioEffectManager.getTrebleStatus()) + " " +
@@ -112,6 +111,7 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
     private void init() {
         mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
         mSoundParameterSettingManager = ((TvSettingsActivity)getActivity()).getSoundParameterSettingManager();
+        mOutputModeManager = new OutputModeManager(getActivity());
     }
 
     @Override
@@ -138,12 +138,13 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
             return false;
         }
         final ListPreference eqmode = (ListPreference) findPreference(TV_EQ_MODE);
-        if (mAudioEffectManager.getSoundModule() == AudioEffectManager.DAP_MODULE) {
-            eqmode.setEntries(getArrayString(R.array.tv_sound_mode_extend_entries));
-            eqmode.setEntryValues(getArrayString(R.array.tv_sound_mode_extend_entry_values));
-        }
         eqmode.setValueIndex(mAudioEffectManager.getSoundModeStatus());
         eqmode.setOnPreferenceChangeListener(this);
+        final Preference dapPref = (Preference) findPreference(DAP_MODE);
+        if (mOutputModeManager.isDapValid())
+            eqmode.setVisible(false);
+        else
+            dapPref.setVisible(false);
 
         final ListPreference virtualsurround = (ListPreference) findPreference(TV_VIRTUAL_SURROUND_SETTINGS);
         virtualsurround.setValueIndex(mAudioEffectManager.getVirtualSurroundStatus());
@@ -166,6 +167,10 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
         if (CanDebug()) Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
+        if (TextUtils.equals(preference.getKey(), DAP_MODE)) {
+            mSoundParameterSettingManager.startDolbyEffectSettings(getActivity());
+        }
+
         return super.onPreferenceTreeClick(preference);
     }
 

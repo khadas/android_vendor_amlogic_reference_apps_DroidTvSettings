@@ -158,6 +158,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".DolbyAudioEffectActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:exported="true"
+            android:theme="@style/Theme.Settings.Transparent" />
+        <activity
             android:name=".TvSourceActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"

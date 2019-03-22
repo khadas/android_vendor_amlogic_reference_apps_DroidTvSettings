@@ -25,6 +25,9 @@
         android:title="@string/tv_sound_mode"
         android:summary="%s" />
     <Preference
+        android:key="dap_sound"
+        android:title="@string/dap_sound"/>
+    <Preference
         android:fragment="com.droidlogic.tv.soundeffectsettings.TrebleBassSeekBarFragment"
         android:key="treble_bass_effect_settings"
         android:title="@string/tv_treble_bass_effect" />

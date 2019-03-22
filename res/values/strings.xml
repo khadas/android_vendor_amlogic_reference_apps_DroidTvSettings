@@ -86,6 +86,19 @@
     <string name="audio_mixing">Audio Mixing</string>
     <string name="audio_mixing_summary_on">support 5.1 channels through Dolby Audio playback</string>
     <string name="audio_mixing_summary_off">support 7.1 channels through Dolby Audio playback</string>
+    <string name="dolby_audio_processing">Dolby Audio Effect</string>
+    <string name="sound_mode">Audio Effect</string>
+    <string name="dap_detail">User Control</string>
+    <string name="dap_volume_leveler">Volume Leveler</string>
+    <string name="dap_dialog_enhancer">Dialog Enhancer</string>
+    <string name="dap_surround_boost">Surround Boost</string>
+    <string name="dap_geq">Equalizer</string>
+    <string name="dap_geq_band1">low frequency</string>
+    <string name="dap_geq_band2">low-middle frequency</string>
+    <string name="dap_geq_band3">middle frequency</string>
+    <string name="dap_geq_band4">high frequency</string>
+    <string name="dap_geq_band5">ultra-high frequency</string>
+
     <!-- Title for preference which controls surround sound passthrough function [CHAR LIMIT=50] -->
     <string name="device_sound_digital">Digital Audio Format</string>
     <string name="device_sound_digital_auto">Auto detection</string>

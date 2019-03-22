@@ -22,6 +22,7 @@
     <!-- tv setting. -->
     <string name="tv_sound">Sound</string>
     <string name="settings_mode">Settings</string>
+    <string name="dap_sound">Dolby Audio Effect</string>
     <string name="tv_sound_mode">Sound Mode</string>
     <string name="tv_audio_effect_band1">Band 1:</string>
     <string name="tv_audio_effect_band2">Band 2:</string>

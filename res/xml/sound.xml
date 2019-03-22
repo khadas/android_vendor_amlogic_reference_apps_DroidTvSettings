@@ -25,6 +25,11 @@
         android:entryValues="@array/dolby_sounds_entry_values"
         android:title="@string/device_sound_dolby"
         android:summary="%s" />
+    <Preference
+        android:fragment="com.droidlogic.tv.settings.DolbyAudioEffectFragment"
+        android:key="dolby_audio_processing"
+        android:title="@string/dolby_audio_processing" />
+
     <SwitchPreference
         android:key="audio_mixing"
         android:persistent="false"

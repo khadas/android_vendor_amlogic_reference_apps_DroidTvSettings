@@ -55,6 +55,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
     private static final String KEY_DTSDRCMODE_PASSTHROUGH = "dtsdrc_mode";
     private static final String KEY_DTSDRCCUSTOMMODE_PASSTHROUGH = "dtsdrc_custom_mode";
     private static final String KEY_AD_SURPORT = "ad_surport";
+    private static final String KEY_DAP = "dolby_audio_processing";
 
     private OutputModeManager mOutputModeManager;
     private SystemControlManager mSystemControlManager;
@@ -89,7 +90,6 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mOutputModeManager = new OutputModeManager(getActivity());
         if (mSoundParameterSettingManager == null) {
             mSoundParameterSettingManager = new SoundParameterSettingManager(getActivity());
         }
@@ -109,8 +109,13 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         final ListPreference dtsdrccustommodePref = (ListPreference) findPreference(KEY_DTSDRCCUSTOMMODE_PASSTHROUGH);
         final ListPreference dtsdrcmodePref = (ListPreference) findPreference(KEY_DTSDRCMODE_PASSTHROUGH);
         final TwoStatePreference adsurport = (TwoStatePreference) findPreference(KEY_AD_SURPORT);
+        final Preference dapPref = (Preference) findPreference(KEY_DAP);
 
         mSystemControlManager = SystemControlManager.getInstance();
+
+        mOutputModeManager = new OutputModeManager(getActivity());
+        if (!mOutputModeManager.isDapValid())
+            dapPref.setVisible(false);
 
         drcmodePref.setValue(mSoundParameterSettingManager.getDrcModePassthroughSetting());
         drcmodePref.setOnPreferenceChangeListener(this);

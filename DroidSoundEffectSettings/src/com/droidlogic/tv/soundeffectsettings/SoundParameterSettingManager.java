@@ -26,6 +26,7 @@ import android.app.ActivityManager;
 import android.provider.Settings;
 import android.content.SharedPreferences;
 import android.content.ContentResolver;
+import android.content.ActivityNotFoundException;
 
 import com.droidlogic.tv.soundeffectsettings.R;
 import com.droidlogic.app.OutputModeManager;
@@ -54,6 +55,17 @@ public class SoundParameterSettingManager {
 
     private boolean CanDebug() {
         return OptionParameterManager.CanDebug();
+    }
+
+    public static void startDolbyEffectSettings(Context context){
+        try {
+            Intent intent = new Intent();
+            intent.setClassName("com.droidlogic.tv.settings", "com.droidlogic.tv.settings.DolbyAudioEffectActivity");
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.d(TAG, "startDolbyEffectSettings not found!");
+            return;
+        }
     }
 
     public int getSoundOutputStatus () {
