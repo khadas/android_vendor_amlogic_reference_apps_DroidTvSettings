@@ -83,6 +83,9 @@
     <string name="off">Off</string>
     <!-- Title for preference screen controlling sound settings [CHAR LIMIT=50] -->
     <string name="device_sound">Audio Output</string>
+    <string name="audio_mixing">Audio Mixing</string>
+    <string name="audio_mixing_summary_on">support 5.1 channels through Dolby Audio playback</string>
+    <string name="audio_mixing_summary_off">support 7.1 channels through Dolby Audio playback</string>
     <!-- Title for preference which controls surround sound passthrough function [CHAR LIMIT=50] -->
     <string name="device_sound_digital">Digital Audio Format</string>
     <string name="device_sound_digital_auto">Auto detection</string>

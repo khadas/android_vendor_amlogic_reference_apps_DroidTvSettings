@@ -164,6 +164,17 @@ public class SoundParameterSettingManager {
             return format;
     }
 
+    public void setAudioMixingEnable(boolean newVal) {
+        Settings.Global.putInt(mContext.getContentResolver(), OutputModeManager.AUDIO_MIXING,
+                (newVal?OutputModeManager.AUDIO_MIXING_ON:OutputModeManager.AUDIO_MIXING_OFF));
+        mOutputModeManager.setAudioMixingEnable(newVal);
+    }
+
+    public boolean getAudioMixingEnable() {
+        return (Settings.Global.getInt(mContext.getContentResolver(), OutputModeManager.AUDIO_MIXING,
+                OutputModeManager.AUDIO_MIXING_DEFAULT) == OutputModeManager.AUDIO_MIXING_ON);
+    }
+
     public void setDrcModePassthroughSetting(int newVal) {
         Settings.Global.putInt(mContext.getContentResolver(),
                 OutputModeManager.DRC_MODE, newVal);
@@ -206,6 +217,7 @@ public class SoundParameterSettingManager {
         if (!SettingsConstant.needDroidlogicTvFeature(mContext)) {
             setDrcModePassthrough();
         }
+        setAudioMixingEnable(getAudioMixingEnable());
         mOutputModeManager.initSoundParametersAfterBoot();
     }
 

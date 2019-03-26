@@ -48,6 +48,7 @@ import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 public class SoundFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "SoundFragment";
     private static final String KEY_DRCMODE_PASSTHROUGH = "drc_mode";
+    private static final String KEY_AUDIO_MIXING = "audio_mixing";
     private static final String KEY_DIGITALSOUND_CATEGORY = "surround_sound_category";
     private static final String KEY_DIGITALSOUND_PREFIX = "digital_subformat_";
     private static final String KEY_DIGITALSOUND_PASSTHROUGH = "digital_sound";
@@ -102,6 +103,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         }
 
         final ListPreference drcmodePref = (ListPreference) findPreference(KEY_DRCMODE_PASSTHROUGH);
+        final TwoStatePreference mixingPref = (TwoStatePreference) findPreference(KEY_AUDIO_MIXING);
         final ListPreference digitalsoundPref = (ListPreference) findPreference(KEY_DIGITALSOUND_PASSTHROUGH);
         final ListPreference dtsdrccustommodePref = (ListPreference) findPreference(KEY_DTSDRCCUSTOMMODE_PASSTHROUGH);
         final ListPreference dtsdrcmodePref = (ListPreference) findPreference(KEY_DTSDRCMODE_PASSTHROUGH);
@@ -110,11 +112,13 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
 
         drcmodePref.setValue(mSoundParameterSettingManager.getDrcModePassthroughSetting());
         drcmodePref.setOnPreferenceChangeListener(this);
+        mixingPref.setChecked(mSoundParameterSettingManager.getAudioMixingEnable());
         dtsdrcmodePref.setValue(mSystemControlManager.getPropertyString("persist.vendor.sys.dtsdrcscale", OutputModeManager.DEFAULT_DRC_SCALE));
         dtsdrcmodePref.setOnPreferenceChangeListener(this);
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext());
         if (!mSystemControlManager.getPropertyBoolean("ro.vendor.platform.support.dolby", false)) {
             drcmodePref.setVisible(false);
+            mixingPref.setVisible(false);
             Log.d(TAG, "platform doesn't support dolby");
         }
         if (!mSystemControlManager.getPropertyBoolean("ro.vendor.platform.support.dts", false)) {
@@ -244,6 +248,9 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
             mSoundParameterSettingManager.setAudioManualFormats(
                     Integer.parseInt(key.substring(KEY_DIGITALSOUND_PREFIX.length())),
                     ((SwitchPreference) preference).isChecked());
+        } else if (KEY_AUDIO_MIXING.equals(key)) {
+            TwoStatePreference pref = (TwoStatePreference)preference;
+            mSoundParameterSettingManager.setAudioMixingEnable(pref.isChecked());
         }
         return super.onPreferenceTreeClick(preference);
     }
