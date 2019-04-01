@@ -64,6 +64,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
     private static final String KEY_DISPLAY = "display";
     private static final String KEY_MBOX_SOUNDS = "mbox_sound";
     private static final String KEY_POWERKEY = "powerkey_action";
+    private static final String KEY_POWERONMODE = "poweronmode_action";
     private static final String MORE_SETTINGS_APP_PACKAGE = "com.android.settings";
     private static final String KEY_UPGRADE_BLUTOOTH_REMOTE = "upgrade_bluetooth_remote";
     private static final String KEY_HDMICEC = "hdmicec";
@@ -115,6 +116,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
         mSoundsPref = findPreference(KEY_SOUNDS);
         final Preference mboxSoundsPref = findPreference(KEY_MBOX_SOUNDS);
         final Preference powerKeyPref = findPreference(KEY_POWERKEY);
+        final Preference powerKeyOnModePref = findPreference(KEY_POWERONMODE);
         //BluetoothRemote/HDMI cec/Playback Settings display only in Mbox
         mUpgradeBluetoothRemote = findPreference(KEY_UPGRADE_BLUTOOTH_REMOTE);
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
@@ -151,6 +153,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
             displayPref.setVisible(false);
             mboxSoundsPref.setVisible(false);
             powerKeyPref.setVisible(false);
+            powerKeyOnModePref.setVisible(false);
             mTvOption.setVisible(false);
             moreSettingsPref.setVisible(false);
             TvControlManager tvControlManager = TvControlManager.getInstance();
@@ -173,6 +176,9 @@ public class MainFragment extends LeanbackPreferenceFragment {
             mSoundsPref.setVisible(false);
             channelPref.setVisible(false);
             settingsPref.setVisible(false);
+            if (!mTvUiMode) {
+                powerKeyOnModePref.setVisible(false);
+            }
         }
     }
 

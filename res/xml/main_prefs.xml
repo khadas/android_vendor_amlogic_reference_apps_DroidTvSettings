@@ -49,6 +49,11 @@
         android:key="powerkey_action"
         android:title="@string/system_powerkeyaction" />
     <Preference
+        android:fragment="com.droidlogic.tv.settings.PowerOnModeFragment"
+        android:icon="@drawable/ic_settings_power"
+        android:key="poweronmode_action"
+        android:title="@string/power_on_mode" />
+    <Preference
         android:icon="@drawable/ic_bluetooth"
         android:key="upgrade_bluetooth_remote"
         android:title="@string/upgrade_bluetooth_remote" >

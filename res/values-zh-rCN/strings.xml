@@ -76,6 +76,11 @@
     <string name="power_key_shutdown">"关机"</string>
     <string name="power_key_suspend">"休眠"</string>
 
+    <string name="power_on_mode">上电模式</string>
+    <string name="power_on">开机</string>
+    <string name="power_on_standby">待机</string>
+    <string name="power_on_last">记忆</string>
+
     <!-- Title for OK [CHAR LIMIT=50] -->
     <string name="title_ok">"确定"</string>
     <!-- Title for DNS 2 [CHAR LIMIT=50] -->

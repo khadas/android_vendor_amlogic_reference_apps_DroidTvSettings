@@ -46,6 +46,11 @@
     <string name="power_key_shutdown">shutdown</string>
     <string name="power_key_suspend">suspend and resume</string>
 
+    <string name="power_on_mode">Poweron Mode</string>
+    <string name="power_on">On</string>
+    <string name="power_on_standby">Standby</string>
+    <string name="power_on_last">Last</string>
+
     <!-- Title for OK [CHAR LIMIT=50] -->
     <string name="title_ok">OK</string>
     <!-- Title for DNS 2 [CHAR LIMIT=50] -->

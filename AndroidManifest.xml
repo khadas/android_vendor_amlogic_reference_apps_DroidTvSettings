@@ -78,6 +78,11 @@
             android:excludeFromRecents="true"
             android:exported="false" />
         <activity
+            android:name=".PowerOnModeActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android:exported="false" />
+        <activity
             android:name=".display.DisplayActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="true" >
