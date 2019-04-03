@@ -54,6 +54,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
     private static final String KEY_DIGITALSOUND_PASSTHROUGH = "digital_sound";
     private static final String KEY_DTSDRCMODE_PASSTHROUGH = "dtsdrc_mode";
     private static final String KEY_DTSDRCCUSTOMMODE_PASSTHROUGH = "dtsdrc_custom_mode";
+    private static final String KEY_AD_SURPORT = "ad_surport";
 
     private OutputModeManager mOutputModeManager;
     private SystemControlManager mSystemControlManager;
@@ -107,6 +108,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         final ListPreference digitalsoundPref = (ListPreference) findPreference(KEY_DIGITALSOUND_PASSTHROUGH);
         final ListPreference dtsdrccustommodePref = (ListPreference) findPreference(KEY_DTSDRCCUSTOMMODE_PASSTHROUGH);
         final ListPreference dtsdrcmodePref = (ListPreference) findPreference(KEY_DTSDRCMODE_PASSTHROUGH);
+        final TwoStatePreference adsurport = (TwoStatePreference) findPreference(KEY_AD_SURPORT);
 
         mSystemControlManager = SystemControlManager.getInstance();
 
@@ -115,6 +117,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         mixingPref.setChecked(mSoundParameterSettingManager.getAudioMixingEnable());
         dtsdrcmodePref.setValue(mSystemControlManager.getPropertyString("persist.vendor.sys.dtsdrcscale", OutputModeManager.DEFAULT_DRC_SCALE));
         dtsdrcmodePref.setOnPreferenceChangeListener(this);
+        adsurport.setChecked(mSoundParameterSettingManager.getAdSurportStatus());
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext());
         if (!mSystemControlManager.getPropertyBoolean("ro.vendor.platform.support.dolby", false)) {
             drcmodePref.setVisible(false);
@@ -138,6 +141,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
                     getArrayString(R.array.digital_sounds_tv_entry_values));
             digitalsoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
             digitalsoundPref.setOnPreferenceChangeListener(this);
+            adsurport.setVisible(true);
         } else {
             digitalsoundPref.setEntries(
                     getArrayString(R.array.digital_sounds_box_entries));
@@ -145,6 +149,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
                     R.array.digital_sounds_box_entry_values));
             digitalsoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
             digitalsoundPref.setOnPreferenceChangeListener(this);
+            adsurport.setVisible(false);
         }
 
         mCategoryPref =
@@ -251,6 +256,9 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         } else if (KEY_AUDIO_MIXING.equals(key)) {
             TwoStatePreference pref = (TwoStatePreference)preference;
             mSoundParameterSettingManager.setAudioMixingEnable(pref.isChecked());
+        } else if (KEY_AD_SURPORT.equals(key)) {
+            final TwoStatePreference adsurport = (TwoStatePreference) findPreference(KEY_AD_SURPORT);
+            mSoundParameterSettingManager.setAdSurportStatus(adsurport.isChecked());
         }
         return super.onPreferenceTreeClick(preference);
     }
