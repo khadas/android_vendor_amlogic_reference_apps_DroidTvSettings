@@ -153,7 +153,7 @@
     <string name="cec_auto_change_language">Auto change language</string>
     <string name="tv_cec_auto_power_on_all">Auto Power On All</string>
     <string name="tv_cec_manual_wake_up_devices">CEC Manual WakeUp</string>
-    <string name="power_action_suspend">sleep now</string>
+    <string name="power_action_suspend">suspend</string>
     <string name="power_action_restart">restart</string>
     <string name="power_action_shutdown">shutdown</string>
     <string name="netflix_esn">Netflix ESN</string>
