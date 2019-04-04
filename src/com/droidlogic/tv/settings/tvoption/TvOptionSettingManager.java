@@ -294,6 +294,14 @@ public class TvOptionSettingManager {
         return num_hdmi;
     }
 
+    public int GetRelativeSourceInput() {
+        int result = -1;
+        //hdmi1~hdmi4 5~8 TvControlManager.SourceInput.HDMI1~TvControlManager.SourceInput.HDMI4
+        result = mTvControlManager.GetCurrentSourceInput() - TvControlManager.SourceInput.HDMI1.toInt();
+        if (CanDebug()) Log.d(TAG, "GetRelativeSourceInput = " + result);
+        return result;
+    }
+
     public void setDtvType (int value) {
         if (CanDebug()) Log.d(TAG, "setDtvType = " + value);
         String type = null;
