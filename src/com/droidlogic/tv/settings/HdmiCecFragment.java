@@ -74,7 +74,6 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment {
 		mCecOnekeyPoweroffPref = (TwoStatePreference) findPreference(KEY_CEC_ONEKEY_POWEROFF);
 		mCecAutoChangeLanguagePref = (TwoStatePreference) findPreference(KEY_CEC_AUTO_CHANGE_LANGUAGE);
 		mCecOnekeyPlayPref.setVisible(!tvFlag);
-		mCecOnekeyPoweroffPref.setVisible(!tvFlag);
 	}
 
 	@Override
