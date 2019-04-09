@@ -50,4 +50,8 @@
         android:fragment="com.droidlogic.tv.settings.tvoption.Hdmi20SwitchFragment"
         android:key="tv_hdmi_switch"
         android:title="@string/tv_hdmi_switch" />
+    <Preference
+        android:fragment="com.droidlogic.tv.settings.tvoption.HdmiCecManualWakeUpFragment"
+        android:key="tv_cec_manual_wake_up"
+        android:title="@string/tv_cec_manual_wake_up_devices" />
 </PreferenceScreen>

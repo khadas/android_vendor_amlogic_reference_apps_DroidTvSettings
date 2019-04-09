@@ -139,7 +139,7 @@
     <string name="cec_one_key_power_off">One key power off</string>
     <string name="cec_auto_change_language">Auto change language</string>
     <string name="tv_cec_auto_power_on_all">Auto Power On All</string>
-    <string name="tv_cec_manual_wake_up_devices">Manual wakeup devices</string>
+    <string name="tv_cec_manual_wake_up_devices">CEC Manual WakeUp</string>
     <string name="power_action_suspend">sleep now</string>
     <string name="power_action_restart">restart</string>
     <string name="power_action_shutdown">shutdown</string>
