@@ -180,9 +180,17 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
         final int selection = Integer.parseInt((String)newValue);
         if (TextUtils.equals(preference.getKey(), TV_EQ_MODE)) {
             mAudioEffectManager.setSoundMode(selection);
+            // non-user sound mode, set default treble and bass value
+            int bassValue = AudioEffectManager.EFFECT_BASS_DEFAULT;
+            int trebleValue = AudioEffectManager.EFFECT_TREBLE_DEFAULT;
             if (selection == AudioEffectManager.MODE_CUSTOM) {
                 createUiDialog();
+                // when sound mode is user, set DB treble and bass value
+                bassValue = mAudioEffectManager.getBassStatus();
+                trebleValue = mAudioEffectManager.getTrebleStatus();
             }
+            mAudioEffectManager.setBass(bassValue);
+            mAudioEffectManager.setTreble(trebleValue);
         } else if (TextUtils.equals(preference.getKey(), TV_VIRTUAL_SURROUND_SETTINGS)) {
             mAudioEffectManager.setVirtualSurround(selection);
         }else if (TextUtils.equals(preference.getKey(), TV_SOUND_OUT)) {
