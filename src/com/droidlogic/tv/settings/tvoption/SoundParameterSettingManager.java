@@ -176,15 +176,6 @@ public class SoundParameterSettingManager {
                 OutputModeManager.AUDIO_MIXING_DEFAULT) == OutputModeManager.AUDIO_MIXING_ON);
     }
 
-    public void setDapParam (int id, int mode) {
-        mOutputModeManager.saveDapParam(id, mode);
-        mOutputModeManager.setDapParam(id, mode);
-    }
-
-    public int getDapParam(int id) {
-        return mOutputModeManager.getDapParam(id);
-    }
-
     public void setDrcModePassthroughSetting(int newVal) {
         Settings.Global.putInt(mContext.getContentResolver(),
                 OutputModeManager.DRC_MODE, newVal);
@@ -239,7 +230,6 @@ public class SoundParameterSettingManager {
             setDrcModePassthrough();
         }
         setAudioMixingEnable(getAudioMixingEnable());
-        mOutputModeManager.initDapAudioEffect();
         mOutputModeManager.initSoundParametersAfterBoot();
     }
 

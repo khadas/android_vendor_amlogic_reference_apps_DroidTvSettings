@@ -67,7 +67,7 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
     private Preference mDeInfoPref;
     private Preference mGeqInfoPref;
 
-    private SoundParameterSettingManager mSPSManager;
+    private DolbyAudioEffectManager mDapManager;
 
     public static DolbyAudioEffectFragment newInstance() {
         return new DolbyAudioEffectFragment();
@@ -83,8 +83,8 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
         boolean enable = false;
         int progress = 0;
 
-        if (mSPSManager == null)
-            mSPSManager = new SoundParameterSettingManager(getActivity());
+        if (mDapManager == null)
+            mDapManager = DolbyAudioEffectManager.getInstance(getActivity());
 
         setPreferencesFromResource(R.xml.dolby_audioeffect, null);
 
@@ -105,7 +105,7 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
         mDeInfoPref = (Preference) findPreference(KEY_DE_INFO);
         mGeqInfoPref = (Preference) findPreference(KEY_GEQ_INFO);
 
-        progress = mSPSManager.getDapParam(OutputModeManager.CMD_DAP_EFFECT_MODE);
+        progress = mDapManager.getDapParam(OutputModeManager.CMD_DAP_EFFECT_MODE);
         dapPref.setValueIndex(progress);
         dapPref.setOnPreferenceChangeListener(this);
 
@@ -141,17 +141,17 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
             mSeekbar4.setVisible(false);
             mSeekbar5.setVisible(false);
         } else {
-            mSeekbar1.setValue(mSPSManager.getDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND1));
-            mSeekbar2.setValue(mSPSManager.getDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND2));
-            mSeekbar3.setValue(mSPSManager.getDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND3));
-            mSeekbar4.setValue(mSPSManager.getDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND4));
-            mSeekbar5.setValue(mSPSManager.getDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND5));
+            mSeekbar1.setValue(mDapManager.getDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND1));
+            mSeekbar2.setValue(mDapManager.getDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND2));
+            mSeekbar3.setValue(mDapManager.getDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND3));
+            mSeekbar4.setValue(mDapManager.getDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND4));
+            mSeekbar5.setValue(mDapManager.getDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND5));
             mSeekbar1.setVisible(true);
             mSeekbar2.setVisible(true);
             mSeekbar3.setVisible(true);
             mSeekbar4.setVisible(true);
             mSeekbar5.setVisible(true);
-            int val = mSPSManager.getDapParam(OutputModeManager.CMD_DAP_EFFECT_MODE);
+            int val = mDapManager.getDapParam(OutputModeManager.CMD_DAP_EFFECT_MODE);
             if ((mode == OutputModeManager.DAP_GEQ_USER) && (val == OutputModeManager.DAP_MODE_USER)) {
                 mSeekbar1.setAdjustable(true);
                 mSeekbar2.setAdjustable(true);
@@ -178,7 +178,7 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
         int val = 0, progress = 0;
         int mode = 0;
 
-        mode = mSPSManager.getDapParam(OutputModeManager.CMD_DAP_EFFECT_MODE);
+        mode = mDapManager.getDapParam(OutputModeManager.CMD_DAP_EFFECT_MODE);
         if (mode == OutputModeManager.DAP_MODE_OFF) {
             mVlPref.setVisible(true);
             mVlAmountPref.setVisible(true);
@@ -201,8 +201,8 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
             isUserMode = false;
 
 
-        enable = (mSPSManager.getDapParam(OutputModeManager.CMD_DAP_VL_ENABLE) != OutputModeManager.DAP_OFF);
-        val = mSPSManager.getDapParam(OutputModeManager.CMD_DAP_VL_AMOUNT);
+        enable = (mDapManager.getDapParam(OutputModeManager.CMD_DAP_VL_ENABLE) != OutputModeManager.DAP_OFF);
+        val = mDapManager.getDapParam(OutputModeManager.CMD_DAP_VL_AMOUNT);
         mVlPref.setChecked(enable);
         mVlAmountPref.setValue(val);
         mVlAmountPref.setAdjustable(isUserMode);
@@ -211,8 +211,8 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
         mVlPref.setVisible(isUserMode);
         mVlAmountPref.setVisible(enable);
 
-        enable = (mSPSManager.getDapParam(OutputModeManager.CMD_DAP_DE_ENABLE) != OutputModeManager.DAP_OFF);
-        val = mSPSManager.getDapParam(OutputModeManager.CMD_DAP_DE_AMOUNT);
+        enable = (mDapManager.getDapParam(OutputModeManager.CMD_DAP_DE_ENABLE) != OutputModeManager.DAP_OFF);
+        val = mDapManager.getDapParam(OutputModeManager.CMD_DAP_DE_AMOUNT);
         mDePref.setChecked(enable);
         mDeAmountPref.setValue(val);
         mDeAmountPref.setAdjustable(isUserMode);
@@ -221,11 +221,11 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
         mDePref.setVisible(isUserMode);
         mDeAmountPref.setVisible(enable);
 
-        val = mSPSManager.getDapParam(OutputModeManager.CMD_DAP_SURROUND_BOOST);
+        val = mDapManager.getDapParam(OutputModeManager.CMD_DAP_SURROUND_BOOST);
         mSurroundBoostPref.setValue(val);
         mSurroundBoostPref.setAdjustable(isUserMode);
 
-        val = mSPSManager.getDapParam(OutputModeManager.CMD_DAP_GEQ_ENABLE);
+        val = mDapManager.getDapParam(OutputModeManager.CMD_DAP_GEQ_ENABLE);
         mGeqPref.setValueIndex(val);
         mGeqInfoPref.setSummary(mGeqPref.getEntry());
         mGeqInfoPref.setVisible(!isUserMode);
@@ -242,12 +242,12 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
         switch (preference.getKey()) {
             case KEY_VOLUME_LEVELER:
                 isChecked = mVlPref.isChecked();
-                mSPSManager.setDapParam(OutputModeManager.CMD_DAP_VL_ENABLE, isChecked?1:0);
+                mDapManager.setDapParam(OutputModeManager.CMD_DAP_VL_ENABLE, isChecked?1:0);
                 mVlAmountPref.setVisible(isChecked);
                 break;
             case KEY_DIALOG_ENHANCER:
                 isChecked = mDePref.isChecked();
-                mSPSManager.setDapParam(OutputModeManager.CMD_DAP_DE_ENABLE, isChecked?1:0);
+                mDapManager.setDapParam(OutputModeManager.CMD_DAP_DE_ENABLE, isChecked?1:0);
                 mDeAmountPref.setVisible(isChecked);
                 break;
         }
@@ -259,37 +259,37 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
         switch (preference.getKey()) {
             case KEY_DAP_MODE:
                 final int selection = Integer.parseInt((String)newValue);
-                mSPSManager.setDapParam(OutputModeManager.CMD_DAP_EFFECT_MODE, selection);
+                mDapManager.setDapParam(OutputModeManager.CMD_DAP_EFFECT_MODE, selection);
                 updateDetail();
                 break;
             case KEY_VOLUME_LEVELER_AMOUNT:
-                mSPSManager.setDapParam(OutputModeManager.CMD_DAP_VL_AMOUNT, (int)newValue);
+                mDapManager.setDapParam(OutputModeManager.CMD_DAP_VL_AMOUNT, (int)newValue);
                 break;
             case KEY_DIALOG_ENHANCER_AMOUNT:
-                mSPSManager.setDapParam(OutputModeManager.CMD_DAP_DE_AMOUNT, (int)newValue);
+                mDapManager.setDapParam(OutputModeManager.CMD_DAP_DE_AMOUNT, (int)newValue);
                 break;
             case KEY_SURROUND_BOOST:
-                mSPSManager.setDapParam(OutputModeManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
+                mDapManager.setDapParam(OutputModeManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
                 break;
             case KEY_GEQ_MODE:
                 final int progress = Integer.parseInt((String)newValue);
-                mSPSManager.setDapParam(OutputModeManager.CMD_DAP_GEQ_ENABLE, progress);
+                mDapManager.setDapParam(OutputModeManager.CMD_DAP_GEQ_ENABLE, progress);
                 updateGeq(progress);
                 break;
             case KEY_GEQ_BAND1:
-                mSPSManager.setDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND1, (int)newValue);
+                mDapManager.setDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND1, (int)newValue);
                 break;
             case KEY_GEQ_BAND2:
-                mSPSManager.setDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND2, (int)newValue);
+                mDapManager.setDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND2, (int)newValue);
                 break;
             case KEY_GEQ_BAND3:
-                mSPSManager.setDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND3, (int)newValue);
+                mDapManager.setDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND3, (int)newValue);
                 break;
             case KEY_GEQ_BAND4:
-                mSPSManager.setDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND4, (int)newValue);
+                mDapManager.setDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND4, (int)newValue);
                 break;
             case KEY_GEQ_BAND5:
-                mSPSManager.setDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND5, (int)newValue);
+                mDapManager.setDapParam(OutputModeManager.SUBCMD_DAP_GEQ_BAND5, (int)newValue);
                 break;
         }
         return true;
