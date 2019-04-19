@@ -176,6 +176,16 @@ public class SoundParameterSettingManager {
                 OutputModeManager.AUDIO_MIXING_DEFAULT) == OutputModeManager.AUDIO_MIXING_ON);
     }
 
+    public void setARCLatency(int newVal) {
+        Settings.Global.putInt(mContext.getContentResolver(), OutputModeManager.TV_ARC_LATENCY, newVal);
+        mOutputModeManager.setARCLatency(newVal);
+    }
+
+    public int getARCLatency() {
+        return Settings.Global.getInt(mContext.getContentResolver(), OutputModeManager.TV_ARC_LATENCY,
+                OutputModeManager.TV_ARC_LATENCY_DEFAULT);
+    }
+
     public void setDrcModePassthroughSetting(int newVal) {
         Settings.Global.putInt(mContext.getContentResolver(),
                 OutputModeManager.DRC_MODE, newVal);
@@ -230,6 +240,7 @@ public class SoundParameterSettingManager {
             setDrcModePassthrough();
         }
         setAudioMixingEnable(getAudioMixingEnable());
+        setARCLatency(getARCLatency());
         mOutputModeManager.initSoundParametersAfterBoot();
     }
 

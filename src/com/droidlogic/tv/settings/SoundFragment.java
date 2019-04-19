@@ -30,6 +30,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.preference.PreferenceViewHolder;
+import android.support.v7.preference.SeekBarPreference;
 import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
 import android.util.Log;
@@ -56,6 +57,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
     private static final String KEY_DTSDRCCUSTOMMODE_PASSTHROUGH = "dtsdrc_custom_mode";
     private static final String KEY_AD_SURPORT = "ad_surport";
     private static final String KEY_DAP = "dolby_audio_processing";
+    private static final String KEY_ARC_LATENCY = "arc_latency";
 
     private OutputModeManager mOutputModeManager;
     private SystemControlManager mSystemControlManager;
@@ -110,6 +112,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         final ListPreference dtsdrcmodePref = (ListPreference) findPreference(KEY_DTSDRCMODE_PASSTHROUGH);
         final TwoStatePreference adsurport = (TwoStatePreference) findPreference(KEY_AD_SURPORT);
         final Preference dapPref = (Preference) findPreference(KEY_DAP);
+        final SeekBarPreference arcPref = (SeekBarPreference) findPreference(KEY_ARC_LATENCY);
 
         mSystemControlManager = SystemControlManager.getInstance();
 
@@ -123,6 +126,12 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         dtsdrcmodePref.setValue(mSystemControlManager.getPropertyString("persist.vendor.sys.dtsdrcscale", OutputModeManager.DEFAULT_DRC_SCALE));
         dtsdrcmodePref.setOnPreferenceChangeListener(this);
         adsurport.setChecked(mSoundParameterSettingManager.getAdSurportStatus());
+        arcPref.setOnPreferenceChangeListener(this);
+        arcPref.setMax(OutputModeManager.TV_ARC_LATENCY_MAX);
+        arcPref.setMin(OutputModeManager.TV_ARC_LATENCY_MIN);
+        arcPref.setSeekBarIncrement(10);
+        arcPref.setValue(mSoundParameterSettingManager.getARCLatency());
+
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext());
         if (!mSystemControlManager.getPropertyBoolean("ro.vendor.platform.support.dolby", false)) {
             drcmodePref.setVisible(false);
@@ -299,6 +308,9 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         } else if (TextUtils.equals(preference.getKey(), KEY_DTSDRCMODE_PASSTHROUGH)) {
             final String selection = (String) newValue;
             mOutputModeManager.setDtsDrcScale(selection);
+            return true;
+        } else if (TextUtils.equals(preference.getKey(), KEY_ARC_LATENCY)) {
+            mSoundParameterSettingManager.setARCLatency((int)newValue);
             return true;
         }
         return true;
