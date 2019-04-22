@@ -79,6 +79,12 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateDetail();
+    }
+
+    @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         boolean enable = false;
         int progress = 0;
@@ -130,7 +136,6 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
         mSeekbar5.setMax(10);
         mSeekbar5.setOnPreferenceChangeListener(this);
         mGeqPref.setOnPreferenceChangeListener(this);
-        updateDetail();
     }
 
     private void updateGeq(int mode) {
@@ -180,20 +185,21 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
 
         mode = mDapManager.getDapParam(OutputModeManager.CMD_DAP_EFFECT_MODE);
         if (mode == OutputModeManager.DAP_MODE_OFF) {
-            mVlPref.setVisible(true);
-            mVlAmountPref.setVisible(true);
-            mVlInfoPref.setVisible(true);
-            mDePref.setVisible(true);
-            mDeAmountPref.setVisible(true);
-            mDeInfoPref.setVisible(true);
-            mGeqPref.setVisible(true);
-            mGeqInfoPref.setVisible(true);
-            mSeekbar1.setVisible(true);
-            mSeekbar2.setVisible(true);
-            mSeekbar3.setVisible(true);
-            mSeekbar4.setVisible(true);
-            mSeekbar5.setVisible(true);
-            mDapDetailPref.setVisible(false);
+            mVlPref.setVisible(false);
+            mVlAmountPref.setVisible(false);
+            mVlInfoPref.setVisible(false);
+            mDePref.setVisible(false);
+            mDeAmountPref.setVisible(false);
+            mDeInfoPref.setVisible(false);
+            mSurroundBoostPref.setVisible(false);
+            mGeqPref.setVisible(false);
+            mGeqInfoPref.setVisible(false);
+            mSeekbar1.setVisible(false);
+            mSeekbar2.setVisible(false);
+            mSeekbar3.setVisible(false);
+            mSeekbar4.setVisible(false);
+            mSeekbar5.setVisible(false);
+            mDapDetailPref.setTitle("");
             return;
         } else if (mode == OutputModeManager.DAP_MODE_USER) {
             isUserMode = true;
@@ -224,6 +230,7 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
         val = mDapManager.getDapParam(OutputModeManager.CMD_DAP_SURROUND_BOOST);
         mSurroundBoostPref.setValue(val);
         mSurroundBoostPref.setAdjustable(isUserMode);
+        mSurroundBoostPref.setVisible(true);
 
         val = mDapManager.getDapParam(OutputModeManager.CMD_DAP_GEQ_ENABLE);
         mGeqPref.setValueIndex(val);
@@ -232,8 +239,7 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
         mGeqPref.setVisible(isUserMode);
 
         updateGeq(val);
-        mDapDetailPref.setVisible(true);
-
+        mDapDetailPref.setTitle(R.string.dap_detail);
     }
 
     @Override
@@ -260,7 +266,6 @@ public class DolbyAudioEffectFragment extends LeanbackPreferenceFragment impleme
             case KEY_DAP_MODE:
                 final int selection = Integer.parseInt((String)newValue);
                 mDapManager.setDapParam(OutputModeManager.CMD_DAP_EFFECT_MODE, selection);
-                updateDetail();
                 break;
             case KEY_VOLUME_LEVELER_AMOUNT:
                 mDapManager.setDapParam(OutputModeManager.CMD_DAP_VL_AMOUNT, (int)newValue);
