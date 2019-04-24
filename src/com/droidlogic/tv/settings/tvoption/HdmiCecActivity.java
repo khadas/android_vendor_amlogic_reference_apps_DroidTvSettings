@@ -8,7 +8,7 @@
  *     AMLOGIC HdmiCecActivity
  */
 
-package com.droidlogic.tv.settings;
+package com.droidlogic.tv.settings.tvoption;
 
 import com.droidlogic.tv.settings.BaseSettingsFragment;
 import com.droidlogic.tv.settings.TvSettingsActivity;

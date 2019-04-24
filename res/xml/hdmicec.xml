@@ -34,5 +34,9 @@
         android:key="cec_auto_change_language"
         android:persistent="false"
         android:title="@string/cec_auto_change_language" />
+    <SwitchPreference
+        android:key="arc_switch"
+        android:persistent="false"
+        android:title="@string/arc_switch" />
 
 </PreferenceScreen>

@@ -40,6 +40,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.view.ViewGroup;
 
+import com.droidlogic.app.HdmiCecManager;
 import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.MainFragment;
@@ -64,6 +65,7 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
     private static final String DAYLIGHT_SAVING_TIME = "tv_daylight_saving_time";
     private static final String FACTORY_MENU =  "tv_factory_menu";
     private static final String HDMI_SWITCH =  "tv_hdmi_switch";
+    private static final String KEY_HDMI_CEC_CONTROL = "hdmicec";
 
     private static final String AV_PARENTAL_CONTROLS_ON = "On";
     private static final String AV_PARENTAL_CONTROLS_OFF = "Off";
@@ -159,6 +161,12 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
         } else {
             daylightSavingTime.setVisible(false);
         }
+        final Preference hdmiCecControlPref = findPreference(KEY_HDMI_CEC_CONTROL);
+        hdmiCecControlPref.setOnPreferenceChangeListener(this);
+        boolean isSystemFeature = getContext().getPackageManager().hasSystemFeature(HdmiCecManager.FEATURE_HDMI_CEC);
+        boolean isNeeadHdmiCec = SettingsConstant.needDroidlogicHdmicecFeature(getContext());
+        if (CanDebug()) Log.d(TAG, "isSystemFeature = " + isSystemFeature + ", isNeeadHdmiCec = " + isNeeadHdmiCec);
+        hdmiCecControlPref.setVisible(isSystemFeature && isNeeadHdmiCec);
     }
 
     @Override

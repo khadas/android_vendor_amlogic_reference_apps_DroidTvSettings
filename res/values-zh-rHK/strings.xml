@@ -76,6 +76,7 @@
     <string name="cec_one_key_play">"單鍵播放"</string>
     <string name="cec_one_key_power_off">"單鍵開關"</string>
     <string name="cec_auto_change_language">"語言切換"</string>
+    <string name="arc_switch">"ARC 開關"</string>
     <string name="playback_settings">"播放設置"</string>
 
     <!-- Hdmi self-adaption switch -->

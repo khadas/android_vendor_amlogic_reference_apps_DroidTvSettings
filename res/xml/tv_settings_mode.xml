@@ -54,4 +54,8 @@
         android:fragment="com.droidlogic.tv.settings.tvoption.HdmiCecManualWakeUpFragment"
         android:key="tv_cec_manual_wake_up"
         android:title="@string/tv_cec_manual_wake_up_devices" />
+    <Preference
+        android:fragment="com.droidlogic.tv.settings.tvoption.HdmiCecFragment"
+        android:key="hdmicec"
+        android:title="@string/system_cec" />
 </PreferenceScreen>

@@ -157,8 +157,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
             adsurport.setVisible(false);
         }
 
-        mCategoryPref =
-            (PreferenceCategory) findPreference(KEY_DIGITALSOUND_CATEGORY);
+        mCategoryPref = (PreferenceCategory) findPreference(KEY_DIGITALSOUND_CATEGORY);
         createFormatPreferences();
         updateFormatPreferencesStates();
     }

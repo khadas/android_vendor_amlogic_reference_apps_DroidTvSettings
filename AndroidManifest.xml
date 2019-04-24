@@ -58,11 +58,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HdmiCecActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:exported="true" />
-        <activity
             android:name=".PlaybackActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
@@ -206,6 +201,11 @@
             android:exported="false" />
         <activity
             android:name="tvoption.Hdmi20SwitchActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android:exported="false" />
+        <activity
+            android:name="tvoption.HdmiCecActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="false" />
