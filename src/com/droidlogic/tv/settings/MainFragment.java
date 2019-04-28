@@ -224,8 +224,6 @@ public class MainFragment extends LeanbackPreferenceFragment {
         esnQueryIntent.setPackage("com.netflix.ninja");
         esnQueryIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         getActivity().getApplicationContext().sendBroadcast(esnQueryIntent);
-        // DolbyAudioEffectManager may take some time to bindservice
-        DolbyAudioEffectManager.getInstance(getActivity().getApplicationContext());
     }
 
     @Override
