@@ -120,7 +120,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
         //hide it forcedly as new bluetooth remote upgrade application is not available now
         mUpgradeBluetoothRemote.setVisible(false/*is_from_live_tv ? false : (SettingsConstant.needDroidlogicBluetoothRemoteFeature(getContext()) && !tvFlag)*/);
-        playbackPref.setVisible(is_from_live_tv ? false : (SettingsConstant.needDroidlogicPlaybackSetFeature(getContext()) && !tvFlag));
+        playbackPref.setVisible(false);
         if (netflixesnPref != null) {
             if (is_from_live_tv) {
                 netflixesnPref.setVisible(false);
