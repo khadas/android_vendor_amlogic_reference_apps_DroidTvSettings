@@ -24,6 +24,7 @@ import android.hardware.hdmi.HdmiDeviceInfo;
 import android.media.tv.TvInputInfo;
 import android.media.tv.TvInputManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.os.SystemProperties;
 import android.provider.Settings;
 import android.support.v17.preference.LeanbackPreferenceFragment;
@@ -113,6 +114,8 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
+            float Time= (float) SystemClock.uptimeMillis() / 1000;
+            Log.d(TAG, "onPreferenceTreeClick SwitchSourceTime = " + Time);
             final Preference sourcePreference = preference;
             List<TvInputInfo> inputList = mTvInputManager.getTvInputList();
             for (TvInputInfo input : inputList) {
