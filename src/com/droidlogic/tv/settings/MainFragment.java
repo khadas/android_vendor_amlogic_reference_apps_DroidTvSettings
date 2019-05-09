@@ -70,6 +70,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
     private static final String KEY_UPGRADE_BLUTOOTH_REMOTE = "upgrade_bluetooth_remote";
     private static final String KEY_PLAYBACK_SETTINGS = "playback_settings";
     private static final String KEY_SOUNDS = "sound_effects";
+    private static final String KEY_KEYSTONE = "keyStone";
     private static final String KEY_NETFLIX_ESN = "netflix_esn";
     private static final String KEY_MORE_SETTINGS = "more";
     private static final String KEY_PICTURE = "pictrue_mode";
@@ -190,6 +191,8 @@ public class MainFragment extends LeanbackPreferenceFragment {
             startUiInLiveTv(KEY_TV_CHANNEL);
         } else if (TextUtils.equals(preference.getKey(), KEY_SOUNDS)) {
             startSoundEffectSettings(getActivity());
+        } else if (TextUtils.equals(preference.getKey(), KEY_KEYSTONE)) {
+            startKeyStoneCorrectionActivity(getActivity());
         }
         return false;
     }
@@ -209,6 +212,17 @@ public class MainFragment extends LeanbackPreferenceFragment {
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             Log.d(TAG, "startSoundEffectSettings not found!");
+            return;
+        }
+    }
+
+    public static void startKeyStoneCorrectionActivity(Context context){
+        try {
+            Intent intent = new Intent();
+            intent.setClassName("com.droidlogic.keystone", "com.droidlogic.keystone.keyStoneCorrectionActivity");
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.d(TAG, "startKeyStoneCorrectionActivity not found!");
             return;
         }
     }

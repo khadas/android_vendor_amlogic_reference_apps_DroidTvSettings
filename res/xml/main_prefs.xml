@@ -71,6 +71,10 @@
         android:key="pictrue_mode"
         android:title="@string/pq_pictrue" />
     <Preference
+        android:icon="@drawable/ic_settings_display"
+        android:key="keyStone"
+        android:title="@string/keystone" />
+    <Preference
         android:fragment="com.droidlogic.tv.settings.tvoption.TvOptionFragment"
         android:icon="@drawable/ic_settings_tv"
         android:key="tv_option"

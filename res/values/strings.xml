@@ -314,6 +314,8 @@
     <string name="pq_mode_3d_to_2d">3D to 2D</string>
     <string name="pq_custom">Custom Settings</string>
     <string name="pq_backlight_settings">Backlight Settings</string>
+    <!-- keystone correction. -->
+    <string name="keystone">keyStone Correction</string>
     <!-- tv setting. -->
     <string name="tv_name">TV</string>
     <string name="tv_channel">Channel</string>

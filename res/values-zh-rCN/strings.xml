@@ -267,6 +267,9 @@
     <string name="pq_game">游戏</string>
     <string name="pq_user">用户</string>
 
+    <!-- keystone correction. -->
+    <string name="keystone">keyStone校正</string>
+
     <string name="tv_channel">频道</string>
     <string name="system_setting">设置</string>
     <string name="settings_mode">设置</string>
