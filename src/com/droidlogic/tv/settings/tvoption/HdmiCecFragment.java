@@ -31,15 +31,17 @@ import android.os.SystemProperties;
 /**
  * Fragment to control HDMI Cec settings.
  */
-public class HdmiCecFragment extends LeanbackPreferenceFragment {
+public class HdmiCecFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener{
 
     private static final String TAG = "HdmiCecFragment";
+    private static HdmiCecFragment mHdmiCecFragment = null;
 
     private static final String KEY_CEC_SWITCH                    = "cec_switch";
     private static final String KEY_CEC_ONEKEY_PLAY               = "cec_onekey_play";
     private static final String KEY_CEC_ONEKEY_POWEROFF           = "cec_onekey_poweroff";
     private static final String KEY_CEC_AUTO_CHANGE_LANGUAGE      = "cec_auto_change_language";
     private static final String KEY_ARC_SWITCH                    = "arc_switch";
+    private static final String KEY_DEVICE_SELECT                 = "tv_cec_device_select_list";
 
     private static final String PERSIST_HDMI_CEC_SET_MENU_LANGUAGE= "persist.vendor.sys.cec.set_menu_language";
     private static final String PERSIST_HDMI_CEC_ONE_KEY_POWEROFF = "persist.vendor.sys.cec.onekeypoweroff";
@@ -52,7 +54,10 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment {
     private SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
 
     public static HdmiCecFragment newInstance() {
-        return new HdmiCecFragment();
+        if (mHdmiCecFragment == null) {
+            mHdmiCecFragment = new HdmiCecFragment();
+        }
+        return mHdmiCecFragment;
     }
 
     @Override
@@ -85,6 +90,12 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment {
         } else {
             mCecSwitchPref.setVisible(false);
         }
+        final Preference hdmiDeviceSelectPref = findPreference(KEY_DEVICE_SELECT);
+        if (mHdmiCecFragment == null) {
+            mHdmiCecFragment = newInstance();
+        }
+        hdmiDeviceSelectPref.setOnPreferenceChangeListener(mHdmiCecFragment);
+        hdmiDeviceSelectPref.setVisible(true);
     }
 
     @Override
@@ -119,6 +130,12 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment {
             return true;
         }
         return super.onPreferenceTreeClick(preference);
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        //Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
+        return true;
     }
 
     private void refresh() {

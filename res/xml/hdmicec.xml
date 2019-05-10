@@ -38,5 +38,8 @@
         android:key="arc_switch"
         android:persistent="false"
         android:title="@string/arc_switch" />
-
+    <Preference
+        android:fragment="com.droidlogic.tv.settings.tvoption.HdmiCecDeviceSelectFragment"
+        android:key="tv_cec_device_select_list"
+        android:title="@string/tv_cec_device_select_list" />
 </PreferenceScreen>

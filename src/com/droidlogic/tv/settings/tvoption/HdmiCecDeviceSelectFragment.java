@@ -1,4 +1,4 @@
-/* 
+/*
 * opyright (C) 2015 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,8 +45,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import android.hardware.hdmi.HdmiControlManager;
-import android.hardware.hdmi.HdmiTvClient;
 import android.hardware.hdmi.HdmiDeviceInfo;
+import android.hardware.hdmi.HdmiTvClient;
+import android.hardware.hdmi.HdmiTvClient.SelectCallback;
 import android.os.SystemProperties;
 import com.droidlogic.tv.settings.SettingsConstant;
 import android.support.v7.preference.Preference;
@@ -54,7 +55,7 @@ import com.droidlogic.tv.settings.R;
 
 
 @Keep
-public class HdmiCecManualWakeUpFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceClickListener {
+public class HdmiCecDeviceSelectFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceClickListener {
     private static final String LOG_TAG = "HdmiCecDevControlFragment";
     HdmiControlManager hcm;
     HdmiTvClient tv;
@@ -88,20 +89,20 @@ public class HdmiCecManualWakeUpFragment extends LeanbackPreferenceFragment impl
 
     public static final int CEC_MESSAGE_USER_CONTROL_PRESSED = 0x44;
     public static final int CEC_MESSAGE_USER_CONTROL_RELEASED = 0x45;
-   
+
     public static final int CEC_KEYCODE_POWER = 0x40;
     public static final int CEC_KEYCODE_POWER_ON_FUNCTION = 0x6D;
 
     private ArrayList<HdmiDeviceInfo> mHdmiDeviceInfoList = new ArrayList();
-    public static HdmiCecManualWakeUpFragment newInstance() {
-        return new HdmiCecManualWakeUpFragment();
+    public static HdmiCecDeviceSelectFragment newInstance() {
+        return new HdmiCecDeviceSelectFragment();
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
                     && (SystemProperties.getBoolean("tv.soc.as.mbox", false) == false);
-        if (tvFlag) { 
+        if (tvFlag) {
             hcm = (HdmiControlManager) getActivity().getSystemService(Context.HDMI_CONTROL_SERVICE);
             tv = hcm.getTvClient();
             updatePreferenceFragment();
@@ -113,7 +114,7 @@ public class HdmiCecManualWakeUpFragment extends LeanbackPreferenceFragment impl
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
                 themedContext);
-        screen.setTitle(R.string.tv_cec_manual_wake_up_devices);
+        screen.setTitle(R.string.tv_cec_device_select_list);
         setPreferenceScreen(screen);
         int logicalAddress;
         int mDevicePowerStatus;
@@ -158,19 +159,35 @@ public class HdmiCecManualWakeUpFragment extends LeanbackPreferenceFragment impl
         Log.d(LOG_TAG, "[onPreferenceClick] preference.getKey() = " + preference.getKey());
         final int logicalAddress = Integer.parseInt((String)preference.getKey());
         if (tv != null) {
-            final int dstAddress = Integer.parseInt((String)preference.getKey());
             byte[] mUCPbody = new byte[2];
             mUCPbody[0] = CEC_MESSAGE_USER_CONTROL_PRESSED;
             mUCPbody[1] = CEC_KEYCODE_POWER_ON_FUNCTION;
-            tv.sendCommonCecCommand(ADDR_TV, dstAddress, mUCPbody);
+            tv.sendCommonCecCommand(ADDR_TV, logicalAddress, mUCPbody);
             byte[] mUCRbody = new byte[1];
             mUCRbody[0] = CEC_MESSAGE_USER_CONTROL_RELEASED;
-            tv.sendCommonCecCommand(ADDR_TV, dstAddress, mUCRbody);
+            tv.sendCommonCecCommand(ADDR_TV, logicalAddress, mUCRbody);
         }
-        String msg  = "wake up "+ preference.getTitle() + " has send!";
+        String msg  = "select device "+ preference.getTitle() + "!";
         Toast toast = Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT);
         toast.show();
+        deviceSelect(logicalAddress);
         return true;
+    }
+
+    private void deviceSelect(int logicAddr) {
+        if (tv == null) {
+            return;
+        }
+        tv.deviceSelect(logicAddr, new SelectCallback() {
+            @Override
+            public void onComplete(int result) {
+                if (result != HdmiControlManager.RESULT_SUCCESS) {
+                    Log.d(LOG_TAG, "select device fail, onComplete result = " + result);
+                } else {
+                    Log.d(LOG_TAG, "select device success, onComplete result = " + result);
+                }
+            }
+        });
     }
 
     private Handler mHandler = new Handler() {
