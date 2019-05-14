@@ -93,7 +93,7 @@ public class PictrueModeFragment extends LeanbackPreferenceFragment implements P
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
-        if (mPQSettingsManager.isHdmiSource() || mPQSettingsManager.isAvSource()) {
+        if (mPQSettingsManager.isHdmiSource()) {
             picturemodePref.setEntries(setHdmiPicEntries());
             picturemodePref.setEntryValues(setHdmiPicEntryValues());
         }
@@ -131,7 +131,7 @@ public class PictrueModeFragment extends LeanbackPreferenceFragment implements P
         boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
         boolean hasMboxFeature = SettingsConstant.hasMboxFeature(getActivity());
         final ListPreference picturemodePref = (ListPreference) findPreference(PQ_PICTRUE_MODE);
-        if (mPQSettingsManager.isHdmiSource() || mPQSettingsManager.isAvSource()) {
+        if (mPQSettingsManager.isHdmiSource()) {
             picturemodePref.setEntries(setHdmiPicEntries());
             picturemodePref.setEntryValues(setHdmiPicEntryValues());
         }
@@ -240,11 +240,8 @@ public class PictrueModeFragment extends LeanbackPreferenceFragment implements P
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
-        if (mPQSettingsManager.isHdmiSource() || mPQSettingsManager.isAvSource()) {
+        if (mPQSettingsManager.isHdmiSource()) {
             for (int i = 0; i < HDMI_PIC_RES.length; i++) {
-                if (mPQSettingsManager.isAvSource() && PQSettingsManager.STATUS_MONITOR.equals(HDMI_PIC_MODE[i])) {
-                    continue;
-                }
                 list.add(getString(HDMI_PIC_RES[i]));
             }
         }
@@ -259,11 +256,8 @@ public class PictrueModeFragment extends LeanbackPreferenceFragment implements P
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
-        if (mPQSettingsManager.isHdmiSource() || mPQSettingsManager.isAvSource()) {
+        if (mPQSettingsManager.isHdmiSource()) {
             for (int i = 0; i < HDMI_PIC_MODE.length; i++) {
-                if (mPQSettingsManager.isAvSource() && PQSettingsManager.STATUS_MONITOR.equals(HDMI_PIC_MODE[i])) {
-                    continue;
-                }
                 list.add(HDMI_PIC_MODE[i]);
             }
         }
