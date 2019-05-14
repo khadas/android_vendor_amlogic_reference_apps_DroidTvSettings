@@ -151,7 +151,8 @@
     <string name="cec_control">CEC Control</string>
     <string name="cec_switch">CEC Switch</string>
     <string name="cec_one_key_play">One key play</string>
-    <string name="cec_one_key_power_off">One key power off</string>
+    <string name="cec_device_auto_power_off">Device auto power off</string>
+    <string name="cec_auto_wake_up">Tv auto power on</string>
     <string name="cec_auto_change_language">Auto change language</string>
     <string name="tv_cec_auto_power_on_all">Auto Power On All</string>
     <string name="tv_cec_device_select_list">Device Select List</string>

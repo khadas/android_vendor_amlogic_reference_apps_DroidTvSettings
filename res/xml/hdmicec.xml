@@ -27,9 +27,13 @@
         android:persistent="false"
         android:title="@string/cec_one_key_play" />
     <SwitchPreference
-        android:key="cec_onekey_poweroff"
+        android:key="cec_device_auto_poweroff"
         android:persistent="false"
-        android:title="@string/cec_one_key_power_off" />
+        android:title="@string/cec_device_auto_power_off" />
+    <SwitchPreference
+        android:key="cec_auto_wakeup"
+        android:persistent="false"
+        android:title="@string/cec_auto_wake_up" />
     <SwitchPreference
         android:key="cec_auto_change_language"
         android:persistent="false"
