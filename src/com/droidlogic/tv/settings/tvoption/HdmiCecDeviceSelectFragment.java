@@ -158,6 +158,7 @@ public class HdmiCecDeviceSelectFragment extends LeanbackPreferenceFragment impl
     public boolean onPreferenceClick(Preference preference) {
         Log.d(LOG_TAG, "[onPreferenceClick] preference.getKey() = " + preference.getKey());
         final int logicalAddress = Integer.parseInt((String)preference.getKey());
+        /*
         if (tv != null) {
             byte[] mUCPbody = new byte[2];
             mUCPbody[0] = CEC_MESSAGE_USER_CONTROL_PRESSED;
@@ -167,6 +168,7 @@ public class HdmiCecDeviceSelectFragment extends LeanbackPreferenceFragment impl
             mUCRbody[0] = CEC_MESSAGE_USER_CONTROL_RELEASED;
             tv.sendCommonCecCommand(ADDR_TV, logicalAddress, mUCRbody);
         }
+        */
         String msg  = "select device "+ preference.getTitle() + "!";
         Toast toast = Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT);
         toast.show();
