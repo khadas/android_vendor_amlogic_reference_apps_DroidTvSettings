@@ -73,6 +73,8 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
     private HdmiTvClient mTvClient;
     private final InputsComparator mComparator = new InputsComparator();
     private Context mContext;
+    private String mPreSource = null;
+    private String mCurSource = null;
 
     // if Fragment has no nullary constructor, it might throw InstantiationException, so add this constructor.
     // For more details, you can visit http://blog.csdn.net/xplee0576/article/details/43057633 .
@@ -111,9 +113,33 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
         }
         updatePreferenceFragment();
     }
+    public void calculatePreSrcToCurSrc(Preference preference) {
+        if (DroidLogicTvUtils.getCurrentInputId(mContext).contains("ADTV")) {
+            if (DroidLogicTvUtils.isATV(mContext)) {
+                mPreSource = "ATV";
+            } else {
+                mPreSource = "DTV";
+            }
 
+        } else if (DroidLogicTvUtils.getCurrentInputId(mContext).contains("AV")){
+            mPreSource = "AV";
+        } else if (DroidLogicTvUtils.getCurrentInputId(mContext).contains("Hdmi")) {
+            mPreSource = "HDMI";
+        }
+        if (TextUtils.regionMatches(preference.getTitle(), 0, "AV", 0, 2)) {
+            mCurSource = "AV";
+        } else if (TextUtils.regionMatches(preference.getTitle(), 0, "HDMI", 0, 3)) {
+            mCurSource = "HDMI";
+        } else if (TextUtils.regionMatches(preference.getTitle(), 0, "ATV", 0, 3)) {
+            mCurSource = "ATV";
+        } else if (TextUtils.regionMatches(preference.getTitle(), 0, "DTV", 0, 3)) {
+            mCurSource = "DTV";
+        }
+        Log.d(TAG, "onPreferenceTreeClick SwitchSourceTime PreSource - CurSource " + mPreSource + "-" + mCurSource);
+    }
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
+            calculatePreSrcToCurSrc(preference);
             float Time= (float) SystemClock.uptimeMillis() / 1000;
             Log.d(TAG, "onPreferenceTreeClick SwitchSourceTime = " + Time);
             final Preference sourcePreference = preference;
