@@ -448,12 +448,14 @@ public class TvOptionSettingManager {
         setSleepTimer(0);
         setDefAudioStreamVolume();
         clearHdmi20Mode();
+        HdmiCecFragment.reset(mContext.getContentResolver(), mSystemControlManager);
         // SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
         // mSystemControlManager.setBootenv("ubootenv.var.upgrade_step", "1");
-        final String[] tvPackages = {"com.android.providers.tv"};
+        /*final String[] tvPackages = {"com.android.providers.tv"};
         for (int i = 0; i < tvPackages.length; i++) {
             ClearPackageData(tvPackages[i]);
-        }
+        }*/
+        mTvDataBaseManager.deleteChannels("com.droidlogic.tvinput/.services.ADTVInputService/HW16",  null);
         mTvControlManager.SSMInitDevice();
         mTvControlManager.FactoryCleanAllTableForProgram();
     }

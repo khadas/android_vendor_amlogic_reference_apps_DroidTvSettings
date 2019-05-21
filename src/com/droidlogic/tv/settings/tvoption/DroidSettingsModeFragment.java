@@ -261,7 +261,7 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
                         mTvOptionSettingManager.doFbcUpgrade();
                     }
                     dialog.dismiss();
-                    ((PowerManager) context.getSystemService(Context.POWER_SERVICE)).reboot("");
+                    ((PowerManager) context.getSystemService(Context.POWER_SERVICE)).reboot(null);
                 }
             });
         uiDialog.setNegativeButton(getString(R.string.tv_cancel)

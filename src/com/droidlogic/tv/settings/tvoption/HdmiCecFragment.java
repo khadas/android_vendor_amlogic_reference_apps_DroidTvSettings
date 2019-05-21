@@ -11,6 +11,7 @@
 package com.droidlogic.tv.settings.tvoption;
 
 import android.content.Context;
+import android.content.ContentResolver;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -44,8 +45,15 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
     private static final String KEY_ARC_SWITCH                    = "arc_switch";
     private static final String KEY_DEVICE_SELECT                 = "tv_cec_device_select_list";
 
+    private static final String SETTINGS_HDMI_CONTROL_ENABLED = "hdmi_control_enabled";
+    private static final String SETTINGS_ONE_TOUCH_PLAY = HdmiCecManager.HDMI_CONTROL_ONE_TOUCH_PLAY_ENABLED;
+    private static final String SETTINGS_AUTO_POWER_OFF = "hdmi_control_auto_device_off_enabled";
+    private static final String SETTINGS_AUTO_WAKE_UP = "hdmi_control_auto_wakeup_enabled";
+    private static final String SETTINGS_ARC_ENABLED = HdmiCecManager.HDMI_SYSTEM_AUDIO_CONTROL_ENABLED;
     private static final String PERSIST_HDMI_CEC_SET_MENU_LANGUAGE= "persist.vendor.sys.cec.set_menu_language";
     private static final String PERSIST_HDMI_CEC_DEVICE_AUTO_POWEROFF = "persist.vendor.sys.cec.deviceautopoweroff";
+    private static final int ON = 1;
+    private static final int OFF = 0;
     private TwoStatePreference mCecSwitchPref;
     private TwoStatePreference mCecOnekeyPlayPref;
     private TwoStatePreference mCecDeviceAutoPoweroffPref;
@@ -109,8 +117,8 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         }
         switch (key) {
         case KEY_CEC_SWITCH:
-            writeCecOption("hdmi_control_enabled"/*Settings.Global.HDMI_CONTROL_ENABLED*/, mCecSwitchPref.isChecked());
-            boolean hdmiControlEnabled = readCecOption("hdmi_control_enabled"/*Settings.Global.HDMI_CONTROL_ENABLED*/);
+            writeCecOption(SETTINGS_HDMI_CONTROL_ENABLED/*Settings.Global.HDMI_CONTROL_ENABLED*/, mCecSwitchPref.isChecked());
+            boolean hdmiControlEnabled = readCecOption(SETTINGS_HDMI_CONTROL_ENABLED/*Settings.Global.HDMI_CONTROL_ENABLED*/);
             mCecOnekeyPlayPref.setEnabled(hdmiControlEnabled);
             mCecDeviceAutoPoweroffPref.setEnabled(hdmiControlEnabled);
             mCecAutoWakeupPref.setEnabled(hdmiControlEnabled);
@@ -118,14 +126,14 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
             mArcSwitchPref.setEnabled(hdmiControlEnabled);
             return true;
         case KEY_CEC_ONEKEY_PLAY:
-            writeCecOption(HdmiCecManager.HDMI_CONTROL_ONE_TOUCH_PLAY_ENABLED, mCecOnekeyPlayPref.isChecked());
+            writeCecOption(SETTINGS_ONE_TOUCH_PLAY, mCecOnekeyPlayPref.isChecked());
             return true;
         case KEY_CEC_DEVICE_AUTO_POWEROFF:
-            writeCecOption("hdmi_control_auto_device_off_enabled"/*Settings.Global.HDMI_CONTROL_AUTO_DEVICE_OFF_ENABLED*/, mCecDeviceAutoPoweroffPref.isChecked());
+            writeCecOption(SETTINGS_AUTO_POWER_OFF/*Settings.Global.HDMI_CONTROL_AUTO_DEVICE_OFF_ENABLED*/, mCecDeviceAutoPoweroffPref.isChecked());
             mSystemControlManager.setProperty(PERSIST_HDMI_CEC_DEVICE_AUTO_POWEROFF, mCecDeviceAutoPoweroffPref.isChecked() ? "true" : "false");
             return true;
         case KEY_CEC_AUTO_WAKEUP:
-            writeCecOption("hdmi_control_auto_wakeup_enabled", mCecAutoWakeupPref.isChecked());
+            writeCecOption(SETTINGS_AUTO_WAKE_UP, mCecAutoWakeupPref.isChecked());
             return true;
         case KEY_CEC_AUTO_CHANGE_LANGUAGE:
             //writeCecOption(HdmiCecManager.HDMI_CONTROL_AUTO_CHANGE_LANGUAGE_ENABLED,
@@ -133,7 +141,7 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
             mSystemControlManager.setProperty(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, mCecAutoChangeLanguagePref.isChecked() ? "true" : "false");
             return true;
         case KEY_ARC_SWITCH:
-            writeCecOption(HdmiCecManager.HDMI_SYSTEM_AUDIO_CONTROL_ENABLED, mArcSwitchPref.isChecked());
+            writeCecOption(SETTINGS_ARC_ENABLED, mArcSwitchPref.isChecked());
             return true;
         }
         return super.onPreferenceTreeClick(preference);
@@ -146,28 +154,38 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
     }
 
     private void refresh() {
-        boolean hdmiControlEnabled = readCecOption("hdmi_control_enabled"/*Settings.Global.HDMI_CONTROL_ENABLED*/);
+        boolean hdmiControlEnabled = readCecOption(SETTINGS_HDMI_CONTROL_ENABLED/*Settings.Global.HDMI_CONTROL_ENABLED*/);
         mCecSwitchPref.setChecked(hdmiControlEnabled);
-        mCecOnekeyPlayPref.setChecked(readCecOption(HdmiCecManager.HDMI_CONTROL_ONE_TOUCH_PLAY_ENABLED));
+        mCecOnekeyPlayPref.setChecked(readCecOption(SETTINGS_ONE_TOUCH_PLAY));
         mCecOnekeyPlayPref.setEnabled(hdmiControlEnabled);
-        mCecDeviceAutoPoweroffPref.setChecked(readCecOption("hdmi_control_auto_device_off_enabled"/*Settings.Global.HDMI_CONTROL_AUTO_DEVICE_OFF_ENABLED*/));
+        mCecDeviceAutoPoweroffPref.setChecked(readCecOption(SETTINGS_AUTO_POWER_OFF/*Settings.Global.HDMI_CONTROL_AUTO_DEVICE_OFF_ENABLED*/));
         mCecDeviceAutoPoweroffPref.setEnabled(hdmiControlEnabled);
-        mCecAutoWakeupPref.setChecked(readCecOption("hdmi_control_auto_wakeup_enabled"));
+        mCecAutoWakeupPref.setChecked(readCecOption(SETTINGS_AUTO_WAKE_UP));
         mCecAutoWakeupPref.setEnabled(hdmiControlEnabled);
         //mCecAutoChangeLanguagePref.setChecked(readCecOption(HdmiCecManager.HDMI_CONTROL_AUTO_CHANGE_LANGUAGE_ENABLED));
         mCecAutoChangeLanguagePref.setChecked(mSystemControlManager.getPropertyBoolean(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, true));
         mCecAutoChangeLanguagePref.setEnabled(hdmiControlEnabled);
 
-        boolean arcEnabled = readCecOption(HdmiCecManager.HDMI_SYSTEM_AUDIO_CONTROL_ENABLED);
+        boolean arcEnabled = readCecOption(SETTINGS_ARC_ENABLED);
         mArcSwitchPref.setChecked(arcEnabled);
         mArcSwitchPref.setEnabled(hdmiControlEnabled);
     }
 
     private boolean readCecOption(String key) {
-        return Settings.Global.getInt(getContext().getContentResolver(), key, 1) == 1;
+        return Settings.Global.getInt(getContext().getContentResolver(), key, ON) == ON;
     }
 
     private void writeCecOption(String key, boolean value) {
-        Settings.Global.putInt(getContext().getContentResolver(), key, value ? 1 : 0);
+        Settings.Global.putInt(getContext().getContentResolver(), key, value ? ON : OFF);
+    }
+
+    public static void reset(ContentResolver contentResolver, SystemControlManager sytemControlManager) {
+        Settings.Global.putInt(contentResolver, SETTINGS_HDMI_CONTROL_ENABLED,  ON);
+        Settings.Global.putInt(contentResolver, SETTINGS_ONE_TOUCH_PLAY,  ON);
+        Settings.Global.putInt(contentResolver, SETTINGS_AUTO_POWER_OFF,  ON);
+        Settings.Global.putInt(contentResolver, SETTINGS_AUTO_WAKE_UP,  ON);
+        Settings.Global.putInt(contentResolver, SETTINGS_ARC_ENABLED,  ON);
+        sytemControlManager.setProperty(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, "true");
+        sytemControlManager.setProperty(PERSIST_HDMI_CEC_DEVICE_AUTO_POWEROFF, "true");
     }
 }
