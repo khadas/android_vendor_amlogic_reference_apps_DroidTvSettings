@@ -29,6 +29,9 @@ import com.droidlogic.tv.settings.SettingsConstant;
 import java.util.Map;
 import java.util.Set;
 import android.os.SystemProperties;
+import android.os.Handler;
+import android.os.Message;
+
 /**
  * Fragment to control HDMI Cec settings.
  */
@@ -62,6 +65,21 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
     private TwoStatePreference mArcSwitchPref;
 
     private SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
+
+    private static final int LONG_MILIS_DELAY = 3000;
+    private static final int MSG_CONTINOUS_MULTIPLE_OPERATION = 1;
+    private static long lastObserveredTime = 0;
+    private final Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MSG_CONTINOUS_MULTIPLE_OPERATION:
+                setCecSwitchEnabled();
+                break;
+            default:
+                break;
+            }
+        };
+    };
 
     public static HdmiCecFragment newInstance() {
         if (mHdmiCecFragment == null) {
@@ -117,13 +135,12 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         }
         switch (key) {
         case KEY_CEC_SWITCH:
-            writeCecOption(SETTINGS_HDMI_CONTROL_ENABLED/*Settings.Global.HDMI_CONTROL_ENABLED*/, mCecSwitchPref.isChecked());
-            boolean hdmiControlEnabled = readCecOption(SETTINGS_HDMI_CONTROL_ENABLED/*Settings.Global.HDMI_CONTROL_ENABLED*/);
-            mCecOnekeyPlayPref.setEnabled(hdmiControlEnabled);
-            mCecDeviceAutoPoweroffPref.setEnabled(hdmiControlEnabled);
-            mCecAutoWakeupPref.setEnabled(hdmiControlEnabled);
-            mCecAutoChangeLanguagePref.setEnabled(hdmiControlEnabled);
-            mArcSwitchPref.setEnabled(hdmiControlEnabled);
+            long curtime = System.currentTimeMillis();
+            long timeDiff = curtime - lastObserveredTime;
+            lastObserveredTime = curtime;
+            Message cecEnabled = mHandler.obtainMessage(MSG_CONTINOUS_MULTIPLE_OPERATION, 0, 0);
+            mHandler.removeMessages(MSG_CONTINOUS_MULTIPLE_OPERATION);
+            mHandler.sendMessageDelayed(cecEnabled, ((timeDiff > LONG_MILIS_DELAY) ? 0 : LONG_MILIS_DELAY));
             return true;
         case KEY_CEC_ONEKEY_PLAY:
             writeCecOption(SETTINGS_ONE_TOUCH_PLAY, mCecOnekeyPlayPref.isChecked());
@@ -168,6 +185,16 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
 
         boolean arcEnabled = readCecOption(SETTINGS_ARC_ENABLED);
         mArcSwitchPref.setChecked(arcEnabled);
+        mArcSwitchPref.setEnabled(hdmiControlEnabled);
+    }
+
+    private void setCecSwitchEnabled() {
+        writeCecOption(SETTINGS_HDMI_CONTROL_ENABLED/*Settings.Global.HDMI_CONTROL_ENABLED*/, mCecSwitchPref.isChecked());
+        boolean hdmiControlEnabled = readCecOption(SETTINGS_HDMI_CONTROL_ENABLED/*Settings.Global.HDMI_CONTROL_ENABLED*/);
+        mCecOnekeyPlayPref.setEnabled(hdmiControlEnabled);
+        mCecDeviceAutoPoweroffPref.setEnabled(hdmiControlEnabled);
+        mCecAutoWakeupPref.setEnabled(hdmiControlEnabled);
+        mCecAutoChangeLanguagePref.setEnabled(hdmiControlEnabled);
         mArcSwitchPref.setEnabled(hdmiControlEnabled);
     }
 
