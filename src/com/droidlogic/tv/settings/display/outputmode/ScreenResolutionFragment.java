@@ -236,8 +236,6 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
                 mDolbyVisionPref.setVisible(true);
                 mGraphicsPriorityPref.setVisible(
                     mDolbyVisionSettingManager.isDolbyVisionEnable() ? true:false);
-                if (mOutputUiManager.isTvSupportDolbyVision()) {
-                }
             } else {
                 mDolbyVisionPref.setVisible(false);
                 mGraphicsPriorityPref.setVisible(false);
@@ -247,10 +245,14 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
             mGraphicsPriorityPref.setVisible(false);
         }
         if (isHdmiMode() && (SystemProperties.getBoolean("ro.vendor.platform.support.dolbyvision", false) == true)
-                && mOutputUiManager.isTvSupportDolbyVision()) {
+                && mOutputUiManager.isTvSupportDolbyVision() && SettingsConstant.needDroidlogicBestDolbyVision(getContext())) {
             mBestDolbyVisionPref.setVisible(true);
         } else {
             mBestDolbyVisionPref.setVisible(false);
+        }
+        if (!SettingsConstant.needDroidlogicBestDolbyVision(getContext())) {
+            mDolbyVisionPref.setEnabled(false);
+            mGraphicsPriorityPref.setVisible(false);
         }
     }
 
