@@ -62,6 +62,7 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
     private SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
     private SoundParameterSettingManager mSoundParameterSettingManager;
     private HdmiCecManager mHdmiCecManager;
+    private static long lastObserveredTime = 0;
 
     public static HdmiCecFragment newInstance() {
         if (mHdmiCecFragment == null) {
@@ -141,8 +142,12 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         }
         switch (key) {
         case KEY_CEC_SWITCH:
-            mHdmiCecManager.enableHdmiControl(mCecSwitchPref.isChecked());
-            mHandler.sendEmptyMessageDelayed(MSG_ENABLE_CEC_SWITCH, TIME_DELAYED);
+            long curtime = System.currentTimeMillis();
+            long timeDiff = curtime - lastObserveredTime;
+            lastObserveredTime = curtime;
+            Message cecEnabled = mHandler.obtainMessage(MSG_ENABLE_CEC_SWITCH, 0, 0);
+            mHandler.removeMessages(MSG_ENABLE_CEC_SWITCH);
+            mHandler.sendMessageDelayed(cecEnabled, ((timeDiff > TIME_DELAYED) ? 0 : TIME_DELAYED));
             mCecSwitchPref.setEnabled(false);
             mCecOnekeyPlayPref.setEnabled(false);
             mCecDeviceAutoPoweroffPref.setEnabled(false);
@@ -208,6 +213,7 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
             switch (msg.what) {
                 case MSG_ENABLE_CEC_SWITCH:
                     mCecSwitchPref.setEnabled(true);
+                    mHdmiCecManager.enableHdmiControl(mCecSwitchPref.isChecked());
                     boolean hdmiControlEnabled = mHdmiCecManager.isHdmiControlEnabled();
                     mCecOnekeyPlayPref.setEnabled(hdmiControlEnabled);
                     mCecDeviceAutoPoweroffPref.setEnabled(hdmiControlEnabled);
