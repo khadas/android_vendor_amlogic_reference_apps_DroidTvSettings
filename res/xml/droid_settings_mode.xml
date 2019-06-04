@@ -67,10 +67,6 @@
         android:title="@string/tv_daylight_saving_time"
         android:summary="%s" />
     <Preference
-        android:fragment="com.droidlogic.tv.settings.tvoption.HdmiCecFragment"
-        android:key="hdmicec"
-        android:title="@string/system_cec" />
-    <Preference
         android:key="tv_restore_factory"
         android:persistent="false"
         android:title="@string/tv_restore_factory" />

@@ -52,7 +52,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
     private static final String KEY_AUDIO_MIXING = "audio_mixing";
     private static final String KEY_DIGITALSOUND_CATEGORY = "surround_sound_category";
     private static final String KEY_DIGITALSOUND_PREFIX = "digital_subformat_";
-    private static final String KEY_DIGITALSOUND_PASSTHROUGH = "digital_sound";
+    public static final String KEY_DIGITALSOUND_PASSTHROUGH = "digital_sound";
     private static final String KEY_DTSDRCMODE_PASSTHROUGH = "dtsdrc_mode";
     private static final String KEY_DTSDRCCUSTOMMODE_PASSTHROUGH = "dtsdrc_custom_mode";
     private static final String KEY_AD_SURPORT = "ad_surport";

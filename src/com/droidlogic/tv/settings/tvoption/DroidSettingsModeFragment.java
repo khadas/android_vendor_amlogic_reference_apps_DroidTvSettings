@@ -161,12 +161,6 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
         } else {
             daylightSavingTime.setVisible(false);
         }
-        final Preference hdmiCecControlPref = findPreference(KEY_HDMI_CEC_CONTROL);
-        hdmiCecControlPref.setOnPreferenceChangeListener(this);
-        boolean isSystemFeature = getContext().getPackageManager().hasSystemFeature(HdmiCecManager.FEATURE_HDMI_CEC);
-        boolean isNeeadHdmiCec = SettingsConstant.needDroidlogicHdmicecFeature(getContext());
-        if (CanDebug()) Log.d(TAG, "isSystemFeature = " + isSystemFeature + ", isNeeadHdmiCec = " + isNeeadHdmiCec);
-        hdmiCecControlPref.setVisible(isSystemFeature && isNeeadHdmiCec);
     }
 
     @Override

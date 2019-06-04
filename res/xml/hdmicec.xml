@@ -46,4 +46,9 @@
         android:fragment="com.droidlogic.tv.settings.tvoption.HdmiCecDeviceSelectFragment"
         android:key="tv_cec_device_select_list"
         android:title="@string/tv_cec_device_select_list" />
+    <ListPreference
+        android:key="digital_sound"
+        android:persistent="false"
+        android:title="@string/device_sound_digital"
+        android:summary="%s" />
 </PreferenceScreen>

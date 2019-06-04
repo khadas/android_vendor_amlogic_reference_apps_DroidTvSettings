@@ -49,6 +49,7 @@ import android.content.ActivityNotFoundException;
 
 import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.tv.settings.SettingsConstant;
+import com.droidlogic.tv.settings.tvoption.DroidSettingsModeFragment;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 
 import com.droidlogic.app.tv.TvControlManager;
@@ -75,6 +76,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
     private static final String KEY_TV_OPTION = "tv_option";
     private static final String KEY_TV_CHANNEL = "channel";
     private static final String KEY_TV_SETTINGS = "tv_settings";
+    private static final String KEY_HDMI_CEC_CONTROL = "hdmicec";
     private boolean mTvUiMode;
 
     private Preference mUpgradeBluetoothRemote;
@@ -110,6 +112,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
 
         final Preference mainPref = findPreference(KEY_MAIN_MENU);
         final Preference displayPref = findPreference(KEY_DISPLAY);
+        final Preference hdmicecPref = findPreference(KEY_HDMI_CEC_CONTROL);
         final Preference playbackPref = findPreference(KEY_PLAYBACK_SETTINGS);
         mSoundsPref = findPreference(KEY_SOUNDS);
         final Preference mboxSoundsPref = findPreference(KEY_MBOX_SOUNDS);
@@ -120,6 +123,8 @@ public class MainFragment extends LeanbackPreferenceFragment {
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
         //hide it forcedly as new bluetooth remote upgrade application is not available now
         mUpgradeBluetoothRemote.setVisible(false/*is_from_live_tv ? false : (SettingsConstant.needDroidlogicBluetoothRemoteFeature(getContext()) && !tvFlag)*/);
+        hdmicecPref.setVisible((getContext().getPackageManager().hasSystemFeature("android.hardware.hdmi.cec")
+                && SettingsConstant.needDroidlogicHdmicecFeature(getContext())));
         playbackPref.setVisible(false);
         if (netflixesnPref != null) {
             if (is_from_live_tv) {

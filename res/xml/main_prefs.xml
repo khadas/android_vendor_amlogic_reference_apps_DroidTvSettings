@@ -25,6 +25,11 @@
         android:key="display"
         android:title="@string/device_display" />
     <Preference
+        android:fragment="com.droidlogic.tv.settings.tvoption.HdmiCecFragment"
+        android:icon="@drawable/ic_settings_outputs"
+        android:key="hdmicec"
+        android:title="@string/system_cec" />
+    <Preference
         android:fragment="com.droidlogic.tv.settings.PlaybackFragment"
         android:icon="@drawable/ic_settings_now_movies"
         android:key="playback_settings"

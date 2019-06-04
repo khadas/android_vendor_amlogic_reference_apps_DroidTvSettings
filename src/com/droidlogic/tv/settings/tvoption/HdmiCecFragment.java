@@ -18,6 +18,7 @@ import android.os.Message;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.support.v17.preference.LeanbackPreferenceFragment;
+import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceGroup;
 import android.support.v7.preference.TwoStatePreference;
@@ -28,6 +29,7 @@ import com.droidlogic.app.HdmiCecManager;
 import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.SettingsConstant;
+import com.droidlogic.tv.settings.SoundFragment;
 
 import java.util.Map;
 import java.util.Set;
@@ -56,6 +58,7 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
     private TwoStatePreference mArcSwitchPref;
 
     private SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
+    private SoundParameterSettingManager mSoundParameterSettingManager;
     private HdmiCecManager mHdmiCecManager;
 
     public static HdmiCecFragment newInstance() {
@@ -85,6 +88,9 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        if (mSoundParameterSettingManager == null) {
+            mSoundParameterSettingManager = new SoundParameterSettingManager(getActivity());
+        }
         setPreferencesFromResource(R.xml.hdmicec, null);
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
                     && (SystemProperties.getBoolean("tv.soc.as.mbox", false) == false);
@@ -109,6 +115,12 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         }
         hdmiDeviceSelectPref.setOnPreferenceChangeListener(mHdmiCecFragment);
         hdmiDeviceSelectPref.setVisible(true);
+
+        final ListPreference digitalsoundPref = (ListPreference) findPreference(SoundFragment.KEY_DIGITALSOUND_PASSTHROUGH);
+        digitalsoundPref.setEntries(getActivity().getResources().getStringArray(R.array.digital_sounds_tv_entries));
+        digitalsoundPref.setEntryValues(getActivity().getResources().getStringArray(R.array.digital_sounds_tv_entry_values));
+        digitalsoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
+        digitalsoundPref.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -151,7 +163,10 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        //Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
+        Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
+        if (TextUtils.equals(preference.getKey(), SoundFragment.KEY_DIGITALSOUND_PASSTHROUGH)) {
+            mSoundParameterSettingManager.setDigitalAudioFormat((String)newValue);
+        }
         return true;
     }
 
