@@ -100,6 +100,7 @@
     <string name="dap_geq_band4">high frequency</string>
     <string name="dap_geq_band5">ultra-high frequency</string>
     <string name="arc_latency">HDMI/ARC latency</string>
+    <string name="audio_output_latency">Audio Output Latency</string>
 
     <!-- Title for preference which controls surround sound passthrough function [CHAR LIMIT=50] -->
     <string name="device_sound_digital">Digital Audio Format</string>

@@ -40,6 +40,10 @@
         android:key="arc_latency"
         android:persistent="false"
         android:title="@string/arc_latency" />
+    <SeekBarPreference
+        android:key="key_audio_output_latency"
+        android:persistent="false"
+        android:title="@string/audio_output_latency" />
     <PreferenceCategory
         android:key="surround_sound_category"
         android:title="@string/device_sound_digital">

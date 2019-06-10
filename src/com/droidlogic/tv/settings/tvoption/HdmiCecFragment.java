@@ -21,11 +21,13 @@ import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceGroup;
+import android.support.v7.preference.SeekBarPreference;
 import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.droidlogic.app.HdmiCecManager;
+import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.SettingsConstant;
@@ -121,6 +123,14 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         digitalsoundPref.setEntryValues(getActivity().getResources().getStringArray(R.array.digital_sounds_tv_entry_values));
         digitalsoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
         digitalsoundPref.setOnPreferenceChangeListener(this);
+
+        final SeekBarPreference audioOutputLatencyPref = (SeekBarPreference) findPreference(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY);
+        audioOutputLatencyPref.setOnPreferenceChangeListener(this);
+        audioOutputLatencyPref.setMax(OutputModeManager.AUDIO_OUTPUT_LATENCY_MAX);
+        audioOutputLatencyPref.setMin(OutputModeManager.AUDIO_OUTPUT_LATENCY_MIN);
+        audioOutputLatencyPref.setSeekBarIncrement(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY_STEP);
+        audioOutputLatencyPref.setValue(mSoundParameterSettingManager.getAudioOutputLatency());
+        audioOutputLatencyPref.setVisible(tvFlag);
     }
 
     @Override
@@ -166,6 +176,8 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
         if (TextUtils.equals(preference.getKey(), SoundFragment.KEY_DIGITALSOUND_PASSTHROUGH)) {
             mSoundParameterSettingManager.setDigitalAudioFormat((String)newValue);
+        } else if (TextUtils.equals(preference.getKey(), SoundFragment.KEY_AUDIO_OUTPUT_LATENCY)) {
+            mSoundParameterSettingManager.setAudioOutputLatency((int)newValue);
         }
         return true;
     }

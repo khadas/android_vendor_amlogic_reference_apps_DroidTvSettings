@@ -44,6 +44,7 @@
     <string name="dap_geq_band4">高頻</string>
     <string name="dap_geq_band5">超高頻</string>
     <string name="arc_latency">HDMI/ARC 延時</string>
+    <string name="audio_output_latency">音頻輸出延時</string>
 
     <string name="device_rotation_land">"橫屏拉伸"</string>
     <string name="device_sound_digital">"數字音頻"</string>

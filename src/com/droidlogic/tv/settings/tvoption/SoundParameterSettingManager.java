@@ -186,6 +186,16 @@ public class SoundParameterSettingManager {
                 OutputModeManager.TV_ARC_LATENCY_DEFAULT);
     }
 
+    public void setAudioOutputLatency(int newVal) {
+        Settings.Global.putInt(mContext.getContentResolver(), OutputModeManager.DB_FIELD_AUDIO_OUTPUT_LATENCY, newVal);
+        mOutputModeManager.setAudioOutputLatency(newVal);
+    }
+
+    public int getAudioOutputLatency() {
+        return Settings.Global.getInt(mContext.getContentResolver(), OutputModeManager.DB_FIELD_AUDIO_OUTPUT_LATENCY,
+                OutputModeManager.AUDIO_OUTPUT_LATENCY_DEFAULT);
+    }
+
     public void setDrcModePassthroughSetting(int newVal) {
         Settings.Global.putInt(mContext.getContentResolver(),
                 OutputModeManager.DRC_MODE, newVal);
