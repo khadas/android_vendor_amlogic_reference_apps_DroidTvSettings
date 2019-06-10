@@ -119,6 +119,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
         final Preference mboxSoundsPref = findPreference(KEY_MBOX_SOUNDS);
         final Preference powerKeyPref = findPreference(KEY_POWERKEY);
         final Preference powerKeyOnModePref = findPreference(KEY_POWERONMODE);
+        final Preference keyStone = findPreference(KEY_KEYSTONE);
         //BluetoothRemote/HDMI cec/Playback Settings display only in Mbox
         mUpgradeBluetoothRemote = findPreference(KEY_UPGRADE_BLUTOOTH_REMOTE);
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
@@ -158,6 +159,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
             powerKeyOnModePref.setVisible(false);
             mTvOption.setVisible(false);
             moreSettingsPref.setVisible(false);
+            keyStone.setVisible(false);
             TvControlManager tvControlManager = TvControlManager.getInstance();
             int deviceId = Settings.System.getInt(getContext().getContentResolver(),
                     DroidLogicTvUtils.TV_CURRENT_DEVICE_ID, 0);
