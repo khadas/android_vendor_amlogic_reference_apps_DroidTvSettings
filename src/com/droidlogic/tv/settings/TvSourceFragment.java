@@ -126,10 +126,12 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
         } else if (DroidLogicTvUtils.getCurrentInputId(mContext).contains("Hdmi")) {
             mPreSource = "HDMI";
         }
-        if (TextUtils.regionMatches(preference.getTitle(), 0, "AV", 0, 2)) {
-            mCurSource = "AV";
-        } else if (TextUtils.regionMatches(preference.getTitle(), 0, "HDMI", 0, 3)) {
+
+        String inputId = preference.getKey();
+         if (!TextUtils.isEmpty(inputId) && inputId.contains("Hdmi")) {
             mCurSource = "HDMI";
+        } else if (TextUtils.regionMatches(preference.getTitle(), 0, "AV", 0, 2)) {
+            mCurSource = "AV";
         } else if (TextUtils.regionMatches(preference.getTitle(), 0, "ATV", 0, 3)) {
             mCurSource = "ATV";
         } else if (TextUtils.regionMatches(preference.getTitle(), 0, "DTV", 0, 3)) {
