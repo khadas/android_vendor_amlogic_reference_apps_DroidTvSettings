@@ -52,6 +52,7 @@ import android.hardware.hdmi.HdmiControlManager;
 import android.hardware.hdmi.HdmiTvClient;
 import android.media.tv.TvInputHardwareInfo;
 import java.util.ArrayList;
+import com.droidlogic.app.SystemControlManager;
 
 public class TvSourceFragment extends LeanbackPreferenceFragment {
 
@@ -77,6 +78,7 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
     private Context mContext;
     private String mPreSource = null;
     private String mCurSource = null;
+    private final String DTVKITSOURCE = "org.dtvkit.inputsource/.DtvkitTvInput/HW19";
 
     // if Fragment has no nullary constructor, it might throw InstantiationException, so add this constructor.
     // For more details, you can visit http://blog.csdn.net/xplee0576/article/details/43057633 .
@@ -168,6 +170,16 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
 
                     Settings.System.putInt(mContext.getContentResolver(), DroidLogicTvUtils.TV_CURRENT_DEVICE_ID,
                             DroidLogicTvUtils.getHardwareDeviceId(input));
+
+                    SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
+                    if (DTVKITSOURCE.equals(input.getId())) {//DTVKIT SOURCE
+                        if (DEBUG) Log.d(TAG, "DtvKit source");
+                        mSystemControlManager.SetDtvKitSourceEnable(1);
+                    } else {
+                        if (DEBUG) Log.d(TAG, "Not DtvKit source");
+                        mSystemControlManager.SetDtvKitSourceEnable(0);
+                    }
+
                     if (mStartMode == 1) {
                         Intent intent = new Intent();
                         intent.setAction(COMMANDACTION);
