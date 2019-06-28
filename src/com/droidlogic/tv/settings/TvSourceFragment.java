@@ -46,6 +46,8 @@ import java.util.List;
 import com.droidlogic.app.tv.TvControlManager;
 import com.droidlogic.app.tv.DroidLogicTvUtils;
 import com.droidlogic.app.tv.TvScanConfig;
+import com.droidlogic.app.tv.ChannelInfo;
+import com.droidlogic.app.tv.DroidLogicHdmiCecManager;
 import android.hardware.hdmi.HdmiControlManager;
 import android.hardware.hdmi.HdmiTvClient;
 import android.media.tv.TvInputHardwareInfo;
@@ -190,9 +192,43 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
                     }*/
                     // getPreferenceManager().getContext().startActivity(intent);
                    ((Activity)mContext).finish();
-                    break;
-                }
-            }
+                   int currentDeviceId = 0;
+                   if (input != null) {
+                       HdmiDeviceInfo info = input.getHdmiDeviceInfo();
+                       if (info == null)
+                           currentDeviceId = DroidLogicTvUtils.getHardwareDeviceId(input);
+                   }
+                   if ((currentDeviceId == DroidLogicTvUtils.DEVICE_ID_ATV)
+                       ||(currentDeviceId == DroidLogicTvUtils.DEVICE_ID_AV1)
+                       ||(currentDeviceId == DroidLogicTvUtils.DEVICE_ID_AV2)
+                       ||(currentDeviceId == DroidLogicTvUtils.DEVICE_ID_DTV)
+                       ||(currentDeviceId == DroidLogicTvUtils.DEVICE_ID_ADTV)) {
+                       String label = null;
+                       switch (currentDeviceId) {
+                       case DroidLogicTvUtils.DEVICE_ID_ATV:
+                           label = ChannelInfo.LABEL_ATV;
+                           break;
+                       case DroidLogicTvUtils.DEVICE_ID_DTV:
+                           label = ChannelInfo.LABEL_DTV;
+                           break;
+                       case DroidLogicTvUtils.DEVICE_ID_ADTV:
+                           label = ChannelInfo.LABEL_ATV + ChannelInfo.LABEL_DTV;
+                           break;
+                       case DroidLogicTvUtils.DEVICE_ID_AV1:
+                           label = ChannelInfo.LABEL_AV1;
+                           break;
+                       case DroidLogicTvUtils.DEVICE_ID_AV2:
+                           label = ChannelInfo.LABEL_AV2;
+                           break;
+                       }
+                       Log.d(TAG, "Change to Non-Hdmi channel " +
+                           "and CEC selectHdmiDevice to inner source: " + label);
+                       DroidLogicHdmiCecManager hdmi_cec = DroidLogicHdmiCecManager.getInstance((Activity)mContext);
+                       hdmi_cec.selectHdmiDevice(0, 0, 0);
+                   }
+                   break;
+               }
+        }
         return super.onPreferenceTreeClick(preference);
     }
 
