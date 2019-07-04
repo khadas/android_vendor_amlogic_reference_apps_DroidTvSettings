@@ -50,10 +50,8 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
     private static final String TV_EQ_MODE = "tv_sound_mode";
     private static final String TV_TREBLE_BASS_SETTINGS = "treble_bass_effect_settings";
     private static final String TV_BALANCE_SETTINGS = "balance_effect_settings";
-    private static final String TV_DTS_SETTINGS = "dts_effect_settings";
     private static final String TV_VIRTUAL_SURROUND_SETTINGS = "tv_sound_virtual_surround";
     private static final String TV_SOUND_OUT = "tv_sound_output_device";
-    private static final String TV_AGC = "effect_agc";
     private static final String DAP_MODE = "dap_sound";
 
     private AudioEffectManager mAudioEffectManager;

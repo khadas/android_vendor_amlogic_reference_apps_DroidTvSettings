@@ -52,6 +52,11 @@
             android:excludeFromRecents="true"
             android:exported="false" />
         <activity
+            android:name=".DtsVirualXSettingFraActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android:exported="false" />
+        <activity
             android:name=".AgcSeekBarActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"

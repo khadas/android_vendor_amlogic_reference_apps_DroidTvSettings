@@ -16,20 +16,16 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/title_tv_dts_srs_effect">
+    android:title="@string/title_tv_dts_virtualx">
     <ListPreference
-        android:key="key_tv_dts_dialog_clarity"
+        android:key="key_tv_dts_virtualx_effect"
         android:persistent="false"
-        android:entries="@array/tv_dialogcharity_entries"
-        android:entryValues="@array/tv_dialogcharity_entry_values"
-        android:title="@string/title_tv_dts_dialog_clarity"
+        android:entries="@array/tv_dts_virtualx_effect_entries"
+        android:entryValues="@array/tv_dts_virtualx_effect_entry_values"
+        android:title="@string/title_tv_dts_virtualx_effect"
         android:summary="%s" />
     <SwitchPreference
-        android:key="key_tv_dts_tru_surround"
+        android:key="key_tv_dts_truvolumexhd_effect"
         android:persistent="false"
-        android:title="@string/title_tv_dts_tru_surround" />
-    <SwitchPreference
-        android:key="key_tv_dts_tru_bass"
-        android:persistent="false"
-        android:title="@string/title_tv_dts_tru_bass" />
+        android:title="@string/title_tv_dts_virtualx_truvolumehd" />
 </PreferenceScreen>

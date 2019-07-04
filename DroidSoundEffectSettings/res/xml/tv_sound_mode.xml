@@ -41,8 +41,12 @@
         android:title="@string/tv_sound_agc" />
     <Preference
         android:fragment="com.droidlogic.tv.soundeffectsettings.DtsSoundSettingFragment"
-        android:key="dts_effect_settings"
-        android:title="@string/tv_dts_effect" />
+        android:key="key_dts_effect_settings"
+        android:title="@string/title_tv_dts_srs_effect" />
+    <Preference
+        android:fragment="com.droidlogic.tv.soundeffectsettings.DtsVirualXSettingFragment"
+        android:key="key_dts_virtualx_settings"
+        android:title="@string/title_tv_dts_virtualx" />
      <ListPreference
         android:key="tv_sound_virtual_surround"
         android:persistent="false"
