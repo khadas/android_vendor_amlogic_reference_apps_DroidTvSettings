@@ -44,13 +44,13 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
     private static final String TAG = "HdmiCecFragment";
     private static HdmiCecFragment mHdmiCecFragment = null;
 
-    private static final String KEY_CEC_SWITCH                    = "cec_switch";
-    private static final String KEY_CEC_ONEKEY_PLAY               = "cec_onekey_play";
-    private static final String KEY_CEC_DEVICE_AUTO_POWEROFF      = "cec_device_auto_poweroff";
-    private static final String KEY_CEC_AUTO_WAKEUP               = "cec_auto_wakeup";
-    private static final String KEY_CEC_AUTO_CHANGE_LANGUAGE      = "cec_auto_change_language";
-    private static final String KEY_ARC_SWITCH                    = "arc_switch";
-    private static final String KEY_DEVICE_SELECT                 = "tv_cec_device_select_list";
+    private static final String KEY_CEC_SWITCH                  = "key_cec_switch";
+    private static final String KEY_CEC_ONE_KEY_PLAY            = "key_cec_one_key_play";
+    private static final String KEY_CEC_AUTO_POWER_OFF          = "key_cec_auto_power_off";
+    private static final String KEY_CEC_AUTO_WAKE_UP            = "key_cec_auto_wake_up";
+    private static final String KEY_CEC_AUTO_CHANGE_LANGUAGE    = "key_cec_auto_change_language";
+    private static final String KEY_CEC_ARC_SWITCH              = "key_cec_arc_switch";
+    private static final String KEY_CEC_DEVICE_LIST             = "key_cec_device_list";
 
     private TwoStatePreference mCecSwitchPref;
     private TwoStatePreference mCecOnekeyPlayPref;
@@ -98,32 +98,23 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
                     && (SystemProperties.getBoolean("tv.soc.as.mbox", false) == false);
         mCecSwitchPref = (TwoStatePreference) findPreference(KEY_CEC_SWITCH);
-        mCecOnekeyPlayPref = (TwoStatePreference) findPreference(KEY_CEC_ONEKEY_PLAY);
-        mCecDeviceAutoPoweroffPref = (TwoStatePreference) findPreference(KEY_CEC_DEVICE_AUTO_POWEROFF);
-        mCecAutoWakeupPref = (TwoStatePreference) findPreference(KEY_CEC_AUTO_WAKEUP);
+        mCecOnekeyPlayPref = (TwoStatePreference) findPreference(KEY_CEC_ONE_KEY_PLAY);
+        mCecDeviceAutoPoweroffPref = (TwoStatePreference) findPreference(KEY_CEC_AUTO_POWER_OFF);
+        mCecAutoWakeupPref = (TwoStatePreference) findPreference(KEY_CEC_AUTO_WAKE_UP);
         mCecAutoChangeLanguagePref = (TwoStatePreference) findPreference(KEY_CEC_AUTO_CHANGE_LANGUAGE);
-        mArcSwitchPref = (TwoStatePreference) findPreference(KEY_ARC_SWITCH);
-        mCecOnekeyPlayPref.setVisible(!tvFlag);
+        mArcSwitchPref = (TwoStatePreference) findPreference(KEY_CEC_ARC_SWITCH);
 
-        int localDeviceType = mSystemControlManager.getPropertyInt("ro.vendor.platform.hdmi.device_type", HdmiCecManager.CEC_LOCAL_DEVICE_TYPE_TV);
-        if (HdmiCecManager.CEC_LOCAL_DEVICE_TYPE_TV == localDeviceType ||
-                HdmiCecManager.CEC_LOCAL_DEVICE_TYPE_AUDIO == localDeviceType) {
-            mCecSwitchPref.setVisible(true);
-        } else {
-            mCecSwitchPref.setVisible(false);
-        }
-        final Preference hdmiDeviceSelectPref = findPreference(KEY_DEVICE_SELECT);
+        final Preference hdmiDeviceSelectPref = findPreference(KEY_CEC_DEVICE_LIST);
         if (mHdmiCecFragment == null) {
             mHdmiCecFragment = newInstance();
         }
         hdmiDeviceSelectPref.setOnPreferenceChangeListener(mHdmiCecFragment);
-        hdmiDeviceSelectPref.setVisible(true);
 
-        final ListPreference digitalsoundPref = (ListPreference) findPreference(SoundFragment.KEY_DIGITALSOUND_PASSTHROUGH);
-        digitalsoundPref.setEntries(getActivity().getResources().getStringArray(R.array.digital_sounds_tv_entries));
-        digitalsoundPref.setEntryValues(getActivity().getResources().getStringArray(R.array.digital_sounds_tv_entry_values));
-        digitalsoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
-        digitalsoundPref.setOnPreferenceChangeListener(this);
+        final ListPreference digitalAudioFormat = (ListPreference) findPreference(SoundFragment.KEY_DIGITALSOUND_PASSTHROUGH);
+        digitalAudioFormat.setEntries(getActivity().getResources().getStringArray(R.array.digital_sounds_tv_entries));
+        digitalAudioFormat.setEntryValues(getActivity().getResources().getStringArray(R.array.digital_sounds_tv_entry_values));
+        digitalAudioFormat.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
+        digitalAudioFormat.setOnPreferenceChangeListener(this);
 
         final SeekBarPreference audioOutputLatencyPref = (SeekBarPreference) findPreference(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY);
         audioOutputLatencyPref.setOnPreferenceChangeListener(this);
@@ -131,7 +122,14 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         audioOutputLatencyPref.setMin(OutputModeManager.AUDIO_OUTPUT_LATENCY_MIN);
         audioOutputLatencyPref.setSeekBarIncrement(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY_STEP);
         audioOutputLatencyPref.setValue(mSoundParameterSettingManager.getAudioOutputLatency());
+
+        mCecOnekeyPlayPref.setVisible(!tvFlag);
+        mCecAutoWakeupPref.setVisible(tvFlag);
+        mCecSwitchPref.setVisible(true);
+        mArcSwitchPref.setVisible(tvFlag);
+        hdmiDeviceSelectPref.setVisible(tvFlag);
         audioOutputLatencyPref.setVisible(tvFlag);
+        digitalAudioFormat.setVisible(tvFlag);
     }
 
     @Override
@@ -155,19 +153,19 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
             mCecAutoChangeLanguagePref.setEnabled(false);
             mArcSwitchPref.setEnabled(false);
             return true;
-        case KEY_CEC_ONEKEY_PLAY:
+        case KEY_CEC_ONE_KEY_PLAY:
             mHdmiCecManager.enableOneTouchPlay(mCecOnekeyPlayPref.isChecked());
             return true;
-        case KEY_CEC_DEVICE_AUTO_POWEROFF:
+        case KEY_CEC_AUTO_POWER_OFF:
             mHdmiCecManager.enableAutoPowerOff(mCecDeviceAutoPoweroffPref.isChecked());
             return true;
-        case KEY_CEC_AUTO_WAKEUP:
+        case KEY_CEC_AUTO_WAKE_UP:
             mHdmiCecManager.enableAutoWakeUp(mCecAutoWakeupPref.isChecked());
             return true;
         case KEY_CEC_AUTO_CHANGE_LANGUAGE:
             mHdmiCecManager.enableAutoChangeLanguage(mCecAutoChangeLanguagePref.isChecked());
             return true;
-        case KEY_ARC_SWITCH:
+        case KEY_CEC_ARC_SWITCH:
             mHdmiCecManager.enableArc(mArcSwitchPref.isChecked());
             mHandler.sendEmptyMessageDelayed(MSG_ENABLE_ARC_SWITCH, TIME_DELAYED);
             mArcSwitchPref.setEnabled(false);

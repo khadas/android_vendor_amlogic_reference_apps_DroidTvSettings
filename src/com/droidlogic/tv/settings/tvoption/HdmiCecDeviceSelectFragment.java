@@ -114,7 +114,7 @@ public class HdmiCecDeviceSelectFragment extends LeanbackPreferenceFragment impl
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
                 themedContext);
-        screen.setTitle(R.string.tv_cec_device_select_list);
+        screen.setTitle(R.string.title_cec_device_list);
         setPreferenceScreen(screen);
         int logicalAddress;
         int mDevicePowerStatus;
