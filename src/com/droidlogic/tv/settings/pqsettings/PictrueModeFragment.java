@@ -111,27 +111,6 @@ public class PictrueModeFragment extends LeanbackPreferenceFragment implements P
             backlightPref.setVisible(false);
         }
 
-        final ListPreference colortemperaturePref = (ListPreference) findPreference(PQ_COLOR_TEMPRATURE);
-        if (!hasMboxFeature) {
-            if ((isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_color_temprature)) ||
-                (!isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_color_temprature))) {
-                if (is_from_live_tv == 1) {
-                    if (curPictureMode.equals(PQSettingsManager.STATUS_MONITOR) ||
-                        curPictureMode.equals(PQSettingsManager.STATUS_GAME)) {
-                        colortemperaturePref.setVisible(false);
-                    } else {
-                        colortemperaturePref.setVisible(true);
-                        colortemperaturePref.setValueIndex(mPQSettingsManager.getColorTemperatureStatus());
-                    }
-                } else {
-                    colortemperaturePref.setVisible(false);
-                }
-            } else {
-                colortemperaturePref.setVisible(false);
-            }
-        } else {
-            colortemperaturePref.setVisible(false);
-        }
         final ListPreference dnrPref = (ListPreference) findPreference(PQ_DNR);
         if ((isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_dnr)) ||
                 (!isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_dnr))) {
@@ -145,6 +124,7 @@ public class PictrueModeFragment extends LeanbackPreferenceFragment implements P
         } else {
             dnrPref.setVisible(false);
         }
+
         final Preference pictureCustomerPref = (Preference) findPreference(PQ_CUSTOM);
         if (curPictureMode.equals(PQSettingsManager.STATUS_MONITOR) ||
             curPictureMode.equals(PQSettingsManager.STATUS_GAME)) {
@@ -178,7 +158,7 @@ public class PictrueModeFragment extends LeanbackPreferenceFragment implements P
         boolean hasMboxFeature = SettingsConstant.hasMboxFeature(getActivity());
         String curPictureMode = mPQSettingsManager.getPictureModeStatus();
         final ListPreference picturemodePref = (ListPreference) findPreference(PQ_PICTRUE_MODE);
-        Log.d(TAG, "curPictureMode: " + curPictureMode);
+        Log.d(TAG, "curPictureMode: " + curPictureMode + "isTv: " + isTv + "isLiveTv: " + is_from_live_tv);
         if (mPQSettingsManager.isHdmiSource()) {
             picturemodePref.setEntries(setHdmiPicEntries());
             picturemodePref.setEntryValues(setHdmiPicEntryValues());
@@ -207,13 +187,7 @@ public class PictrueModeFragment extends LeanbackPreferenceFragment implements P
             if ((isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_color_temprature)) ||
                 (!isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_color_temprature))) {
                 if (is_from_live_tv == 1) {
-                    if (curPictureMode.equals(PQSettingsManager.STATUS_MONITOR) ||
-                        curPictureMode.equals(PQSettingsManager.STATUS_GAME)) {
-                        colortemperaturePref.setVisible(false);
-                    } else {
-                        colortemperaturePref.setVisible(true);
-                        colortemperaturePref.setValueIndex(mPQSettingsManager.getColorTemperatureStatus());
-                    }
+                    colortemperaturePref.setValueIndex(mPQSettingsManager.getColorTemperatureStatus());
                 } else {
                     colortemperaturePref.setVisible(false);
                 }
