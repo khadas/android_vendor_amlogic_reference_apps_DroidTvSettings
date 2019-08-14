@@ -168,6 +168,9 @@ public class MainFragment extends LeanbackPreferenceFragment {
             } else {
                 channelPref.setVisible(true);
             }
+            if (!tvFlag) {
+                mSoundsPref.setVisible(false);//mbox doesn't surport sound effect
+            }
         } else {
             picturePref.setVisible(!SettingsConstant.needDroidlogicTvFeature(getContext()));
             mTvOption.setVisible(SettingsConstant.needDroidlogicTvFeature(getContext()));
