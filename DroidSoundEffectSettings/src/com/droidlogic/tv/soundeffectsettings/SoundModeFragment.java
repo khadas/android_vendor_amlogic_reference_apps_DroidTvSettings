@@ -234,35 +234,35 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
         int status = -1;
         mBand1Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band1);
         mBand1Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band1);
-        status = mAudioEffectManager.getParameters(AudioEffectManager.SET_EFFECT_BAND1);
+        status = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1);
         mBand1Seekbar.setOnSeekBarChangeListener(this);
         mBand1Seekbar.setProgress(status);
-        setShow(AudioEffectManager.SET_EFFECT_BAND1, status);
+        setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1, status);
         mBand1Seekbar.requestFocus();
         mBand2Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band2);
         mBand2Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band2);
-        status = mAudioEffectManager.getParameters(AudioEffectManager.SET_EFFECT_BAND2);
+        status = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2);
         mBand2Seekbar.setOnSeekBarChangeListener(this);
         mBand2Seekbar.setProgress(status);
-        setShow(AudioEffectManager.SET_EFFECT_BAND2, status);
+        setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2, status);
         mBand3Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band3);
         mBand3Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band3);
-        status = mAudioEffectManager.getParameters(AudioEffectManager.SET_EFFECT_BAND3);
+        status = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3);
         mBand3Seekbar.setOnSeekBarChangeListener(this);
         mBand3Seekbar.setProgress(status);
-        setShow(AudioEffectManager.SET_EFFECT_BAND3, status);
+        setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3, status);
         mBand4Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band4);
         mBand4Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band4);
-        status = mAudioEffectManager.getParameters(AudioEffectManager.SET_EFFECT_BAND4);
+        status = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4);
         mBand4Seekbar.setOnSeekBarChangeListener(this);
         mBand4Seekbar.setProgress(status);
-        setShow(AudioEffectManager.SET_EFFECT_BAND4, status);
+        setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4, status);
         mBand5Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band5);
         mBand5Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band5);
-        status = mAudioEffectManager.getParameters(AudioEffectManager.SET_EFFECT_BAND5);
+        status = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5);
         mBand5Seekbar.setOnSeekBarChangeListener(this);
         mBand5Seekbar.setProgress(status);
-        setShow(AudioEffectManager.SET_EFFECT_BAND5, status);
+        setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, status);
         isSeekBarInited = true;
     }
 
@@ -274,28 +274,28 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
         ((TvSettingsActivity)getActivity()).startShowActivityTimer();
         switch (seekBar.getId()) {
             case R.id.seekbar_tv_audio_effect_band1:{
-                setShow(AudioEffectManager.SET_EFFECT_BAND1, progress);
-                mAudioEffectManager.setParameters(AudioEffectManager.SET_EFFECT_BAND1, progress);
+                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1, progress);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band2:{
-                setShow(AudioEffectManager.SET_EFFECT_BAND2, progress);
-                mAudioEffectManager.setParameters(AudioEffectManager.SET_EFFECT_BAND2, progress);
+                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2, progress);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band3:{
-                setShow(AudioEffectManager.SET_EFFECT_BAND3, progress);
-                mAudioEffectManager.setParameters(AudioEffectManager.SET_EFFECT_BAND3, progress);
+                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3, progress);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band4:{
-                setShow(AudioEffectManager.SET_EFFECT_BAND4, progress);
-                mAudioEffectManager.setParameters(AudioEffectManager.SET_EFFECT_BAND4, progress);
+                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4, progress);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band5:{
-                setShow(AudioEffectManager.SET_EFFECT_BAND5, progress);
-                mAudioEffectManager.setParameters(AudioEffectManager.SET_EFFECT_BAND5, progress);
+                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, progress);
                 break;
             }
             default:
@@ -315,23 +315,23 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
 
     private void setShow(int id, int value) {
         switch (id) {
-            case AudioEffectManager.SET_EFFECT_BAND1:{
+            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1:{
                 mBand1Text.setText(getShowString(R.string.tv_audio_effect_band1, value));
                 break;
             }
-            case AudioEffectManager.SET_EFFECT_BAND2:{
+            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2:{
                 mBand2Text.setText(getShowString(R.string.tv_audio_effect_band2, value));
                 break;
             }
-            case AudioEffectManager.SET_EFFECT_BAND3:{
+            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3:{
                 mBand3Text.setText(getShowString(R.string.tv_audio_effect_band3, value));
                 break;
             }
-            case AudioEffectManager.SET_EFFECT_BAND4:{
+            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4:{
                 mBand4Text.setText(getShowString(R.string.tv_audio_effect_band4, value));
                 break;
             }
-            case AudioEffectManager.SET_EFFECT_BAND5:{
+            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5:{
                 mBand5Text.setText(getShowString(R.string.tv_audio_effect_band5, value));
                 break;
             }

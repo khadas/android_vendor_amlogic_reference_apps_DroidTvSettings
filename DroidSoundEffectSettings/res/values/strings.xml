@@ -50,6 +50,12 @@
     <string name="tv_sound_agc_max_level">Max Level</string>
     <string name="tv_sound_agc_attrack_time">Attrack Time</string>
     <string name="tv_sound_agc_release_time">Release Time</string>
+    <string name="title_tv_dbx">DBX</string>
+    <string name="title_tv_dbx_enable">DBX Enable</string>
+    <string name="title_tv_dbx_param_sonics">Sonics</string>
+    <string name="title_tv_dbx_param_volume">Volume</string>
+    <string name="title_tv_dbx_param_surround">Surround</string>
+    <string name="title_tv_dbx_sound_mode">Sound Mode</string>
     <string name="tv_sound_standard">standard</string>
     <string name="tv_sound_music">music</string>
     <string name="tv_sound_news">news</string>
