@@ -105,6 +105,8 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
             mTvInputManager = (TvInputManager)getActivity().getSystemService(Context.TV_INPUT_SERVICE);
         }
 
+        boolean hideStartUp = DroidUtils.VALUE_HIDE_STARTUP.equals(DroidUtils.read(getActivity(), DroidUtils.KEY_HIDE_STARTUP));
+
         final Preference pip = (Preference) findPreference(PIP);
         pip.setVisible(false);
 
@@ -132,7 +134,7 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
             avParentalControls.setSummary(AV_PARENTAL_CONTROLS_OFF);
         }
         final ListPreference startupseting = (ListPreference) findPreference(STARTUP_SETTING);
-        if (!DroidUtils.hasGtvsUiMode()) {
+        if (!DroidUtils.hasGtvsUiMode() && !hideStartUp) {
             startupseting.setValueIndex(mTvOptionSettingManager.getStartupSettingStatus());
             startupseting.setOnPreferenceChangeListener(this);
         } else {
