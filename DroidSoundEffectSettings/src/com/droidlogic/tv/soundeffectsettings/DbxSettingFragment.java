@@ -176,7 +176,7 @@ public class DbxSettingFragment extends LeanbackPreferenceFragment implements Pr
     private void createParamSettingUiDialog() {
         Context context = (Context) (getActivity());
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.xml.tv_sound_dbx_advanced_param_setting_ui, null);//tv_sound_dbx_param_setting_ui.xml
+        View view = inflater.inflate(R.xml.tv_sound_dbx_advanced_param_setting_ui, null);//tv_sound_dbx_advanced_param_setting_ui.xml
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

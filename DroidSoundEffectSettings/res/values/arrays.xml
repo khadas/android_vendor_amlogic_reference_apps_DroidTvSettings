@@ -111,4 +111,20 @@
         <item>4</item>
     </string-array>
 
+<!-- reference SoundEffectManager.AUDIO_OUTPUT_DELAY_SOURCE_ATV -->
+    <string-array name="tv_sound_audio_source_select_entries">
+        <item>ATV</item>
+        <item>DTV</item>
+        <item>AV</item>
+        <item>HDMI</item>
+        <item>MEDIA</item>
+    </string-array>
+
+    <string-array name="tv_sound_audio_source_select_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>

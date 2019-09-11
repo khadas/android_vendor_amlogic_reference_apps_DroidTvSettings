@@ -58,6 +58,10 @@
         android:entryValues="@array/tv_offon_entry_values"
         android:title="@string/tv_virtual_surround"
         android:summary="%s" />
+    <Preference
+        android:fragment="com.droidlogic.tv.soundeffectsettings.AudioSettingsFragment"
+        android:key="key_tv_sound_audio_settings"
+        android:title="@string/title_tv_sound_audio_settings" />
      <ListPreference
         android:key="tv_sound_output_device"
         android:persistent="false"

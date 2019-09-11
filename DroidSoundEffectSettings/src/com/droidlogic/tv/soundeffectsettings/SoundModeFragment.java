@@ -181,7 +181,7 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
             // non-user sound mode, set default treble and bass value
             int bassValue = AudioEffectManager.EFFECT_BASS_DEFAULT;
             int trebleValue = AudioEffectManager.EFFECT_TREBLE_DEFAULT;
-            if (selection == AudioEffectManager.MODE_CUSTOM) {
+            if (selection == AudioEffectManager.EQ_SOUND_MODE_CUSTOM) {
                 createUiDialog();
                 // when sound mode is user, set DB treble and bass value
                 bassValue = mAudioEffectManager.getBassStatus();

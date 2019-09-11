@@ -66,4 +66,11 @@
     <string name="tv_switch_on">on</string>
     <string name="tv_switch_off">off</string>
     <string name="tv_settings">Settings</string>
+    <string name="title_tv_audio_delay_and_prescale">Output Delay and Prescale</string>
+    <string name="title_tv_audio_delay_speaker">Speaker</string>
+    <string name="title_tv_audio_delay_spdif">Spdif</string>
+    <string name="title_tv_audio_prescale">Prescale</string>
+    <string name="title_tv_sound_audio_settings">Audio Settings</string>
+    <string name="title_tv_sound_audio_settings_by_source">Audio Settings by source id</string>
+
 </resources>

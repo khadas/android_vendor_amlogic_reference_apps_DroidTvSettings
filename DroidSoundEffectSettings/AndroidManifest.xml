@@ -66,6 +66,11 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="false" />
+        <activity
+            android:name=".AudioSettingsActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android:exported="false" />
     </application>
 
 </manifest>
