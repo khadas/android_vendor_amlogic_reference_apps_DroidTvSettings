@@ -454,6 +454,11 @@ public class OutputUiManager {
                                     }
                                     break;
                                 case DV_LL_RGB:
+                                    if (resolveResolutionValue(listHdmiMode.get(i))
+                                            > resolveResolutionValue("1080p60hz")) {
+                                        continue;
+                                    }
+
                                     if (isModeSupportColor(listHdmiMode.get(i), "444,12bit")
                                             || isModeSupportColor(listHdmiMode.get(i), "444,10bit")) {
                                         listHdmiMode_tmp.add(listHdmiMode.get(i));
