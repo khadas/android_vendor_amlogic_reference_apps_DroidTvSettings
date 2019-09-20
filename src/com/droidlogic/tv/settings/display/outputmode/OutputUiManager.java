@@ -435,7 +435,7 @@ public class OutputUiManager {
                         Log.e(TAG, "This TV not Support Dolby Vision in " + listHdmiMode.get(i));
                     } else {
                         if (isDolbyVisionEnable() && isTvSupportDolbyVision()) {
-                            if (listHdmiMode.get(i).contains("smpte")) {
+                            if (listHdmiMode.get(i).contains("smpte") || listHdmiMode.get(i).contains("i")) {
                                 continue;
                             }
                             int type = mDolbyVisionSettingManager.getDolbyVisionType();
