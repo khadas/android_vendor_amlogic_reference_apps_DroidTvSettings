@@ -35,6 +35,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.droidlogic.app.SystemControlManager;
+
 import com.droidlogic.tv.soundeffectsettings.R;
 import com.droidlogic.app.tv.AudioEffectManager;
 
@@ -163,17 +165,20 @@ public class AudioSettingsFragment extends LeanbackPreferenceFragment implements
             case R.id.id_seek_bar_audio_delay_speaker:{
                 setShow(R.id.id_seek_bar_audio_delay_speaker, progress);
                 mAudioEffectManager.setAudioOutputSpeakerDelay(getCurrentSource(), progress);
+                setDelayEnabled();
                 break;
             }
             case R.id.id_seek_bar_audio_delay_spdif:{
                 setShow(R.id.id_seek_bar_audio_delay_spdif, progress);
                 mAudioEffectManager.setAudioOutputSpdifDelay(getCurrentSource(), progress);
+                setDelayEnabled();
                 break;
             }
             case R.id.id_seek_bar_audio_prescale:{
                 // UI display -150 - 150
                 setShow(R.id.id_seek_bar_audio_prescale, progress-150);
                 mAudioEffectManager.setAudioPrescale(getCurrentSource(), progress-150);
+                setDelayEnabled();
                 break;
             }
             default:
@@ -212,5 +217,9 @@ public class AudioSettingsFragment extends LeanbackPreferenceFragment implements
 
     private String getShowString(int resid, int value) {
         return getActivity().getResources().getString(resid) + ": " + value + " ms";
+    }
+
+    private void setDelayEnabled () {
+        SystemControlManager.getInstance().setProperty(AudioEffectManager.PROP_AUDIO_DELAY_ENABLED, "true");
     }
 }
