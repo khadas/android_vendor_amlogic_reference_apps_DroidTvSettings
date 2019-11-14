@@ -25,6 +25,11 @@
         android:title="@string/tv_startup_setting"
         android:summary="%s" />
     <ListPreference
+        android:key="tv_vad_switch"
+        android:persistent="false"
+        android:title="@string/tv_vad_switch"
+        android:summary="%s" />
+    <ListPreference
         android:key="tv_dynamic_backlight"
         android:persistent="false"
         android:title="@string/tv_dynamic_backlight"

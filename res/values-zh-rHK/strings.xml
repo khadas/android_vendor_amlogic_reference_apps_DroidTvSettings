@@ -212,6 +212,7 @@
     <string name="tv_sound_agc_max_level">"最大電平"</string>
     <string name="tv_sound_agc_attrack_time">"攻擊時間"</string>
     <string name="tv_sound_agc_release_time">"釋放時間"</string>
+    <string name="tv_vad_switch">語音喚醒</string>
 
     <!-- multi source backup label -->
     <string name="input_dtv_kit">DTVKit</string>

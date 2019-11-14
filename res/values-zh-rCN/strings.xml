@@ -281,6 +281,7 @@
     <string name="tv_startup_setting">开机启动设置</string>
     <string name="tv_startup_lancher">桌面</string>
     <string name="tv_startup_tv">电视</string>
+    <string name="tv_vad_switch">语音唤醒</string>
     <string name="tv_multi_audio">多音效</string>
     <string name="tv_closed_captions">字幕</string>
     <string name="tv_av_parental_controls">家长控制</string>

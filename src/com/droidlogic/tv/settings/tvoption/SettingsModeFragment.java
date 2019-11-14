@@ -42,6 +42,7 @@ public class SettingsModeFragment extends LeanbackPreferenceFragment implements 
     private static final String TAG = "SettingsModeFragment";
 
     private static final String SRATUP_SETTING = "tv_startup_setting";
+    private static final String VAD_SWITCH = "tv_vad_switch";
     private static final String DYNAMIC_BACKLIGHT = "tv_dynamic_backlight";
     private static final String AUDIO_AD_SWITCH = "tv_audio_ad_switch";
     private static final String MULTI_SETTINGS = "multi_settings";
@@ -79,6 +80,11 @@ public class SettingsModeFragment extends LeanbackPreferenceFragment implements 
         } else {
             startupseting.setVisible(false);
         }
+        final ListPreference vadswitch = (ListPreference) findPreference(VAD_SWITCH);
+        vadswitch.setEntries(initswitchEntries());
+        vadswitch.setEntryValues(initSwitchEntryValue());
+        vadswitch.setValueIndex(mTvOptionSettingManager.getVadStatus());
+        vadswitch.setOnPreferenceChangeListener(this);
         final ListPreference dynamicbacklight = (ListPreference) findPreference(DYNAMIC_BACKLIGHT);
         dynamicbacklight.setEntries(initswitchEntries());
         dynamicbacklight.setEntryValues(initSwitchEntryValue());
@@ -110,6 +116,8 @@ public class SettingsModeFragment extends LeanbackPreferenceFragment implements 
         final int selection = Integer.parseInt((String)newValue);
         if (TextUtils.equals(preference.getKey(), SRATUP_SETTING)) {
             mTvOptionSettingManager.setStartupSetting(selection);
+        } else if (TextUtils.equals(preference.getKey(), VAD_SWITCH)) {
+            mTvOptionSettingManager.setVadStatus(selection);
         } else if (TextUtils.equals(preference.getKey(), DYNAMIC_BACKLIGHT)) {
             mTvOptionSettingManager.setAutoBacklightStatus(selection);
         } else if (TextUtils.equals(preference.getKey(), AUDIO_AD_SWITCH)) {

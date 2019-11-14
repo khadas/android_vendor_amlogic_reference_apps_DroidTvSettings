@@ -74,6 +74,11 @@ public class TvOptionSettingManager {
     public static final String STRING_NAME = "name";
     public static final String STRING_STATUS = "status";
     public static final String DTV_AUTOSYNC_TVTIME = "autosync_tvtime";
+    public static final String VAD_ENABLE_UBOOTENV = "ubootenv.var.ffv_wake";
+    public static final String VAD_ENABLE_PROPERTY = "persist.vendor.sys.vadwake";
+
+    public static final String STRING_VAD_ON = "on";
+    public static final String STRING_VAD_OFF = "off";
 
     public static final String TAG = "TvOptionSettingManager";
 
@@ -305,6 +310,25 @@ public class TvOptionSettingManager {
         result = mTvControlManager.GetCurrentSourceInput() - TvControlManager.SourceInput.HDMI1.toInt();
         if (CanDebug()) Log.d(TAG, "GetRelativeSourceInput = " + result);
         return result;
+    }
+
+    public int getVadStatus () {
+        String mode = mSystemControlManager.getBootenv(VAD_ENABLE_UBOOTENV, STRING_VAD_OFF);
+        String property = mSystemControlManager.getPropertyString(VAD_ENABLE_PROPERTY, STRING_VAD_OFF);
+
+        if (CanDebug()) Log.d(TAG, "getVadStatus:" + mode);
+        if (!mode.equals(property))
+            mSystemControlManager.setProperty(VAD_ENABLE_PROPERTY, mode);
+        if (mode.equals(STRING_VAD_ON))
+            return 1;
+        else
+            return 0;
+    }
+
+    public void setVadStatus (int value) {
+        if (CanDebug()) Log.d(TAG, "setVadStatus = " + value);
+        mSystemControlManager.setBootenv(VAD_ENABLE_UBOOTENV, value==0?STRING_VAD_OFF:STRING_VAD_ON);
+        mSystemControlManager.setProperty(VAD_ENABLE_PROPERTY, value==0?STRING_VAD_OFF:STRING_VAD_ON);
     }
 
     public void setDtvType (int value) {

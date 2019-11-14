@@ -20,6 +20,7 @@ import android.content.ContentResolver;
 import com.droidlogic.app.tv.TvControlDataManager;
 import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
+import com.droidlogic.tv.settings.tvoption.TvOptionSettingManager;
 
 public class SoundSetReceiver extends BroadcastReceiver {
     private static final String TAG = "SoundSetReceiver";
@@ -35,10 +36,20 @@ public class SoundSetReceiver extends BroadcastReceiver {
             SystemControlManager mSystenControlManager = SystemControlManager.getInstance();
             final boolean istv = mSystenControlManager.getPropertyBoolean("ro.vendor.platform.has.tvuimode", false);
             if (istv) {
+                syncVadStatus();
                 checkTvControlDataProvider(context);
             }
             //set sound effect in com.droidlogic.tv.soundeffectsettings
         }
+    }
+
+    private void syncVadStatus() {
+        SystemControlManager scm = SystemControlManager.getInstance();
+        String mode = scm.getBootenv(TvOptionSettingManager.VAD_ENABLE_UBOOTENV, TvOptionSettingManager.STRING_VAD_OFF);
+        String property = scm.getPropertyString(TvOptionSettingManager.VAD_ENABLE_PROPERTY, TvOptionSettingManager.STRING_VAD_OFF);
+
+        if (!mode.equals(property))
+            scm.setProperty(TvOptionSettingManager.VAD_ENABLE_PROPERTY, mode);
     }
 
     private void checkTvControlDataProvider(final Context context) {
