@@ -272,7 +272,10 @@ public class TvOptionSettingManager {
         TvControlManager.HdmiPortID[] allport = {TvControlManager.HdmiPortID.HDMI_PORT_1, TvControlManager.HdmiPortID.HDMI_PORT_2,
             TvControlManager.HdmiPortID.HDMI_PORT_3, TvControlManager.HdmiPortID.HDMI_PORT_4};
         for (int i = 0; i < allport.length; i++) {
-            if (mTvControlManager.GetHdmiEdidVersion(allport[i]) == TvControlManager.HdmiEdidVer.HDMI_EDID_VER_20.toInt()) {
+            int version = mTvControlManager.GetHdmiEdidVersion(allport[i]);
+            if (version == TvControlManager.HdmiEdidVer.HDMI_EDID_VER_AUTO.toInt()) {
+                fourhdmistatus[i] = 2;
+            } else if (version == TvControlManager.HdmiEdidVer.HDMI_EDID_VER_20.toInt()) {
                 fourhdmistatus[i] = 1;
             } else {
                 fourhdmistatus[i] = 0;
@@ -526,7 +529,12 @@ public class TvOptionSettingManager {
             Log.d(TAG, "setHdmi20Mode device id erro");
             return;
         }
-        if (mode == 1) {
+        if (mode == 2) {
+            mTvControlManager.SaveHdmiEdidVersion(allport[order],
+                TvControlManager.HdmiEdidVer.HDMI_EDID_VER_AUTO);
+            mTvControlManager.SetHdmiEdidVersion(allport[order],
+                TvControlManager.HdmiEdidVer.HDMI_EDID_VER_AUTO);
+        } else if (mode == 1) {
             // set HDMI mode sequence: save than set
             mTvControlManager.SaveHdmiEdidVersion(allport[order],
                 TvControlManager.HdmiEdidVer.HDMI_EDID_VER_20);
