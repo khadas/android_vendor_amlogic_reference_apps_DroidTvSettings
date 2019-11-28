@@ -233,6 +233,7 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
             mDeepColorPref.setVisible(true);
             mDeepColorPref.setSummary(mOutputUiManager.getCurrentColorSpaceTitle());
             mColorDepthPref.setVisible(true);
+            mHdrPolicyPref.setVisible(true);
             mColorDepthPref.setSummary(
                 mOutputUiManager.getCurrentColorDepthAttr().contains("8bit") ? "off":"on");
 
@@ -240,6 +241,7 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
             mBestResolutionPref.setVisible(false);
             mDeepColorPref.setVisible(false);
             mColorDepthPref.setVisible(false);
+            mHdrPolicyPref.setVisible(false);
         }
         boolean dvFlag = mOutputUiManager.isDolbyVisionEnable()
             && mOutputUiManager.isTvSupportDolbyVision();
@@ -265,11 +267,9 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
                 mDolbyVisionPref.setVisible(false);
                 mGraphicsPriorityPref.setVisible(false);
             }
-            mHdrPolicyPref.setVisible(true);
         } else {
             mDolbyVisionPref.setVisible(false);
             mGraphicsPriorityPref.setVisible(false);
-            mHdrPolicyPref.setVisible(false);
         }
         if (isHdmiMode() && (SystemProperties.getBoolean("vendor.system.support.dolbyvision", false) == true)
                 && mOutputUiManager.isTvSupportDolbyVision() && SettingsConstant.needDroidlogicBestDolbyVision(getContext())) {
