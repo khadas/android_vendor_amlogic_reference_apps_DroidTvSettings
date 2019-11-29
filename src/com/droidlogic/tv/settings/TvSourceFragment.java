@@ -47,7 +47,7 @@ import com.droidlogic.app.tv.TvControlManager;
 import com.droidlogic.app.tv.DroidLogicTvUtils;
 import com.droidlogic.app.tv.TvScanConfig;
 import com.droidlogic.app.tv.ChannelInfo;
-import com.droidlogic.app.tv.DroidLogicHdmiCecManager;
+
 import android.hardware.hdmi.HdmiControlManager;
 import android.hardware.hdmi.HdmiTvClient;
 import android.media.tv.TvInputHardwareInfo;
@@ -233,10 +233,6 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
                            label = ChannelInfo.LABEL_AV2;
                            break;
                        }
-                       Log.d(TAG, "Change to Non-Hdmi channel " +
-                           "and CEC selectHdmiDevice to inner source: " + label);
-                       DroidLogicHdmiCecManager hdmi_cec = DroidLogicHdmiCecManager.getInstance((Activity)mContext);
-                       hdmi_cec.selectHdmiDevice(0, 0, 0);
                    }
                    break;
                }
