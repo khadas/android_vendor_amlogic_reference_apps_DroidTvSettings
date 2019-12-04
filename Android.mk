@@ -23,11 +23,11 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_PROGUARD_FLAG_FILES := proguard.cfg
 LOCAL_USE_AAPT2 := true
 
-ifeq ($(shell test $(PLATFORM_SDK_VERSION) -ge 26 && echo OK),OK)
-LOCAL_PROPRIETARY_MODULE := true
-else
+#ifeq ($(shell test $(PLATFORM_SDK_VERSION) -ge 26 && echo OK),OK)
+#LOCAL_PROPRIETARY_MODULE := true
+#else
 LOCAL_PRIVILEGED_MODULE := true
-endif
+#endif
 
 LOCAL_JAVA_LIBRARIES := droidlogic droidlogic-tv
 #include frameworks/base/packages/SettingsLib/common.mk
@@ -39,7 +39,8 @@ LOCAL_STATIC_ANDROID_LIBRARIES := \
     android-support-v14-preference \
     android-support-v17-preference-leanback \
     android-support-v17-leanback \
-    android-arch-lifecycle-extensions
+    android-arch-lifecycle-extensions \
+    SettingsLib
 
 LOCAL_STATIC_JAVA_LIBRARIES := \
     android-arch-lifecycle-common-java8
@@ -64,7 +65,8 @@ ifeq ($(FILES), $(wildcard $(FILE)))
 LOCAL_FULL_LIBS_MANIFEST_FILES := $(FILES)
 LOCAL_JACK_COVERAGE_INCLUDE_FILTER := com.droidlogic.tv.settings*
 endif
-
+LOCAL_PRIVATE_PLATFORM_APIS := true
+LOCAL_PRODUCT_MODULE := true
 include $(BUILD_PACKAGE)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))

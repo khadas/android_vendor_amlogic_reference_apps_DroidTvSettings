@@ -80,6 +80,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
     private static final String KEY_TV_SETTINGS = "tv_settings";
     private static final String KEY_HDMI_CEC_CONTROL = "hdmicec";
     private static final String DTVKIT_PACKAGE = "org.dtvkit.inputsource";
+    private static final String KEY_WIFI_HOTSPOT = "wifi_hotspot";
     private boolean mTvUiMode;
 
     private Preference mUpgradeBluetoothRemote;
@@ -123,6 +124,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
         final Preference powerKeyPref = findPreference(KEY_POWERKEY);
         final Preference powerKeyOnModePref = findPreference(KEY_POWERONMODE);
         final Preference keyStone = findPreference(KEY_KEYSTONE);
+        final Preference wifiHotspot = findPreference(KEY_WIFI_HOTSPOT);
         //BluetoothRemote/HDMI cec/Playback Settings display only in Mbox
         mUpgradeBluetoothRemote = findPreference(KEY_UPGRADE_BLUTOOTH_REMOTE);
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);

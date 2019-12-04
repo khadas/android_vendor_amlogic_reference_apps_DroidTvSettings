@@ -417,4 +417,28 @@
     <string name="tv_fbc_upgrade_detail">Please make sure to upgrade now.</string>
     <string name="hdmi_audio_latency">HDMI Audio Latency</string>
     <string name="arc_hdmi_audio_latency">HDMI ARC Audio Latency</string>
+    <string name="tether_settings_title_wifi" translatable="false">Portable hotspot</string>
+    <string name="hotspot_settings_enable" translatable="false">Portable HotSpot Enabled</string>
+    <string name="open_hotspot_warning_title" translatable="false">Open HotSpot?</string>
+    <string name="open_hotspot_warning__message" translatable="false">These settings are intended for open system wifi hotspot</string>
+    <string name="wifi_hotspot_ap_band_title">AP Band</string>
+    <string name="wifi_hotspot_auto_off_summary">Wi\u2011Fi hotspot will turn off if no devices are connected</string>
+    <string name="wifi_hotspot_auto_off_title">Turn off hotspot automatically</string>
+    <string name="wifi_hotspot_password_title">Hotspot password</string>
+    <string name="summary_placeholder" translatable="false">&#160;</string>
+    <string name="wifi_hotspot_checkbox_text">Wi\u2011Fi hotspot</string>
+    <string name="wifi_security_psk_generic">@string/wifi_security_wpa_wpa2</string>
+    <string name="wifi_security_wpa_wpa2">WPA/WPA2 PSK</string>
+    <string name="wifi_security_wep">WEP</string>
+    <string name="wifi_security_eap">802.1x EAP</string>
+    <string name="wifi_security_none">None</string>
+    <string name="wifi_hotspot_name_title">Hotspot name</string>
+    <string name="wifi_security_wpa2">WPA2 PSK</string>
+    <string name="wifi_security">Security</string>
+    <string name="wifi_ap_choose_2G">2.4 GHz Band</string>
+    <string name="wifi_ap_prefer_5G">5.0 GHz Band preferred</string>
+    <string name="wifi_hotspot_no_password_subtext">No password set</string>
+    <string name="wifi_ap_choose_auto">Auto</string>
+    <string name="wifi_ap_choose_5G">5.0 GHz Band</string>
+    <string translatable="false" name="config_mobile_hotspot_provision_response"></string>
 </resources>
