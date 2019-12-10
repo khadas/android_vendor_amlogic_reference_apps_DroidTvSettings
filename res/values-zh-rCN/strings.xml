@@ -278,10 +278,10 @@
     <string name="tv_pip">画中画</string>
     <string name="tv_menu_time">菜单显示时间</string>
     <string name="tv_sleep_timer">睡眠定时器</string>
-    <string name="tv_startup_setting">开机启动设置</string>
-    <string name="tv_startup_lancher">桌面</string>
     <string name="tv_startup_tv">电视</string>
     <string name="tv_vad_switch">语音唤醒</string>
+    <string name="tv_startup_setting">保持在电视通道</string>
+    <string name="tv_startup_setting_description">当你开机或者重启电视的时候，电视保持在之前的TV通道</string>
     <string name="tv_multi_audio">多音效</string>
     <string name="tv_closed_captions">字幕</string>
     <string name="tv_av_parental_controls">家长控制</string>

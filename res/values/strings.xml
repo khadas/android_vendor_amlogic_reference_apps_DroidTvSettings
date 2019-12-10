@@ -376,7 +376,8 @@
     <string name="tv_switch_on">on</string>
     <string name="tv_switch_off">off</string>
     <string name="tv_settings">Settings</string>
-    <string name="tv_startup_setting">Startup Setting</string>
+    <string name="tv_startup_setting">Stay on the previous source</string>
+    <string name="tv_startup_setting_description">Stay on the previous input source after you turn on/reboot your TV</string>
     <string name="tv_switch_channel">Switch Channel</string>
     <string name="tv_channel_edit">Channel Edit</string>
     <string name="tv">TV</string>
@@ -397,10 +398,8 @@
     <string name="tv_daylight_saving_time">Daylight Saving Time</string>
     <string name="tv_fbc_upgrade">FBC Upgrade</string>
     <string name="tv_hdmi_switch">HDMI 2.0</string>
-    <string name="tv_startup_lancher">launcher</string>
     <string name="tv_vad_switch">Voice Wake Up</string>
     <string name="tv_factory_menu">Factory Menu</string>
-    <string name="tv_startup_tv">TV</string>
     <string name="tv_settins_on">on</string>
     <string name="tv_settins_off">off</string>
     <string name="tv_settins_auto">auto</string>

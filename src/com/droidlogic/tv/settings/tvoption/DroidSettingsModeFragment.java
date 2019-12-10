@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.TwoStatePreference;
 import android.support.v7.preference.PreferenceCategory;
 import android.os.SystemProperties;
 import android.util.Log;
@@ -79,6 +80,8 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
     private TvOptionSettingManager mTvOptionSettingManager;
     private TvControlManager mTvControlManager;
     private TvInputManager mTvInputManager;
+
+    private TwoStatePreference startupSetting;
 
     public static DroidSettingsModeFragment newInstance() {
         return new DroidSettingsModeFragment();
@@ -144,12 +147,11 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
         } else {
             avParentalControls.setSummary(AV_PARENTAL_CONTROLS_OFF);
         }
-        final ListPreference startupseting = (ListPreference) findPreference(STARTUP_SETTING);
-        if (!DroidUtils.hasGtvsUiMode() && !hideStartUp) {
-            startupseting.setValueIndex(mTvOptionSettingManager.getStartupSettingStatus());
-            startupseting.setOnPreferenceChangeListener(this);
+        startupSetting = (TwoStatePreference) findPreference(STARTUP_SETTING);
+        if (!hideStartUp) {
+            startupSetting.setChecked(isStartupTvSourceEnabled());
         } else {
-            startupseting.setVisible(false);
+            startupSetting.setVisible(false);
         }
         final ListPreference menutime = (ListPreference) findPreference(MENU_TIME);
         menutime.setValueIndex(mTvOptionSettingManager.getMenuTimeStatus());
@@ -200,6 +202,10 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
             startUiInLiveTv(CLOSED_CAPTIONS);
         } else if (TextUtils.equals(preference.getKey(), PIP)) {
             startUiInLiveTv(PIP);
+        } else if(TextUtils.equals(preference.getKey(), STARTUP_SETTING)) {
+            boolean enable = !isStartupTvSourceEnabled();
+            enableStartupTvSource(enable);
+            startupSetting.setChecked(enable);
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -222,9 +228,7 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (CanDebug()) Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
         final int selection = Integer.parseInt((String)newValue);
-        if (TextUtils.equals(preference.getKey(), STARTUP_SETTING)) {
-            mTvOptionSettingManager.setStartupSetting(selection);
-        } else if (TextUtils.equals(preference.getKey(), DYNAMIC_BACKLIGHT)) {
+        if (TextUtils.equals(preference.getKey(), DYNAMIC_BACKLIGHT)) {
             mTvOptionSettingManager.setAutoBacklightStatus(selection);
         } else if (TextUtils.equals(preference.getKey(), MENU_TIME)) {
             mTvOptionSettingManager.setMenuTime(selection);
@@ -291,6 +295,19 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
             });
         uiDialog.create().show();
     }
+
+    private boolean isStartupTvSourceEnabled () {
+        return mTvOptionSettingManager.getStartupSettingStatus() == 1;
+    }
+
+    private void enableStartupTvSource (boolean enable) {
+        if (enable) {
+            mTvOptionSettingManager.setStartupSetting(1);
+        } else {
+            mTvOptionSettingManager.setStartupSetting(0);
+        }
+    }
+
 
     /*private void createUiDialog (int type) {
         Context context = (Context) (getActivity());

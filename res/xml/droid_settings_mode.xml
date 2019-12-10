@@ -35,13 +35,11 @@
         android:entryValues="@array/tv_menu_time_entry_values"
         android:title="@string/tv_menu_time"
         android:summary="%s" />
-    <ListPreference
+    <SwitchPreference
         android:key="tv_startup_setting"
         android:persistent="false"
-        android:entries="@array/tv_startup_entries"
-        android:entryValues="@array/tv_startup_entry_values"
         android:title="@string/tv_startup_setting"
-        android:summary="%s" />
+        android:summary="@string/tv_startup_setting_description" />/>
     <Preference
         android:key="tv_closed_captions"
         android:persistent="false"
