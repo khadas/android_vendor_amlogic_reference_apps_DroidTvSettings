@@ -50,7 +50,8 @@
 
     <string name="device_rotation_land">"横屏拉伸"</string>
     <string name="device_sound_digital">"数字音频"</string>
-    <string name="device_sound_digital_auto">"自动检测"</string>
+    <string name="device_sound_digital_auto_description">根据音频数据的类型，自动选择PCM或RAW输出；否则，强制使用PCM格式输出音频流</string>
+    <string name="device_sound_digital_auto">自动切换数字音频格式</string>
     <string name="device_sound_digital_auto_off">"关闭"</string>
     <string name="device_sound_dts">"DTS 音效"</string>
     <string name="device_sound_dts_downmix">"DTS Downmix"</string>
@@ -81,6 +82,12 @@
     <string name="title_cec_auto_power_off">"单键关机"</string>
     <string name="title_cec_auto_change_language">"语言切换"</string>
     <string name="title_cec_arc_switch">"ARC 开关"</string>
+    <string name="cec_switch_description">允许电视控制HDMI设备 </string>
+    <string name="cec_auto_power_off_description">允许电视跟随HDMI设备一起关机 </string>
+    <string name="cec_auto_wake_up_description">允许HDMI设备跟随电视一起唤醒</string>
+    <string name="cec_device_list_description">列出正在连接的HDMI设备</string>
+    <string name="cec_auto_change_language_description">允许HDMI设备自动切换和电视相同的系统语言</string>
+    <string name="cec_arc_switch_description">允许电视控制ARC设备</string>
     <string name="playback_settings">"播放设置"</string>
 
     <!-- Hdmi self-adaption switch -->
@@ -101,6 +108,9 @@
     <string name="power_on">开机</string>
     <string name="power_on_standby">待机</string>
     <string name="power_on_last">记忆</string>
+    <string name="power_on_description">上电直接开机</string>
+    <string name="power_on_standby_description">上电进入待机</string>
+    <string name="power_on_last_description">上电时，根据上一次断电前的状态，选择进入开机或者待机</string>
 
     <!-- Title for OK [CHAR LIMIT=50] -->
     <string name="title_ok">"确定"</string>
@@ -231,6 +241,7 @@
     <string name="tv_bass_boost">低音增强</string>
     <string name="tv_sound_output_device">声音输出设备</string>
     <string name="pq_backlight">背光</string>
+    <string name="pq_backlight_description">允许电视根据环境光自动调节屏的背光亮度</string>
     <string name="tv_audio_ad_switch">声音AD开关</string>
     <string name="tv_audio_ad_mix_level">声音AD混合度</string>
     <string name="tv_restore_factory">电视恢复出厂设置</string>

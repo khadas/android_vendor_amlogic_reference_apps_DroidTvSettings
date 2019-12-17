@@ -58,6 +58,7 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
     private TwoStatePreference mCecAutoWakeupPref;
     private TwoStatePreference mCecAutoChangeLanguagePref;
     private TwoStatePreference mArcSwitchPref;
+    private TwoStatePreference mDigitalAudioFormat;
 
     private SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
     private SoundParameterSettingManager mSoundParameterSettingManager;
@@ -110,11 +111,8 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         }
         hdmiDeviceSelectPref.setOnPreferenceChangeListener(mHdmiCecFragment);
 
-        final ListPreference digitalAudioFormat = (ListPreference) findPreference(SoundFragment.KEY_DIGITALSOUND_PASSTHROUGH);
-        digitalAudioFormat.setEntries(getActivity().getResources().getStringArray(R.array.digital_sounds_tv_entries));
-        digitalAudioFormat.setEntryValues(getActivity().getResources().getStringArray(R.array.digital_sounds_tv_entry_values));
-        digitalAudioFormat.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
-        digitalAudioFormat.setOnPreferenceChangeListener(this);
+        mDigitalAudioFormat = (TwoStatePreference) findPreference(SoundFragment.KEY_DIGITALSOUND_TV);
+        mDigitalAudioFormat.setChecked(mSoundParameterSettingManager.isDigitalAudioFormat());
 
         final SeekBarPreference audioOutputLatencyPref = (SeekBarPreference) findPreference(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY);
         audioOutputLatencyPref.setOnPreferenceChangeListener(this);
@@ -129,7 +127,7 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         mArcSwitchPref.setVisible(tvFlag);
         hdmiDeviceSelectPref.setVisible(tvFlag);
         audioOutputLatencyPref.setVisible(tvFlag);
-        digitalAudioFormat.setVisible(tvFlag);
+        mDigitalAudioFormat.setVisible(tvFlag);
     }
 
     @Override
@@ -170,6 +168,11 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
             mHandler.sendEmptyMessageDelayed(MSG_ENABLE_ARC_SWITCH, TIME_DELAYED);
             mArcSwitchPref.setEnabled(false);
             return true;
+        case SoundFragment.KEY_DIGITALSOUND_TV:
+            boolean enable = !mSoundParameterSettingManager.isDigitalAudioFormat();
+            mDigitalAudioFormat.setChecked(enable);
+            mSoundParameterSettingManager.enableDigitalAudioFormat(enable);
+            return true;
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -177,7 +180,7 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
-        if (TextUtils.equals(preference.getKey(), SoundFragment.KEY_DIGITALSOUND_PASSTHROUGH)) {
+        if (TextUtils.equals(preference.getKey(), SoundFragment.KEY_DIGITALSOUND_TV)) {
             mSoundParameterSettingManager.setDigitalAudioFormat((String)newValue);
         } else if (TextUtils.equals(preference.getKey(), SoundFragment.KEY_AUDIO_OUTPUT_LATENCY)) {
             mSoundParameterSettingManager.setAudioOutputLatency((int)newValue);

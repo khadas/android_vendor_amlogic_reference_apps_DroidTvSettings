@@ -136,6 +136,26 @@ public class SoundParameterSettingManager {
         }
     }
 
+    public boolean isDigitalAudioFormat() {
+        final int value = Settings.Global.getInt(mContext.getContentResolver(),
+                OutputModeManager.DIGITAL_AUDIO_FORMAT, OutputModeManager.DIGITAL_AUTO);
+        if (CanDebug()) Log.d(TAG, "getDigitalAudioFormat value = " + value);
+
+        if (value == OutputModeManager.DIGITAL_AUTO) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void enableDigitalAudioFormat(boolean enable) {
+        if (enable) {
+            mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUTO);
+        } else {
+            mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_PCM);
+        }
+    }
+
     public void setAudioManualFormats(int id, boolean enabled) {
         HashSet<Integer> fmts = new HashSet<>();
         String enable = getAudioManualFormats();

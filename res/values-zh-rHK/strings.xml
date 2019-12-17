@@ -49,8 +49,8 @@
 
     <string name="device_rotation_land">"橫屏拉伸"</string>
     <string name="device_sound_digital">"數字音頻"</string>
-    <string name="device_sound_digital_auto">"自動檢測"</string>
-    <string name="device_sound_digital_auto_off">"關閉"</string>
+    <string name="device_sound_digital_auto_description">根據音頻數據的類型，自動選擇PCM或RAW輸出；否則，強制使用PCM格式輸出音頻流</string>
+    <string name="device_sound_digital_auto">自動切換數字音頻格式</string>
     <string name="device_sound_dts">"DTS 音效"</string>
     <string name="device_sound_dts_downmix">"DTS Downmix"</string>
     <string name="device_sound_dts_downmix_o">"Lo/Ro"</string>
@@ -80,6 +80,12 @@
     <string name="title_cec_auto_power_off">"單鍵開關"</string>
     <string name="title_cec_auto_change_language">"語言切換"</string>
     <string name="title_cec_arc_switch">"ARC 開關"</string>
+    <string name="cec_switch_description">允許電視控制HDMI設備 </string>
+    <string name="cec_auto_power_off_description">允許電視跟隨HDMI設備一起關機 </string>
+    <string name="cec_auto_wake_up_description">允許HDMI設備跟隨電視一起喚醒</string>
+    <string name="cec_device_list_description">列出正在連接的HDMI設備</string>
+    <string name="cec_auto_change_language_description">允許HDMI設備自動切換和電視相同的系統語言</string>
+    <string name="cec_arc_switch_description">允許電視控制ARC設備</string>
     <string name="playback_settings">"播放設置"</string>
 
     <!-- Hdmi self-adaption switch -->
@@ -90,6 +96,14 @@
     <string name="power_key_definition">"電源鍵定義"</string>
     <string name="power_key_shutdown">"關機"</string>
     <string name="power_key_suspend">"休眠"</string>
+
+    <string name="power_on_mode">上電模式</string>
+    <string name="power_on">開機</string>
+    <string name="power_on_standby">待機</string>
+    <string name="power_on_last">記憶</string>
+    <string name="power_on_description">上電直接開機</string>
+    <string name="power_on_standby_description">上電進入待機</string>
+    <string name="power_on_last_description">上電時，根據上一次斷電前的狀態，選擇進入開機或者待機</string>
 
     <!-- Title for OK [CHAR LIMIT=50] -->
     <string name="title_ok">"確定"</string>

@@ -94,6 +94,7 @@ public class PowerOnModeFragment extends LeanbackPreferenceFragment {
             radioPreference.setTitle(powerOnModeInfo.getTitle());
             radioPreference.setRadioGroup(POWERONMODE_RADIO_GROUP);
             radioPreference.setLayoutResource(R.layout.preference_reversed_widget);
+            radioPreference.setSummary(powerOnModeInfo.getDescription());
             if (powerOnModeInfo.isChecked()) {
                 currentPowerOnMode = powerOnModeTag;
                 radioPreference.setChecked(true);
@@ -113,11 +114,14 @@ public class PowerOnModeFragment extends LeanbackPreferenceFragment {
         ArrayList<Action> actions = new ArrayList<Action>();
         int mode = getPowerOnMode();
         actions.add(new Action.Builder().key(STRING_POWER_ON).title(getString(R.string.power_on))
-                .checked(mode == POWER_ON).build());
+                .checked(mode == POWER_ON)
+                .description(getString(R.string.power_on_description)).build());
         actions.add(new Action.Builder().key(STRING_POWER_STANDBY).title(getString(R.string.power_on_standby))
-                .checked(mode == POWER_STANDBY).build());
+                .checked(mode == POWER_STANDBY)
+                .description(getString(R.string.power_on_standby_description)).build());
         actions.add(new Action.Builder().key(STRING_POWER_LAST).title(getString(R.string.power_on_last))
-                .checked(mode == POWER_LAST).build());
+                .checked(mode == POWER_LAST)
+                .description(getString(R.string.power_on_last_description)).build());
 
         return actions;
     }

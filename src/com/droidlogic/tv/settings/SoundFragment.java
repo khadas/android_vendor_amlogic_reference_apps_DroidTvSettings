@@ -53,7 +53,8 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
     private static final String KEY_AUDIO_MIXING                            = "audio_mixing";
     private static final String KEY_DIGITALSOUND_CATEGORY                   = "surround_sound_category";
     private static final String KEY_DIGITALSOUND_PREFIX                     = "digital_subformat_";
-    public static final String KEY_DIGITALSOUND_PASSTHROUGH                 = "digital_sound";
+    public static final String KEY_DIGITALSOUND_TV                 = "digital_sound_tv";
+    public static final String KEY_DIGITALSOUND_OTT                 = "digital_sound_ott";
     private static final String KEY_DTSDRCMODE_PASSTHROUGH                  = "dtsdrc_mode";
     private static final String KEY_DTSDRCCUSTOMMODE_PASSTHROUGH            = "dtsdrc_custom_mode";
     private static final String KEY_AD_SURPORT                              = "ad_surport";
@@ -111,7 +112,6 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
 
         final ListPreference drcmodePref = (ListPreference) findPreference(KEY_DRCMODE_PASSTHROUGH);
         final TwoStatePreference mixingPref = (TwoStatePreference) findPreference(KEY_AUDIO_MIXING);
-        final ListPreference digitalsoundPref = (ListPreference) findPreference(KEY_DIGITALSOUND_PASSTHROUGH);
         final ListPreference dtsdrccustommodePref = (ListPreference) findPreference(KEY_DTSDRCCUSTOMMODE_PASSTHROUGH);
         final ListPreference dtsdrcmodePref = (ListPreference) findPreference(KEY_DTSDRCMODE_PASSTHROUGH);
         final TwoStatePreference adsurport = (TwoStatePreference) findPreference(KEY_AD_SURPORT);
@@ -159,22 +159,20 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
             dtsdrccustommodePref.setVisible(false);
         }
 
+        final ListPreference digitalSoundOttPref = (ListPreference) findPreference(KEY_DIGITALSOUND_OTT);
+        final TwoStatePreference digitalSoundtvPref = (TwoStatePreference) findPreference(SoundFragment.KEY_DIGITALSOUND_TV);
         if (tvFlag) {
-            digitalsoundPref.setEntries(
-                    getArrayString(R.array.digital_sounds_tv_entries));
-            digitalsoundPref.setEntryValues(
-                    getArrayString(R.array.digital_sounds_tv_entry_values));
-            digitalsoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
-            digitalsoundPref.setOnPreferenceChangeListener(this);
-            //adsurport.setVisible(true);
+            digitalSoundtvPref.setChecked(mSoundParameterSettingManager.isDigitalAudioFormat());
+            digitalSoundOttPref.setVisible(false);
         } else {
-            digitalsoundPref.setEntries(
+            digitalSoundOttPref.setEntries(
                     getArrayString(R.array.digital_sounds_box_entries));
-            digitalsoundPref.setEntryValues(getArrayString(
+            digitalSoundOttPref.setEntryValues(getArrayString(
                     R.array.digital_sounds_box_entry_values));
-            digitalsoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
-            digitalsoundPref.setOnPreferenceChangeListener(this);
+            digitalSoundOttPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
+            digitalSoundOttPref.setOnPreferenceChangeListener(this);
             //adsurport.setVisible(false);
+            digitalSoundtvPref.setVisible(false);
         }
 
         mCategoryPref = (PreferenceCategory) findPreference(KEY_DIGITALSOUND_CATEGORY);
@@ -283,6 +281,11 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         } else if (KEY_AD_SURPORT.equals(key)) {
             final TwoStatePreference adsurport = (TwoStatePreference) findPreference(KEY_AD_SURPORT);
             mSoundParameterSettingManager.setAdSurportStatus(adsurport.isChecked());
+        } else if (KEY_DIGITALSOUND_TV.equals(key)) {
+            boolean enable = !mSoundParameterSettingManager.isDigitalAudioFormat();
+            TwoStatePreference digitalSoundtvPref = (TwoStatePreference) preference;
+            digitalSoundtvPref.setChecked(enable);
+            mSoundParameterSettingManager.enableDigitalAudioFormat(enable);
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -310,7 +313,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
             default:
                 throw new IllegalArgumentException("Unknown drc mode pref value");
             }
-        } else if (TextUtils.equals(preference.getKey(), KEY_DIGITALSOUND_PASSTHROUGH)) {
+        } else if (TextUtils.equals(preference.getKey(), KEY_DIGITALSOUND_OTT)) {
             final String selection = (String)newValue;
             mSoundParameterSettingManager.setDigitalAudioFormat(selection);
             updateFormatPreferencesStates();

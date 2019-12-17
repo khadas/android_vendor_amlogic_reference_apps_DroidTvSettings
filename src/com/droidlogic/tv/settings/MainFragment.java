@@ -165,6 +165,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
             mTvOption.setVisible(false);
             moreSettingsPref.setVisible(false);
             keyStone.setVisible(false);
+            wifiHotspot.setVisible(false);
             boolean isPassthrough = isPassthroughInput(inputId);
             if (isPassthrough) {
                 channelPref.setVisible(false);

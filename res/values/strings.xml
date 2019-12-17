@@ -55,10 +55,13 @@
     <string name="power_key_shutdown">shutdown</string>
     <string name="power_key_suspend">suspend and resume</string>
 
-    <string name="power_on_mode">Poweron Mode</string>
+    <string name="power_on_mode">Power On Mode</string>
     <string name="power_on">On</string>
     <string name="power_on_standby">Standby</string>
     <string name="power_on_last">Last</string>
+    <string name="power_on_description">Bootup TV directly when TV is power on</string>
+    <string name="power_on_standby_description">Enter standby mode when TV is power on</string>
+    <string name="power_on_last_description">When TV power on, check the last power state of TV before powered off, then choose bootup TV or enter stabdby mode</string>
 
     <!-- Title for OK [CHAR LIMIT=50] -->
     <string name="title_ok">OK</string>
@@ -112,8 +115,9 @@
     <string name="audio_output_latency">Audio Output Latency</string>
 
     <!-- Title for preference which controls surround sound passthrough function [CHAR LIMIT=50] -->
-    <string name="device_sound_digital">Digital Audio Format</string>
-    <string name="device_sound_digital_auto">Auto detection</string>
+    <string name="device_sound_digital">Digital audio format</string>
+    <string name="device_sound_digital_auto">Auto change digital audio format</string>
+    <string name="device_sound_digital_auto_description">Choose PCM or RAW output automatic by different audio stream type; Otherwise, force using PCM type to output audio stream data</string>
     <string name="device_sound_digital_auto_off">OFF</string>
     <string name="device_sound_digital_pcm">PCM</string>
     <string name="device_sound_digital_hdmi">HDMI</string>
@@ -159,13 +163,19 @@
     <string name="sync_active">Sync active</string>
     <string name="system_cec">HDMI CEC</string>
     <string name="cec_control">CEC Control</string>
-    <string name="title_cec_switch">CEC Switch</string>
+    <string name="title_cec_switch">CEC switch</string>
     <string name="title_cec_one_key_play">One key play</string>
     <string name="title_cec_auto_power_off">Device auto power off</string>
-    <string name="title_cec_auto_wake_up">Tv auto power on</string>
+    <string name="title_cec_auto_wake_up">TV auto power on</string>
     <string name="title_cec_auto_change_language">Auto change language</string>
     <string name="title_cec_device_list">Device Select List</string>
-    <string name="title_cec_arc_switch">ARC Switch</string>
+    <string name="title_cec_arc_switch">ARC switch</string>
+    <string name="cec_switch_description">Allow the TV control HDMI devices </string>
+    <string name="cec_auto_power_off_description">Power off  HDMI devices when TV is power off  </string>
+    <string name="cec_auto_wake_up_description">power on TV when HDMI device was waked up</string>
+    <string name="cec_device_list_description">List the connecting HDMI devices</string>
+    <string name="cec_auto_change_language_description">Change HDMI devices\' language to the same with TV</string>
+    <string name="cec_arc_switch_description">Allow the TV control ARC device</string>
     <string name="power_action_suspend">suspend</string>
     <string name="power_action_restart">restart</string>
     <string name="power_action_shutdown">shutdown</string>
@@ -287,6 +297,7 @@
     <string name="pq_color">color</string>
     <string name="pq_sharpness">Sharpness</string>
     <string name="pq_backlight">Backlight</string>
+    <string name="pq_backlight_description">Allow TV adjust panel\'s backlight automatic by the environment lighting</string>
     <string name="pq_tone">Tone</string>
     <string name="pq_hue">Hue</string>
     <string name="ntsc">NTSC</string>

@@ -21,7 +21,8 @@
     <SwitchPreference
         android:key="key_cec_switch"
         android:persistent="false"
-        android:title="@string/title_cec_switch" />
+        android:title="@string/title_cec_switch"
+        android:summary="@string/cec_switch_description"/>
     <SwitchPreference
         android:key="key_cec_one_key_play"
         android:persistent="false"
@@ -29,28 +30,33 @@
     <SwitchPreference
         android:key="key_cec_auto_power_off"
         android:persistent="false"
-        android:title="@string/title_cec_auto_power_off" />
+        android:title="@string/title_cec_auto_power_off"
+        android:summary="@string/cec_auto_power_off_description"/>
     <SwitchPreference
         android:key="key_cec_auto_wake_up"
         android:persistent="false"
-        android:title="@string/title_cec_auto_wake_up" />
+        android:title="@string/title_cec_auto_wake_up"
+        android:summary="@string/cec_auto_wake_up_description"/>
     <SwitchPreference
         android:key="key_cec_auto_change_language"
         android:persistent="false"
-        android:title="@string/title_cec_auto_change_language" />
+        android:title="@string/title_cec_auto_change_language"
+        android:summary="@string/cec_auto_change_language_description"/>
     <SwitchPreference
         android:key="key_cec_arc_switch"
         android:persistent="false"
-        android:title="@string/title_cec_arc_switch" />
+        android:title="@string/title_cec_arc_switch"
+        android:summary="@string/cec_arc_switch_description"/>
     <Preference
         android:fragment="com.droidlogic.tv.settings.tvoption.HdmiCecDeviceSelectFragment"
         android:key="key_cec_device_list"
-        android:title="@string/title_cec_device_list" />
-    <ListPreference
-        android:key="digital_sound"
+        android:title="@string/title_cec_device_list"
+        android:summary="@string/cec_device_list_description"/>
+    <SwitchPreference
+        android:key="digital_sound_tv"
         android:persistent="false"
-        android:title="@string/device_sound_digital"
-        android:summary="%s" />
+        android:title="@string/device_sound_digital_auto"
+        android:summary="@string/device_sound_digital_auto_description"/>
     <SeekBarPreference
         android:key="key_audio_output_latency"
         android:persistent="false"

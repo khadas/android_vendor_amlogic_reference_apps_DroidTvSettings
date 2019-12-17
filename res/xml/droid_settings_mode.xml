@@ -48,11 +48,11 @@
         android:key="parental_controls"
         android:persistent="false"
         android:title="@string/tv_av_parental_controls" />
-    <ListPreference
+    <SwitchPreference
         android:key="tv_dynamic_backlight"
         android:persistent="false"
         android:title="@string/tv_dynamic_backlight"
-        android:summary="%s" />
+        android:summary="@string/pq_backlight_description" />
     <Preference
         android:fragment="com.droidlogic.tv.settings.tvoption.Hdmi20SwitchFragment"
         android:key="tv_hdmi_switch"

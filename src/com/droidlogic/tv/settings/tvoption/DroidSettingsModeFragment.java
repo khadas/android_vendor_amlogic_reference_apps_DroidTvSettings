@@ -82,6 +82,7 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
     private TvInputManager mTvInputManager;
 
     private TwoStatePreference startupSetting;
+    private TwoStatePreference mDynamicBacklightPreference;
 
     public static DroidSettingsModeFragment newInstance() {
         return new DroidSettingsModeFragment();
@@ -159,11 +160,9 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
         final ListPreference sleeptimer = (ListPreference) findPreference(SLEEP_TIMER);
         sleeptimer.setValueIndex(mTvOptionSettingManager.getSleepTimerStatus());
         sleeptimer.setOnPreferenceChangeListener(this);
-        final ListPreference dynamicbacklightPref = (ListPreference) findPreference(DYNAMIC_BACKLIGHT);
-        dynamicbacklightPref.setEntries(initswitchEntries());
-        dynamicbacklightPref.setEntryValues(initSwitchEntryValue());
-        dynamicbacklightPref.setValueIndex(mTvOptionSettingManager.getDynamicBacklightStatus());
-        dynamicbacklightPref.setOnPreferenceChangeListener(this);
+        mDynamicBacklightPreference = (TwoStatePreference) findPreference(DYNAMIC_BACKLIGHT);
+        mDynamicBacklightPreference.setChecked(mTvOptionSettingManager.getDynamicBacklightStatus() != 0);
+
         final Preference fbcupgrade = (Preference) findPreference(FBC_UPGRADE);
         fbcupgrade.setVisible(false);
 
@@ -202,10 +201,13 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
             startUiInLiveTv(CLOSED_CAPTIONS);
         } else if (TextUtils.equals(preference.getKey(), PIP)) {
             startUiInLiveTv(PIP);
-        } else if(TextUtils.equals(preference.getKey(), STARTUP_SETTING)) {
+        } else if (TextUtils.equals(preference.getKey(), STARTUP_SETTING)) {
             boolean enable = !isStartupTvSourceEnabled();
             enableStartupTvSource(enable);
             startupSetting.setChecked(enable);
+        } else if (TextUtils.equals(preference.getKey(), DYNAMIC_BACKLIGHT)) {
+            boolean enable = mTvOptionSettingManager.getDynamicBacklightStatus() == 0;
+            mTvOptionSettingManager.setAutoBacklightStatus(enable ? 1 : 0);
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -228,9 +230,7 @@ public class DroidSettingsModeFragment extends LeanbackPreferenceFragment implem
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (CanDebug()) Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
         final int selection = Integer.parseInt((String)newValue);
-        if (TextUtils.equals(preference.getKey(), DYNAMIC_BACKLIGHT)) {
-            mTvOptionSettingManager.setAutoBacklightStatus(selection);
-        } else if (TextUtils.equals(preference.getKey(), MENU_TIME)) {
+        if (TextUtils.equals(preference.getKey(), MENU_TIME)) {
             mTvOptionSettingManager.setMenuTime(selection);
         } else if (TextUtils.equals(preference.getKey(), SLEEP_TIMER)) {
             mTvOptionSettingManager.setSleepTimer(selection);
