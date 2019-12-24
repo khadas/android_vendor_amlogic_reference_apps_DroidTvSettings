@@ -17,6 +17,11 @@
 package com.droidlogic.tv.soundeffectsettings;
 
 import android.app.Fragment;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.provider.Settings;
 
 /**
  * Activity to display displaymode and hdr.
@@ -40,4 +45,60 @@ public class SoundModeActivity extends TvSettingsActivity {
             startPreferenceFragment(fragment);
         }
     }
+
+    @Override
+    public void onResume() {
+        startShowActivityTimer();
+        super.onResume();
+    }
+
+    @Override
+    public boolean dispatchKeyEvent (KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_DPAD_UP:
+                case KeyEvent.KEYCODE_DPAD_DOWN:
+                case KeyEvent.KEYCODE_DPAD_LEFT:
+                case KeyEvent.KEYCODE_DPAD_RIGHT:
+                case KeyEvent.KEYCODE_DPAD_CENTER:
+                case KeyEvent.KEYCODE_BACK:
+                        startShowActivityTimer();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
+
+    public void startShowActivityTimer () {
+        handler.removeMessages(0);
+
+        int seconds = Settings.System.getInt(getContentResolver(), OptionParameterManager.KEY_MENU_TIME, OptionParameterManager.DEFUALT_MENU_TIME);
+        if (seconds == 1) {
+            seconds = 15;
+        } else if (seconds == 2) {
+            seconds = 30;
+        } else if (seconds == 3) {
+            seconds = 60;
+        } else if (seconds == 4) {
+            seconds = 120;
+        } else if (seconds == 5) {
+            seconds = 240;
+        } else {
+            seconds = 0;
+        }
+        if (seconds > 0) {
+            handler.sendEmptyMessageDelayed(0, seconds * 1000);
+        } else {
+            handler.removeMessages(0);
+        }
+    }
+
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            finish();
+        }
+    };
 }
