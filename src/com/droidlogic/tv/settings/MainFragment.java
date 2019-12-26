@@ -172,8 +172,11 @@ public class MainFragment extends LeanbackPreferenceFragment {
             } else {
                 channelPref.setVisible(true);
             }
-            if (!SettingsConstant.needDroidlogicTvFeature(getContext())) {
-                mSoundsPref.setVisible(false);//mbox doesn't surport sound effect
+            if (!SettingsConstant.needDroidlogicTvFeature(getContext())
+                    ||SettingsConstant.hasMboxFeature(getContext())) {
+                //HDMI-TX doesn't surport picture mode and sound effect
+                picturePref.setVisible(false);
+                mSoundsPref.setVisible(false);
             }
             if (inputId != null && inputId.startsWith(DTVKIT_PACKAGE)) {
                 DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_HIDE_STARTUP);
