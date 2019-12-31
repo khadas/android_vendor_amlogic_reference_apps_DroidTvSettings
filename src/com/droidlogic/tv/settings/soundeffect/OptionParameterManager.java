@@ -14,7 +14,7 @@
  * limitations under the License
  */
 
-package com.droidlogic.tv.soundeffectsettings;
+package com.droidlogic.tv.settings.soundeffect;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,8 +27,6 @@ import android.content.SharedPreferences;
 
 import java.lang.reflect.Method;
 import java.lang.Boolean;
-
-import com.droidlogic.tv.soundeffectsettings.R;
 
 public class OptionParameterManager {
 

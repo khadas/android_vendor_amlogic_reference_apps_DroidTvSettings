@@ -14,7 +14,7 @@
  * limitations under the License
  */
 
-package com.droidlogic.tv.soundeffectsettings;
+package com.droidlogic.tv.settings.soundeffect;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,9 +39,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 
-import com.droidlogic.tv.soundeffectsettings.R;
 import com.droidlogic.app.tv.AudioEffectManager;
 import com.droidlogic.app.OutputModeManager;
+
+import com.droidlogic.tv.settings.TvSettingsActivity;
+import com.droidlogic.tv.settings.R;
 
 public class SoundModeFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener, SeekBar.OnSeekBarChangeListener {
 

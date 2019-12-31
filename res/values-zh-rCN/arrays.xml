@@ -17,6 +17,24 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+  <string-array name="tv_sound_mode_entries">
+        <item>标准</item>
+        <item>音乐</item>
+        <item>新闻</item>
+        <item>电影</item>
+        <item>游戏</item>
+        <item>用户</item>
+    </string-array>
+
+  <string-array name="tv_sound_mode_extend_entries">
+        <item>标准</item>
+        <item>音乐</item>
+        <item>新闻</item>
+        <item>电影</item>
+        <item>游戏</item>
+        <item>用户</item>
+    </string-array>
+
     <string-array name="surround_sound_entries">
         <item msgid="5639265918353416799">"自动"</item>
         <item msgid="5990497479384785807">"一律启用"</item>

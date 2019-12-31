@@ -3,10 +3,10 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Main app title [CHAR LIMIT=40] -->
-    <string name="settings_app_name">"Droid 设置"</string>
+    <string name="settings_app_name">"Droid 音效設定"</string>
 
     <!-- Leanback Launcher App Title for main Settings app [CHAR LIMIT=40] -->
-    <string name="launcher_settings_app_name">"Droid 设置"</string>
+    <string name="launcher_settings_app_name">"Droid 音效設定"</string>
 
     <!-- Preference which manages more settings. [CHAR LIMIT=50] -->
     <string name="system_more_setting">"更多设置"</string>
@@ -113,16 +113,16 @@
     <string name="power_on_last_description">上电时，根据上一次断电前的状态，选择进入开机或者待机</string>
 
     <!-- Title for OK [CHAR LIMIT=50] -->
-    <string name="title_ok">"确定"</string>
+    <string name="title_ok">"確定"</string>
     <!-- Title for DNS 2 [CHAR LIMIT=50] -->
     <string name="title_cancel">"取消"</string>
-    <string name="action_on_title">"开启"</string>
+    <string name="action_on_title">"開啟"</string>
     <!-- Title for an action which turns a feature off [CHAR LIMIT=30] -->
-    <string name="action_off_title">"关闭"</string>
+    <string name="action_off_title">"關閉"</string>
     <!-- Title for a status description saying that a feature is on [CHAR LIMIT=30] -->
-    <string name="action_on_description">"开启"</string>
+    <string name="action_on_description">"開啟"</string>
     <!-- Title for a status description saying that a feature is off [CHAR LIMIT=30] -->
-    <string name="action_off_description">"关闭"</string>
+    <string name="action_off_description">"關閉"</string>
     <string name="device_hdr">"HDR 转 SDR"</string>
     <string name="device_sdr">"SDR 转 HDR"</string>
     <string name="captions_display_on">"开启"</string>
@@ -230,6 +230,7 @@
     <string name="settings_menu">菜单</string>
     <string name="tv_sound">声音</string>
     <string name="tv_sound_mode">声音模式</string>
+    <string name="dap_sound">杜比音效</string>
 
     <string name="tv_treble_bass_effect">高低音</string>
     <string name="tv_treble">高音</string>
@@ -302,11 +303,11 @@
     <string name="tv_fbc_upgrade">FBC升级</string>
     <string name="tv_factory_menu">工厂菜单</string>
 
-    <string name="tv_sound_agc">"自动增益控制"</string>
-    <string name="tv_sound_agc_enable">"自动增益控制"</string>
-    <string name="tv_sound_agc_max_level">"最大电平"</string>
-    <string name="tv_sound_agc_attrack_time">"攻击时间"</string>
-    <string name="tv_sound_agc_release_time">"释放时间"</string>
+    <string name="tv_sound_agc">"自動增益控制"</string>
+    <string name="tv_sound_agc_enable">"自動增益控制"</string>
+    <string name="tv_sound_agc_max_level">"最大電平"</string>
+    <string name="tv_sound_agc_attrack_time">"攻擊時間"</string>
+    <string name="tv_sound_agc_release_time">"釋放時間"</string>
 
     <!-- multi source backup label -->
     <string name="input_dtv_kit">DTVKit</string>

@@ -61,9 +61,6 @@ public class TvOptionFragment extends LeanbackPreferenceFragment {
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
         super.onPreferenceTreeClick(preference);
-        if (TextUtils.equals(preference.getKey(), KEY_SOUNDS)) {
-            MainFragment.startSoundEffectSettings(getActivity());
-        }
         return false;
     }
 }

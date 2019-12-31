@@ -3,10 +3,10 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Main app title [CHAR LIMIT=40] -->
-    <string name="settings_app_name">"Droid 设置"</string>
+    <string name="settings_app_name">"Droid 音效设置"</string>
 
     <!-- Leanback Launcher App Title for main Settings app [CHAR LIMIT=40] -->
-    <string name="launcher_settings_app_name">"Droid 设置"</string>
+    <string name="launcher_settings_app_name">"Droid 音效设置"</string>
 
     <!-- Preference which manages more settings. [CHAR LIMIT=50] -->
     <string name="system_more_setting">"更多设置"</string>
@@ -230,6 +230,7 @@
     <string name="settings_menu">菜单</string>
     <string name="tv_sound">声音</string>
     <string name="tv_sound_mode">声音模式</string>
+    <string name="dap_sound">杜比音效</string>
 
     <string name="tv_treble_bass_effect">高低音</string>
     <string name="tv_treble">高音</string>

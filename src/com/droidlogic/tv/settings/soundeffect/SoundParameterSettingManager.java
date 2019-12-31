@@ -14,7 +14,7 @@
  * limitations under the License
  */
 
-package com.droidlogic.tv.soundeffectsettings;
+package com.droidlogic.tv.settings.soundeffect;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +28,7 @@ import android.content.SharedPreferences;
 import android.content.ContentResolver;
 import android.content.ActivityNotFoundException;
 
-import com.droidlogic.tv.soundeffectsettings.R;
+import com.droidlogic.tv.settings.R;
 import com.droidlogic.app.OutputModeManager;
 
 import java.util.ArrayList;

@@ -14,7 +14,7 @@
  * limitations under the License
  */
 
-package com.droidlogic.tv.soundeffectsettings;
+package com.droidlogic.tv.settings.soundeffect;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,6 +24,9 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.TwoStatePreference;
 import com.droidlogic.app.tv.AudioEffectManager;
+
+import com.droidlogic.tv.settings.TvSettingsActivity;
+import com.droidlogic.tv.settings.R;
 
 public class DtsVirualXSettingFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener{
     private static final String TAG = "DtsVirualXSettingFragment";

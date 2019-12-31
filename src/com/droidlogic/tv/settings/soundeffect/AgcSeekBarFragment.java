@@ -14,7 +14,7 @@
  * limitations under the License
  */
 
-package com.droidlogic.tv.soundeffectsettings;
+package com.droidlogic.tv.settings.soundeffect;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,8 +33,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.droidlogic.tv.soundeffectsettings.R;
 import com.droidlogic.app.tv.AudioEffectManager;
+
+import com.droidlogic.tv.settings.TvSettingsActivity;
+import com.droidlogic.tv.settings.R;
 
 public class AgcSeekBarFragment extends LeanbackPreferenceFragment implements SeekBar.OnSeekBarChangeListener {
 

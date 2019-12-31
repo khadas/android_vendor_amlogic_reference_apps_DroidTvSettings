@@ -40,7 +40,11 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.content.ComponentName;
 import java.lang.reflect.Method;
+
+import com.droidlogic.app.tv.AudioEffectManager;
 import com.droidlogic.tv.settings.tvoption.TvOptionSettingManager;
+import com.droidlogic.tv.settings.soundeffect.SoundParameterSettingManager;
+import com.droidlogic.tv.settings.soundeffect.OptionParameterManager;
 
 public abstract class TvSettingsActivity extends Activity implements ViewTreeObserver.OnPreDrawListener {
 
@@ -51,6 +55,9 @@ public abstract class TvSettingsActivity extends Activity implements ViewTreeObs
     public static final int MODE_LAUNCHER = 0;
     public static final int MODE_LIVE_TV = 1;
     private int mStartMode = MODE_LAUNCHER;
+
+    private SoundParameterSettingManager mSoundParameterSettingManager = null;
+    private OptionParameterManager mOptionParameterManager = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +72,7 @@ public abstract class TvSettingsActivity extends Activity implements ViewTreeObs
         DolbyAudioEffectManager.getInstance(getApplicationContext());
         if (SettingsConstant.needDroidlogicCustomization(this)) {
             if (mStartMode == MODE_LIVE_TV) {
+                init(this);
                 startShowActivityTimer();
             }
         }
@@ -257,5 +265,22 @@ public abstract class TvSettingsActivity extends Activity implements ViewTreeObs
         }
     }
 
+    private void init(Context context) {
+        mSoundParameterSettingManager = new SoundParameterSettingManager(context);
+        mOptionParameterManager = new OptionParameterManager(context);
+        getAudioEffectManager();
+    }
+
+    public AudioEffectManager getAudioEffectManager() {
+        return AudioEffectManager.getInstance(getApplicationContext());
+    }
+
+    public SoundParameterSettingManager getSoundParameterSettingManager() {
+        return mSoundParameterSettingManager;
+    }
+
+    public OptionParameterManager getOptionParameterManager() {
+        return mOptionParameterManager;
+    }
     protected abstract Fragment createSettingsFragment();
 }

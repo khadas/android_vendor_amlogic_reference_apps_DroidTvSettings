@@ -14,7 +14,7 @@
  * limitations under the License
  */
 
-package com.droidlogic.tv.soundeffectsettings;
+package com.droidlogic.tv.settings.soundeffect;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -31,6 +31,9 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.droidlogic.app.tv.AudioEffectManager;
+
+import com.droidlogic.tv.settings.TvSettingsActivity;
+import com.droidlogic.tv.settings.R;
 
 public class DbxSettingFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener, SeekBar.OnSeekBarChangeListener{
     private static final String TAG = "DbxSettingFragment";

@@ -28,27 +28,27 @@
         android:key="dap_sound"
         android:title="@string/dap_sound"/>
     <Preference
-        android:fragment="com.droidlogic.tv.soundeffectsettings.TrebleBassSeekBarFragment"
+        android:fragment="com.droidlogic.tv.settings.soundeffect.TrebleBassSeekBarFragment"
         android:key="treble_bass_effect_settings"
         android:title="@string/tv_treble_bass_effect" />
     <Preference
-        android:fragment="com.droidlogic.tv.soundeffectsettings.BalanceSeekBarFragment"
+        android:fragment="com.droidlogic.tv.settings.soundeffect.BalanceSeekBarFragment"
         android:key="balance_effect_settings"
         android:title="@string/tv_balance_effect" />
     <Preference
-        android:fragment="com.droidlogic.tv.soundeffectsettings.AgcSeekBarFragment"
+        android:fragment="com.droidlogic.tv.settings.soundeffect.AgcSeekBarFragment"
         android:key="effect_agc"
         android:title="@string/tv_sound_agc" />
     <Preference
-        android:fragment="com.droidlogic.tv.soundeffectsettings.DbxSettingFragment"
+        android:fragment="com.droidlogic.tv.settings.soundeffect.DbxSettingFragment"
         android:key="key_tv_dbx_effect"
         android:title="@string/title_tv_dbx" />
     <Preference
-        android:fragment="com.droidlogic.tv.soundeffectsettings.DtsSoundSettingFragment"
+        android:fragment="com.droidlogic.tv.settings.soundeffect.DtsSoundSettingFragment"
         android:key="key_dts_effect_settings"
         android:title="@string/title_tv_dts_srs_effect" />
     <Preference
-        android:fragment="com.droidlogic.tv.soundeffectsettings.DtsVirualXSettingFragment"
+        android:fragment="com.droidlogic.tv.settings.soundeffect.DtsVirualXSettingFragment"
         android:key="key_dts_virtualx_settings"
         android:title="@string/title_tv_dts_virtualx" />
      <ListPreference
@@ -59,7 +59,7 @@
         android:title="@string/tv_virtual_surround"
         android:summary="%s" />
     <Preference
-        android:fragment="com.droidlogic.tv.soundeffectsettings.AudioSettingsFragment"
+        android:fragment="com.droidlogic.tv.settings.soundeffect.AudioSettingsFragment"
         android:key="key_tv_sound_audio_settings"
         android:title="@string/title_tv_sound_audio_settings" />
      <ListPreference

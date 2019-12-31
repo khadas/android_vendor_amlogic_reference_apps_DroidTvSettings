@@ -201,8 +201,6 @@ public class MainFragment extends LeanbackPreferenceFragment {
         super.onPreferenceTreeClick(preference);
         if (TextUtils.equals(preference.getKey(), KEY_TV_CHANNEL)) {
             startUiInLiveTv(KEY_TV_CHANNEL);
-        } else if (TextUtils.equals(preference.getKey(), KEY_SOUNDS)) {
-            startSoundEffectSettings(getActivity());
         } else if (TextUtils.equals(preference.getKey(), KEY_KEYSTONE)) {
             startKeyStoneCorrectionActivity(getActivity());
         }
@@ -215,17 +213,6 @@ public class MainFragment extends LeanbackPreferenceFragment {
         intent.putExtra(value, true);
         getActivity().sendBroadcast(intent);
         getActivity().finish();
-    }
-
-    public static void startSoundEffectSettings(Context context){
-        try {
-            Intent intent = new Intent();
-            intent.setClassName("com.droidlogic.tv.soundeffectsettings", "com.droidlogic.tv.soundeffectsettings.SoundModeActivity");
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Log.d(TAG, "startSoundEffectSettings not found!");
-            return;
-        }
     }
 
     public static void startKeyStoneCorrectionActivity(Context context){

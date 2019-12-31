@@ -14,7 +14,7 @@
  * limitations under the License
  */
 
-package com.droidlogic.tv.soundeffectsettings;
+package com.droidlogic.tv.settings.soundeffect;
 
 import android.os.Bundle;
 import android.support.v17.preference.LeanbackPreferenceFragment;
@@ -25,9 +25,10 @@ import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
 import android.util.Log;
 
-
-import com.droidlogic.tv.soundeffectsettings.R;
 import com.droidlogic.app.tv.AudioEffectManager;
+
+import com.droidlogic.tv.settings.TvSettingsActivity;
+import com.droidlogic.tv.settings.R;
 
 public class DtsSoundSettingFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
