@@ -33,6 +33,7 @@ import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Process;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.provider.Settings;
@@ -102,8 +103,16 @@ public abstract class TvSettingsActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "intent = " + intent);
-            if (intent.getAction().equals(INTENT_ACTION_FINISH_FRAGMENT)) {
-                startShowActivityTimer();
+            switch (intent.getAction()) {
+                case INTENT_ACTION_FINISH_FRAGMENT:
+                    startShowActivityTimer();
+                    break;
+                case Intent.ACTION_CLOSE_SYSTEM_DIALOGS:
+                    killMyself();
+                    break;
+                case Intent.ACTION_SCREEN_OFF:
+                    killMyself();
+                    break;
             }
         }
     };
@@ -130,6 +139,8 @@ public abstract class TvSettingsActivity extends Activity {
     public void registerMenuTimeReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(INTENT_ACTION_FINISH_FRAGMENT);
+        intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mMenuTimeReceiver, intentFilter);
     }
 
@@ -258,6 +269,11 @@ public abstract class TvSettingsActivity extends Activity {
         } else {
             super.finish();
         }
+    }
+
+    private void killMyself () {
+        int pid = Process.myPid();
+        android.os.Process.killProcess(pid);
     }
 
     protected abstract Fragment createSettingsFragment();

@@ -109,6 +109,9 @@ public abstract class TvSettingsActivity extends Activity implements ViewTreeObs
                 case Intent.ACTION_CLOSE_SYSTEM_DIALOGS:
                     finish();
                     break;
+                case Intent.ACTION_SCREEN_OFF:
+                    finish();
+                    break;
             }
         }
     };
@@ -117,6 +120,9 @@ public abstract class TvSettingsActivity extends Activity implements ViewTreeObs
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(INTENT_ACTION_FINISH_FRAGMENT);
         intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        if (mStartMode == MODE_LIVE_TV) {
+            intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        }
         registerReceiver(mReceiver, intentFilter);
     }
 
