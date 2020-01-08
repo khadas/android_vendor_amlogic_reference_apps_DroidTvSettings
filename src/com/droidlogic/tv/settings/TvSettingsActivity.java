@@ -70,9 +70,9 @@ public abstract class TvSettingsActivity extends Activity implements ViewTreeObs
         Log.d(TAG, "mStartMode : " + mStartMode);
         // DolbyAudioEffectManager may take some time to bindservice
         DolbyAudioEffectManager.getInstance(getApplicationContext());
+        init();
         if (SettingsConstant.needDroidlogicCustomization(this)) {
             if (mStartMode == MODE_LIVE_TV) {
-                init(this);
                 startShowActivityTimer();
             }
         }
@@ -265,10 +265,12 @@ public abstract class TvSettingsActivity extends Activity implements ViewTreeObs
         }
     }
 
-    private void init(Context context) {
-        mSoundParameterSettingManager = new SoundParameterSettingManager(context);
-        mOptionParameterManager = new OptionParameterManager(context);
-        getAudioEffectManager();
+    private void init() {
+        if (SettingsConstant.needDroidlogicTvFeature(this) && !SettingsConstant.hasMboxFeature(this)) {
+            mSoundParameterSettingManager = new SoundParameterSettingManager(this);
+            mOptionParameterManager = new OptionParameterManager(this);
+            getAudioEffectManager();
+        }
     }
 
     public AudioEffectManager getAudioEffectManager() {
