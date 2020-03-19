@@ -56,6 +56,10 @@ public class TvOptionFragment extends LeanbackPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.tv_option, null);
+        final Preference soundPreference = findPreference(KEY_SOUNDS);
+        if (SettingsConstant.hasMboxFeature(getContext())) {
+            soundPreference.setVisible(false);
+        }
     }
 
     @Override
