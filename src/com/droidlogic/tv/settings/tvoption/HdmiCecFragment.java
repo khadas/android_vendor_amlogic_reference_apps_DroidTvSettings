@@ -13,7 +13,7 @@ package com.droidlogic.tv.settings.tvoption;
 import android.content.Context;
 import android.content.ContentResolver;
 import android.hardware.hdmi.HdmiControlManager;
-import android.hardware.hdmi.HdmiTvClient;
+import android.hardware.hdmi.HdmiClient;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -69,7 +69,7 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
     private static long lastObserveredTime = 0;
 
     private HdmiControlManager mHdmiControlManager;
-    private HdmiTvClient mHdmiTvClient;
+    private HdmiClient mHdmiClient;
     private HdmiControlManager.VendorCommandListener mVendorCommandListener;
 
     class SettingsVendorCommandListener implements HdmiControlManager.VendorCommandListener {
@@ -98,14 +98,37 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
         super.onCreate(savedInstanceState);
         mHdmiCecManager = new HdmiCecManager(getContext());
         mHdmiControlManager = (HdmiControlManager)getContext().getSystemService(Context.HDMI_CONTROL_SERVICE);
-        if (mHdmiControlManager != null) {
-            mHdmiTvClient = mHdmiControlManager.getTvClient();
-        }
-        if (mHdmiTvClient != null) {
+        mHdmiClient = getHdmiClient();
+        if (mHdmiClient != null) {
             // it means the device is tv.
             mVendorCommandListener = new SettingsVendorCommandListener();
-            mHdmiTvClient.setVendorCommandListener(mVendorCommandListener);
+            mHdmiClient.setVendorCommandListener(mVendorCommandListener);
         }
+    }
+
+    private HdmiClient getHdmiClient() {
+        HdmiClient client = null;
+        if (null == mHdmiControlManager) {
+            Log.e(TAG, "getHdmiClient hdmicontrolmanager null!");
+            return client;
+        }
+        client = mHdmiControlManager.getTvClient();
+        if (client != null) {
+            Log.d(TAG, "getHdmiClient tv");
+            return client;
+        }
+        client = mHdmiControlManager.getPlaybackClient();
+        if (client != null) {
+            Log.d(TAG, "getHdmiClient playback");
+            return client;
+        }
+        client = mHdmiControlManager.getAudioSystemClient();
+        if (client != null) {
+            Log.d(TAG, "getHdmiClient audiosystem");
+            return client;
+        }
+        Log.e(TAG, "getHdmiClient null!");
+        return client;
     }
 
     @Override
@@ -184,6 +207,11 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
             mCecAutoWakeupPref.setEnabled(false);
             mCecAutoChangeLanguagePref.setEnabled(false);
             mArcSwitchPref.setEnabled(false);
+            if (null == mHdmiClient) {
+                Log.d(TAG, "onPreferenceTreeClick no hdmi client");
+                mHandler.sendMessageDelayed(Message.obtain(mHandler, MSG_ENABLE_CEC_SWITCH,
+                            mCecSwitchPref.isChecked()), TIME_DELAYED);
+            }
             return true;
         case KEY_CEC_ONE_KEY_PLAY:
             mHdmiCecManager.enableOneTouchPlay(mCecOnekeyPlayPref.isChecked());
