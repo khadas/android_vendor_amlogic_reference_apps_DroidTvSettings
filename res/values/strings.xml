@@ -230,6 +230,7 @@
     <string name="cec_auto_change_language_description">Change HDMI devices\' language to the same with TV</string>
     <string name="cec_arc_switch_description">Allow the TV control ARC device</string>
     <string name="power_action_suspend">suspend</string>
+    <string name="power_action_force_suspend">force suspend</string>
     <string name="power_action_restart">restart</string>
     <string name="power_action_shutdown">shutdown</string>
     <string name="netflix_esn">Netflix ESN</string>

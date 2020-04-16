@@ -70,6 +70,7 @@
 
     <string name="power_key_action">"電源"</string>
     <string name="power_action_suspend">"休眠"</string>
+    <string name="power_action_force_suspend">"強制休眠"</string>
     <string name="power_action_restart">"重啟"</string>
     <string name="power_action_shutdown">"關機"</string>
 

@@ -72,6 +72,7 @@
 
     <string name="power_key_action">"电源"</string>
     <string name="power_action_suspend">"待机"</string>
+    <string name="power_action_force_suspend">"强制待机"</string>
     <string name="power_action_restart">"重启"</string>
     <string name="power_action_shutdown">"关机"</string>
 
