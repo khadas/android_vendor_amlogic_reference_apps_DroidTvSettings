@@ -29,6 +29,9 @@ import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.RadioPreference;
 import com.droidlogic.tv.settings.dialog.old.Action;
+import com.droidlogic.tv.settings.SettingsConstant;
+import com.droidlogic.app.tv.TvControlManager;
+
 
 import java.util.List;
 import java.util.Map;
@@ -65,20 +68,36 @@ public class DolbyVisionSettingFragment extends LeanbackPreferenceFragment {
             if (!mDolbyVisionSettingManager.isTvSupportDolbyVision().equals("")) {
                 mOutputModeManager.setBestDolbyVision(false);
             }
+
+            int dolbyVisionState = DV_DISABLE;
             if (DOLBY_VISION_DEFAULT.equals(mNewDvMode)) {
-                mDolbyVisionSettingManager.setDolbyVisionEnable(DV_ENABLE);
-                serviceIntent = new Intent(getPreferenceManager().getContext(), DolbyVisionService.class);
-                getPreferenceManager().getContext().startService(serviceIntent);
+                dolbyVisionState = DV_ENABLE;
             } else if (DOLBY_VISION_LL_YUV.equals(mNewDvMode)) {
-                mDolbyVisionSettingManager.setDolbyVisionEnable(DV_LL_YUV);
-                serviceIntent = new Intent(getPreferenceManager().getContext(), DolbyVisionService.class);
-                getPreferenceManager().getContext().startService(serviceIntent);
+                dolbyVisionState = DV_LL_YUV;
             } else if (DOLBY_VISION_LL_RGB.equals(mNewDvMode)) {
-                mDolbyVisionSettingManager.setDolbyVisionEnable(DV_LL_RGB);
+                dolbyVisionState = DV_LL_RGB;
+            } else if (DOLBY_VISION_DISABLE.equals(mNewDvMode)) {
+                dolbyVisionState = DV_DISABLE;
+            }
+            boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
+            if (isTv) {
+                Log.d(TAG, "now is TV product");
+                TvControlManager mTvControlManager = TvControlManager.getInstance();
+                if (dolbyVisionState == DV_ENABLE) {
+                    mTvControlManager.LoadEdidData(1, 1);
+                } else {
+                    mTvControlManager.LoadEdidData(1, 0);
+                }
+            } else {
+                Log.d(TAG, "now is box product");
+            }
+
+            mDolbyVisionSettingManager.setDolbyVisionEnable(dolbyVisionState);
+            if (dolbyVisionState != DV_DISABLE) {
                 serviceIntent = new Intent(getPreferenceManager().getContext(), DolbyVisionService.class);
                 getPreferenceManager().getContext().startService(serviceIntent);
-            } else if (DOLBY_VISION_DISABLE.equals(mNewDvMode)) {
-                mDolbyVisionSettingManager.setDolbyVisionEnable(DV_DISABLE);
+
+            } else {
                 if (serviceIntent != null) {
                     getPreferenceManager().getContext().stopService(serviceIntent);
                 }
