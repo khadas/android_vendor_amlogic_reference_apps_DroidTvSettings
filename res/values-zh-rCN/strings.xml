@@ -3,23 +3,23 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Main app title [CHAR LIMIT=40] -->
-    <string name="settings_app_name">"Droid 音效设置"</string>
+    <string name="settings_app_name">"Droidlogic设置"</string>
 
     <!-- Leanback Launcher App Title for main Settings app [CHAR LIMIT=40] -->
-    <string name="launcher_settings_app_name">"Droid 音效设置"</string>
+    <string name="launcher_settings_app_name">"Droidlogic设置"</string>
 
     <!-- Preference which manages more settings. [CHAR LIMIT=50] -->
     <string name="system_more_setting">"更多设置"</string>
     <string name="upgrade_bluetooth_remote">"蓝牙遥控升级"</string>
     <string name="device_display">"显示"</string>
-    <string name="device_outputmode">"屏幕分辨率"</string>
+    <string name="device_outputmode">"屏幕输出设置"</string>
     <string name="device_displaymode">输出制式</string>
     <string name="device_color">"色彩"</string>
     <string name="device_colorattribute">"格式和色深"</string>
     <string name="device_outputmode_color_space">"色彩空间设置"</string>
     <string name="device_outputmode_color_depth">"色深设置"</string>
     <string name="device_position">"屏幕缩放"</string>
-    <string name="device_outputmode_auto">"自动切换到最佳分辨率"</string>
+    <string name="device_outputmode_auto">"自动切换到最佳输出制式"</string>
     <string name="device_dolbyvision_auto">"自动切换到最佳杜比视界模式"</string>
     <string name="device_outputmode_deepcolor">"深色模式"</string>
     <string name="device_outputmode_confirm_mode">"确认关闭深色模式"</string>
