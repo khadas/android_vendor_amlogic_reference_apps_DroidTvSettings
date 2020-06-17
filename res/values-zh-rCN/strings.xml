@@ -316,4 +316,5 @@
 
     <string name="hdmi_audio_latency">HDMI音频输出偏移</string>
     <string name="arc_hdmi_audio_latency">HDMI ARC 音频输出偏移</string>
+    <string name="prepare">播放视频，场景检测</string>
 </resources>

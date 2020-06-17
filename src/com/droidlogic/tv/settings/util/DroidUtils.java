@@ -51,6 +51,10 @@ public final class DroidUtils {
         return !TextUtils.isEmpty(SystemProperties.get("ro.com.google.gmsversion", ""));
     }
 
+    public static boolean hasAiPQ() {
+       return SystemProperties.getBoolean("ro.vendor.platform.has.aipq",false);
+    }
+
     public static void invisiblePreference(Preference preference, boolean tvUiMode) {
         if (preference == null) {
             return;

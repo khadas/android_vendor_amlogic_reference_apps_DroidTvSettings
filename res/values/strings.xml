@@ -456,7 +456,9 @@
     <string name="hdmi_audio_latency">HDMI Audio Latency</string>
     <string name="arc_hdmi_audio_latency">HDMI ARC Audio Latency</string>
     <string name="tether_settings_title_wifi" translatable="false">Portable hotspot</string>
+    <string name="ai_pq" translatable="false">AI PQ</string>
     <string name="hotspot_settings_enable" translatable="false">Portable HotSpot Enabled</string>
+    <string name="ai_pq_enable" translatable="false">AI PQ Enabled</string>
     <string name="open_hotspot_warning_title" translatable="false">Open HotSpot?</string>
     <string name="open_hotspot_warning__message" translatable="false">These settings are intended for open system wifi hotspot</string>
     <string name="wifi_hotspot_ap_band_title">AP Band</string>
@@ -479,4 +481,5 @@
     <string name="wifi_ap_choose_auto">Auto</string>
     <string name="wifi_ap_choose_5G">5.0 GHz Band</string>
     <string translatable="false" name="config_mobile_hotspot_provision_response"></string>
+    <string name="prepare">AI PQ invalid value...</string>
 </resources>

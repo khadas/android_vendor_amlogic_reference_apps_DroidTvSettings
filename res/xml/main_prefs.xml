@@ -98,8 +98,13 @@
         android:title="@string/system_setting"
         android:fragment="com.droidlogic.tv.settings.tvoption.DroidSettingsModeFragment" />
     <Preference
-	android:icon="@drawable/ic_settings_more"
-	android:key="wifi_hotspot"
+        android:icon="@drawable/ic_settings_more"
+        android:key="wifi_hotspot"
         android:title="@string/tether_settings_title_wifi"
         android:fragment="com.droidlogic.tv.settings.wifi.HotSpotFragment"/>
+    <Preference
+        android:icon="@drawable/ic_settings_more"
+        android:key="ai_pq"
+        android:title="@string/ai_pq"
+        android:fragment="com.droidlogic.tv.settings.AiPqFragment"/>
 </PreferenceScreen>

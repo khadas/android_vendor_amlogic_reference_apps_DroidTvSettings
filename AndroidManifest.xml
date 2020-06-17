@@ -242,6 +242,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".AiPqService"
+            android:enabled="true"
+            android:exported="true" />
         <provider
             android:name=".database.TvControlDataProvider"
             android:authorities="com.droidlogic.tv.settings"
