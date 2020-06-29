@@ -135,7 +135,7 @@ public class MainFragment extends LeanbackPreferenceFragment {
         mUpgradeBluetoothRemote.setVisible(false/*is_from_live_tv ? false : (SettingsConstant.needDroidlogicBluetoothRemoteFeature(getContext()) && !tvFlag)*/);
         hdmicecPref.setVisible((getContext().getPackageManager().hasSystemFeature("android.hardware.hdmi.cec")
                 && SettingsConstant.needDroidlogicHdmicecFeature(getContext())) && !is_from_live_tv);
-        playbackPref.setVisible(false);
+        //playbackPref.setVisible(false);
         if (netflixesnPref != null) {
             if (is_from_live_tv) {
                 netflixesnPref.setVisible(false);

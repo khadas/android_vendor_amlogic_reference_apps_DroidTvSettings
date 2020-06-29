@@ -49,7 +49,7 @@ import android.util.Log;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.app.DolbyVisionSettingManager;
 import com.droidlogic.app.OutputModeManager;
-
+import com.droidlogic.app.PlayBackManager;
 
 
 public class ScreenResolutionFragment extends LeanbackPreferenceFragment implements
@@ -99,7 +99,7 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
     private OutputUiManager mOutputUiManager;
     private IntentFilter mIntentFilter;
     public boolean hpdFlag = false;
-
+    private PlayBackManager mPlayBackManager;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -138,6 +138,7 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mOutputUiManager = new OutputUiManager(getActivity());
+        mPlayBackManager = new PlayBackManager(getActivity());
     }
 
     @Override
@@ -328,7 +329,7 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
         return true;
     }
     private boolean isBestResolution() {
-        return mOutputUiManager.isBestOutputmode();
+        return mOutputUiManager.isBestOutputmode() && mPlayBackManager.getHdmiSelfAdaptionMode() != PlayBackManager.MODE_TOTAL;
     }
     private boolean isBestDolbyVsion() {
         return mOutputUiManager.isBestDolbyVsion();
@@ -341,6 +342,12 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
      */
     private void setBestResolution() {
         mOutputUiManager.change2BestMode();
+        if (!((SwitchPreference)mBestResolutionPref).isChecked()) {
+           //disable -> enable
+           if (mPlayBackManager.getHdmiSelfAdaptionMode() == PlayBackManager.MODE_TOTAL) {
+                mPlayBackManager.setHdmiSelfadaption(PlayBackManager.MODE_OFF);
+           }
+        }
     }
     private void setBestDolbyVision(boolean enable) {
         mOutputUiManager.setBestDolbyVision(enable);

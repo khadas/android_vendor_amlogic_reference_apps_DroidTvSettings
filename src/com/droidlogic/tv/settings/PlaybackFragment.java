@@ -64,8 +64,6 @@ public class PlaybackFragment extends LeanbackPreferenceFragment {
         switch (mode) {
             case PlayBackManager.MODE_OFF:
                 return getString(R.string.off);
-            case PlayBackManager.MODE_PART:
-                return getString(R.string.playback_hdmi_selfadaption_part);
             case PlayBackManager.MODE_TOTAL:
                 return getString(R.string.playback_hdmi_selfadaption_total);
             default:

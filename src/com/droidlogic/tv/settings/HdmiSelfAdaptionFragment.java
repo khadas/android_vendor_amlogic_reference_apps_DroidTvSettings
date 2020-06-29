@@ -53,8 +53,6 @@ public class HdmiSelfAdaptionFragment extends LeanbackPreferenceFragment {
             public void run() {
                 if (ACTION_OFF.equals(mHdmiSelfAdaptionMode)) {
                     mPlayBackManager.setHdmiSelfadaption(PlayBackManager.MODE_OFF);
-                } else if (ACTION_PART.equals(mHdmiSelfAdaptionMode)) {
-                    mPlayBackManager.setHdmiSelfadaption(PlayBackManager.MODE_PART);
                 } else if (ACTION_TOTAL.equals(mHdmiSelfAdaptionMode)) {
                     mPlayBackManager.setHdmiSelfadaption(PlayBackManager.MODE_TOTAL);
                 }
@@ -104,9 +102,6 @@ public class HdmiSelfAdaptionFragment extends LeanbackPreferenceFragment {
         ArrayList<Action> actions = new ArrayList<Action>();
         actions.add(new Action.Builder().key(ACTION_OFF).title(getString(R.string.off))
                 .checked(mode == mPlayBackManager.MODE_OFF).build());
-        actions.add(new Action.Builder().key(ACTION_PART).title(getString(R.string.playback_hdmi_selfadaption_part))
-                .checked(mode == mPlayBackManager.MODE_PART)
-                .description(getString(R.string.playback_hdmi_selfadaption_part_desc)).build());
         actions.add(new Action.Builder().key(ACTION_TOTAL).title(getString(R.string.playback_hdmi_selfadaption_total))
                 .checked(mode == mPlayBackManager.MODE_TOTAL)
                 .description(getString(R.string.playback_hdmi_selfadaption_total_desc)).build());
