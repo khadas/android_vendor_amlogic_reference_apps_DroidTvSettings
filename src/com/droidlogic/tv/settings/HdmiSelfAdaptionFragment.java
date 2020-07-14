@@ -30,7 +30,7 @@ import com.droidlogic.tv.settings.RadioPreference;
 import com.droidlogic.tv.settings.dialog.old.Action;
 
 import com.droidlogic.app.PlayBackManager;
-
+import com.droidlogic.app.OutputModeManager;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -48,6 +48,7 @@ public class HdmiSelfAdaptionFragment extends LeanbackPreferenceFragment {
 
     private static final int SET_DELAY_MS = 500;
     private final Handler mDelayHandler = new Handler();
+    private OutputModeManager mOutputUiManager;
     private final Runnable mSetHdmiSelfAdaptionRunnable = new Runnable() {
         @Override
             public void run() {
@@ -55,6 +56,7 @@ public class HdmiSelfAdaptionFragment extends LeanbackPreferenceFragment {
                     mPlayBackManager.setHdmiSelfadaption(PlayBackManager.MODE_OFF);
                 } else if (ACTION_TOTAL.equals(mHdmiSelfAdaptionMode)) {
                     mPlayBackManager.setHdmiSelfadaption(PlayBackManager.MODE_TOTAL);
+                    mOutputUiManager.setBestMode(mOutputUiManager.getCurrentOutputMode());
                 }
             }
     };
@@ -70,6 +72,7 @@ public class HdmiSelfAdaptionFragment extends LeanbackPreferenceFragment {
             final Context themedContext = getPreferenceManager().getContext();
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);
             screen.setTitle(R.string.playback_hdmi_selfadaption);
+            mOutputUiManager = new OutputModeManager(getActivity());
             Preference activePref = null;
             final List<Action> infoList = getActions();
             for (final Action info : infoList) {

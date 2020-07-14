@@ -55,6 +55,7 @@ import com.droidlogic.app.PlayBackManager;
 public class ScreenResolutionFragment extends LeanbackPreferenceFragment implements
         Preference.OnPreferenceChangeListener, OnClickListener {
     private static final String LOG_TAG = "ScreenResolutionFragment";
+    private static boolean DEBUG = Log.isLoggable(LOG_TAG,Log.DEBUG);
     private static final String KEY_COLORSPACE = "colorspace_setting";
     private static final String KEY_COLORDEPTH = "colordepth_setting";
     private static final String KEY_DISPLAYMODE = "displaymode_setting";
@@ -103,6 +104,7 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            if (DEBUG) Log.d(LOG_TAG,"handleMessage msg.what"+ msg.what);
             switch (msg.what) {
                 case MSG_FRESH_UI:
                     updateScreenResolutionDisplay();
@@ -180,6 +182,8 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
     }
 
     private void updateScreenResolutionDisplay() {
+        if (DEBUG)
+            Log.d(LOG_TAG,"showUI and at this time current isBestOutputmode? "+ isBestResolution());
         mOutputUiManager.updateUiMode();
         ((SwitchPreference)mBestResolutionPref).setChecked(isBestResolution());
 
@@ -289,7 +293,7 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
      * recover previous output mode and best resolution state.
      */
     private void recoverOutputMode() {
-        setBestResolution();
+        if (DEBUG) Log.d(LOG_TAG,"recoverOutputMode"+preMode+"/"+getCurrentDisplayMode());
         if (!preMode.equals(getCurrentDisplayMode()))
             mOutputUiManager.change2NewMode(preMode);
         if (!preDeepColor.equals(getCurrentDeepColor()))
@@ -329,7 +333,7 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
         return true;
     }
     private boolean isBestResolution() {
-        return mOutputUiManager.isBestOutputmode() && mPlayBackManager.getHdmiSelfAdaptionMode() != PlayBackManager.MODE_TOTAL;
+        return mOutputUiManager.isBestOutputmode();
     }
     private boolean isBestDolbyVsion() {
         return mOutputUiManager.isBestDolbyVsion();
