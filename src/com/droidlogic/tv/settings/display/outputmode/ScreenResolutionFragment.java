@@ -355,6 +355,12 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
     }
     private void setBestDolbyVision(boolean enable) {
         mOutputUiManager.setBestDolbyVision(enable);
+        if (!((SwitchPreference)mBestDolbyVisionPref).isChecked()) {
+           //disable -> enable
+           if (mPlayBackManager.getHdmiSelfAdaptionMode() == PlayBackManager.MODE_TOTAL) {
+                mPlayBackManager.setHdmiSelfadaption(PlayBackManager.MODE_OFF);
+           }
+        }
     }
     private String getCurrentDisplayMode() {
         return mOutputUiManager.getCurrentMode().trim();
