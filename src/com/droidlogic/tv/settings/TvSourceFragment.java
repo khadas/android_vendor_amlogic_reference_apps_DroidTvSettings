@@ -61,7 +61,7 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
 
     private static final int MODE_GLOBAL = 0;
     private static final int MODE_LIVE_TV = 1;
-    private int mStartMode = -1;
+    private boolean startFromLiveTv = false;
     private String mStartPackage = null;
     private boolean needDTV = false;
 
@@ -112,7 +112,7 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
 
         if (DEBUG)  Log.d(TAG, "onCreatePreferences  intent= "+ intent);
         if (intent != null) {
-            mStartMode = intent.getIntExtra("from_live_tv", -1);
+            startFromLiveTv = intent.getIntExtra("from_live_tv", -1) == 1;
             mStartPackage = intent.getStringExtra("requestpackage");
         }
         updatePreferenceFragment();
@@ -180,7 +180,7 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
                         mSystemControlManager.SetDtvKitSourceEnable(0);
                     }
 
-                    if (mStartMode == 1) {
+                    if (startFromLiveTv) {
                         Intent intent = new Intent();
                         intent.setAction(COMMANDACTION);
                         intent.putExtra("from_tv_source", true);
@@ -196,44 +196,7 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
                             getPreferenceManager().getContext().startActivity(intent);
                         }
                     }
-                   /* if (mStartMode == MODE_LIVE_TV) {
-                        ((Activity)mContext).setResult(Activity.RESULT_OK, intent);
-                        ((Activity)mContext).finish();
-                    } else {
-                        getPreferenceManager().getContext().startActivity(intent);
-                    }*/
-                    // getPreferenceManager().getContext().startActivity(intent);
-                   ((Activity)mContext).finish();
-                   int currentDeviceId = 0;
-                   if (input != null) {
-                       HdmiDeviceInfo info = input.getHdmiDeviceInfo();
-                       if (info == null)
-                           currentDeviceId = DroidLogicTvUtils.getHardwareDeviceId(input);
-                   }
-                   if ((currentDeviceId == DroidLogicTvUtils.DEVICE_ID_ATV)
-                       ||(currentDeviceId == DroidLogicTvUtils.DEVICE_ID_AV1)
-                       ||(currentDeviceId == DroidLogicTvUtils.DEVICE_ID_AV2)
-                       ||(currentDeviceId == DroidLogicTvUtils.DEVICE_ID_DTV)
-                       ||(currentDeviceId == DroidLogicTvUtils.DEVICE_ID_ADTV)) {
-                       String label = null;
-                       switch (currentDeviceId) {
-                       case DroidLogicTvUtils.DEVICE_ID_ATV:
-                           label = ChannelInfo.LABEL_ATV;
-                           break;
-                       case DroidLogicTvUtils.DEVICE_ID_DTV:
-                           label = ChannelInfo.LABEL_DTV;
-                           break;
-                       case DroidLogicTvUtils.DEVICE_ID_ADTV:
-                           label = ChannelInfo.LABEL_ATV + ChannelInfo.LABEL_DTV;
-                           break;
-                       case DroidLogicTvUtils.DEVICE_ID_AV1:
-                           label = ChannelInfo.LABEL_AV1;
-                           break;
-                       case DroidLogicTvUtils.DEVICE_ID_AV2:
-                           label = ChannelInfo.LABEL_AV2;
-                           break;
-                       }
-                   }
+                    ((Activity)mContext).finish();
                    break;
                }
         }
