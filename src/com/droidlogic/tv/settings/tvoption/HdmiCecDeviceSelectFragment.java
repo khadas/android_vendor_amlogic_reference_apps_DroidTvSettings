@@ -22,6 +22,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.tv.TvInputInfo;
+import android.media.tv.TvInputManager;
 import android.os.Bundle;
 import android.support.annotation.Keep;
 import android.support.v17.preference.LeanbackPreferenceFragment;
@@ -56,7 +58,7 @@ import com.droidlogic.tv.settings.R;
 
 @Keep
 public class HdmiCecDeviceSelectFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceClickListener {
-    private static final String LOG_TAG = "HdmiCecDevControlFragment";
+    private static final String TAG = "HdmiCecDeviceSelectFragment";
     HdmiControlManager hcm;
     HdmiTvClient tv;
     private static final int MSG_FRESH_UI = 0;
@@ -110,30 +112,26 @@ public class HdmiCecDeviceSelectFragment extends LeanbackPreferenceFragment impl
     }
 
     private void updatePreferenceFragment() {
-        Log.d(LOG_TAG, "updatePreferenceFragment ");
+        Log.d(TAG, "updatePreferenceFragment ");
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
                 themedContext);
         screen.setTitle(R.string.title_cec_device_list);
         setPreferenceScreen(screen);
         int logicalAddress;
-        int mDevicePowerStatus;
         String deviceName = "";
         mHdmiDeviceInfoList.clear();
         for (HdmiDeviceInfo info : tv.getDeviceList()) {
-            if (info != null) {
+            if (info != null && info.isSourceType()) {
                 mHdmiDeviceInfoList.add(info);
                 logicalAddress = info.getLogicalAddress();
-                mDevicePowerStatus = info.getDevicePowerStatus();
-                if (ADDR_TV <= logicalAddress && logicalAddress <= ADDR_SPECIFIC_USE) {
-                    deviceName = (info.getDisplayName() != null ? info.getDisplayName() : DEFAULT_NAMES[logicalAddress]);
-                }
-                Log.d(LOG_TAG, "logicalAddress = " + logicalAddress + ", deviceName = " + deviceName);
-                final Preference mPreference = new Preference(themedContext);
-                mPreference.setTitle(deviceName);
-                mPreference.setKey(String.valueOf(logicalAddress));
-                mPreference.setOnPreferenceClickListener(this);
-                screen.addPreference(mPreference);
+                deviceName = (info.getDisplayName() != null ? info.getDisplayName() : DEFAULT_NAMES[logicalAddress]);
+                Log.d(TAG, "logicalAddress = " + logicalAddress + ", deviceName = " + deviceName);
+                final Preference preference = new Preference(themedContext);
+                preference.setTitle(deviceName);
+                preference.setKey(String.valueOf(logicalAddress));
+                preference.setOnPreferenceClickListener(this);
+                screen.addPreference(preference);
             }
         }
     }
@@ -156,7 +154,7 @@ public class HdmiCecDeviceSelectFragment extends LeanbackPreferenceFragment impl
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        Log.d(LOG_TAG, "[onPreferenceClick] preference.getKey() = " + preference.getKey());
+        Log.d(TAG, "[onPreferenceClick] preference.getKey() = " + preference.getKey());
         final int logicalAddress = Integer.parseInt((String)preference.getKey());
         /*
         if (tv != null) {
@@ -176,20 +174,32 @@ public class HdmiCecDeviceSelectFragment extends LeanbackPreferenceFragment impl
         return true;
     }
 
-    private void deviceSelect(int logicAddr) {
-        if (tv == null) {
-            return;
-        }
-        tv.deviceSelect(logicAddr, new SelectCallback() {
-            @Override
-            public void onComplete(int result) {
-                if (result != HdmiControlManager.RESULT_SUCCESS) {
-                    Log.d(LOG_TAG, "select device fail, onComplete result = " + result);
-                } else {
-                    Log.d(LOG_TAG, "select device success, onComplete result = " + result);
+    private final String ACTION_START_LIVE_TV = "action.startlivetv.settingui";
+    private final String FROM_TV_SOURCE = "from_tv_source";
+
+    private void deviceSelect(int logicalAddress) {
+        TvInputManager inputManger = (TvInputManager) getActivity()
+                        .getSystemService(Context.TV_INPUT_SERVICE);
+        if (inputManger != null) {
+            List<TvInputInfo> inputList = inputManger.getTvInputList();
+            for (TvInputInfo input : inputList) {
+                if (input != null &&
+                    input.getHdmiDeviceInfo() != null &&
+                    input.getHdmiDeviceInfo().getLogicalAddress() == logicalAddress) {
+                    Log.d(TAG, "select tv input " + input);
+                    startLiveTv(input);
+                    return;
                 }
             }
-        });
+        }
+    }
+
+    private void startLiveTv(TvInputInfo input) {
+        Intent intent = new Intent();
+        intent.setAction(ACTION_START_LIVE_TV);
+        intent.putExtra(FROM_TV_SOURCE, true);
+        intent.putExtra(TvInputInfo.EXTRA_INPUT_ID, input.getId());
+        getActivity().sendBroadcast(intent);
     }
 
     private Handler mHandler = new Handler() {
