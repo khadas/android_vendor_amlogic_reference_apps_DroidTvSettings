@@ -242,6 +242,8 @@
     <string name="tv_dialog_clarity">清脆人声</string>
     <string name="tv_bass_boost">低音增强</string>
     <string name="tv_sound_output_device">声音输出设备</string>
+    <string name="title_tv_sound_audio_only">仅有声音设置</string>
+    <string name="msg_tv_sound_audio_only">您确定设置仅有声音吗？选择后，系统将熄灭，然后按任意键点亮屏幕。</string>
     <string name="pq_backlight">背光</string>
     <string name="pq_backlight_description">允许电视根据环境光自动调节屏的背光亮度</string>
     <string name="tv_audio_ad_switch">声音AD开关</string>

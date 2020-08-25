@@ -182,6 +182,8 @@
     <string name="title_tv_dts_virtualx_effect">DTS VirtualX</string>
     <string name="title_tv_dts_virtualx_truvolumehd">DTS TruVolume HD</string>
     <string name="tv_sound_output_device">Sound Output Device</string>
+    <string name="title_tv_sound_audio_only">Audio Only</string>
+    <string name="msg_tv_sound_audio_only">Are you sure to turn on audio only? After selection, the system will black out, and press any key to turn on the screen.</string>
     <string name="tv_sound_agc">AGC</string>
     <string name="tv_sound_agc_enable">AGC Enable</string>
     <string name="tv_sound_agc_max_level">Max Level</string>

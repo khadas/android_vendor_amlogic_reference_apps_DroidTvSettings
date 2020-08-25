@@ -19,6 +19,7 @@ package com.droidlogic.tv.settings.soundeffect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemProperties;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
@@ -40,6 +41,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 
 import com.droidlogic.app.tv.AudioEffectManager;
+import com.droidlogic.app.tv.TvControlManager;
 import com.droidlogic.app.OutputModeManager;
 
 import com.droidlogic.tv.settings.TvSettingsActivity;
@@ -55,13 +57,16 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
     private static final String TV_VIRTUAL_SURROUND_SETTINGS = "tv_sound_virtual_surround";
     private static final String TV_SOUND_OUT = "tv_sound_output_device";
     private static final String DAP_MODE = "dap_sound";
+    private static final String AUDIO_ONLY = "tv_sound_audio_only";
 
     private AudioEffectManager mAudioEffectManager;
+    private TvControlManager mTvControlManager;
     private SoundParameterSettingManager mSoundParameterSettingManager;
     private OutputModeManager mOutputModeManager;
 
     private static final int UI_LOAD_TIMEOUT = 50;//100ms
     private static final int LOAD_UI = 0;
+    private static final int AUDIOONLY = 0;
 
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -110,6 +115,7 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
 
     private void init() {
         mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
+        mTvControlManager = TvControlManager.getInstance();
         mSoundParameterSettingManager = ((TvSettingsActivity)getActivity()).getSoundParameterSettingManager();
         mOutputModeManager = new OutputModeManager(getActivity());
     }
@@ -161,6 +167,8 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
 
         final Preference balance = (Preference) findPreference(TV_BALANCE_SETTINGS);
         balance.setSummary(getShowString(R.string.tv_balance_effect, mAudioEffectManager.getBalanceStatus()));
+
+        final Preference audio_only = (Preference) findPreference(AUDIO_ONLY);
         return true;
     }
 
@@ -169,6 +177,8 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
         if (CanDebug()) Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
         if (TextUtils.equals(preference.getKey(), DAP_MODE)) {
             mSoundParameterSettingManager.startDolbyEffectSettings(getActivity());
+        }else if (TextUtils.equals(preference.getKey(), AUDIO_ONLY)) {
+            createUiDialog(AUDIOONLY);
         }
 
         return super.onPreferenceTreeClick(preference);
@@ -215,6 +225,43 @@ public class SoundModeFragment extends LeanbackPreferenceFragment implements Pre
         mAlertDialog.getWindow().setContentView(view);
         //mAlertDialog.getWindow().setLayout(150, 320);
         initSeekBar(view);
+    }
+
+    private void createUiDialog (int type) {
+        Context context = (Context) (getActivity());
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.xml.layout_dialog, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.show();
+        mAlertDialog.getWindow().setContentView(view);
+        TextView button_cancel = (TextView)view.findViewById(R.id.dialog_cancel);
+        TextView dialogtitle = (TextView)view.findViewById(R.id.dialog_title);
+        TextView dialogdetails = (TextView)view.findViewById(R.id.dialog_details);
+        if (AUDIOONLY == type) {
+            dialogtitle.setText(getActivity().getResources().getString(R.string.title_tv_sound_audio_only));
+            dialogdetails.setText(getActivity().getResources().getString(R.string.msg_tv_sound_audio_only));
+        }
+        button_cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mAlertDialog != null)
+                    mAlertDialog.dismiss();
+            }
+        });
+        button_cancel.requestFocus();
+        TextView button_ok = (TextView)view.findViewById(R.id.dialog_ok);
+        button_ok.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (AUDIOONLY == type) {
+                    mTvControlManager.setLcdEnable(false);
+                    SystemProperties.set("persist.audio.only.state", "true");
+                }
+                mAlertDialog.dismiss();
+            }
+        });
     }
 
     private boolean isSeekBarInited = false;

@@ -69,4 +69,8 @@
         android:entryValues="@array/tv_sound_output_device_entry_values"
         android:title="@string/tv_sound_output_device"
         android:summary="%s" />
+     <Preference
+        android:persistent="false"
+        android:key="tv_sound_audio_only"
+        android:title="@string/title_tv_sound_audio_only" />
 </PreferenceScreen>
