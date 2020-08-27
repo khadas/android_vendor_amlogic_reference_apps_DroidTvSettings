@@ -555,20 +555,20 @@ public class TvOptionSettingManager {
             return;
         }
         if (mode == 2) {
-            mTvControlManager.SaveHdmiEdidVersion(allport[order],
-                TvControlManager.HdmiEdidVer.HDMI_EDID_VER_AUTO);
             mTvControlManager.SetHdmiEdidVersion(allport[order],
+                TvControlManager.HdmiEdidVer.HDMI_EDID_VER_AUTO);
+            mTvControlManager.SaveHdmiEdidVersion(allport[order],
                 TvControlManager.HdmiEdidVer.HDMI_EDID_VER_AUTO);
         } else if (mode == 1) {
             // set HDMI mode sequence: save than set
-            mTvControlManager.SaveHdmiEdidVersion(allport[order],
-                TvControlManager.HdmiEdidVer.HDMI_EDID_VER_20);
             mTvControlManager.SetHdmiEdidVersion(allport[order],
+                TvControlManager.HdmiEdidVer.HDMI_EDID_VER_20);
+            mTvControlManager.SaveHdmiEdidVersion(allport[order],
                 TvControlManager.HdmiEdidVer.HDMI_EDID_VER_20);
         } else {
-            mTvControlManager.SaveHdmiEdidVersion(allport[order],
-                TvControlManager.HdmiEdidVer.HDMI_EDID_VER_14);
             mTvControlManager.SetHdmiEdidVersion(allport[order],
+                TvControlManager.HdmiEdidVer.HDMI_EDID_VER_14);
+            mTvControlManager.SaveHdmiEdidVersion(allport[order],
                 TvControlManager.HdmiEdidVer.HDMI_EDID_VER_14);
         }
     }
