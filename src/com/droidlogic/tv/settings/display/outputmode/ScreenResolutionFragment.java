@@ -306,10 +306,15 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
         if (TextUtils.equals(preference.getKey(), KEY_BEST_RESOLUTION)) {
             preMode = getCurrentDisplayMode();
             preDeepColor = getCurrentDeepColor();
-            setBestResolution();
-            mHandler.sendEmptyMessage(MSG_FRESH_UI);
-            if (isBestResolution()) {
-                showDialog();
+            if ((boolean)newValue) {
+                setBestResolution();
+                mHandler.sendEmptyMessage(MSG_FRESH_UI);
+                if (isBestResolution()) {
+                    showDialog();
+                }
+            } else {
+                mOutputUiManager.change2NewMode(preMode);
+                mHandler.sendEmptyMessage(MSG_FRESH_UI);
             }
         } else if (TextUtils.equals(preference.getKey(), KEY_BEST_DOLBYVISION)) {
             int type = mDolbyVisionSettingManager.getDolbyVisionType();
