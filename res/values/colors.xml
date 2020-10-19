@@ -21,6 +21,11 @@
     <color name="settings_background">#FF1F292E</color>
     <color name="quiet">#FF909090</color>
 
+    <color name="settings_category_text_color">#FF51AAFF</color>
+    <color name="lb_preference_decor_list_background">#FF202124</color>
+    <color name="settings_screen_title_color">#FF1B1C1E</color>
+
+
     <color name="icon_background">#FF4A4F51</color>
 
     <color name="add_accessory_hint_text_color">#FFE0E0E0</color>
