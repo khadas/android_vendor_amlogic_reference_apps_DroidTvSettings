@@ -78,12 +78,14 @@
     <string-array name="digital_sounds_tv_entries">
         <item>PCM</item>
         <item>AUTO</item>
+        <item>Passthough</item>
     </string-array>
 
 
     <string-array name="digital_sounds_tv_entry_values" translatable="false">
         <item>pcm</item>
         <item>auto</item>
+        <item>passthrough</item>
     </string-array>
 
     <string-array name="dts_sounds_entries">

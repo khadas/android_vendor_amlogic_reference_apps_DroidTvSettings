@@ -49,15 +49,10 @@
         android:title="@string/device_sound_digital">
         <!--android:layout="@layout/preference_category_compact_layout" -->
         <ListPreference
-            android:key="digital_sound_ott"
+            android:key="key_digital_audio_format"
             android:persistent="false"
             android:title="@string/device_sound_digital"
             android:summary="%s" />
-        <SwitchPreference
-            android:key="digital_sound_tv"
-            android:persistent="false"
-            android:title="@string/device_sound_digital_auto"
-            android:summary="@string/device_sound_digital_auto_description"/>
     </PreferenceCategory>
     <ListPreference
         android:key="dtsdrc_mode"

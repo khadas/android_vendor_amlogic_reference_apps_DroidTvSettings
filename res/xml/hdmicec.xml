@@ -52,11 +52,11 @@
         android:key="key_cec_device_list"
         android:title="@string/title_cec_device_list"
         android:summary="@string/cec_device_list_description"/>
-    <SwitchPreference
-        android:key="digital_sound_tv"
+    <ListPreference
+        android:key="key_digital_audio_format"
         android:persistent="false"
-        android:title="@string/device_sound_digital_auto"
-        android:summary="@string/device_sound_digital_auto_description"/>
+        android:title="@string/device_sound_digital"
+        android:summary="%s" />
     <SeekBarPreference
         android:key="key_audio_output_latency"
         android:persistent="false"

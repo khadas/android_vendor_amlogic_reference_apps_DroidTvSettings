@@ -35,9 +35,7 @@ import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.lang.reflect.Method;
 
 import com.droidlogic.app.OutputModeManager;
@@ -49,18 +47,17 @@ import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 public class SoundFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "SoundFragment";
 
-    private static final String KEY_DRCMODE_PASSTHROUGH                     = "drc_mode";
-    private static final String KEY_AUDIO_MIXING                            = "audio_mixing";
+    private static final String KEY_DRCMODE_PASSTHROUGH                     = "drc_mode";                   /* Dolby Sounds */
+    private static final String KEY_AUDIO_MIXING                            = "audio_mixing";               /* Audio Mixing */
     private static final String KEY_DIGITALSOUND_CATEGORY                   = "surround_sound_category";
     private static final String KEY_DIGITALSOUND_PREFIX                     = "digital_subformat_";
-    public static final String KEY_DIGITALSOUND_TV                 = "digital_sound_tv";
-    public static final String KEY_DIGITALSOUND_OTT                 = "digital_sound_ott";
+    public static final String KEY_DIGITALSOUND_FORMAT                      = "key_digital_audio_format";
     private static final String KEY_DTSDRCMODE_PASSTHROUGH                  = "dtsdrc_mode";
     private static final String KEY_DTSDRCCUSTOMMODE_PASSTHROUGH            = "dtsdrc_custom_mode";
     private static final String KEY_AD_SURPORT                              = "ad_surport";
     private static final String KEY_DAP                                     = "dolby_audio_processing";
-    private static final String KEY_ARC_LATENCY                             = "arc_latency";
-    public static final String KEY_AUDIO_OUTPUT_LATENCY                     = "key_audio_output_latency";
+    private static final String KEY_ARC_LATENCY                             = "arc_latency";                /* HDMI/ARC latency */
+    public static final String KEY_AUDIO_OUTPUT_LATENCY                     = "key_audio_output_latency";   /* Audio Output Latency */
 
     public static final int KEY_AUDIO_OUTPUT_LATENCY_STEP                   = 10; // 10ms
 
@@ -127,6 +124,8 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
 
         drcmodePref.setValue(mSoundParameterSettingManager.getDrcModePassthroughSetting());
         drcmodePref.setOnPreferenceChangeListener(this);
+        /* Temporary unused "Dolby Sounds" */
+        drcmodePref.setVisible(false);
         mixingPref.setChecked(mSoundParameterSettingManager.getAudioMixingEnable());
         dtsdrcmodePref.setValue(mSystemControlManager.getPropertyString("persist.vendor.sys.dtsdrcscale", OutputModeManager.DEFAULT_DRC_SCALE));
         dtsdrcmodePref.setOnPreferenceChangeListener(this);
@@ -136,12 +135,16 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         arcPref.setMin(OutputModeManager.TV_ARC_LATENCY_MIN);
         arcPref.setSeekBarIncrement(10);
         arcPref.setValue(mSoundParameterSettingManager.getARCLatency());
+        /* Temporary unused "HDMI/ARC latency" */
+        arcPref.setVisible(false);
 
         audioOutputLatencyPref.setOnPreferenceChangeListener(this);
         audioOutputLatencyPref.setMax(OutputModeManager.AUDIO_OUTPUT_LATENCY_MAX);
         audioOutputLatencyPref.setMin(OutputModeManager.AUDIO_OUTPUT_LATENCY_MIN);
         audioOutputLatencyPref.setSeekBarIncrement(KEY_AUDIO_OUTPUT_LATENCY_STEP);
         audioOutputLatencyPref.setValue(mSoundParameterSettingManager.getAudioOutputLatency());
+        /* Temporary unused "Audio Output Latency " */
+        audioOutputLatencyPref.setVisible(false);
 
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext());
         if (!mSystemControlManager.getPropertyBoolean("ro.vendor.platform.support.dolby", false)) {
@@ -158,21 +161,36 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         } else {
             dtsdrccustommodePref.setVisible(false);
         }
-
-        final ListPreference digitalSoundOttPref = (ListPreference) findPreference(KEY_DIGITALSOUND_OTT);
-        final TwoStatePreference digitalSoundtvPref = (TwoStatePreference) findPreference(SoundFragment.KEY_DIGITALSOUND_TV);
+        final ListPreference digitalSoundPref = (ListPreference) findPreference(KEY_DIGITALSOUND_FORMAT);
         if (tvFlag) {
-            digitalSoundtvPref.setChecked(mSoundParameterSettingManager.isDigitalAudioFormat());
-            digitalSoundOttPref.setVisible(false);
+            String format = mSoundParameterSettingManager.getDigitalAudioFormat();
+            /* not support passthrough when ms12 so are not included.*/
+            if (!mSoundParameterSettingManager.isAudioSupportMs12System()) {
+                String[] entry = getArrayString(R.array.digital_sounds_tv_entries);
+                String[] entryValue = getArrayString(R.array.digital_sounds_tv_entry_values);
+                List<String> entryList = new ArrayList<String>(Arrays.asList(entry));
+                List<String> entryValueList = new ArrayList<String>(Arrays.asList(entryValue));
+                entryList.remove("Passthough");
+                entryValueList.remove(SoundParameterSettingManager.DIGITAL_SOUND_PASSTHROUGH);
+                digitalSoundPref.setEntries(entryList.toArray(new String[]{}));
+                digitalSoundPref.setEntryValues(entryValueList.toArray(new String[]{}));
+                if (format.equals(SoundParameterSettingManager.DIGITAL_SOUND_PASSTHROUGH)) {
+                    format = SoundParameterSettingManager.DIGITAL_SOUND_AUTO;
+                }
+            } else {
+                digitalSoundPref.setEntries(R.array.digital_sounds_tv_entries);
+                digitalSoundPref.setEntryValues(R.array.digital_sounds_tv_entry_values);
+            }
+            digitalSoundPref.setValue(format);
+            digitalSoundPref.setOnPreferenceChangeListener(this);
+            mixingPref.setVisible(false);
         } else {
-            digitalSoundOttPref.setEntries(
-                    getArrayString(R.array.digital_sounds_box_entries));
-            digitalSoundOttPref.setEntryValues(getArrayString(
-                    R.array.digital_sounds_box_entry_values));
-            digitalSoundOttPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
-            digitalSoundOttPref.setOnPreferenceChangeListener(this);
+            digitalSoundPref.setEntries(R.array.digital_sounds_box_entries);
+            digitalSoundPref.setEntryValues(R.array.digital_sounds_box_entry_values);
+            digitalSoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
+            digitalSoundPref.setOnPreferenceChangeListener(this);
             //adsurport.setVisible(false);
-            digitalSoundtvPref.setVisible(false);
+            mixingPref.setVisible(true);
         }
 
         mCategoryPref = (PreferenceCategory) findPreference(KEY_DIGITALSOUND_CATEGORY);
@@ -281,11 +299,6 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         } else if (KEY_AD_SURPORT.equals(key)) {
             final TwoStatePreference adsurport = (TwoStatePreference) findPreference(KEY_AD_SURPORT);
             mSoundParameterSettingManager.setAdSurportStatus(adsurport.isChecked());
-        } else if (KEY_DIGITALSOUND_TV.equals(key)) {
-            boolean enable = !mSoundParameterSettingManager.isDigitalAudioFormat();
-            TwoStatePreference digitalSoundtvPref = (TwoStatePreference) preference;
-            digitalSoundtvPref.setChecked(enable);
-            mSoundParameterSettingManager.enableDigitalAudioFormat(enable);
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -313,7 +326,7 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
             default:
                 throw new IllegalArgumentException("Unknown drc mode pref value");
             }
-        } else if (TextUtils.equals(preference.getKey(), KEY_DIGITALSOUND_OTT)) {
+        } else if (TextUtils.equals(preference.getKey(), KEY_DIGITALSOUND_FORMAT)) {
             final String selection = (String)newValue;
             mSoundParameterSettingManager.setDigitalAudioFormat(selection);
             updateFormatPreferencesStates();

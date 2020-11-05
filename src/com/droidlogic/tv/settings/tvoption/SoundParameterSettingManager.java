@@ -50,6 +50,7 @@ public class SoundParameterSettingManager {
     public static final String DIGITAL_SOUND_SPDIF = "spdif";
     public static final String DIGITAL_SOUND_AUTO = "auto";
     public static final String DIGITAL_SOUND_MANUAL = "manual";
+    public static final String DIGITAL_SOUND_PASSTHROUGH = "passthrough";
     public static final String TV_KEY_AD_SWITCH = "ad_switch";
 
     private Resources mResources;
@@ -105,57 +106,81 @@ public class SoundParameterSettingManager {
         if (CanDebug()) Log.d(TAG, "setDigitalAudioFormat = " + mode);
         switch (mode) {
             case DIGITAL_SOUND_PCM:
-                mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_PCM);
+                mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_PCM);
                 break;
             case DIGITAL_SOUND_SPDIF:
-                mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_SPDIF);
+                mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_SPDIF);
                 break;
             case DIGITAL_SOUND_MANUAL:
-                mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_MANUAL,
+                mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_MANUAL,
                         getAudioManualFormats());
                 break;
             case DIGITAL_SOUND_AUTO:
+            case DIGITAL_SOUND_PASSTHROUGH:
             default:
-                mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUTO);
+                mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO);
                 break;
+        }
+        boolean tvflag = SettingsConstant.needDroidlogicTvFeature(mContext);
+        if (tvflag) {
+            if (mode.equals(DIGITAL_SOUND_PASSTHROUGH)) {
+                setAudioMixingEnable(false);
+            } else {
+                setAudioMixingEnable(true);
+            }
         }
     }
 
     public String getDigitalAudioFormat() {
         final int value = Settings.Global.getInt(mContext.getContentResolver(),
-                OutputModeManager.DIGITAL_AUDIO_FORMAT, OutputModeManager.DIGITAL_AUTO);
+                OutputModeManager.DIGITAL_AUDIO_FORMAT, OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO);
         if (CanDebug()) Log.d(TAG, "getDigitalAudioFormat value = " + value);
-
+        String format = "";
         switch (value) {
-        case OutputModeManager.DIGITAL_PCM:
-            return DIGITAL_SOUND_PCM;
-        case OutputModeManager.DIGITAL_SPDIF:
-            return DIGITAL_SOUND_SPDIF;
-        case OutputModeManager.DIGITAL_MANUAL:
-            return DIGITAL_SOUND_MANUAL;
-        case OutputModeManager.DIGITAL_AUTO:
+        case OutputModeManager.DIGITAL_AUDIO_FORMAT_PCM:
+            format = DIGITAL_SOUND_PCM;
+            break;
+        case OutputModeManager.DIGITAL_AUDIO_FORMAT_SPDIF:
+            format = DIGITAL_SOUND_SPDIF;
+            break;
+        case OutputModeManager.DIGITAL_AUDIO_FORMAT_MANUAL:
+            format = DIGITAL_SOUND_MANUAL;
+            break;
+        case OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO:
+            boolean tvflag = SettingsConstant.needDroidlogicTvFeature(mContext);
+            if (tvflag && !getAudioMixingEnable()) {
+                format = DIGITAL_SOUND_PASSTHROUGH;
+            } else {
+                format = DIGITAL_SOUND_AUTO;
+            }
+            break;
         default:
-            return DIGITAL_SOUND_AUTO;
+            format = DIGITAL_SOUND_AUTO;
         }
+        return format;
     }
 
     public boolean isDigitalAudioFormat() {
         final int value = Settings.Global.getInt(mContext.getContentResolver(),
-                OutputModeManager.DIGITAL_AUDIO_FORMAT, OutputModeManager.DIGITAL_AUTO);
-        if (CanDebug()) Log.d(TAG, "getDigitalAudioFormat value = " + value);
+                OutputModeManager.DIGITAL_AUDIO_FORMAT, OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO);
+        if (CanDebug()) Log.d(TAG, "isDigitalAudioFormat value = " + value);
 
-        if (value == OutputModeManager.DIGITAL_AUTO) {
+        if (value == OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO) {
             return true;
         } else {
             return false;
         }
     }
 
+    public boolean isAudioSupportMs12System() {
+        return mOutputModeManager.isAudioSupportMs12System();
+    }
+
     public void enableDigitalAudioFormat(boolean enable) {
         if (enable) {
-            mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUTO);
+            mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO);
         } else {
-            mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_PCM);
+            mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_PCM);
         }
     }
 
@@ -176,7 +201,7 @@ public class SoundParameterSettingManager {
             fmts.remove(id);
         }
         mOutputModeManager.setDigitalAudioFormatOut(
-                OutputModeManager.DIGITAL_MANUAL, TextUtils.join(",", fmts));
+                OutputModeManager.DIGITAL_AUDIO_FORMAT_MANUAL, TextUtils.join(",", fmts));
     }
 
     public String getAudioManualFormats() {
