@@ -30,7 +30,6 @@
     <string name="device_position_zoomin">"放大屏幕"</string>
     <string name="device_position_description">"当前缩放比例是"</string>
     <string name="device_sound">"声音"</string>
-    <string name="audio_mixing">"音频混合"</string>
     <string name="audio_mixing_summary_on">支持杜比5.1声道</string>
     <string name="audio_mixing_summary_off">支持杜比7.1声道</string>
     <string name="dolby_audio_processing">杜比音效</string>

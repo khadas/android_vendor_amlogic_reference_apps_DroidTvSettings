@@ -46,12 +46,12 @@ import java.util.SimpleTimeZone;
 public class SoundParameterSettingManager {
 
     public static final String TAG = "SoundParameterSettingManager";
-    public static final String DIGITAL_SOUND_PCM = "pcm";
-    public static final String DIGITAL_SOUND_SPDIF = "spdif";
-    public static final String DIGITAL_SOUND_AUTO = "auto";
-    public static final String DIGITAL_SOUND_MANUAL = "manual";
-    public static final String DIGITAL_SOUND_PASSTHROUGH = "passthrough";
-    public static final String TV_KEY_AD_SWITCH = "ad_switch";
+    public static final String DIGITAL_SOUND_PCM                = "pcm";
+    public static final String DIGITAL_SOUND_SPDIF              = "spdif";
+    public static final String DIGITAL_SOUND_AUTO               = "auto";
+    public static final String DIGITAL_SOUND_MANUAL             = "manual";
+    public static final String DIGITAL_SOUND_PASSTHROUGH        = "passthrough";
+    public static final String TV_KEY_AD_SWITCH                 = "ad_switch";
 
     private Resources mResources;
     private Context mContext;
@@ -115,19 +115,13 @@ public class SoundParameterSettingManager {
                 mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_MANUAL,
                         getAudioManualFormats());
                 break;
-            case DIGITAL_SOUND_AUTO:
             case DIGITAL_SOUND_PASSTHROUGH:
+                mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_PASSTHROUGH);
+                break;
+            case DIGITAL_SOUND_AUTO:
             default:
                 mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO);
                 break;
-        }
-        boolean tvflag = SettingsConstant.needDroidlogicTvFeature(mContext);
-        if (tvflag) {
-            if (mode.equals(DIGITAL_SOUND_PASSTHROUGH)) {
-                setAudioMixingEnable(false);
-            } else {
-                setAudioMixingEnable(true);
-            }
         }
     }
 
@@ -147,12 +141,10 @@ public class SoundParameterSettingManager {
             format = DIGITAL_SOUND_MANUAL;
             break;
         case OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO:
-            boolean tvflag = SettingsConstant.needDroidlogicTvFeature(mContext);
-            if (tvflag && !getAudioMixingEnable()) {
-                format = DIGITAL_SOUND_PASSTHROUGH;
-            } else {
-                format = DIGITAL_SOUND_AUTO;
-            }
+            format = DIGITAL_SOUND_AUTO;
+            break;
+        case OutputModeManager.DIGITAL_AUDIO_FORMAT_PASSTHROUGH:
+            format = DIGITAL_SOUND_PASSTHROUGH;
             break;
         default:
             format = DIGITAL_SOUND_AUTO;
@@ -160,28 +152,8 @@ public class SoundParameterSettingManager {
         return format;
     }
 
-    public boolean isDigitalAudioFormat() {
-        final int value = Settings.Global.getInt(mContext.getContentResolver(),
-                OutputModeManager.DIGITAL_AUDIO_FORMAT, OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO);
-        if (CanDebug()) Log.d(TAG, "isDigitalAudioFormat value = " + value);
-
-        if (value == OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public boolean isAudioSupportMs12System() {
         return mOutputModeManager.isAudioSupportMs12System();
-    }
-
-    public void enableDigitalAudioFormat(boolean enable) {
-        if (enable) {
-            mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO);
-        } else {
-            mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_PCM);
-        }
     }
 
     public void setAudioManualFormats(int id, boolean enabled) {
@@ -206,14 +178,6 @@ public class SoundParameterSettingManager {
 
     public String getAudioManualFormats() {
         return mAudioSettingManager.getAudioManualFormats();
-    }
-
-    public void setAudioMixingEnable(boolean newVal) {
-        mAudioSettingManager.setAudioMixingEnable(newVal);
-    }
-
-    public boolean getAudioMixingEnable() {
-        return mAudioSettingManager.getAudioMixingEnable();
     }
 
     public void setARCLatency(int newVal) {

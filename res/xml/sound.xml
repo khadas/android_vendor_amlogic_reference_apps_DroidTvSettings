@@ -29,13 +29,6 @@
         android:fragment="com.droidlogic.tv.settings.DolbyAudioEffectFragment"
         android:key="dolby_audio_processing"
         android:title="@string/dolby_audio_processing" />
-
-    <SwitchPreference
-        android:key="audio_mixing"
-        android:persistent="false"
-        android:title="@string/audio_mixing"
-        android:summaryOn="@string/audio_mixing_summary_on"
-        android:summaryOff="@string/audio_mixing_summary_off" />
     <SeekBarPreference
         android:key="arc_latency"
         android:persistent="false"

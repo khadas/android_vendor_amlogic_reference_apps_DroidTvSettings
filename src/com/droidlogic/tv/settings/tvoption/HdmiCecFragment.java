@@ -173,9 +173,10 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
             mHdmiCecFragment = newInstance();
         }
         hdmiDeviceSelectPref.setOnPreferenceChangeListener(mHdmiCecFragment);
+
         final ListPreference digitalSoundPref = (ListPreference) findPreference(SoundFragment.KEY_DIGITALSOUND_FORMAT);
+        digitalSoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
         if (tvFlag) {
-            String format = mSoundParameterSettingManager.getDigitalAudioFormat();
             /* not support passthrough when ms12 so are not included.*/
             if (!mSoundParameterSettingManager.isAudioSupportMs12System()) {
                 String[] entry = getArrayString(R.array.digital_sounds_tv_entries);
@@ -186,21 +187,16 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment implements Prefe
                 entryValueList.remove(SoundParameterSettingManager.DIGITAL_SOUND_PASSTHROUGH);
                 digitalSoundPref.setEntries(entryList.toArray(new String[]{}));
                 digitalSoundPref.setEntryValues(entryValueList.toArray(new String[]{}));
-                if (format.equals(SoundParameterSettingManager.DIGITAL_SOUND_PASSTHROUGH)) {
-                    format = SoundParameterSettingManager.DIGITAL_SOUND_AUTO;
-                }
             } else {
                 digitalSoundPref.setEntries(R.array.digital_sounds_tv_entries);
                 digitalSoundPref.setEntryValues(R.array.digital_sounds_tv_entry_values);
             }
-            digitalSoundPref.setValue(format);
-            digitalSoundPref.setOnPreferenceChangeListener(this);
         } else {
             digitalSoundPref.setEntries(R.array.digital_sounds_box_entries);
             digitalSoundPref.setEntryValues(R.array.digital_sounds_box_entry_values);
-            digitalSoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
-            digitalSoundPref.setOnPreferenceChangeListener(this);
+            //adsurport.setVisible(false);
         }
+        digitalSoundPref.setOnPreferenceChangeListener(this);
 
         final SeekBarPreference audioOutputLatencyPref = (SeekBarPreference) findPreference(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY);
         audioOutputLatencyPref.setOnPreferenceChangeListener(this);
