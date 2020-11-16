@@ -21,5 +21,9 @@
       <SwitchPreference
         android:key="ai_pq_enable"
         android:persistent="true"
-        android:title="@string/hotspot_settings_enable" />
+        android:title="@string/ai_pq_enable" />
+      <SwitchPreference
+        android:key="ai_pq_info_enable"
+        android:persistent="true"
+        android:title="@string/ai_pq_info_enable" />
 </PreferenceScreen>

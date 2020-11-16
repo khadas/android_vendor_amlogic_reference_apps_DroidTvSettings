@@ -28,14 +28,20 @@ import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.droidlogic.app.SystemControlManager;
+
 public class AiPqFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "AiPqFragment";
 
     private static final String KEY_ENABLE_AIPQ = "ai_pq_enable";
+    private static final String KEY_ENABLE_AIPQ_INFO = "ai_pq_info_enable";
+    private static final String SYSFS_DEBUG_VDETECT = "/sys/module/decoder_common/parameters/debug_vdetect";
+    private static final String SYSFS_ADD_VDETECT = "/sys/class/vdetect/tv_add_vdetect";
     private Context mContext;
+    private SystemControlManager mSystemControlManager;
     private AiPqService mService;
     private TwoStatePreference enableAipqPref;
-
+    private TwoStatePreference enableAipqInfoPref;
     public static AiPqFragment newInstance() {
         return new AiPqFragment();
     }
@@ -83,14 +89,28 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.aipq, null);
+        mSystemControlManager = SystemControlManager.getInstance();
         enableAipqPref = (TwoStatePreference) findPreference(KEY_ENABLE_AIPQ);
         enableAipqPref.setOnPreferenceChangeListener(this);
+        enableAipqPref.setChecked(getAipqEnabled());
+        
+        enableAipqInfoPref = (TwoStatePreference) findPreference(KEY_ENABLE_AIPQ_INFO);
+        enableAipqInfoPref.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
         if (TextUtils.equals(preference.getKey(), KEY_ENABLE_AIPQ)) {
+            if ((boolean) newValue) {
+                enableAipqInfoPref.setEnabled(true);
+            } else {
+                enableAipqInfoPref.setEnabled(false);
+                enableAipqInfoPref.setChecked(false);
+                if (mService != null) mService.disableAipq();
+            }
+            setAipqEnabled((boolean) newValue);
+        } else if (TextUtils.equals(preference.getKey(), KEY_ENABLE_AIPQ_INFO)) {
             if ((boolean) newValue) {
                 if (mService != null) mService.enableAipq();
             } else {
@@ -107,7 +127,7 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
             mService = binder.getService();
             Log.d("V", "bind success0");
             if (!mService.isShowing()) {
-                enableAipqPref.setChecked(false);
+                enableAipqInfoPref.setChecked(false);
             }
         }
 
@@ -116,4 +136,11 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
         }
     };
 
+    private boolean getAipqEnabled() {
+        return mSystemControlManager.getAipqEnable();
+    }
+
+    private void setAipqEnabled(boolean enable) {
+        mSystemControlManager.setAipqEnable(enable);
+    }
 }
