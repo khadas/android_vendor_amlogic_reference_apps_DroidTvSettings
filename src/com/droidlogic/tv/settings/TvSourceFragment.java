@@ -260,11 +260,15 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
     }
 
     private CharSequence getTitle(Context themedContext, TvInputInfo input, HdmiDeviceInfo audioSystem, List<HdmiDeviceInfo> hdmiList) {
-        CharSequence title = input.loadCustomLabel(themedContext);
-        if (TextUtils.isEmpty(title)) {
-            title = input.loadLabel(themedContext);
+        CharSequence title = "";
+        CharSequence label = input.loadLabel(themedContext);
+        CharSequence customLabel = input.loadCustomLabel(themedContext);
+        if (TextUtils.isEmpty(customLabel) || customLabel.equals(label)) {
+            title = label;
+        } else {
+            title = customLabel;
         }
-        Log.d(TAG, "getTitle default " + title);
+        Log.d(TAG, "getTitle default " + title + ", label = " + label + ", customLabel = " + customLabel);
         if (input.isPassthroughInput()) {
             int portId = DroidLogicTvUtils.getPortId(input);
             if (audioSystem != null && audioSystem.getPortId() == portId) {
@@ -287,7 +291,7 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
     }
 
     private CharSequence getTitleForTuner(Context themedContext, String packageName, CharSequence label, TvInputInfo input) {
-        CharSequence title = "";
+        CharSequence title = label;
         if (PACKAGE_DROIDLOGIC_TVINPUT.equals(packageName)) {
             title = themedContext.getString(DroidLogicTvUtils.isChina(themedContext) ? R.string.input_atv : R.string.input_long_label_for_tuner);
         } else if (TextUtils.isEmpty(label)) {
