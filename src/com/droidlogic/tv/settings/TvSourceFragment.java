@@ -123,17 +123,19 @@ public class TvSourceFragment extends LeanbackPreferenceFragment {
         updatePreferenceFragment();
     }
     public void calculatePreSrcToCurSrc(Preference preference) {
-        if (DroidLogicTvUtils.getCurrentInputId(mContext).contains("ADTV")) {
-            if (DroidLogicTvUtils.isATV(mContext)) {
-                mPreSource = "ATV";
-            } else {
-                mPreSource = "DTV";
+        String currentInputId = DroidLogicTvUtils.getCurrentInputId(mContext);
+        if (currentInputId != null) {
+            if (DroidLogicTvUtils.getCurrentInputId(mContext).contains("ADTV")) {
+                if (DroidLogicTvUtils.isATV(mContext)) {
+                    mPreSource = "ATV";
+                } else {
+                    mPreSource = "DTV";
+                }
+            } else if (DroidLogicTvUtils.getCurrentInputId(mContext).contains("AV")){
+                mPreSource = "AV";
+            } else if (DroidLogicTvUtils.getCurrentInputId(mContext).contains("Hdmi")) {
+                mPreSource = "HDMI";
             }
-
-        } else if (DroidLogicTvUtils.getCurrentInputId(mContext).contains("AV")){
-            mPreSource = "AV";
-        } else if (DroidLogicTvUtils.getCurrentInputId(mContext).contains("Hdmi")) {
-            mPreSource = "HDMI";
         }
 
         String inputId = preference.getKey();
