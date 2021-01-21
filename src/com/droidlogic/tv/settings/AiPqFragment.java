@@ -29,12 +29,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.droidlogic.app.SystemControlManager;
-
+import com.droidlogic.tv.settings.util.DroidUtils;
 public class AiPqFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "AiPqFragment";
 
     private static final String KEY_ENABLE_AIPQ = "ai_pq_enable";
-    private static final String KEY_ENABLE_AIPQ_INFO = "ai_pq_info_enable";
+    public static final String KEY_ENABLE_AIPQ_INFO = "ai_pq_info_enable";
     private static final String SYSFS_DEBUG_VDETECT = "/sys/module/decoder_common/parameters/debug_vdetect";
     private static final String SYSFS_ADD_VDETECT = "/sys/class/vdetect/tv_add_vdetect";
     private Context mContext;
@@ -93,9 +93,12 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
         enableAipqPref = (TwoStatePreference) findPreference(KEY_ENABLE_AIPQ);
         enableAipqPref.setOnPreferenceChangeListener(this);
         enableAipqPref.setChecked(getAipqEnabled());
-        
+
         enableAipqInfoPref = (TwoStatePreference) findPreference(KEY_ENABLE_AIPQ_INFO);
         enableAipqInfoPref.setOnPreferenceChangeListener(this);
+        if (mService != null) {
+            enableAipqInfoPref.setChecked(mService.infoEnabled());
+        }
     }
 
     @Override
@@ -125,9 +128,8 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
         public void onServiceConnected(ComponentName name, IBinder service) {
             AiPqService.AiPqBinder binder = (AiPqService.AiPqBinder) service;
             mService = binder.getService();
-            Log.d("V", "bind success0");
-            if (!mService.isShowing()) {
-                enableAipqInfoPref.setChecked(false);
+            if (mService != null) {
+                enableAipqInfoPref.setChecked(mService.isShowing());
             }
         }
 

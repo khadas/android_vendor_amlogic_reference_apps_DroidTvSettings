@@ -20,7 +20,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -30,34 +32,31 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class AiPqService extends Service {
+    public static final String AIPQ  = "ai_pq";
     private final IBinder mBinder = new AiPqBinder();
     public static final HashMap<String, String> mScene = new HashMap<String, String>();
     public static int mThreadId = -1;
     private static final int EVENT_UPDATE_UI = 1;
+    private static final int R_EVENT_INIT = 1;
+    private static final int R_EVENT_READ = 2;
+    private static final int TIMEDELAY  = 16;
     private static boolean enabled;
     private AIRemoteView mRemoteView;
     private Handler mHandler;
-    private static ReadingThreadLooper mThread;
     private static final String OTHER_SCENE = "7";
     private static final String SCENE_FS = "/sys/class/video/cur_ai_scenes";
+    private static final String AIPQ_CONFG_FILE = "/vendor/etc/scenes_data.txt";
+    private static final String MAX_SCENE = "MAX_SCENE";
     private SystemControlManager mSystemControlManager;
+    private HandlerThread workThread = new  HandlerThread("aipq_work");
+    private WorkHandler workHandler;
+    private static boolean initial;
 
     public AiPqService() {
-        initScienceTree();
+        initial = false;
+        workThread.start();
+        workHandler = new WorkHandler(workThread.getLooper());
         mSystemControlManager = SystemControlManager.getInstance();
-    }
-
-    private void initScienceTree() {
-        if (mScene.size() == 0) {
-            mScene.put("0", "skin");
-            mScene.put("1", "blue");
-            mScene.put("2", "colorful");
-            mScene.put("3", "architecture");
-            mScene.put("4", "greenish");
-            mScene.put("5", "nightsope");
-            mScene.put("6", "document");
-            mScene.put("7", "OTHER");
-        }
         mRemoteView = AIRemoteView.getInstance();
         mHandler = new Handler() {
             @Override
@@ -71,7 +70,46 @@ public class AiPqService extends Service {
                 super.handleMessage(msg);
             }
         };
+        workHandler.sendEmptyMessage(R_EVENT_INIT);
     }
+
+    private void initScienceTree() {
+        String scenesval = mSystemControlManager.native_getAipqTable();
+        initial = true;
+        Log.d(AIPQ,"scenesval-->"+scenesval+"<--");
+        if (scenesval != null && scenesval.contains(":")) {
+            String readScense[] = scenesval.split(":");
+            int j=0;
+            for (int i=0;i<readScense.length;i++) {
+                if (readScense[i] == null || readScense[i].trim() == null/*
+                        || MAX_SCENE.equals( readScense[i].trim())*/
+                        || readScense[i].trim().length() == 0)
+                    continue;
+                mScene.put(j+"",readScense[i].trim());
+                j++;
+            }
+        }
+    }
+
+    class WorkHandler extends Handler{
+        public WorkHandler(Looper looper) {
+            super(looper);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case R_EVENT_INIT:
+                    initScienceTree();
+                    break;
+                case R_EVENT_READ:
+                    String scenseVal = mSystemControlManager.readSysFs(SCENE_FS);
+                    Log.d("V", "read:" + scenseVal);
+                    updateUI(scenseVal);
+                    workHandler.sendEmptyMessageDelayed(R_EVENT_READ,TIMEDELAY);
+                    break;
+            }
+        }
+    };
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -84,10 +122,6 @@ public class AiPqService extends Service {
         }
     }
 
-    /* public void hideRemoveView(){
-         mRemoteView.hide();
-         mThreadId = -1;
-     }*/
     private void updateRemoveView(String value) {
         mRemoteView.updateUI(value);
     }
@@ -101,35 +135,29 @@ public class AiPqService extends Service {
         if (!enabled) {
             enabled = true;
             showAipqTopView(true);
-            if (mThread != null) {
-                mThread.stopReading();
+            if (!initial) {
+                workHandler.sendEmptyMessage(R_EVENT_INIT);
             }
-            Random r = new Random(System.currentTimeMillis());
-            mThreadId = r.nextInt();
-            mThread = new ReadingThreadLooper(AiPqService.this, mThreadId);
-            mThread.start();
+            workHandler.sendEmptyMessageDelayed(R_EVENT_READ,TIMEDELAY);
         }
     }
 
     public void disableAipq() {
         Log.d("V", "disableAipq" + enabled);
-        if (mThread != null) {
-            Log.d("V", "mThread.threadId" + mThread.threadId);
-        } else {
-            Log.d("V", "thread is null");
-        }
         if (enabled) {
             enabled = false;
-            mThreadId = -1;
-            if (mThread != null) {
-                mThread.stopReading();
-            }
+            workHandler.removeMessages(R_EVENT_READ);
             showAipqTopView(false);
         }
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        enableAipq();
+        return START_NOT_STICKY;
+    }
+
     public void updateUI(String ValStr) {
-        // Log.d("V","service.mThreadId"+mThreadId+"updateUI"+ValStr);
         String newVal = updateAipqValue(ValStr);
         if (newVal == null || newVal.length() <= 0) {
             newVal = AiPqService.this.getResources().getString(R.string.prepare);
@@ -140,6 +168,10 @@ public class AiPqService extends Service {
             msg.obj = newVal;
             mHandler.sendMessage(msg);
         }
+    }
+    @Override
+    public void onCreate() {
+        super.onCreate();
     }
 
     private String updateAipqValue(String ValStr) {
@@ -175,7 +207,9 @@ public class AiPqService extends Service {
         }
         return str.toString();
     }
-
+    public boolean infoEnabled() {
+        return enabled;
+    }
     //display top view
     private void showAipqTopView(boolean show) {
         Log.d("V", "mRemoteView.isCreated()" + mRemoteView.isCreated() + "mRemoteView" + mRemoteView);
@@ -189,41 +223,4 @@ public class AiPqService extends Service {
         }
     }
 
-    class ReadingThreadLooper extends Thread {
-        private AiPqService service;
-        private int threadId = -1;
-        private boolean stopFlag;
-
-        ReadingThreadLooper(AiPqService service, int threadId) {
-            Log.d("V", "threadId:" + threadId);
-            this.threadId = threadId;
-            this.service = service;
-        }
-
-        @Override
-        public void run() {
-            while (threadId == service.mThreadId) {
-                if (stopFlag) {
-                    Log.d("V", "beak threadId:" + threadId + "service.mThreadId" + service.mThreadId);
-                    break;
-                }
-                String scenseVal = mSystemControlManager.readSysFs(SCENE_FS);
-                // String scenseVal="6:8523;0:98;5:93;7:0;7:0";
-                Log.d("V", "read:" + scenseVal);
-                service.updateUI(scenseVal);
-                try {
-                    sleep(16);
-                } catch (InterruptedException e) {
-                    stopFlag = true;
-                }
-            }
-            Log.d("V", "Thread" + threadId + " exist" + service.mThreadId);
-        }
-
-        public void stopReading() {
-            stopFlag = true;
-        }
-    }
-
-    ;
 }
