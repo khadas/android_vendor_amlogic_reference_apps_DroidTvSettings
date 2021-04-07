@@ -148,16 +148,15 @@ public class Hdmi20SwitchFragment extends LeanbackPreferenceFragment implements 
     }
 
     private String[] initswitchEntries() {
-        String[] temp = new String[3];
+        String[] temp = new String[2];
         temp[0] = getActivity().getResources().getString(R.string.tv_settins_off);
         temp[1] = getActivity().getResources().getString(R.string.tv_settins_on);
-        temp[2] = getActivity().getResources().getString(R.string.tv_settins_auto);
         return temp;
     }
 
     private String[] initSwitchEntryValue() {
-        String[] temp = new String[3];
-        for (int i = 0; i < 3; i++) {
+        String[] temp = new String[2];
+        for (int i = 0; i < 2; i++) {
             temp[i] = String.valueOf(i);
         }
         return temp;

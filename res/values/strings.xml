@@ -441,7 +441,6 @@
     <string name="tv_factory_menu">Factory Menu</string>
     <string name="tv_settins_on">on</string>
     <string name="tv_settins_off">off</string>
-    <string name="tv_settins_auto">auto</string>
     <string name="tv_hdmi1_switch">HDMI1</string>
     <string name="tv_hdmi2_switch">HDMI2</string>
     <string name="tv_hdmi3_switch">HDMI3</string>
