@@ -37,4 +37,9 @@
             android:key="dolby_vision"
             android:title="@string/dolby_vision_tv"
             android:fragment="com.droidlogic.tv.settings.display.dolbyvision.DolbyVisionSettingFragment"/>
+        <ListPreference
+            android:key="memc"
+            android:title="@string/memc"
+            android:entries="@array/memc_entries"
+            android:entryValues="@array/memc_entry_values" />
 </PreferenceScreen>
