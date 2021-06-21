@@ -27,6 +27,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
 import android.util.Log;
+import android.os.SystemProperties;
 
 import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.tv.settings.util.DroidUtils;
@@ -35,12 +36,14 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
 
     private static final String KEY_ENABLE_AIPQ = "ai_pq_enable";
     public static final String KEY_ENABLE_AIPQ_INFO = "ai_pq_info_enable";
+    private static final String KEY_ENABLE_AISR = "ai_sr_enable";
     private static final String SYSFS_DEBUG_VDETECT = "/sys/module/decoder_common/parameters/debug_vdetect";
     private static final String SYSFS_ADD_VDETECT = "/sys/class/vdetect/tv_add_vdetect";
     private Context mContext;
     private SystemControlManager mSystemControlManager;
     private AiPqService mService;
     private TwoStatePreference enableAipqPref;
+    private TwoStatePreference enableAisrPref;
     private TwoStatePreference enableAipqInfoPref;
     public static AiPqFragment newInstance() {
         return new AiPqFragment();
@@ -94,6 +97,10 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
         enableAipqPref.setOnPreferenceChangeListener(this);
         enableAipqPref.setChecked(getAipqEnabled());
 
+        enableAisrPref = (TwoStatePreference) findPreference(KEY_ENABLE_AISR);
+        enableAisrPref.setOnPreferenceChangeListener(this);
+        enableAisrPref.setChecked(getAisrEnabled());
+
         enableAipqInfoPref = (TwoStatePreference) findPreference(KEY_ENABLE_AIPQ_INFO);
         enableAipqInfoPref.setOnPreferenceChangeListener(this);
         if (mService != null) {
@@ -119,6 +126,9 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
             } else {
                 if (mService != null) mService.disableAipq();
             }
+        } else if (TextUtils.equals(preference.getKey(), KEY_ENABLE_AISR)) {
+            setAisrEnabled((boolean) newValue);
+            Log.d(TAG, "AipqEnabled=" + getAisrEnabled() + ", Nvalue= " + newValue);
         }
         return true;
     }
@@ -142,7 +152,18 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
         return mSystemControlManager.getAipqEnable();
     }
 
+    private boolean getAisrEnabled() {
+        return SystemProperties.getBoolean("vendor.hwc.aisr_enable",false);
+        //return mSystemControlManager.getAiSrEnable();
+    }
+
     private void setAipqEnabled(boolean enable) {
         mSystemControlManager.setAipqEnable(enable);
+    }
+
+
+    private void setAisrEnabled(boolean enable) {
+        //mSystemControlManager.setAiSrEnable(enable);
+        SystemProperties.set("vendor.hwc.aisr_enable", enable?"1":"0");
     }
 }

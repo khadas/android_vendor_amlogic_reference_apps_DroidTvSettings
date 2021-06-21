@@ -26,4 +26,8 @@
         android:key="ai_pq_info_enable"
         android:persistent="true"
         android:title="@string/ai_pq_info_enable" />
+      <SwitchPreference
+        android:key="ai_sr_enable"
+        android:persistent="true"
+        android:title="@string/ai_sr_enable" />
 </PreferenceScreen>

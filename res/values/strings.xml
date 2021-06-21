@@ -460,6 +460,7 @@
     <string name="ai_pq" translatable="false">AI PQ</string>
     <string name="ai_pq_enable" translatable="false">Enable AI PQ</string>
     <string name="ai_pq_info_enable" translatable="false">Show AI PQ information</string>
+    <string name="ai_sr_enable" translatable="false">Enable AI SR</string>
     <string name="hotspot_settings_enable" translatable="false">Portable HotSpot Enabled</string>
     <string name="open_hotspot_warning_title" translatable="false">Open HotSpot?</string>
     <string name="open_hotspot_warning__message" translatable="false">These settings are intended for open system wifi hotspot</string>
