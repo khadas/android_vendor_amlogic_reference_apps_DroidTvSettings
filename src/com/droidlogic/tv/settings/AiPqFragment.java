@@ -153,8 +153,7 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
     }
 
     private boolean getAisrEnabled() {
-        return SystemProperties.getBoolean("vendor.hwc.aisr_enable",false);
-        //return mSystemControlManager.getAiSrEnable();
+        return mSystemControlManager.getAisr();
     }
 
     private void setAipqEnabled(boolean enable) {
@@ -164,6 +163,6 @@ public class AiPqFragment extends LeanbackPreferenceFragment implements Preferen
 
     private void setAisrEnabled(boolean enable) {
         //mSystemControlManager.setAiSrEnable(enable);
-        SystemProperties.set("vendor.hwc.aisr_enable", enable?"1":"0");
+        mSystemControlManager.aisrContrl(enable);
     }
 }
