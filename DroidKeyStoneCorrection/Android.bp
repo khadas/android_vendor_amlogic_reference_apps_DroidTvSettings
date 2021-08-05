@@ -1,0 +1,27 @@
+// *** THIS PACKAGE HAS SPECIAL LICENSING CONDITIONS.  PLEASE
+//     CONSULT THE OWNERS AND opensource-licensing@google.com BEFORE
+//     DEPENDING ON IT IN YOUR PROJECT. ***
+package {
+    // See: http://go/android-license-faq
+    // A large-scale-change added 'default_applicable_licenses' to import
+    // all of the 'license_kinds' from "vendor_amlogic_common_license"
+    // to get the below license kinds:
+    //   SPDX-license-identifier-Apache-2.0
+    //   SPDX-license-identifier-BSD
+    //   SPDX-license-identifier-LGPL
+    //   legacy_by_exception_only (by exception only)
+    default_applicable_licenses: ["vendor_amlogic_common_license"],
+}
+
+android_app {
+    name: "DroidKeyStoneCorrection",
+
+    vendor: true,
+    sdk_version: "system_current",
+    srcs: ["**/*.java"],
+    certificate: "platform",
+    optimize: {
+        enabled: false,
+    },
+    libs: ["droidlogic"],
+}
