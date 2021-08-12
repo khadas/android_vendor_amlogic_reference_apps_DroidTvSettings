@@ -31,7 +31,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.UserManager;
 import android.provider.Settings;
 import android.text.format.DateUtils;
 import android.util.ArrayMap;
@@ -41,15 +40,19 @@ import androidx.annotation.Keep;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 
+import com.android.internal.logging.nano.MetricsProto;
 import com.android.settingslib.dream.DreamBackend;
 import com.android.tv.settings.R;
-import com.android.tv.settings.RestrictedPreferenceAdapter;
 import com.android.tv.settings.SettingsPreferenceFragment;
 import com.android.tv.settings.overlay.FlavorUtils;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+// DroidLogic set default index in screen saver
+import com.droidlogic.app.SystemControlManager;
+// DroidLogic set default index in screen saver
 
 /**
  * The screen saver screen in TV settings.
@@ -67,15 +70,17 @@ public class DaydreamFragment extends SettingsPreferenceFragment
     private static final String DREAM_COMPONENT_NONE = "NONE";
     private static final String PACKAGE_SCHEME = "package";
 
+    // DroidLogic set default index in screen saver
+    private static final String defaultDreamComponent = "{com.google.android.deskclock/com.android.deskclock.Screensaver}";
+    private static final String defaultValue = "{com.google.android.deskclock/com.android.deskclock.Screensaver}";
+    // DroidLogic set default index in screen saver
+
     private static final int DEFAULT_DREAM_TIME_MS = (int) (30 * DateUtils.MINUTE_IN_MILLIS);
 
     private final PackageReceiver mPackageReceiver = new PackageReceiver();
 
     private DreamBackend mBackend;
     private final Map<String, DreamBackend.DreamInfo> mDreamInfos = new ArrayMap<>();
-
-    private RestrictedPreferenceAdapter<ListPreference> mActiveDreamPref;
-    private RestrictedPreferenceAdapter<ListPreference> mDreamTimePref;
 
     public static DaydreamFragment newInstance() {
         return new DaydreamFragment();
@@ -126,43 +131,45 @@ public class DaydreamFragment extends SettingsPreferenceFragment
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(getPreferenceScreenResId(), null);
-        final String userRestriction = UserManager.DISALLOW_CONFIG_SCREEN_TIMEOUT;
 
         final ListPreference activeDreamPref = (ListPreference) findPreference(KEY_ACTIVE_DREAM);
-        refreshActiveDreamPref();
+        refreshActiveDreamPref(activeDreamPref);
         if (activeDreamPref != null) {
             activeDreamPref.setOnPreferenceChangeListener(this);
-            mActiveDreamPref = RestrictedPreferenceAdapter.adapt(activeDreamPref, userRestriction);
         }
 
         final ListPreference dreamTimePref = (ListPreference) findPreference(KEY_DREAM_TIME);
         if (dreamTimePref != null) {
             dreamTimePref.setValue(Integer.toString(getDreamTime()));
             dreamTimePref.setOnPreferenceChangeListener(this);
-            mDreamTimePref = RestrictedPreferenceAdapter.adapt(dreamTimePref, userRestriction);
         }
-
         final Preference dreamNowPref = findPreference(KEY_DREAM_NOW);
         dreamNowPref.setEnabled(mBackend.isEnabled());
     }
 
-    private void refreshActiveDreamPref() {
-        if (mActiveDreamPref == null) {
-            return;
-        }
-
+    private void refreshActiveDreamPref(ListPreference activeDreamPref) {
         final List<DreamBackend.DreamInfo> infos = mBackend.getDreamInfos();
         final CharSequence[] dreamEntries = new CharSequence[infos.size() + 1];
         final CharSequence[] dreamEntryValues = new CharSequence[infos.size() + 1];
         refreshDreamInfoMap(infos, dreamEntries, dreamEntryValues);
-        final ComponentName currentDreamComponent = mBackend.getActiveDream();
-
-        mActiveDreamPref.updatePreference(activeDreamPref -> {
+        if (activeDreamPref != null) {
             activeDreamPref.setEntries(dreamEntries);
             activeDreamPref.setEntryValues(dreamEntryValues);
+        }
+        final ComponentName currentDreamComponent = mBackend.getActiveDream();
+
+        // DroidLogic set default index in screen saver
+        if ((currentDreamComponent.toShortString().equals(defaultDreamComponent)) &&
+               ((activeDreamPref.getValue() == null ) || activeDreamPref.getValue().equals(defaultValue))) {
+            setActiveDream(DREAM_COMPONENT_NONE);
+            activeDreamPref.setValue(DREAM_COMPONENT_NONE);
+        }
+        // DroidLogic set default index in screen saver
+
+        if (activeDreamPref != null) {
             activeDreamPref.setValue(mBackend.isEnabled() && currentDreamComponent != null
                     ? currentDreamComponent.toShortString() : DREAM_COMPONENT_NONE);
-        });
+        }
     }
 
     private void refreshDreamInfoMap(List<DreamBackend.DreamInfo> infos,
@@ -245,16 +252,25 @@ public class DaydreamFragment extends SettingsPreferenceFragment
             return;
         }
 
-        refreshActiveDreamPref();
-        if (mDreamTimePref != null) {
-            mDreamTimePref.updatePreference(
-                    dreamTimePref -> dreamTimePref.setValue(Integer.toString(getDreamTime())));
+        final ListPreference activeDreamPref = (ListPreference) findPreference(KEY_ACTIVE_DREAM);
+        if (activeDreamPref != null) {
+            refreshActiveDreamPref(activeDreamPref);
+        }
+
+        final ListPreference dreamTimePref = (ListPreference) findPreference(KEY_DREAM_TIME);
+        if (dreamTimePref != null) {
+            dreamTimePref.setValue(Integer.toString(getDreamTime()));
         }
 
         final Preference dreamNowPref = findPreference(KEY_DREAM_NOW);
         if (dreamNowPref != null) {
             dreamNowPref.setEnabled(mBackend.isEnabled());
         }
+    }
+
+
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.DREAM;
     }
 
     private class PackageReceiver extends BroadcastReceiver {
