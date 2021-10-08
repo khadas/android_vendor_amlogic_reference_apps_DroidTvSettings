@@ -1,0 +1,11 @@
+runtime_resource_overlay {
+    name: "DroidATVTvSettingsResOverlay",
+    certificate: "platform",
+    resource_dirs: ["res"],
+    overrides: [
+        "TvSettingsGoogleResOverlay",
+        "TvSettingsVendorResOverlay"
+    ],
+    product_specific: true,
+    sdk_version: "current",
+}
