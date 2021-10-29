@@ -20,8 +20,8 @@
     <ListPreference
         android:key="pq_pictrue_advanced_memc_switch"
         android:persistent="false"
-        android:entries="@array/pq_pictrue_advanced_memc_switch_entries"
-        android:entryValues="@array/pq_pictrue_advanced_memc_switch_entry_values"
+        android:entries="@array/memc_entries"
+        android:entryValues="@array/memc_entry_values"
         android:title="@string/pq_pictrue_advanced_memc_switch"
         android:summary="%s" />
     <PreferenceCategory

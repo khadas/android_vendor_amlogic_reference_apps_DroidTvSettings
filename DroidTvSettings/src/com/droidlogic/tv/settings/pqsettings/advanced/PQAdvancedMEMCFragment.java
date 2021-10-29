@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
+import com.droidlogic.app.SystemControlManager;
+
 public class PQAdvancedMEMCFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "PQAdvancedMEMCFragment";
 
@@ -51,6 +53,8 @@ public class PQAdvancedMEMCFragment extends SettingsPreferenceFragment implement
     private SeekBarPreference PQPictureAdvancedMemcCustomizeDejudderPref;
     private SeekBarPreference PQPictureAdvancedMemcCustomizeDeblurPref;
 
+    private boolean isT3Device = false;
+    private SystemControlManager mSystemControlManager;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -81,15 +85,18 @@ public class PQAdvancedMEMCFragment extends SettingsPreferenceFragment implement
         final ListPreference pictureAdvancedMemcSwitchPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_MEMC_SWITCH);
         PQPictureAdvancedMemcCustomizeDejudderPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_MEMC_CUSTOMIZE_DEJUDDER);
         PQPictureAdvancedMemcCustomizeDeblurPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_MEMC_CUSTOMIZE_DEBLUR);
+        mSystemControlManager = SystemControlManager.getInstance();
 
-        if (true) {//Leave blank first, add conditions later
+        isT3Device = mSystemControlManager.hasMemcFunc();
+        if (isT3Device) {//Leave blank first, add conditions later
+            pictureAdvancedMemcSwitchPref.setVisible(true);
             pictureAdvancedMemcSwitchPref.setValueIndex(mPQSettingsManager.getAdvancedMemcSwitchStatus());
             pictureAdvancedMemcSwitchPref.setOnPreferenceChangeListener(this);
         } else {
             pictureAdvancedMemcSwitchPref.setVisible(false);
         }
 
-        if (true) {//Leave blank first, add conditions later
+        if (isT3Device) {//Leave blank first, add conditions later
             PQPictureAdvancedMemcCustomizeDejudderPref.setOnPreferenceChangeListener(this);
             PQPictureAdvancedMemcCustomizeDejudderPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_MEMC_CUSTOMIZE_STEP);
             PQPictureAdvancedMemcCustomizeDejudderPref.setMin(0);
@@ -100,7 +107,7 @@ public class PQAdvancedMEMCFragment extends SettingsPreferenceFragment implement
             PQPictureAdvancedMemcCustomizeDejudderPref.setVisible(false);
         }
 
-        if (true) {//Leave blank first, add conditions later
+        if (isT3Device) {//Leave blank first, add conditions later
             PQPictureAdvancedMemcCustomizeDeblurPref.setOnPreferenceChangeListener(this);
             PQPictureAdvancedMemcCustomizeDeblurPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_MEMC_CUSTOMIZE_STEP);
             PQPictureAdvancedMemcCustomizeDeblurPref.setMin(0);

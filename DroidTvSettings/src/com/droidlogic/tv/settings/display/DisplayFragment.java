@@ -48,11 +48,12 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
 
     private static final int MEMC_OFF                  = 0;
     private static final int MEMC_ON                   = 1;
+    private final int memcSave = 1;
 
     private ListPreference mAllmPref;
     private ListPreference mMEMCPref;
     private SystemControlManager mSystemControlManager;
-    private static int memcStatus = 0;
+    private String memcStatus = "0";
     private static boolean isT3Device = false;
 
     public static DisplayFragment newInstance() {
@@ -95,15 +96,16 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
         mAllmPref.setOnPreferenceChangeListener(this);
         mAllmPref.setVisible(SystemProperties.getBoolean("ro.vendor.debug.allm", false));
 
-        if (SystemProperties.getBoolean(PROP_MEMC, false)  == true) {
+        /* if (SystemProperties.getBoolean(PROP_MEMC, false)  == true) {
                 memcStatus = MEMC_ON;
         }else {
                 memcStatus = MEMC_OFF;
-        }
-
+        } */
+        memcStatus = Integer.toString(mSystemControlManager.GetMemcMode());
+        Log.d(TAG, "get memcStatus: " + memcStatus);
         isT3Device = mSystemControlManager.hasMemcFunc();
         mMEMCPref = (ListPreference) findPreference(KEY_MEMC);
-        mMEMCPref.setValueIndex(memcStatus);
+        mMEMCPref.setValue(memcStatus);
         mMEMCPref.setVisible(isT3Device);
         mMEMCPref.setOnPreferenceChangeListener(this);
     }
@@ -125,14 +127,16 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
         }
 
         if (TextUtils.equals(preference.getKey(), KEY_MEMC)) {
-            memcStatus = Integer.parseInt((String)newValue);
+            int tep_memcStatus = Integer.parseInt((String)newValue);
             //mSystemControlManager.setALLMMode(allmmode);
             if (mSystemControlManager.hasMemcFunc()) {
-                if (memcStatus == MEMC_ON) {
+                /* if (memcStatus == MEMC_ON) {
                     mSystemControlManager.memcContrl(true);
                 }else if (memcStatus == MEMC_OFF) {
                     mSystemControlManager.memcContrl(false);
-                }
+                } */
+                Log.d(TAG, "set memcStatus: " + tep_memcStatus);
+                mSystemControlManager.SetMemcMode(tep_memcStatus, memcSave);
             }
         }
 

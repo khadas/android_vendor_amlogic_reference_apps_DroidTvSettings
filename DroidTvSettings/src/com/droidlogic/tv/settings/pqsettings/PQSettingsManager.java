@@ -93,6 +93,8 @@ public class PQSettingsManager {
     public static final int PERCENT_DECREASE                        = -1;
     public static final int ADVANCED_GAMMA_FIXED_DIFFERENCE         = -6;
     public static String currentTag = null;
+    private final int memcSave = 1;
+    private int memcStatus = 0;
 
     private Resources mResources;
     private Context mContext;
@@ -356,8 +358,13 @@ public class PQSettingsManager {
 
     public int getAdvancedMemcSwitchStatus () {
         // Leave blank first, add later
-        if (CanDebug()) Log.d(TAG, "getAdvancedMemcSwitchStatus");
-        return 0;
+        /*if (CanDebug()) Log.d(TAG, "getAdvancedMemcSwitchStatus");
+        if (SystemProperties.getBoolean(PROP_MEMC, false)  == true) {
+            return 1;
+        }*/
+        memcStatus = mSystemControlManager.GetMemcMode();
+        Log.d(TAG, "getAdvancedGlobalDimmingStatus value: " + memcStatus);
+        return memcStatus;
     }
 
     public int getAdvancedMemcCustomizeDejudderStatus () {
@@ -926,17 +933,18 @@ public class PQSettingsManager {
     public void setAdvancedMemcSwitchStatus (int value) {
         // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "setAdvancedGlobalDimmingStatus value:"+value);
-        switch (value) {
+        /*switch (value) {
                 case 0:
-                    // off
+                    mSystemControlManager.memcContrl(false);// off
                     break;
                 case 1:
-                     // on
+                    mSystemControlManager.memcContrl(true);// on
                     break;
                 default:
-                    // off
+                    mSystemControlManager.memcContrl(false);// off
                     break;
-        }
+        }*/
+        mSystemControlManager.SetMemcMode(value, memcSave);
     }
 
     public void setAdvancedGammaStatus (int value) {
