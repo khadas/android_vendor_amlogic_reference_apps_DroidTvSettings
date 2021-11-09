@@ -371,7 +371,7 @@ public class TvOptionSettingManager {
         intent.addFlags(0x01000000/*Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND*/);
         intent.putExtra(DroidLogicTvUtils.KEY_ENABLE_SUSPEND_TIMEOUT, true);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0,
-                intent, 0);
+                intent, PendingIntent.FLAG_MUTABLE);
         alarm.cancel(pendingIntent);
 
         DataProviderManager.putIntValue(mContext, DroidLogicTvUtils.PROP_DROID_TV_SLEEP_TIME, mode);
