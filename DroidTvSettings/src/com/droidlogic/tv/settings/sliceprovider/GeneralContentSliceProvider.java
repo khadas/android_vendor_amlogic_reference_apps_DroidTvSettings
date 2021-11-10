@@ -9,14 +9,17 @@ import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder.Ro
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.sliceprovider.manager.GeneralContentManager;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
+import com.droidlogic.app.SystemControlManager;
 
 public class GeneralContentSliceProvider extends SliceProvider {
   private static final String TAG = GeneralContentSliceProvider.class.getSimpleName();
   private static final boolean DEBUG = true;
   private GeneralContentManager mGeneralContentManager;
+  private SystemControlManager mSystemControlManager;
 
   @Override
   public boolean onCreateSliceProvider() {
+    mSystemControlManager = SystemControlManager.getInstance();
     return true;
   }
 
@@ -44,6 +47,9 @@ public class GeneralContentSliceProvider extends SliceProvider {
   private Slice createNetFlixEsnSlice(Uri sliceUri) {
     final PreferenceSliceBuilder psb = new PreferenceSliceBuilder(getContext(), sliceUri);
 
+    if (!getContext().getPackageManager().hasSystemFeature("droidlogic.software.netflix"))
+      return null;
+
     if (!GeneralContentManager.isInit()) {
       mGeneralContentManager = GeneralContentManager.getGeneralContentManager(getContext());
     }
@@ -55,8 +61,11 @@ public class GeneralContentSliceProvider extends SliceProvider {
 
     psb.setEmbeddedPreference(
         new RowBuilder()
-            .setTitle(getContext().getString(R.string.netflix_esn_title))
-            .setSubtitle(mGeneralContentManager.getNetflixEsn()));
+            .setTitle("Netflix Information")
+            .setSubtitle(getContext().getString(R.string.netflix_esn_title) + ": "
+            + mGeneralContentManager.getNetflixEsn() + "\n"
+            + getContext().getString(R.string.hailstorm_ver) + ": "
+            + mSystemControlManager.getPropertyString("ro.vendor.hailstorm.version","no")));
 
     // force to refresh Netflix ESN next time
     mGeneralContentManager.setNetflixEsn(null);
