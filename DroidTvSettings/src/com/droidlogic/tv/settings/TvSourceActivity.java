@@ -21,6 +21,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.droidlogic.tv.settings.BaseSettingsFragment;
 import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.overlay.FlavorUtils;
 
@@ -33,8 +34,23 @@ public class TvSourceActivity extends TvSettingsActivity {
 
     @Override
     protected Fragment createSettingsFragment() {
-        return FlavorUtils.getFeatureFactory(this).getSettingsFragmentProvider()
-            .newSettingsFragment(TvSourceFragment.class.getName(), null);
+        //return FlavorUtils.getFeatureFactory(this).getSettingsFragmentProvider()
+        //  .newSettingsFragment(TvSourceFragment.class.getName(), null);
+        return new SettingsFragment(this);
+    }
+
+    public static class SettingsFragment extends BaseSettingsFragment {
+        private Context mContext;
+
+        public SettingsFragment(Context context) {
+            mContext = context;
+        }
+
+        @Override
+        public void onPreferenceStartInitialScreen() {
+            final TvSourceFragment fragment = new TvSourceFragment(mContext);
+            startPreferenceFragment(fragment);
+        }
     }
 
     @Override
