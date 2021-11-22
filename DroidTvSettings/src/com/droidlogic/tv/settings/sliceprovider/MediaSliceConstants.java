@@ -78,4 +78,17 @@ public class MediaSliceConstants {
   public static final String PREVIOUS_SURROUND_SOUND_GLOBAL_SETTING =
       "PREVIOUS_SURROUND_SOUND_GLOBAL_SETTING";
   public static final String DOLBY_VISION_MODE_LL_PREFERRED = "DOLBY_VISION_MODE_LL_PREFERRED";
+
+
+  public static final int MEDIA_DISPLAY_DENSITY_LOW = 120;
+  public static final int MEDIA_DISPLAY_DENSITY_MIDDLE = 213;
+  public static final int MEDIA_DISPLAY_DENSITY_HIGH = 320;
+
+  public static final int MEDIA_DISPLAY_RESOLUTION_480 = 480;
+  public static final int MEDIA_DISPLAY_RESOLUTION_576 = 576;
+  public static final int MEDIA_DISPLAY_RESOLUTION_720 = 720;
+  public static final int MEDIA_DISPLAY_RESOLUTION_1080 = 1080;
+  public static final int MEDIA_DISPLAY_RESOLUTION_1280 = 1280;
+  public static final int MEDIA_DISPLAY_RESOLUTION_1920 = 1920;
+
 }

@@ -1,6 +1,7 @@
 package com.droidlogic.tv.settings.sliceprovider.dialog;
 
 import static com.android.tv.twopanelsettings.slices.SlicesConstants.EXTRA_PREFERENCE_KEY;
+import android.util.Log;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,40 +14,50 @@ import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager
 import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager.HdrFormat;
 import java.util.concurrent.TimeUnit;
 
-public class AdjustResolutionDialogActivity extends Activity {
-  private static final String COUNTDOWN_PLACEHOLDER = "COUNTDOWN_PLACEHOLDER";
-  private static final String RESOLUTION_PLACEHOLDER = "RESOLUTION_PLACEHOLDER";
-  private static String TAG = AdjustResolutionDialogActivity.class.getSimpleName();
-  private static int DEFAULT_COUNTDOWN_SECONDS = 15;
-  private DisplayCapabilityManager mDisplayCapabilityManager;
-  private CountDownTimer mCountDownTimer;
-  private AlertDialog mAlertDialog;
-  private Runnable mRestoreCallback = () -> {};
-  private String mNextMode;
-  private boolean mWasDolbyVisionChanged;
-  private int countdownInSeconds = 0;
+public class AdjustResolutionDialogActivity extends BaseDialogActivity {
+    private static final String COUNTDOWN_PLACEHOLDER = "COUNTDOWN_PLACEHOLDER";
+    private static final String RESOLUTION_PLACEHOLDER = "RESOLUTION_PLACEHOLDER";
+    private static String TAG = AdjustResolutionDialogActivity.class.getSimpleName();
+    private static int DEFAULT_COUNTDOWN_SECONDS = 15;
+    private DisplayCapabilityManager mDisplayCapabilityManager;
+    private CountDownTimer mCountDownTimer;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    mDisplayCapabilityManager =
-        DisplayCapabilityManager.getDisplayCapabilityManager(getApplicationContext());
+    private Runnable mRestoreCallback = () -> {};
+    private String mNextMode;
+    private String mCurrentMode;
+    private boolean mWasDolbyVisionChanged;
+    private int countdownInSeconds = 0;
 
-    String currentResolution = mDisplayCapabilityManager.getCurrentMode();
-    mNextMode = getIntent().getStringExtra(EXTRA_PREFERENCE_KEY);
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        saveCurrentState(savedInstanceState);
+    }
 
-    mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(mNextMode);
-    mWasDolbyVisionChanged = mDisplayCapabilityManager.adjustDolbyVisionByMode(mNextMode);
-    mRestoreCallback =
-        () -> {
-          mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(currentResolution);
-          if (mWasDolbyVisionChanged) {
-            mDisplayCapabilityManager.setPreferredFormat(HdrFormat.DOLBY_VISION);
-          }
-        };
-    initAlertDialog();
-    showDialog();
-  }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!isDialogCreated(savedInstanceState)) {
+            mDisplayCapabilityManager =
+                    DisplayCapabilityManager.getDisplayCapabilityManager(getApplicationContext());
+            //int currentModeId = mDisplayCapabilityManager.getCurrentlyDisplayMode().getModeId();
+            mCurrentMode = mDisplayCapabilityManager.getCurrentMode();
+            mNextMode = getIntent().getStringExtra(EXTRA_PREFERENCE_KEY);
+            Log.d(TAG, "mNextMode " + mNextMode);
+
+            mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(mNextMode);
+            mWasDolbyVisionChanged = mDisplayCapabilityManager.adjustDolbyVisionByMode(mNextMode);
+            mRestoreCallback =
+                    () -> {
+                        mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(mCurrentMode);
+                        if (mWasDolbyVisionChanged) {
+                            mDisplayCapabilityManager.setPreferredFormat(HdrFormat.DOLBY_VISION);
+                        }
+                    };
+            initAlertDialog();
+            showDialog();
+        }
+    }
 
   private void initAlertDialog() {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -115,4 +126,5 @@ public class AdjustResolutionDialogActivity extends Activity {
         };
     mCountDownTimer.start();
   }
+
 }

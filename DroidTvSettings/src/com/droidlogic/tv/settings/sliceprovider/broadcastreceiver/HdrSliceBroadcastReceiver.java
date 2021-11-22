@@ -58,7 +58,7 @@ public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
         break;
       case MediaSliceConstants.ACTION_AUTO_BEST_RESOLUTIONS_ENABLED:
         isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG, "ACTION_AUTO_BEST_RESOLUTIONS_ENABLED isChecked: " + isChecked);
+        Log.d(TAG, "ACTION_AUTO_BEST_RESOLUTIONS_ENABLED isChecked: " + isChecked);
         String currentMode = getDisplayCapabilityManager(context).getCurrentMode();
         if (!isChecked) {
             getDisplayCapabilityManager(context).change2BestMode(currentMode);

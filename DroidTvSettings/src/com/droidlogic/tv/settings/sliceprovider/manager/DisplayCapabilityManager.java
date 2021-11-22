@@ -12,17 +12,30 @@ import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import android.view.WindowManager;
+import android.view.Window;
+import android.view.Display;
+import android.view.Display.Mode;
+import android.hardware.display.DisplayManager;
+import android.view.IWindowManager;
+import android.view.WindowManagerGlobal;
+import android.os.ServiceManager;
+import android.os.UserHandle;
 
 public class DisplayCapabilityManager {
   private static final String TAG = DisplayCapabilityManager.class.getSimpleName();
   private static final String VAL_HDR_POLICY_SINK = "0";
   private static final String VAL_HDR_POLICY_SOURCE = "1";
   private static final String UBOOTENV_HDR_POLICY = "ubootenv.var.hdr_policy";
+  private static final String ENV_IS_BEST_MODE = "ubootenv.var.is.bestmode";
   private static final String SYSTEM_PROPERTY_HDR_PREFERENCE = "persist.vendor.sys.hdr_preference";
   private static final String HDR_CAP_PATH = "/sys/class/amhdmitx/amhdmitx0/hdr_cap";
   private static final String HDR_CAP2_PATH = "/sys/class/amhdmitx/amhdmitx0/hdr_cap2";
@@ -60,8 +73,6 @@ public class DisplayCapabilityManager {
           "1080p24hz",
           "720p60hz",
           "720p50hz",
-          "1080i60hz",
-          "1080i50hz",
           "576p50hz",
           "480p60hz");
 
@@ -78,8 +89,6 @@ public class DisplayCapabilityManager {
           "1080p 24Hz",
           "720p 60Hz",
           "720p 50Hz",
-          "1080i 60Hz",
-          "1080i 50Hz",
           "576p 50Hz",
           "480p 60Hz");
 
@@ -118,6 +127,23 @@ public class DisplayCapabilityManager {
           "RGB 8-bit",
           "RGB 10-bit",
           "RGB 12-bit");
+
+  private static final ImmutableMap<String, Display.Mode> USER_PREFERRED_MODE_BY_MODE =
+          new ImmutableMap.Builder<String, Display.Mode>()
+              .put("2160p60hz", new Display.Mode(3840, 2160, 59.94006f))
+              .put("2160p50hz", new Display.Mode(3840, 2160, 50.0f))
+              .put("2160p30hz", new Display.Mode(3840, 2160, 29.97003f))
+              .put("2160p25hz", new Display.Mode(3840, 2160, 25.0f))
+              .put("2160p24hz", new Display.Mode(3840, 2160, 23.976025f))
+              .put("smpte24hz", new Display.Mode(4096, 2160, 23.976025f))
+              .put("1080p60hz", new Display.Mode(1920, 1080, 59.94006f))
+              .put("1080p50hz", new Display.Mode(1920, 1080, 50.0f))
+              .put("1080p24hz", new Display.Mode(1920, 1080, 23.976025f))
+              .put("720p60hz", new Display.Mode(1280, 720, 59.94006f))
+              .put("720p50hz", new Display.Mode(1280, 720, 50.0f))
+              .put("576p50hz", new Display.Mode(720, 576, 50.0f))
+              .put("480p60hz", new Display.Mode(720, 480, 59.94006f))
+              .build();
 
   private static final Map<String, String> MODE_TITLE_BY_MODE = new HashMap<>();
   private static final Map<String, String> COLOR_TITLE_BY_ATTR = new HashMap<>();
@@ -192,6 +218,8 @@ public class DisplayCapabilityManager {
 
   private boolean mIsHdr10Supported = false;
 
+  private DisplayManager mDisplayManager;
+
   public static boolean isInit() {
     return mDisplayCapabilityManager != null;
   }
@@ -206,6 +234,7 @@ public class DisplayCapabilityManager {
   }
 
   private DisplayCapabilityManager(final Context context) {
+    mDisplayManager = (DisplayManager)context.getSystemService(Context.DISPLAY_SERVICE);
     mSystemControlManager = SystemControlManager.getInstance();
     mOutputModeManager = new OutputModeManager(context);
     mDolbyVisionSettingManager = new DolbyVisionSettingManager(context);
@@ -268,6 +297,7 @@ public class DisplayCapabilityManager {
     } else {
       mHdmiModeList = HDMI_MODE_LIST;
     }
+
     return !mHdmiModeList.equals(preList);
   }
 
@@ -395,11 +425,13 @@ public class DisplayCapabilityManager {
   }
 
   public void change2BestMode(String mode) {
-        mOutputModeManager.setBestMode(mode);
+    // Interface abandoned
+    // mOutputModeManager.setBestMode(mode);
   }
 
   public void change2BestMode() {
-        mOutputModeManager.setBestMode(null);
+    // Interface abandoned
+    // mOutputModeManager.setBestMode(null);
   }
 
   /**
@@ -417,8 +449,28 @@ public class DisplayCapabilityManager {
   }
 
   public void setResolutionAndRefreshRateByMode(final String mode) {
-    mOutputModeManager.setBestMode(mode);
-    autoSelectColorAttribute();
+    // mOutputModeManager.setBestMode(mode);
+    // autoSelectColorAttribute();
+
+    setUserPreferredDisplayMode(mode);
+  }
+
+  private void setUserPreferredDisplayMode(String mode) {
+    Display.Mode[] supportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
+    Log.d(TAG, "supportedModes: " + Arrays.toString(supportedModes));
+
+    Map<String, Display.Mode> modeMap = USER_PREFERRED_MODE_BY_MODE;
+    checkUserPreferredMode(supportedModes, modeMap.get(mode));
+    this.mDisplayManager.setUserPreferredDisplayMode(modeMap.get(mode));
+  }
+
+  private void checkUserPreferredMode(Display.Mode[] modeArr, Display.Mode mode) {
+    for (Display.Mode mode2 : modeArr) {
+      if (mode2.matches(mode.getPhysicalWidth(), mode.getPhysicalHeight(), mode.getRefreshRate())) {
+        return;
+      }
+    }
+    throw new IllegalArgumentException("Unrecognized user preferred mode");
   }
 
   /** Prioritize the color attribute with the lowest data rate */

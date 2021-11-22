@@ -16,6 +16,8 @@
 
 package com.droidlogic.tv.settings;
 
+import com.droidlogic.tv.settings.sliceprovider.DisplayDensityManagerService;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +37,12 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (DEBUG) {
             Log.i(TAG, "onReceive");
+        }
+
+        try {
+            context.startService(new Intent(context, DisplayDensityManagerService.class));
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
         }
         // Start the Service that supports ConnectedDevicesSliceProvider only if the URI is not
         // overlaid.

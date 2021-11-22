@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
-
 public class HdrSliceProvider extends MediaSliceProvider {
   private static final String TAG = HdrSliceProvider.class.getSimpleName();
   private static final String DYNAMIC_RANGE_PLACEHOLDER = "DYNAMIC_RANGE_PLACEHOLDER";
@@ -172,11 +170,11 @@ public class HdrSliceProvider extends MediaSliceProvider {
         new RowBuilder()
             .setTitle(getContext().getString(R.string.hdr_resolution_title))
             .setSubtitle(
-                mDisplayCapabilityManager.getTitleByMode(
-                    mDisplayCapabilityManager.getCurrentMode())));
+                    mDisplayCapabilityManager.getTitleByMode(mDisplayCapabilityManager.getCurrentMode())));
 
-    createAutoBestHdrResolution(psb);
-    if (!mDisplayCapabilityManager.isBestResolution()) updateHdrResolutionDetails(psb);
+    //createAutoBestHdrResolution(psb);
+    /*if (!mDisplayCapabilityManager.isBestResolution())*/
+    updateHdrResolutionDetails(psb);
 
     return psb.build();
   }
@@ -196,58 +194,37 @@ public class HdrSliceProvider extends MediaSliceProvider {
   private void createAutoBestHdrResolution(PreferenceSliceBuilder psb) {
     psb.addPreference(
         new RowBuilder()
-        .setTitle(getContext().getString(R.string.hdr_auto_best_resolution_title))
-        .addSwitch(
-            generatePendingIntent(
-                getContext(),
-                MediaSliceConstants.ACTION_AUTO_BEST_RESOLUTIONS_ENABLED,
-                HdrSliceBroadcastReceiver.class),
-            mDisplayCapabilityManager.isBestResolution()));
+            .setTitle(getContext().getString(R.string.hdr_auto_best_resolution_title))
+            .addSwitch(
+                generatePendingIntent(
+                    getContext(),
+                    MediaSliceConstants.ACTION_AUTO_BEST_RESOLUTIONS_ENABLED,
+                    HdrSliceBroadcastReceiver.class),
+                mDisplayCapabilityManager.isBestResolution()));
   }
+
   private void updateHdrResolutionDetails(PreferenceSliceBuilder psb) {
-    String[] modesOrigins = mDisplayCapabilityManager.getHdmiModes();
-    List<String> modesOriginLists = new ArrayList<String>();
-    for (int i = 0; i < modesOrigins.length; i++) {
-        String modesOrigin = modesOrigins[i];
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG,"modesOrigin:"+modesOrigin);
-        if (!(HdrFormat.DOLBY_VISION == mDisplayCapabilityManager.getPreferredFormat() &&
-            (modesOrigin.indexOf("smpte") >= 0 ||
-                modesOrigin.indexOf("i") >= 0))){
-                modesOriginLists.add(modesOrigins[i]);
-        }
+    String[] hdmiModes = this.mDisplayCapabilityManager.getHdmiModes();
+    String currentMode = this.mDisplayCapabilityManager.getCurrentMode();
+
+    if (MediaSliceUtil.CanDebug()) {
+      Log.d(TAG, "hdmiModes:" + Arrays.toString(hdmiModes));
+      Log.d(TAG, "currentMode:" + currentMode);
     }
 
-    String currentMode = mDisplayCapabilityManager.getCurrentMode();
-
-    if (null == modesOriginLists || modesOriginLists.isEmpty()) {
-      if (MediaSliceUtil.CanDebug()) Log.d(TAG,"updateHdrResolutionDetails modes is null");
-      //currentMode = "";
-    }else if(modesOriginLists.contains(currentMode)){
-      if (MediaSliceUtil.CanDebug()) Log.d(TAG,"updateHdrResolutionDetails currentMode is contains");
-    }else{
-      if (MediaSliceUtil.CanDebug()) Log.d(TAG,"updateHdrResolutionDetails currentMode isn't contains");
-      //mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(modesOriginLists.get(0));
-      //currentMode = modesOriginLists.get(0);
-    }
-    String[] modes = modesOriginLists.toArray(new String[modesOriginLists.size()]);
-
-    psb.addPreferenceCategory(new RowBuilder()
-            .setTitle(getContext().getString(R.string.hdr_resolution_list_title)));
-
-    for (int i = 0; i < modes.length; i++) {
-      String[] modeTitles = mDisplayCapabilityManager.getTitlesByMode(modes[i]);
-
+    for (int i = 0; i < hdmiModes.length; i++) {
+      String[] titlesByMode = this.mDisplayCapabilityManager.getTitlesByMode(hdmiModes[i]);
       psb.addPreference(
           new RowBuilder()
-              .setKey(modes[i])
-              .setTitle(modeTitles[0]) // resolution
-              .setSubtitle(modeTitles[1]) // refresh rate
+              .setKey(hdmiModes[i])
+              .setTitle(titlesByMode[0])
+              .setSubtitle(titlesByMode[1])
               .addRadioButton(
                   generatePendingIntent(
                       getContext(),
                       MediaSliceConstants.SHOW_RESOLUTION_CHNAGE_WARNING,
                       AdjustResolutionDialogActivity.class),
-                  currentMode.equals(modes[i]),
+                  currentMode.equals(hdmiModes[i]),
                   getContext().getString(R.string.hdr_resolution_radio_group_name)));
     }
   }

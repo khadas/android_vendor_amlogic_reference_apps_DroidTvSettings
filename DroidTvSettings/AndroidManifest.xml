@@ -332,6 +332,9 @@
              android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService"
              android:exported="false" />
 
+        <service android:name="com.droidlogic.tv.settings.sliceprovider.DisplayDensityManagerService"
+            android:exported="false"/>
+
         <provider
             android:authorities="com.google.android.tv.btservices.settings.sliceprovider"
             android:name="com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceProvider"
@@ -359,6 +362,13 @@
 
         <receiver
             android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.BluetoothBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.droidlogic.tv.settings.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

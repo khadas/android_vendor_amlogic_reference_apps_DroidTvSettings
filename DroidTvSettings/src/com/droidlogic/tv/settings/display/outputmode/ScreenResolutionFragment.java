@@ -329,6 +329,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (TextUtils.equals(preference.getKey(), KEY_BEST_RESOLUTION)) {
+            // todo switching resolution in ATV
             preMode = getCurrentDisplayMode();
             preDeepColor = getCurrentDeepColor();
             if ((boolean)newValue) {
