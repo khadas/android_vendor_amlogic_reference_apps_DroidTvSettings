@@ -118,7 +118,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     }
 
     private int getPreferenceScreenResId() {
-        Log.d(TAG,"getPreferenceScreenResId"+FlavorUtils.getFlavor(getContext()));
+        Log.d(TAG,"getPreferenceScreenResId = "+FlavorUtils.getFlavor(getContext()));
         switch (FlavorUtils.getFlavor(getContext())) {
             case FLAVOR_CLASSIC:
                 return R.xml.more;
@@ -160,7 +160,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         mUpgradeBluetoothRemote = findPreference(KEY_UPGRADE_BLUTOOTH_REMOTE);
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
         final Preference versionPref = findPreference(KEY_VERSION);
-        //final Preference advanced_sound_settings_pref = findPreference(KEY_ADVANCE_SOUND);
+        final Preference advanced_sound_settings_pref = findPreference(KEY_ADVANCE_SOUND);
         //hide it forcedly as new bluetooth remote upgrade application is not available now
         mUpgradeBluetoothRemote.setVisible(false/*is_from_live_tv ? false : (SettingsConstant.needDroidlogicBluetoothRemoteFeature(getContext()) && !tvFlag)*/);
         hdmicecPref.setVisible((getContext().getPackageManager().hasSystemFeature("android.hardware.hdmi.cec")
@@ -257,9 +257,9 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             startUiInLiveTv(KEY_TV_CHANNEL);
         } else if (TextUtils.equals(preference.getKey(), KEY_KEYSTONE)) {
             startKeyStoneCorrectionActivity(getActivity());
-        } /*else if (TextUtils.equals(preference.getKey(), KEY_ADVANCE_SOUND)) {
+        } else if (TextUtils.equals(preference.getKey(), KEY_ADVANCE_SOUND)) {
              startAdvancedSoundSettingsActivity(getActivity());
-        }*/
+        }
         return false;
     }
 
@@ -290,7 +290,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     public static void startAdvancedSoundSettingsActivity(Context context){
         try {
             Intent intent = new Intent();
-            intent.setClassName("com.android.tv.settings", "com.android.tv.settings.device.displaysound.AdvancedVolumeActivity");
+            intent.setClassName("com.droidlogic.tv.settings", "com.droidlogic.tv.settings.soundeffect.AdvancedVolumeActivity");
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             Log.d(TAG, "start advanced_sound_settings Activity not found!");

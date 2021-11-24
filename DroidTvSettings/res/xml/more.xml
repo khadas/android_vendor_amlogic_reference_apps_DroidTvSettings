@@ -94,6 +94,10 @@
         android:title="@string/system_setting"
         android:fragment="com.droidlogic.tv.settings.tvoption.DroidSettingsModeFragment" />
     <Preference
+        android:key="advanced_sound_settings"
+        android:icon="@drawable/ic_volume_up"
+        android:title="@string/advanced_sound_settings_title" />
+    <Preference
         android:fragment="com.droidlogic.tv.settings.develop.DevelopFragment"
         android:icon="@drawable/ic_settings_develop"
         android:key="amlogic_developer_options"
