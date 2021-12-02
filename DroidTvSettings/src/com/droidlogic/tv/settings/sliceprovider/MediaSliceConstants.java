@@ -37,7 +37,7 @@ public class MediaSliceConstants {
   public static final String MATCH_CONTENT_PATH = "match_content";
   public static final String ACTION_AUTO_BEST_RESOLUTIONS_ENABLED = "auto_best_resolution";
   public static final String RESOLUTION_PATH = "resolution";
-  public static final String HDR_AND_COLOR_FORMAT_PATH = "format";
+  public static final String HDR_AND_COLOR_FORMAT_PATH = "hdr_and_color_format";
   public static final String HDR_FORMAT_PREFERENCE_PATH = "hdr_format_preference";
   public static final String COLOR_ATTRIBUTE_PATH = "color_attribute";
   public static final String DOLBY_VISION_MODE_PATH = "dolby_vision_mode";

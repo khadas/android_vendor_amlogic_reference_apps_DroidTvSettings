@@ -1939,7 +1939,7 @@
 
     <string name="storage_summary_fragment_name" translatable="false"/>
     <!-- Slice uri for hdr fomat selection -->
-    <string name="format_selection_slice_uri" translatable="false"/>
+    <string name="hdr_and_color_format_slice_uri" translatable="false"/>
     <!-- Slice uri for resolution and frequency -->
     <string name="resolution_slice_uri" translatable="false"/>
 

@@ -94,7 +94,7 @@
 
     <string name="cec_settings_slice_uri" translatable="false">content://com.google.android.tv.settings.displaysound.hdmi.sliceprovider/switch_cec</string>
     <string name="match_content_slice_uri" translatable="false">content://com.google.android.tv.settings.hdr.sliceprovider/match_content</string>
-    <string name="format_selection_slice_uri" translatable="false">content://com.google.android.tv.settings.hdr.sliceprovider/format</string>
+    <string name="hdr_and_color_format_slice_uri" translatable="false">content://com.google.android.tv.settings.hdr.sliceprovider/hdr_and_color_format</string>
     <string name="resolution_slice_uri" translatable="false">content://com.google.android.tv.settings.hdr.sliceprovider/resolution</string>
     <string name="surround_sound_toggle_slice_uri" translatable="false">content://com.google.android.tv.settings.advancedsound.sliceprovider/surround_sound_toggle</string>
     <string name="advanced_sound_settings_slice_uri" translatable="false">content://com.google.android.tv.settings.advancedsound.sliceprovider/advanced_sound_settings</string>
