@@ -451,7 +451,7 @@ public class DisplayCapabilityManager {
   public void setResolutionAndRefreshRateByMode(final String mode) {
     // mOutputModeManager.setBestMode(mode);
     // autoSelectColorAttribute();
-
+    mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, "false");
     setUserPreferredDisplayMode(mode);
   }
 

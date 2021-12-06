@@ -204,8 +204,8 @@ public class HdrSliceProvider extends MediaSliceProvider {
   }
 
   private void updateHdrResolutionDetails(PreferenceSliceBuilder psb) {
-    String[] hdmiModes = this.mDisplayCapabilityManager.getHdmiModes();
-    String currentMode = this.mDisplayCapabilityManager.getCurrentMode();
+    String[] hdmiModes = mDisplayCapabilityManager.getHdmiModes();
+    String currentMode = mDisplayCapabilityManager.getCurrentMode();
 
     if (MediaSliceUtil.CanDebug()) {
       Log.d(TAG, "hdmiModes:" + Arrays.toString(hdmiModes));
@@ -213,7 +213,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
     }
 
     for (int i = 0; i < hdmiModes.length; i++) {
-      String[] titlesByMode = this.mDisplayCapabilityManager.getTitlesByMode(hdmiModes[i]);
+      String[] titlesByMode = mDisplayCapabilityManager.getTitlesByMode(hdmiModes[i]);
       psb.addPreference(
           new RowBuilder()
               .setKey(hdmiModes[i])
