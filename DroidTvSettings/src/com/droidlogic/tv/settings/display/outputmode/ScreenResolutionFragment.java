@@ -218,6 +218,10 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
         if (isHdmiMode()) {
             // Auto Best Resolution.
+            // At present, the interface with the best resolution has not been adapted,
+            // so this function is temporarily disabled
+            mBestResolutionPref.setVisible(false);
+            /*
             mBestResolutionPref.setVisible(true);
             mBestResolutionPref.setEnabled(true);
             ((SwitchPreference)mBestResolutionPref).setChecked(isBestResolution());
@@ -225,7 +229,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
                 mBestResolutionPref.setSummary(R.string.captions_display_on);
             }else {
                 mBestResolutionPref.setSummary(R.string.captions_display_off);
-            }
+            }*/
 
             // deep space
             mDeepColorPref.setVisible(true);
@@ -329,7 +333,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (TextUtils.equals(preference.getKey(), KEY_BEST_RESOLUTION)) {
-            // todo switching resolution in ATV
+            // todo auto switching to best resolution in more settings
             preMode = getCurrentDisplayMode();
             preDeepColor = getCurrentDeepColor();
             if ((boolean)newValue) {

@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.DolbyVisionSettingManager;
+import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -65,12 +66,8 @@ public class OutputUiManager {
         "1080p24hz",
         "720p60hz",
         "720p50hz",
-        "1080i60hz",
-        "1080i50hz",
         "576p50hz",
-        "480p60hz",
-        "576i50hz",
-        "480i60hz"
+        "480p60hz"
     };
     private static final String[] HDMI_TITLE = {
         "4k2k-60hz",
@@ -84,12 +81,8 @@ public class OutputUiManager {
         "1080p-24hz",
         "720p-60hz",
         "720p-50hz",
-        "1080i-60hz",
-        "1080i-50hz",
         "576p-50hz",
-        "480p-60hz",
-        "576i-50hz",
-        "480i-60hz"
+        "480p-60hz"
     };
 
     public static final String[] HDMI_COLOR_LIST = {
@@ -182,9 +175,11 @@ public class OutputUiManager {
     private static String mUiMode;
     private static String tvSupportDolbyVisionMode;
     private static String tvSupportDolbyVisionType;
+    private DisplayCapabilityManager mDisplayCapabilityManager;
 
     public OutputUiManager(Context context){
         mContext = context;
+        mDisplayCapabilityManager = DisplayCapabilityManager.getDisplayCapabilityManager(mContext);
         mOutputModeManager = OutputModeManager.getInstance(mContext);
         mDolbyVisionSettingManager = new DolbyVisionSettingManager(mContext);
 
@@ -364,11 +359,12 @@ public class OutputUiManager {
     }
 
     public void change2NewMode(final String mode) {
-        mOutputModeManager.setBestMode(mode);
+        // mOutputModeManager.setBestMode(mode);
+        mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(mode);
     }
 
     public void change2BestMode() {
-        mOutputModeManager.setBestMode(null);
+        // mOutputModeManager.setBestMode(null);
     }
     public boolean isBestOutputmode(){
         return mOutputModeManager.isBestOutputmode();

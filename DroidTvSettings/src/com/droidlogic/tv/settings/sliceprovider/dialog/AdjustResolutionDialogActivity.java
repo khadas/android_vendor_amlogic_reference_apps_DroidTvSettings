@@ -40,10 +40,9 @@ public class AdjustResolutionDialogActivity extends BaseDialogActivity {
         if (!isDialogCreated(savedInstanceState)) {
             mDisplayCapabilityManager =
                     DisplayCapabilityManager.getDisplayCapabilityManager(getApplicationContext());
-            //int currentModeId = mDisplayCapabilityManager.getCurrentlyDisplayMode().getModeId();
             mCurrentMode = mDisplayCapabilityManager.getCurrentMode();
             mNextMode = getIntent().getStringExtra(EXTRA_PREFERENCE_KEY);
-            Log.d(TAG, "mNextMode " + mNextMode);
+            Log.d(TAG, "mCurrentMode: " + mCurrentMode + "; mNextMode: " + mNextMode);
 
             mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(mNextMode);
             mWasDolbyVisionChanged = mDisplayCapabilityManager.adjustDolbyVisionByMode(mNextMode);

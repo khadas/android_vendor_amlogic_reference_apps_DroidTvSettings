@@ -160,8 +160,9 @@ public class OutputmodeFragment extends SettingsPreferenceFragment implements On
                 preMode = mOutputUiManager.getCurrentMode().trim();
                 curMode = radioPreference.getKey();
                 curPreference = radioPreference;
+                Log.d(LOG_TAG, "currentMode: " + preMode + "; NetMode" + curMode);
                 mOutputUiManager.change2NewMode(curMode);
-                showDialog();
+                // showDialog();
                 curPreference.setChecked(true);
             } else {
                 radioPreference.setChecked(true);
