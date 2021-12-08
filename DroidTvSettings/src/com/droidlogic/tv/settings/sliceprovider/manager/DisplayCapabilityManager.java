@@ -34,6 +34,8 @@ public class DisplayCapabilityManager {
   private static final String TAG = DisplayCapabilityManager.class.getSimpleName();
   private static final String VAL_HDR_POLICY_SINK = "0";
   private static final String VAL_HDR_POLICY_SOURCE = "1";
+  private static final String DISPLAY_MODE_TRUE = "true";
+  private static final String DISPLAY_MODE_false = "false";
   private static final String UBOOTENV_HDR_POLICY = "ubootenv.var.hdr_policy";
   private static final String ENV_IS_BEST_MODE = "ubootenv.var.is.bestmode";
   private static final String SYSTEM_PROPERTY_HDR_PREFERENCE = "persist.vendor.sys.hdr_preference";
@@ -445,13 +447,14 @@ public class DisplayCapabilityManager {
   }
 
   public String getCurrentMode() {
-    return mOutputModeManager.getCurrentOutputMode();
+    return mOutputModeManager.getCurrentOutputMode().trim();
   }
 
   public void setResolutionAndRefreshRateByMode(final String mode) {
-    // mOutputModeManager.setBestMode(mode);
-    // autoSelectColorAttribute();
-    mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, "false");
+    if (getPreferredFormat() != HdrFormat.DOLBY_VISION) {
+      autoSelectColorAttributeByMode(mode, false);
+    }
+    Log.d(TAG, "setModes: " + mode);
     setUserPreferredDisplayMode(mode);
   }
 
@@ -461,6 +464,9 @@ public class DisplayCapabilityManager {
 
     Map<String, Display.Mode> modeMap = USER_PREFERRED_MODE_BY_MODE;
     checkUserPreferredMode(supportedModes, modeMap.get(mode));
+    if (!DISPLAY_MODE_false.equals(this.mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
+      this.mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_false);
+    }
     this.mDisplayManager.setUserPreferredDisplayMode(modeMap.get(mode));
   }
 
@@ -471,6 +477,28 @@ public class DisplayCapabilityManager {
       }
     }
     throw new IllegalArgumentException("Unrecognized user preferred mode");
+  }
+
+  private void autoSelectColorAttributeByMode(String mode, boolean isBestMode) {
+    List<String> list;
+    if (getPreferredFormat() == HdrFormat.SDR) {
+      list = mHdmiColorAttributeList;
+    } else {
+      list = mHdmiDeepColorAttributeList;
+    }
+    for (String attr : list) {
+      if (doesModeSupportColor(mode, attr)) {
+        setColorAttribute(attr, isBestMode);
+        return;
+      }
+    }
+  }
+
+  private void setColorAttribute(String str, boolean isBestMode) {
+    this.mOutputModeManager.setDeepColorAttribute(str);
+    if (isBestMode) {
+      this.mOutputModeManager.setBestMode(getCurrentMode());
+    }
   }
 
   /** Prioritize the color attribute with the lowest data rate */

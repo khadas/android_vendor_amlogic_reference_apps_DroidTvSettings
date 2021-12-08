@@ -14,11 +14,13 @@ import android.view.WindowManagerGlobal;
 import androidx.appcompat.R;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
 import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
 
 public class DisplayDensityManagerService extends Service {
+    private static final ImmutableSet<Integer> MANAGED_DISPLAY_TYPES = ImmutableSet.of(0, 1, 2);
     private static final Integer MAX_HEIGHT_OF_UI = 1080;
     private static final ImmutableMap<Integer, Integer> PREFERRED_DPI_BY_DISPLAY_WIDTH =
             new ImmutableMap.Builder<Integer, Integer>()
@@ -43,12 +45,14 @@ public class DisplayDensityManagerService extends Service {
             Log.d(TAG, "onCreate");
             Log.d(TAG, "PREFERRED_DPI_BY_DISPLAY_WIDTH: " + PREFERRED_DPI_BY_DISPLAY_WIDTH);
         }
-        this.mDisplayManager = (DisplayManager) getSystemService(DisplayManager.class);
-        this.mWindowManagerService = WindowManagerGlobal.getWindowManagerService();
-        Display[] displays = this.mDisplayManager.getDisplays();
+        mDisplayManager = (DisplayManager) getSystemService(DisplayManager.class);
+        mWindowManagerService = WindowManagerGlobal.getWindowManagerService();
+        Display[] displays = mDisplayManager.getDisplays();
         for (Display display : displays) {
-            resetDisplaySize(display.getDisplayId());
-            adjustDisplayDensityByMode(display.getDisplayId());
+            if (MANAGED_DISPLAY_TYPES.contains(Integer.valueOf(display.getType()))) {
+                resetDisplaySize(display.getDisplayId());
+                adjustDisplayDensityByMode(display.getDisplayId());
+            }
         }
         mDisplayListener = new DisplayManager.DisplayListener() {
             public void onDisplayAdded(int displayId) {
@@ -59,11 +63,11 @@ public class DisplayDensityManagerService extends Service {
 
             public void onDisplayChanged(int displayId) {
                 Log.i(TAG, "onDisplayChanged displayId: " + displayId);
-                DisplayDensityManagerService.this.adjustDisplayDensityByMode(displayId);
+                adjustDisplayDensityByMode(displayId);
             }
         };
 
-        this.mDisplayManager.registerDisplayListener(mDisplayListener, null);
+        mDisplayManager.registerDisplayListener(mDisplayListener, null);
     }
 
     @Override
@@ -80,12 +84,12 @@ public class DisplayDensityManagerService extends Service {
         if (MediaSliceUtil.CanDebug()) {
             Log.d(TAG, "onDestroy");
         }
-        this.mDisplayManager.unregisterDisplayListener(this.mDisplayListener);
+        mDisplayManager.unregisterDisplayListener(mDisplayListener);
     }
 
     private void resetDisplaySize(int displayId) {
         try {
-            this.mWindowManagerService.clearForcedDisplaySize(displayId);
+            mWindowManagerService.clearForcedDisplaySize(displayId);
         } catch (RemoteException e) {
             Log.e(TAG, "Cannot reset the display size.", e);
         }
@@ -94,7 +98,7 @@ public class DisplayDensityManagerService extends Service {
     /* access modifiers changed from: private */
     /* access modifiers changed from: public */
     private void adjustDisplayDensityByMode(int displayId) {
-        Display.Mode mode = this.mDisplayManager.getDisplay(displayId).getMode();
+        Display.Mode mode = mDisplayManager.getDisplay(displayId).getMode();
         Log.i(TAG, "adjust display density on display " + displayId + " according to the new display mode " + mode);
         try {
             int density = MediaSliceConstants.MEDIA_DISPLAY_DENSITY_HIGH;  // The maximum resolution density is used by default
@@ -111,7 +115,7 @@ public class DisplayDensityManagerService extends Service {
             }
 
             // A user id constant to indicate the "owner" user of the device.
-            this.mWindowManagerService.setForcedDisplayDensityForUser(displayId, density, UserHandle.USER_OWNER);
+            mWindowManagerService.setForcedDisplayDensityForUser(displayId, density, UserHandle.USER_OWNER);
         } catch (RemoteException e) {
             Log.e(TAG, "Cannot change the display density.The content may be displayed incorrectly. "
                     + "Skip the error since it won't affect the main functionalities.", e);

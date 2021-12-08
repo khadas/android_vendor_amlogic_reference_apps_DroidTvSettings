@@ -207,10 +207,8 @@ public class HdrSliceProvider extends MediaSliceProvider {
     String[] hdmiModes = mDisplayCapabilityManager.getHdmiModes();
     String currentMode = mDisplayCapabilityManager.getCurrentMode();
 
-    if (MediaSliceUtil.CanDebug()) {
-      Log.d(TAG, "hdmiModes:" + Arrays.toString(hdmiModes));
-      Log.d(TAG, "currentMode:" + currentMode);
-    }
+    Log.d(TAG, "hdmiModes:" + Arrays.toString(hdmiModes));
+    Log.d(TAG, "currentMode:" + currentMode);
 
     for (int i = 0; i < hdmiModes.length; i++) {
       String[] titlesByMode = mDisplayCapabilityManager.getTitlesByMode(hdmiModes[i]);
