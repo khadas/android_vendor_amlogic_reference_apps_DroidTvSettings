@@ -62,8 +62,10 @@ public class DisplayDensityManagerService extends Service {
             }
 
             public void onDisplayChanged(int displayId) {
-                Log.i(TAG, "onDisplayChanged displayId: " + displayId);
-                adjustDisplayDensityByMode(displayId);
+                if (MANAGED_DISPLAY_TYPES.contains(Integer.valueOf(mDisplayManager.getDisplay(displayId).getType()))) {
+                    Log.i(TAG, "onDisplayChanged displayId: " + displayId);
+                    adjustDisplayDensityByMode(displayId);
+                }
             }
         };
 
@@ -113,7 +115,9 @@ public class DisplayDensityManagerService extends Service {
                     Log.e(TAG, "Unexpected display width = " + mode.getPhysicalWidth() + ", change the DPI to " + density);
                 }
             }
-
+            if (MediaSliceUtil.CanDebug()) {
+                Log.e(TAG, "density: " + density);
+            }
             // A user id constant to indicate the "owner" user of the device.
             mWindowManagerService.setForcedDisplayDensityForUser(displayId, density, UserHandle.USER_OWNER);
         } catch (RemoteException e) {
