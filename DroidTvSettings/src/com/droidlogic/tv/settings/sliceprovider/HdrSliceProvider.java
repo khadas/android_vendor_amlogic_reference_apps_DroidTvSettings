@@ -106,20 +106,18 @@ public class HdrSliceProvider extends MediaSliceProvider {
                 !mDisplayCapabilityManager.isHdrPolicySource(),
                 getContext().getString(R.string.hdr_match_content_type_radio_group_name)));
 
-    if (mDisplayCapabilityManager.getPreferredFormat() != HdrFormat.HDR) {
-        psb.addPreference(
-            new RowBuilder()
-                .setKey(getContext().getString(R.string.hdr_match_content_source_key))
-                .setTitle(getContext().getString(R.string.hdr_match_content_source_title))
-                .setInfoSummary(getContext().getString(R.string.hdr_match_content_help_text))
-                .addRadioButton(
-                    generatePendingIntent(
-                        getContext(),
-                        MediaSliceConstants.ACTION_MATCH_CONTENT_POLICY_CHANGED,
-                        HdrSliceBroadcastReceiver.class),
-                    mDisplayCapabilityManager.isHdrPolicySource(),
-                    getContext().getString(R.string.hdr_match_content_type_radio_group_name)));
-    }
+    psb.addPreference(
+        new RowBuilder()
+            .setKey(getContext().getString(R.string.hdr_match_content_source_key))
+            .setTitle(getContext().getString(R.string.hdr_match_content_source_title))
+            .setInfoSummary(getContext().getString(R.string.hdr_match_content_help_text))
+            .addRadioButton(
+                generatePendingIntent(
+                    getContext(),
+                    MediaSliceConstants.ACTION_MATCH_CONTENT_POLICY_CHANGED,
+                    HdrSliceBroadcastReceiver.class),
+                mDisplayCapabilityManager.isHdrPolicySource(),
+                getContext().getString(R.string.hdr_match_content_type_radio_group_name)));
 
     return psb.build();
   }
