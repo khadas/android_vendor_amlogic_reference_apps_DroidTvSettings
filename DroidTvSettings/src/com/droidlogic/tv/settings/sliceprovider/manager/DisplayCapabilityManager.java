@@ -221,6 +221,7 @@ public class DisplayCapabilityManager {
   private boolean mIsHdr10Supported = false;
 
   private DisplayManager mDisplayManager;
+  private DisplayDensityManager mDisplayDensityManager;
 
   public static boolean isInit() {
     return mDisplayCapabilityManager != null;
@@ -237,6 +238,7 @@ public class DisplayCapabilityManager {
 
   private DisplayCapabilityManager(final Context context) {
     mDisplayManager = (DisplayManager)context.getSystemService(Context.DISPLAY_SERVICE);
+    mDisplayDensityManager = new DisplayDensityManager(mDisplayManager);
     mSystemControlManager = SystemControlManager.getInstance();
     mOutputModeManager = new OutputModeManager(context);
     mDolbyVisionSettingManager = new DolbyVisionSettingManager(context);
@@ -468,6 +470,9 @@ public class DisplayCapabilityManager {
       this.mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_false);
     }
     this.mDisplayManager.setUserPreferredDisplayMode(modeMap.get(mode));
+
+    // set density
+    mDisplayDensityManager.adjustDisplayDensityByMode(modeMap.get(mode));
   }
 
   private void checkUserPreferredMode(Display.Mode[] modeArr, Display.Mode mode) {

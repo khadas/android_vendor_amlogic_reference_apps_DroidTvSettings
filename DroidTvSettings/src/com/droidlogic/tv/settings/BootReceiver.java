@@ -39,11 +39,12 @@ public class BootReceiver extends BroadcastReceiver {
             Log.i(TAG, "onReceive");
         }
 
-        try {
+        /*try {
             context.startService(new Intent(context, DisplayDensityManagerService.class));
         } catch (Exception e) {
             Log.e(TAG, e.toString());
-        }
+        }*/
+
         // Start the Service that supports ConnectedDevicesSliceProvider only if the URI is not
         // overlaid.
         if (context != null
