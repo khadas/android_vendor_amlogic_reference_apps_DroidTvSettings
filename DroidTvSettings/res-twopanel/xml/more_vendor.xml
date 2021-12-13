@@ -46,6 +46,11 @@
         android:key="mbox_sound"
         android:title="@string/device_sound" />
     <Preference
+        android:fragment="com.droidlogic.tv.settings.wifi.HotSpotFragment"
+        android:icon="@drawable/ic_network"
+        android:key="wifi_hotspot"
+        android:title="@string/tether_settings_title_wifi" />
+    <Preference
         android:fragment="com.droidlogic.tv.settings.PowerKeyActionDefinitionFragment"
         android:icon="@drawable/ic_settings_more_amlogic_power"
         android:key="powerkey_action"

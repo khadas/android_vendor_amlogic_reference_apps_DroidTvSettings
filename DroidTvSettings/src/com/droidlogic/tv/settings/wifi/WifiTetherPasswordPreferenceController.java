@@ -49,7 +49,7 @@ public class WifiTetherPasswordPreferenceController extends WifiTetherBasePrefer
         if (null != preference) {
 
         String password = preference.getText();
-            if (!password.equals(mPassword)) {
+            if (password != null && !password.equals(mPassword)) {
                 mPassword = password;
                 mListener.onTetherConfigUpdated();
             }
