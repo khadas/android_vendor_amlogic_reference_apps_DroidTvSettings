@@ -15,7 +15,12 @@ public class SetModeUEventObserver {
           @Override
           public void onUEvent(UEvent uEvent) {
             //Observe set mode completed event
-            if (uEvent.get("STATE").equals("ACA=0")) {
+            /*(if (uEvent.get("STATE").equals("ACA=0")) {
+              mRunnable.run();
+              mIsObserved = true;
+            }*/
+
+            if (uEvent.get("vout_setmode").equals("0")) {
               mRunnable.run();
               mIsObserved = true;
             }
@@ -29,7 +34,8 @@ public class SetModeUEventObserver {
 
   public void startObserving() {
     resetObserved();
-    mUEventObserver.startObserving("DEVPATH=/devices/platform/vout/extcon/setmode");
+    // mUEventObserver.startObserving("DEVPATH=/devices/platform/vout/extcon/setmode");
+    mUEventObserver.startObserving("DEVPATH=/devices/platform/vout");
   }
 
   public void stopObserving() {

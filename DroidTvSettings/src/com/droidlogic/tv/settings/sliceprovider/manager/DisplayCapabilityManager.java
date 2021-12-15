@@ -462,8 +462,9 @@ public class DisplayCapabilityManager {
 
   private void setUserPreferredDisplayMode(String mode) {
     Display.Mode[] supportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
-    Log.d(TAG, "supportedModes: " + Arrays.toString(supportedModes));
-
+    if (MediaSliceUtil.CanDebug()) {
+      Log.d(TAG, "supportedModes: " + Arrays.toString(supportedModes));
+    }
     Map<String, Display.Mode> modeMap = USER_PREFERRED_MODE_BY_MODE;
     checkUserPreferredMode(supportedModes, modeMap.get(mode));
     if (!DISPLAY_MODE_false.equals(this.mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
