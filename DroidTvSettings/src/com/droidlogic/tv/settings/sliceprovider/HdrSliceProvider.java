@@ -170,9 +170,10 @@ public class HdrSliceProvider extends MediaSliceProvider {
             .setSubtitle(
                     mDisplayCapabilityManager.getTitleByMode(mDisplayCapabilityManager.getCurrentMode())));
 
-    //createAutoBestHdrResolution(psb);
-    /*if (!mDisplayCapabilityManager.isBestResolution())*/
-    updateHdrResolutionDetails(psb);
+    createAutoBestHdrResolution(psb);
+    if (!mDisplayCapabilityManager.isBestResolution()) {
+      updateHdrResolutionDetails(psb);
+    }
 
     return psb.build();
   }
