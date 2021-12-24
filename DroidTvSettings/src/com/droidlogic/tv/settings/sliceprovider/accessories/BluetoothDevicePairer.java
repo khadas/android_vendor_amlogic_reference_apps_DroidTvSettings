@@ -359,8 +359,7 @@ public class BluetoothDevicePairer {
             Log.d(TAG, "Turning on discoverability, default scan mode: " + scanMode);
             mDefaultScanMode = scanMode;
             bluetoothAdapter.setScanMode(
-                    BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE,
-                    0 /* no timeout */);
+                    BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE);
         }
 
         // set status to scanning before we start listening since

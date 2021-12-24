@@ -1,6 +1,6 @@
 package com.droidlogic.tv.settings.sliceprovider.manager;
 
-import static android.provider.Settings.Global.HDMI_CONTROL_ENABLED;
+//import static android.provider.Settings.Global.HDMI_CONTROL_ENABLED;
 
 import android.content.Context;
 import android.content.Intent;
@@ -50,12 +50,13 @@ public class HdmiCecContentManager {
 
     public boolean getHdmiCecStatus() {
         ContentResolver resolver = mContext.getContentResolver();
-        return Settings.Global.getInt(resolver, Settings.Global.HDMI_CONTROL_ENABLED, 1) != 0;
+        return true;
+        //return Settings.Global.getInt(resolver, Settings.Global.HDMI_CONTROL_ENABLED, 1) != 0;
     }
 
     public void setHdmiCecStatus(int state) {
         ContentResolver resolver = mContext.getContentResolver();
-        Settings.Global.putInt(resolver, Settings.Global.HDMI_CONTROL_ENABLED, state);
+        //Settings.Global.putInt(resolver, Settings.Global.HDMI_CONTROL_ENABLED, state);
         resolver.notifyChange(MediaSliceConstants.DISPLAYSOUND_HDMI_CEC_URI, null);
         if (MediaSliceUtil.CanDebug()) Log.d(TAG, "setHdmiCecStatus cec swtich:" + state);
     }
@@ -65,9 +66,10 @@ public class HdmiCecContentManager {
         ContentResolver resolver = mContext.getContentResolver();
         // Note that default CEC is enabled. You'll find similar retrieval of property in
         // HdmiControlService.
-        boolean cecEnabled =
-                Settings.Global.getInt(resolver, Settings.Global.HDMI_CONTROL_ENABLED, 1) != 0;
-        return cecEnabled ? "Enabled" : "Disabled" ;
+        //boolean cecEnabled =
+            //    Settings.Global.getInt(resolver, Settings.Global.HDMI_CONTROL_ENABLED, 1) != 0;
+        //return cecEnabled ? "Enabled" : "Disabled" ;
+        return "Enabled";
     }
 
 }

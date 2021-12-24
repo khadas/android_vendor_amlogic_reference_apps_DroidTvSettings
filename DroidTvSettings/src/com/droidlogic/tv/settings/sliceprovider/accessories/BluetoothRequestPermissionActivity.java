@@ -56,8 +56,8 @@ public class BluetoothRequestPermissionActivity extends FragmentActivity {
             return;
         }
 
-        mBluetoothAdapter.setScanMode(BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE,
-                TimeUnit.SECONDS.toMillis(mTimeoutSeconds));
+        mBluetoothAdapter.setScanMode(BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE/*,
+                TimeUnit.SECONDS.toMillis(mTimeoutSeconds)*/);
 
         setResult(Activity.RESULT_OK);
         finish();

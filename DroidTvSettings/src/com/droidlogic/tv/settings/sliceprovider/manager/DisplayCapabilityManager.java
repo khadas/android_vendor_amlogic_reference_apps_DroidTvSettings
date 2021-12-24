@@ -201,7 +201,7 @@ public class DisplayCapabilityManager {
     }
 
     public boolean supports(HdrFormat hdrFormat) {
-      return order >= hdrFormat.order;
+      return this.order >= hdrFormat.order;
     }
   }
 
@@ -434,11 +434,8 @@ public class DisplayCapabilityManager {
   }
 
   public void change2BestMode() {
-    if (!DISPLAY_MODE_TRUE.equals(this.mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_false))) {
-      this.mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE);
-    }
-    String systemBestOutputMode = mSystemControlManager.getPrefHdmiDispMode();
-    setUserPreferredDisplayMode(systemBestOutputMode);
+    // Interface abandoned
+    // mOutputModeManager.setBestMode(null);
   }
 
   /**
@@ -459,36 +456,22 @@ public class DisplayCapabilityManager {
     if (getPreferredFormat() != HdrFormat.DOLBY_VISION) {
       autoSelectColorAttributeByMode(mode, false);
     }
-
-    if (!DISPLAY_MODE_false.equals(this.mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
-      this.mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_false);
-    }
+    Log.d(TAG, "setModes: " + mode);
     setUserPreferredDisplayMode(mode);
   }
 
-  /**
-   * The resolution is set using apis in the framework, and
-   * before setting the resolution, it is necessary to distinguish
-   * whether it is the best resolution.
-   * @param mode The resolution to be set
-   * @param beastMode Whether to boot the best resolution
-   */
   private void setUserPreferredDisplayMode(String mode) {
-    Log.i(TAG, "setModes: " + mode);
-
-    String  envIsBestMode = mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE);
     Display.Mode[] supportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
-
     if (MediaSliceUtil.CanDebug()) {
-      Log.d(TAG, " envIsBestMode: " + envIsBestMode);
       Log.d(TAG, "supportedModes: " + Arrays.toString(supportedModes));
     }
-
     Map<String, Display.Mode> modeMap = USER_PREFERRED_MODE_BY_MODE;
     checkUserPreferredMode(supportedModes, modeMap.get(mode));
+    if (!DISPLAY_MODE_false.equals(this.mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
+      this.mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_false);
+    }
+    this.mDisplayManager.setUserPreferredDisplayMode(modeMap.get(mode));
 
-    // set resolution
-    mDisplayManager.setUserPreferredDisplayMode(modeMap.get(mode));
     // set density
     mDisplayDensityManager.adjustDisplayDensityByMode(modeMap.get(mode));
   }
@@ -518,9 +501,9 @@ public class DisplayCapabilityManager {
   }
 
   private void setColorAttribute(String str, boolean isBestMode) {
-    mOutputModeManager.setDeepColorAttribute(str);
+    this.mOutputModeManager.setDeepColorAttribute(str);
     if (isBestMode) {
-      mOutputModeManager.setBestMode(getCurrentMode());
+      this.mOutputModeManager.setBestMode(getCurrentMode());
     }
   }
 

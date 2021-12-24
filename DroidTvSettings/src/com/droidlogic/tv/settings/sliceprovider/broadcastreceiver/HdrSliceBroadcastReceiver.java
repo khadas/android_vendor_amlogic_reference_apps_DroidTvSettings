@@ -61,7 +61,7 @@ public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
         Log.d(TAG, "ACTION_AUTO_BEST_RESOLUTIONS_ENABLED isChecked: " + isChecked);
         String currentMode = getDisplayCapabilityManager(context).getCurrentMode();
         if (!isChecked) {
-            getDisplayCapabilityManager(context).setResolutionAndRefreshRateByMode(currentMode);
+            getDisplayCapabilityManager(context).change2BestMode(currentMode);
         }else{
             getDisplayCapabilityManager(context).change2BestMode();
         }
