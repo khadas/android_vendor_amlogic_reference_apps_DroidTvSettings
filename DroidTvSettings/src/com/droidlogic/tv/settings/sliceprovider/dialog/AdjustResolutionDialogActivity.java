@@ -29,37 +29,45 @@ public class AdjustResolutionDialogActivity extends BaseDialogActivity {
     private int countdownInSeconds = 0;
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        saveCurrentState(savedInstanceState);
+    protected void onDestroy() {
+        Log.i(TAG, "onDestroy !!!!!");
+        super.onDestroy();
+        if (mAlertDialog != null || mAlertDialog.isShowing()) {
+            Log.i(TAG, "dismiss dialog !!!!!");
+            mAlertDialog.dismiss();
+            if (mCountDownTimer != null) {
+                Log.i(TAG, "dismiss mCountDownTimer !!!!!");
+                mCountDownTimer.cancel();
+            }
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!isDialogCreated(savedInstanceState)) {
-            mDisplayCapabilityManager =
-                    DisplayCapabilityManager.getDisplayCapabilityManager(getApplicationContext());
-            mCurrentMode = mDisplayCapabilityManager.getCurrentMode();
-            mNextMode = getIntent().getStringExtra(EXTRA_PREFERENCE_KEY);
-            Log.d(TAG, "mCurrentMode: " + mCurrentMode + "; mNextMode: " + mNextMode);
+        mDisplayCapabilityManager =
+                DisplayCapabilityManager.getDisplayCapabilityManager(getApplicationContext());
+        mCurrentMode = mDisplayCapabilityManager.getCurrentMode();
+        mNextMode = getIntent().getStringExtra(EXTRA_PREFERENCE_KEY);
+        Log.d(TAG, "mCurrentMode: " + mCurrentMode + "; mNextMode: " + mNextMode);
 
-            mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(mNextMode);
-            mWasDolbyVisionChanged = mDisplayCapabilityManager.adjustDolbyVisionByMode(mNextMode);
-            mRestoreCallback =
-                    () -> {
-                        mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(mCurrentMode);
-                        if (mWasDolbyVisionChanged) {
-                            mDisplayCapabilityManager.setPreferredFormat(HdrFormat.DOLBY_VISION);
-                        }
-                    };
-            initAlertDialog();
-            showDialog();
-        }
+        mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(mNextMode);
+        mWasDolbyVisionChanged = mDisplayCapabilityManager.adjustDolbyVisionByMode(mNextMode);
+        mRestoreCallback =
+                () -> {
+                    mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(mCurrentMode);
+                    if (mWasDolbyVisionChanged) {
+                        mDisplayCapabilityManager.setPreferredFormat(HdrFormat.DOLBY_VISION);
+                    }
+                };
+
+        initAlertDialog();
+        showDialog();
+
     }
 
   private void initAlertDialog() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogBackground);
     builder.setCancelable(false);
     builder.setPositiveButton(
         R.string.adjust_resolution_dialog_ok_msg,
@@ -72,11 +80,11 @@ public class AdjustResolutionDialogActivity extends BaseDialogActivity {
     builder.setNegativeButton(
         R.string.adjust_resolution_dialog_cancel_msg,
         (dialog, which) -> {
-          if (mCountDownTimer != null) {
-            mCountDownTimer.cancel();
-          }
-          mRestoreCallback.run();
-          finish();
+            if (mCountDownTimer != null) {
+                mCountDownTimer.cancel();
+            }
+            finish();
+            mRestoreCallback.run();
         });
 
     builder.setTitle(getString(R.string.adjust_resolution_dialog_title));
@@ -119,8 +127,8 @@ public class AdjustResolutionDialogActivity extends BaseDialogActivity {
           @Override
           public void onFinish() {
             mAlertDialog.dismiss();
-            mRestoreCallback.run();
             finish();
+            mRestoreCallback.run();
           }
         };
     mCountDownTimer.start();

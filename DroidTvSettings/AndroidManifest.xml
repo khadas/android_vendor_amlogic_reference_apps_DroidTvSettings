@@ -232,7 +232,6 @@
         <!-- SliceProvider -->
         <activity
             android:name=".sliceprovider.dialog.AdjustResolutionDialogActivity"
-            android:configChanges="screenLayout|screenSize|density"
             android:label="Adjust Resolution Dialog Activity"
             android:launchMode="singleInstance"
             android:exported="false"

@@ -496,6 +496,9 @@
     <item name="buttonBarButtonStyle">@*android:style/Widget.DeviceDefault.Button.ButtonBar.AlertDialog</item>
     </style>
 
+    <style name="CustomAlertDialogBackground" parent="Theme.AlertDialog.Base">
+        <item name="android:background">@color/gray_title</item>
+    </style>
     <!-- DroidLogic end -->
 
 </resources>

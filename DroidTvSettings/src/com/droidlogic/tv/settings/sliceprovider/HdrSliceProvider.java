@@ -427,7 +427,11 @@ public class HdrSliceProvider extends MediaSliceProvider {
     }
 
     boolean isDoblyVisionModeLL = mDisplayCapabilityManager.isDolbyVisionModeLLPreferred();
-    if (MediaSliceUtil.CanDebug()) Log.d(TAG,"isDoblyVisionModeLL:"+isDoblyVisionModeLL+"doesDolbyVisionSupportLL:"+mDisplayCapabilityManager.doesDolbyVisionSupportLL()+" doesDolbyVisionSupportStandard:"+mDisplayCapabilityManager.doesDolbyVisionSupportStandard());
+    if (MediaSliceUtil.CanDebug()) {
+        Log.d(TAG, "isDoblyVisionModeLL:"+ isDoblyVisionModeLL
+                + " doesDolbyVisionSupportLL:" + mDisplayCapabilityManager.doesDolbyVisionSupportLL()
+                + " doesDolbyVisionSupportStandard:" + mDisplayCapabilityManager.doesDolbyVisionSupportStandard());
+    }
 
     if (mDisplayCapabilityManager.doesDolbyVisionSupportLL()) {
       psb.addPreference(
