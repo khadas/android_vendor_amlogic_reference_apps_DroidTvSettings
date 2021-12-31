@@ -133,18 +133,26 @@ public class DisplayCapabilityManager {
   private static final ImmutableMap<String, Display.Mode> USER_PREFERRED_MODE_BY_MODE =
           new ImmutableMap.Builder<String, Display.Mode>()
               .put("2160p60hz", new Display.Mode(3840, 2160, 59.94006f))
+              .put("2160p59.94hz", new Display.Mode(3840, 2160, 59.94006f))
               .put("2160p50hz", new Display.Mode(3840, 2160, 50.0f))
               .put("2160p30hz", new Display.Mode(3840, 2160, 29.97003f))
+              .put("2160p29.97hz", new Display.Mode(3840, 2160, 29.97003f))
               .put("2160p25hz", new Display.Mode(3840, 2160, 25.0f))
               .put("2160p24hz", new Display.Mode(3840, 2160, 23.976025f))
+              .put("2160p23.976hz", new Display.Mode(3840, 2160, 23.976025f))
               .put("smpte24hz", new Display.Mode(4096, 2160, 23.976025f))
+              .put("smpte23.976hz", new Display.Mode(4096, 2160, 23.976025f))
               .put("1080p60hz", new Display.Mode(1920, 1080, 59.94006f))
+              .put("1080p59.94", new Display.Mode(1920, 1080, 59.94006f))
               .put("1080p50hz", new Display.Mode(1920, 1080, 50.0f))
               .put("1080p24hz", new Display.Mode(1920, 1080, 23.976025f))
+              .put("1080p23.976hz", new Display.Mode(1920, 1080, 23.976025f))
               .put("720p60hz", new Display.Mode(1280, 720, 59.94006f))
+              .put("720p59.94", new Display.Mode(1280, 720, 59.94006f))
               .put("720p50hz", new Display.Mode(1280, 720, 50.0f))
               .put("576p50hz", new Display.Mode(720, 576, 50.0f))
               .put("480p60hz", new Display.Mode(720, 480, 59.94006f))
+              .put("480p59.94", new Display.Mode(720, 480, 59.94006f))
               .build();
 
   private static final Map<String, String> MODE_TITLE_BY_MODE = new HashMap<>();
@@ -305,6 +313,25 @@ public class DisplayCapabilityManager {
     return !mHdmiModeList.equals(preList);
   }
 
+  private String filterHdmiModes(String filterHdimMode) {
+    if (!mOutputModeManager.getFrameRateOffset().contains("1")) {
+      return filterHdimMode;
+    }
+
+    String filterHdmiMdeStr = filterHdimMode;
+    Log.d(TAG, "filterHdimMode: " + filterHdimMode);
+      if (filterHdimMode.contains("60Hz")) {
+        filterHdmiMdeStr = filterHdimMode.replace("60Hz", "59.94Hz");
+      } else if (filterHdimMode.contains("30Hz")) {
+        filterHdmiMdeStr = filterHdimMode.replace("30Hz", "29.97Hz");
+      } else if (filterHdimMode.contains("24Hz")) {
+        filterHdmiMdeStr = filterHdimMode.replace("24Hz", "23.976Hz");
+      }
+
+    Log.d(TAG, "filterHdmiMdeStr= " + filterHdmiMdeStr);
+    return filterHdmiMdeStr;
+  }
+
   private boolean updateDolbyVisionModes() {
     List<String> preList = mDolbyVisionModeList;
     String highestDolbyVisionSupportedMode = getHighestDolbyVisionMode();
@@ -421,7 +448,8 @@ public class DisplayCapabilityManager {
   }
 
   public String getTitleByMode(String mode) {
-    return MODE_TITLE_BY_MODE.get(mode);
+    String filterHdmiMode = filterHdmiModes(MODE_TITLE_BY_MODE.get(mode));
+    return filterHdmiMode;
   }
 
   public boolean isBestResolution() {
