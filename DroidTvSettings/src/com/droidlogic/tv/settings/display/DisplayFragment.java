@@ -71,7 +71,11 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
             && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false);
         final Preference outputmodePref = findPreference(KEY_OUTPUTMODE);
-        outputmodePref.setVisible(SettingsConstant.needScreenResolutionFeture(getContext()) && !tvFlag);
+        if (SettingsConstant.needGTVFeature(getContext())) {
+            outputmodePref.setVisible(false);
+        } else {
+            outputmodePref.setVisible(SettingsConstant.needScreenResolutionFeture(getContext()) && !tvFlag);
+        }
 
         final Preference screenPositionPref = findPreference(KEY_POSITION);
         screenPositionPref.setVisible(!tvFlag);

@@ -17,6 +17,10 @@
 package com.droidlogic.tv.settings;
 
 import android.content.Context;
+import android.content.pm.ResolveInfo;
+import android.content.Intent;
+import java.util.Objects;
+
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.SystemControlManager;
 
@@ -26,10 +30,22 @@ import com.droidlogic.app.SystemControlManager;
 public class SettingsConstant {
 
     public static String PACKAGE = "com.droidlogic.tv.settings";
+    public static String PACKAGENAME_LAUNCHERX = "com.google.android.apps.tv.launcherx";
 
     public static boolean needDroidlogicMboxFeature(Context context){
         SystemControlManager sm = SystemControlManager.getInstance();
         return sm.getPropertyBoolean("ro.vendor.platform.has.mbxuimode", false);
+    }
+
+    public static boolean needGTVFeature(Context context) {
+
+        final Intent homeIntent = new Intent(Intent.ACTION_MAIN)
+                .addCategory(Intent.CATEGORY_HOME);
+        final ResolveInfo homeInfo = context.getPackageManager().resolveActivity(homeIntent, 0);
+        if (Objects.equals(PACKAGENAME_LAUNCHERX, homeInfo.activityInfo.packageName)) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean needDroidlogicTvFeature(Context context){

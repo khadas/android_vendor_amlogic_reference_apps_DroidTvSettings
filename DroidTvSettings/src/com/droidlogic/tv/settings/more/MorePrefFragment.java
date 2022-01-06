@@ -163,8 +163,12 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         final Preference advanced_sound_settings_pref = findPreference(KEY_ADVANCE_SOUND);
         //hide it forcedly as new bluetooth remote upgrade application is not available now
         mUpgradeBluetoothRemote.setVisible(false/*is_from_live_tv ? false : (SettingsConstant.needDroidlogicBluetoothRemoteFeature(getContext()) && !tvFlag)*/);
-        hdmicecPref.setVisible((getContext().getPackageManager().hasSystemFeature("android.hardware.hdmi.cec")
-                && SettingsConstant.needDroidlogicHdmicecFeature(getContext())) && !is_from_live_tv);
+        if (SettingsConstant.needGTVFeature(getContext())) {
+            hdmicecPref.setVisible(false);
+        } else {
+            hdmicecPref.setVisible((getContext().getPackageManager().hasSystemFeature("android.hardware.hdmi.cec")
+                    && SettingsConstant.needDroidlogicHdmicecFeature(getContext())) && !is_from_live_tv);
+        }
         playbackPref.setVisible(false);
         if (netflixesnPref != null) {
             if (is_from_live_tv) {
@@ -228,7 +232,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
                 DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_SHOW_STARTUP);
             }
         } else {
-            picturePref.setVisible(!SettingsConstant.needDroidlogicTvFeature(getContext()));
+            picturePref.setVisible(SettingsConstant.needDroidlogicTvFeature(getContext()));
             mTvOption.setVisible(false);
             mSoundsPref.setVisible(false);
             channelPref.setVisible(false);
