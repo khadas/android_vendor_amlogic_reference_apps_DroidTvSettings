@@ -365,6 +365,7 @@ public class OutputUiManager {
 
     public void change2BestMode() {
         // mOutputModeManager.setBestMode(null);
+        mDisplayCapabilityManager.change2BestMode();
     }
     public boolean isBestOutputmode(){
         return mOutputModeManager.isBestOutputmode();
