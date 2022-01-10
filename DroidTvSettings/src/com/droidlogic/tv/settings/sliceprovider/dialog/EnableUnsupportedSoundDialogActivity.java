@@ -44,7 +44,7 @@ public class EnableUnsupportedSoundDialogActivity extends Activity {
   }
 
   private void initAlertDialog() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogBackground);
     builder.setCancelable(false);
     builder.setPositiveButton(
         R.string.enable_unsupported_sound_format_dialog_ok_msg,

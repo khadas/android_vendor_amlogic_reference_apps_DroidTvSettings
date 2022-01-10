@@ -89,7 +89,7 @@ public class PreferredModeChangeDialogActivity extends Activity {
   }
 
   private void initAlertDialog() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogBackground);
     builder.setCancelable(false);
     builder.setPositiveButton(
         R.string.preferred_mode_change_dialog_ok_msg,

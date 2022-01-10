@@ -41,7 +41,7 @@ public class AdjustColorFormatDialogActivity extends Activity {
   }
 
   private void initAlertDialog() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogBackground);
     builder.setCancelable(false);
     builder.setPositiveButton(
         R.string.adjust_color_format_dialog_ok_msg,
