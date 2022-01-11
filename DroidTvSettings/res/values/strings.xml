@@ -2618,7 +2618,7 @@
     <string name="color_format_title">Color format</string>
     <string translatable="false" name="color_attribute_select_type_radio_group_name">color_attribute_select_type_radio_group</string>
 
-    <string name="hdr_auto_best_resolution_title">Auto swith best to resolution</string>
+    <string name="hdr_auto_best_resolution_title">Auto switch to best resolution</string>
 
     <string name="hdr_resolution_title">Resolution</string>
     <string name="hdr_resolution_list_title">Resolution List</string>

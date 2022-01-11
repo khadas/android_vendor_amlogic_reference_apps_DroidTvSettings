@@ -63,7 +63,7 @@ android_app {
 // Classic DroidTvSettings
 android_app {
     name: "DroidTvSettingsTwoPanel",
-    manifest: "AndroidManifest.xml",
+    manifest: "AndroidManifest_gtv.xml",
     srcs: [
         "src/**/*.java",
         "src/**/I*.aidl",
