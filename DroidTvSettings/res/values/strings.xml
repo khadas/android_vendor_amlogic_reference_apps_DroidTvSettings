@@ -2696,6 +2696,6 @@
     <string name="bluetooth_battery_label">Battery level</string>
     <string name="bluetooth_fireware_label">Firmware</string>
     <string name="connected_devices_slice_uri" translatable="false">content://com.google.android.tv.btservices.settings.sliceprovider/general</string>
-
+    <string name="droidsetting_debug" translatable="false">Amlogic_Debug_Options</string>
     <!-- DroidLogic end -->
 </resources>

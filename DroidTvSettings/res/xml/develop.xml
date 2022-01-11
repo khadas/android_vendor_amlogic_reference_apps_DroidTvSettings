@@ -25,5 +25,8 @@
         android:key="dtvkit_features"
         android:title="@string/input_dtv_kit"
         android:fragment="com.droidlogic.tv.settings.develop.dtvkit.DtvkitFragment"/>
-
+    <SwitchPreference
+        android:key="key_droidsetting_debug"
+        android:title="@string/droidsetting_debug"
+        android:persistent="true"/>
 </PreferenceScreen>

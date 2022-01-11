@@ -93,6 +93,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     private static final String HAILSTORM_VERSION_PROP = "ro.vendor.hailstorm.version";
     private static final String DEBUG_DISPLY_PROP = "vendor.display.debug";
     static final String KEY_DEVELOP_OPTION = "amlogic_developer_options";
+    private static final String DEBUG_GLOBAL_SETTING = "droidsetting_debug";
 
     private Preference mUpgradeBluetoothRemote;
     private Preference mSoundsPref;
@@ -251,6 +252,11 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         if (DroidUtils.hasGtvsUiMode()) {
             Log.i(TAG, "hide powerkey_action");
             powerKeyPref.setVisible(false);
+        }
+
+        if (0 == Settings.Global.getInt(getContext().getContentResolver(), DEBUG_GLOBAL_SETTING, 0)) {
+            advanced_sound_settings_pref.setVisible(false);
+            mboxSoundsPref.setVisible(false);
         }
     }
 

@@ -30,6 +30,7 @@ import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.app.SystemControlManager;
 import android.util.Log;
+import android.provider.Settings;
 
 public class DevelopFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -37,12 +38,15 @@ public class DevelopFragment extends SettingsPreferenceFragment implements Prefe
 
     private static final String KEY_KERNEL_LOG_CONFIG    = "kernel_loglevel_config";
     private static final String KEY_DTVKIT               = "dtvkit_features";
+    private static final String KEY_DROIDSETTING_DEBUG	 = "key_droidsetting_debug";
 
     public static final String ENV_KERNEL_LOG_LEVEL      = "ubootenv.var.loglevel";
+    private static final String DEBUG_GLOBAL_SETTING = "droidsetting_debug";
 
     private SystemControlManager mSystemControlManager;
     private Preference mKernelLogPref;
     private Preference mDtvkitPref;
+    private SwitchPreference mDroidSettings;
 
 
     public static DevelopFragment newInstance() {
@@ -74,6 +78,9 @@ public class DevelopFragment extends SettingsPreferenceFragment implements Prefe
             ((SwitchPreference)mKernelLogPref).setChecked(true);
             mKernelLogPref.setSummary(R.string.captions_display_on);
         }
+        mDroidSettings=findPreference(KEY_DROIDSETTING_DEBUG);
+        mDroidSettings.setChecked(1 == Settings.Global.getInt(getContext().getContentResolver(), DEBUG_GLOBAL_SETTING, 0));
+        mDroidSettings.setOnPreferenceChangeListener(this);
 
     }
 
@@ -88,6 +95,9 @@ public class DevelopFragment extends SettingsPreferenceFragment implements Prefe
                 mSystemControlManager.setBootenv(ENV_KERNEL_LOG_LEVEL, "1");
                 mKernelLogPref.setSummary(R.string.captions_display_off);
             }
+        } else if (TextUtils.equals(preference.getKey(), KEY_DROIDSETTING_DEBUG)) {
+                Settings.Global.putInt(getContext().getContentResolver(),
+                    DEBUG_GLOBAL_SETTING, (boolean)newValue ? 1 : 0 );
         }
         return true;
     }
