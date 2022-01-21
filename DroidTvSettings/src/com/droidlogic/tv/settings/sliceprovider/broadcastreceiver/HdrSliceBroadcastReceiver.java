@@ -35,6 +35,8 @@ public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
         key = intent.getStringExtra(EXTRA_PREFERENCE_KEY);
         boolean isModeLL =
             context.getString(R.string.dolby_vision_mode_low_latency_key).equals(key);
+
+        Log.d(TAG, "isModeLL: " + isModeLL);
         getDisplayCapabilityManager(context).setDolbyVisionModeLLPreferred(isModeLL);
         context
             .getContentResolver()
@@ -61,7 +63,7 @@ public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
         Log.d(TAG, "ACTION_AUTO_BEST_RESOLUTIONS_ENABLED isChecked: " + isChecked);
         String currentMode = getDisplayCapabilityManager(context).getCurrentMode();
         if (!isChecked) {
-            getDisplayCapabilityManager(context).change2BestMode(currentMode);
+            getDisplayCapabilityManager(context).setResolutionAndRefreshRateByMode(currentMode);
         }else{
             getDisplayCapabilityManager(context).change2BestMode();
         }

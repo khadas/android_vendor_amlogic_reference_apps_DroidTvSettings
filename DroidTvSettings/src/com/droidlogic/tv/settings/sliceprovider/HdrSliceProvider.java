@@ -170,9 +170,14 @@ public class HdrSliceProvider extends MediaSliceProvider {
             .setSubtitle(
                     mDisplayCapabilityManager.getTitleByMode(mDisplayCapabilityManager.getCurrentMode())));
 
-    //createAutoBestHdrResolution(psb);
-    /*if (!mDisplayCapabilityManager.isBestResolution())*/
-    updateHdrResolutionDetails(psb);
+    if (!mDisplayCapabilityManager.isCvbsMode()) {
+        createAutoBestHdrResolution(psb);
+        if (!mDisplayCapabilityManager.isBestResolution()) {
+            updateHdrResolutionDetails(psb);
+        }
+    } else {
+        updateHdrResolutionDetails(psb);
+    }
 
     return psb.build();
   }
@@ -235,6 +240,11 @@ public class HdrSliceProvider extends MediaSliceProvider {
       return psb.build();
     } else {
       tryRefreshDisplayCapabilityManager(sliceUri);
+    }
+
+    if (mDisplayCapabilityManager.isCvbsMode()) {
+      Log.d(TAG, "this is cvbsmode ~~");
+      return null;
     }
 
     psb.setEmbeddedPreference(

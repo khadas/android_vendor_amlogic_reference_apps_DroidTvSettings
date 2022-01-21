@@ -35,7 +35,7 @@ public class DisplayCapabilityManager {
   private static final String VAL_HDR_POLICY_SINK = "0";
   private static final String VAL_HDR_POLICY_SOURCE = "1";
   private static final String DISPLAY_MODE_TRUE = "true";
-  private static final String DISPLAY_MODE_false = "false";
+  private static final String DISPLAY_MODE_FALSE = "false";
   private static final String UBOOTENV_HDR_POLICY = "ubootenv.var.hdr_policy";
   private static final String ENV_IS_BEST_MODE = "ubootenv.var.is.bestmode";
   private static final String SYSTEM_PROPERTY_HDR_PREFERENCE = "persist.vendor.sys.hdr_preference";
@@ -46,6 +46,8 @@ public class DisplayCapabilityManager {
   private static final String SUPPORT_HDR2 = "Traditional SDR: 1";
   private static final String SUPPORT_HDR3 = "SMPTE ST 2084: 1";
   private static final String SUPPORT_HDR4 = "Hybrid Log-Gamma: 1";
+
+  public static final String CVBS_MODE = "cvbs";
 
   private static final int DV_DISABLE = 0;
   private static final int DV_ENABLE = 1;
@@ -76,7 +78,9 @@ public class DisplayCapabilityManager {
           "720p60hz",
           "720p50hz",
           "576p50hz",
-          "480p60hz");
+          "480p60hz",
+          "576cvbs",
+          "480cvbs");
 
   private static final List<String> HDMI_MODE_TITLE_LIST =
       ImmutableList.of(
@@ -92,7 +96,9 @@ public class DisplayCapabilityManager {
           "720p 60Hz",
           "720p 50Hz",
           "576p 50Hz",
-          "480p 60Hz");
+          "480p 60Hz",
+          "576 CVBS",
+          "480 CVBS");
 
   private static final List<String> HDMI_COLOR_LIST =
       ImmutableList.of(
@@ -132,27 +138,29 @@ public class DisplayCapabilityManager {
 
   private static final ImmutableMap<String, Display.Mode> USER_PREFERRED_MODE_BY_MODE =
           new ImmutableMap.Builder<String, Display.Mode>()
-              .put("2160p60hz", new Display.Mode(3840, 2160, 59.94006f))
+              .put("2160p60hz", new Display.Mode(3840, 2160, 60.000004f))
               .put("2160p59.94hz", new Display.Mode(3840, 2160, 59.94006f))
               .put("2160p50hz", new Display.Mode(3840, 2160, 50.0f))
-              .put("2160p30hz", new Display.Mode(3840, 2160, 29.97003f))
+              .put("2160p30hz", new Display.Mode(3840, 2160, 30.000002f))
               .put("2160p29.97hz", new Display.Mode(3840, 2160, 29.97003f))
               .put("2160p25hz", new Display.Mode(3840, 2160, 25.0f))
-              .put("2160p24hz", new Display.Mode(3840, 2160, 23.976025f))
+              .put("2160p24hz", new Display.Mode(3840, 2160, 24.000002f))
               .put("2160p23.976hz", new Display.Mode(3840, 2160, 23.976025f))
-              .put("smpte24hz", new Display.Mode(4096, 2160, 23.976025f))
+              .put("smpte24hz", new Display.Mode(4096, 2160, 24.000002f))
               .put("smpte23.976hz", new Display.Mode(4096, 2160, 23.976025f))
-              .put("1080p60hz", new Display.Mode(1920, 1080, 59.94006f))
+              .put("1080p60hz", new Display.Mode(1920, 1080, 60.000004f))
               .put("1080p59.94", new Display.Mode(1920, 1080, 59.94006f))
               .put("1080p50hz", new Display.Mode(1920, 1080, 50.0f))
-              .put("1080p24hz", new Display.Mode(1920, 1080, 23.976025f))
+              .put("1080p24hz", new Display.Mode(1920, 1080, 24.000002f))
               .put("1080p23.976hz", new Display.Mode(1920, 1080, 23.976025f))
-              .put("720p60hz", new Display.Mode(1280, 720, 59.94006f))
+              .put("720p60hz", new Display.Mode(1280, 720, 60.000004f))
               .put("720p59.94", new Display.Mode(1280, 720, 59.94006f))
               .put("720p50hz", new Display.Mode(1280, 720, 50.0f))
               .put("576p50hz", new Display.Mode(720, 576, 50.0f))
-              .put("480p60hz", new Display.Mode(720, 480, 59.94006f))
-              .put("480p59.94", new Display.Mode(720, 480, 59.94006f))
+              .put("480p60hz", new Display.Mode(720, 480, 60.000004f))
+              .put("480p59.94hz", new Display.Mode(720, 480, 59.94006f))
+              .put("576cvbs", new Display.Mode(720, 576, 50.0f))
+              .put("480cvbs", new Display.Mode(720, 480, 59.94006f))
               .build();
 
   private static final Map<String, String> MODE_TITLE_BY_MODE = new HashMap<>();
@@ -209,7 +217,7 @@ public class DisplayCapabilityManager {
     }
 
     public boolean supports(HdrFormat hdrFormat) {
-      return this.order >= hdrFormat.order;
+      return order >= hdrFormat.order;
     }
   }
 
@@ -229,7 +237,7 @@ public class DisplayCapabilityManager {
   private boolean mIsHdr10Supported = false;
 
   private DisplayManager mDisplayManager;
-  private DisplayDensityManager mDisplayDensityManager;
+  // private DisplayDensityManager mDisplayDensityManager;
 
   public static boolean isInit() {
     return mDisplayCapabilityManager != null;
@@ -246,7 +254,7 @@ public class DisplayCapabilityManager {
 
   private DisplayCapabilityManager(final Context context) {
     mDisplayManager = (DisplayManager)context.getSystemService(Context.DISPLAY_SERVICE);
-    mDisplayDensityManager = new DisplayDensityManager(mDisplayManager);
+    // mDisplayDensityManager = new DisplayDensityManager(mDisplayManager);
     mSystemControlManager = SystemControlManager.getInstance();
     mOutputModeManager = new OutputModeManager(context);
     mDolbyVisionSettingManager = new DolbyVisionSettingManager(context);
@@ -298,6 +306,10 @@ public class DisplayCapabilityManager {
   private boolean updateHdmiModes() {
     List<String> preList = mHdmiModeList;
     final String strEdid = mOutputModeManager.getHdmiSupportList();
+    if (MediaSliceUtil.CanDebug()) {
+        Log.d(TAG, "getHdmiSupportList:" + strEdid);
+    }
+
     if (strEdid != null && strEdid.length() != 0 && !strEdid.contains("null")) {
       final List<String> edidKeyList = new ArrayList<>();
       for (int i = 0; i < HDMI_MODE_LIST.size(); i++) {
@@ -447,6 +459,15 @@ public class DisplayCapabilityManager {
     return mHdmiModeList.toArray(new String[0]);
   }
 
+  public boolean isCvbsMode() {
+    String outputMode = mOutputModeManager.getCurrentOutputMode();
+    Log.d(TAG,"isCvbsMode currentMode = " + outputMode);
+    if (outputMode.contains(CVBS_MODE)) {
+      return true;
+    }
+    return false;
+  }
+
   public String getTitleByMode(String mode) {
     String filterHdmiMode = filterHdmiModes(MODE_TITLE_BY_MODE.get(mode));
     return filterHdmiMode;
@@ -462,8 +483,11 @@ public class DisplayCapabilityManager {
   }
 
   public void change2BestMode() {
-    // Interface abandoned
-    // mOutputModeManager.setBestMode(null);
+    if (!DISPLAY_MODE_TRUE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_FALSE))) {
+      mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE);
+    }
+    String systemBestOutputMode = mSystemControlManager.getPrefHdmiDispMode();
+    setUserPreferredDisplayMode(systemBestOutputMode);
   }
 
   /**
@@ -484,24 +508,42 @@ public class DisplayCapabilityManager {
     if (getPreferredFormat() != HdrFormat.DOLBY_VISION) {
       autoSelectColorAttributeByMode(mode, false);
     }
-    Log.d(TAG, "setModes: " + mode);
+
+    if (!DISPLAY_MODE_FALSE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
+      mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_FALSE);
+    }
     setUserPreferredDisplayMode(mode);
   }
 
+  /**
+   * The resolution is set using apis in the framework, and
+   * before setting the resolution, it is necessary to distinguish
+   * whether it is the best resolution.
+   * @param mode The resolution to be set
+   * @param beastMode Whether to boot the best resolution
+   */
   private void setUserPreferredDisplayMode(String mode) {
+    Log.i(TAG, "setModes: " + mode);
+
+    String  envIsBestMode = mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE);
     Display.Mode[] supportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
+
     if (MediaSliceUtil.CanDebug()) {
+      Log.d(TAG, " envIsBestMode: " + envIsBestMode);
       Log.d(TAG, "supportedModes: " + Arrays.toString(supportedModes));
     }
+
     Map<String, Display.Mode> modeMap = USER_PREFERRED_MODE_BY_MODE;
     checkUserPreferredMode(supportedModes, modeMap.get(mode));
-    if (!DISPLAY_MODE_false.equals(this.mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
-      this.mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_false);
-    }
-    this.mDisplayManager.setGlobalUserPreferredDisplayMode(modeMap.get(mode));
 
-    // set density
-    mDisplayDensityManager.adjustDisplayDensityByMode(modeMap.get(mode));
+    // set resolution
+    mDisplayManager.setGlobalUserPreferredDisplayMode(modeMap.get(mode));
+
+    /**
+     * set density, Unset the density after setting the resolution,
+     * and the density is assigned to DroidLogic.
+     */
+    // mDisplayDensityManager.adjustDisplayDensityByMode(modeMap.get(mode));
   }
 
   private void checkUserPreferredMode(Display.Mode[] modeArr, Display.Mode mode) {
@@ -529,9 +571,9 @@ public class DisplayCapabilityManager {
   }
 
   private void setColorAttribute(String str, boolean isBestMode) {
-    this.mOutputModeManager.setDeepColorAttribute(str);
+    mOutputModeManager.setDeepColorAttribute(str);
     if (isBestMode) {
-      this.mOutputModeManager.setBestMode(getCurrentMode());
+      mOutputModeManager.setBestMode(getCurrentMode());
     }
   }
 
@@ -610,13 +652,13 @@ public class DisplayCapabilityManager {
 
     if (!enabled) {
       mOutputModeManager.setBestDolbyVision(false);
-      mDolbyVisionSettingManager.setDolbyVisionEnable(DV_DISABLE);
+      setDolbyVisionEnable(DV_DISABLE);
       autoSelectColorAttribute();
     } else {
       if (doesDolbyVisionSupportLL()) {
-        mDolbyVisionSettingManager.setDolbyVisionEnable(DV_LL_YUV);
+        setDolbyVisionEnable(DV_LL_YUV);
       } else {
-        mDolbyVisionSettingManager.setDolbyVisionEnable(DV_ENABLE);
+        setDolbyVisionEnable(DV_ENABLE);
       }
       mOutputModeManager.setBestDolbyVision(true);
     }
@@ -687,17 +729,14 @@ public class DisplayCapabilityManager {
 
   public void setPreferredFormat(HdrFormat hdrFormat) {
     setHdrPreference(hdrFormat);
-    //mSetModeUEventObserver.resetObserved();
-    /*if (hdrFormat == HdrFormat.DOLBY_VISION) {
-      toggleDolbyVision(true);
+    /*mSetModeUEventObserver.resetObserved();
+    if (hdrFormat == HdrFormat.DOLBY_VISION) {
+        toggleDolbyVision(true);
     } else if (hdrFormat == HdrFormat.HDR || hdrFormat == HdrFormat.SDR) {
-      toggleDolbyVision(false);
-    }*/
-    /*if (!mSetModeUEventObserver.isObserved()) {
-      // Force triggering hotplug to renew the HdrCapabilities
-      String currentMode = mOutputModeManager.getCurrentOutputMode();
-      mOutputModeManager.setBestMode("null");
-      mOutputModeManager.setBestMode(currentMode);
+        toggleDolbyVision(false);
+    }
+    if (!mSetModeUEventObserver.isObserved()) {
+        setResolutionAndRefreshRateByMode(getCurrentMode());
     }*/
   }
 
@@ -736,9 +775,9 @@ public class DisplayCapabilityManager {
   }
 
   public boolean isDolbyVisionModeLLPreferred() {
-    //return mDolbyVisionSettingManager.getDolbyVisionType() == DV_LL_YUV
-    //    && doesDolbyVisionSupportLL();
-    return doesDolbyVisionSupportLL();
+    return mDolbyVisionSettingManager.getDolbyVisionType() == DV_LL_YUV
+            && doesDolbyVisionSupportLL();
+    //return doesDolbyVisionSupportLL();
   }
 
   public void setDolbyVisionModeLLPreferred(boolean preferred) {
@@ -747,11 +786,30 @@ public class DisplayCapabilityManager {
       throw new IllegalArgumentException("Selected mode is unsupported.");
     }
     if (preferred) {
-      mDolbyVisionSettingManager.setDolbyVisionEnable(DV_LL_YUV);
+      setDolbyVisionEnable(DV_LL_YUV);
     } else {
-      mDolbyVisionSettingManager.setDolbyVisionEnable(DV_ENABLE);
+      setDolbyVisionEnable(DV_ENABLE);
     }
     mOutputModeManager.setBestDolbyVision(false);
+  }
+
+  public void setDolbyVisionEnable(final int state) {
+    if (!DISPLAY_MODE_FALSE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
+      mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_FALSE);
+    }
+    mSystemControlManager.setDolbyVisionEnable(state);
+    String systemPrefHdmiDispMode = mSystemControlManager.getPrefHdmiDispMode();
+    String currentMode = getCurrentMode();
+
+    if (MediaSliceUtil.CanDebug()) {
+      Log.d(TAG, "state: " + state + " systemPrefHdmiDispMode: " + systemPrefHdmiDispMode + " currentMode: " + currentMode);
+    }
+
+    if (systemPrefHdmiDispMode.equals(currentMode)) {
+        mSystemControlManager.setMboxOutputMode(systemPrefHdmiDispMode);
+    } else {
+        setUserPreferredDisplayMode(systemPrefHdmiDispMode);
+    }
   }
 
   public boolean doesDolbyVisionSupportLL() {
