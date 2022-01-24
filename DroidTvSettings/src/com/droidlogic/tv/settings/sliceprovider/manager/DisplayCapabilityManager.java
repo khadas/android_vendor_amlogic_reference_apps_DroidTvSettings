@@ -505,10 +505,6 @@ public class DisplayCapabilityManager {
   }
 
   public void setResolutionAndRefreshRateByMode(final String mode) {
-    if (getPreferredFormat() != HdrFormat.DOLBY_VISION) {
-      autoSelectColorAttributeByMode(mode, false);
-    }
-
     if (!DISPLAY_MODE_FALSE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
       mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_FALSE);
     }

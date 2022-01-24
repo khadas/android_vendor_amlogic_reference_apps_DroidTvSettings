@@ -23,10 +23,17 @@ public class AdjustResolutionDialogActivity extends BaseDialogActivity {
     private CountDownTimer mCountDownTimer;
 
     private Runnable mRestoreCallback = () -> {};
-    private String mNextMode;
-    private String mCurrentMode;
+    private static String mNextMode;
+    private static String mCurrentMode;
     private boolean mWasDolbyVisionChanged;
     private int countdownInSeconds = 0;
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.i(TAG, "onSaveInstanceState !!!!!");
+        super.onSaveInstanceState(savedInstanceState);
+        saveCurrentState(savedInstanceState);
+    }
 
     @Override
     protected void onDestroy() {
@@ -45,13 +52,16 @@ public class AdjustResolutionDialogActivity extends BaseDialogActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mDisplayCapabilityManager =
                 DisplayCapabilityManager.getDisplayCapabilityManager(getApplicationContext());
-        mCurrentMode = mDisplayCapabilityManager.getCurrentMode();
-        mNextMode = getIntent().getStringExtra(EXTRA_PREFERENCE_KEY);
+        if (!isDialogCreated(savedInstanceState)) {
+            mCurrentMode = mDisplayCapabilityManager.getCurrentMode();
+            mNextMode = getIntent().getStringExtra(EXTRA_PREFERENCE_KEY);
         Log.d(TAG, "mCurrentMode: " + mCurrentMode + "; mNextMode: " + mNextMode);
 
         mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(mNextMode);
+        }
         mWasDolbyVisionChanged = mDisplayCapabilityManager.adjustDolbyVisionByMode(mNextMode);
         mRestoreCallback =
                 () -> {
