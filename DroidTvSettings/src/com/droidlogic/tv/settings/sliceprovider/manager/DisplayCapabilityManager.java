@@ -498,7 +498,7 @@ public class DisplayCapabilityManager {
     if (!DISPLAY_MODE_false.equals(this.mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
       this.mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_false);
     }
-    this.mDisplayManager.setUserPreferredDisplayMode(modeMap.get(mode));
+    this.mDisplayManager.setGlobalUserPreferredDisplayMode(modeMap.get(mode));
 
     // set density
     mDisplayDensityManager.adjustDisplayDensityByMode(modeMap.get(mode));
