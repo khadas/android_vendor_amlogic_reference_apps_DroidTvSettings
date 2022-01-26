@@ -294,24 +294,16 @@ public class HdrSliceProvider extends MediaSliceProvider {
     if (HdrFormat.DOLBY_VISION != mDisplayCapabilityManager.getPreferredFormat()) {
       List<String> colorAttrs = mDisplayCapabilityManager.getColorAttributes();
       String currentColorAttr = mDisplayCapabilityManager.getCurrentColorAttribute();
-      if (MediaSliceUtil.CanDebug()) Log.d(TAG,"createHdrAndColorFormatSlice currentColorAttr:"+currentColorAttr);
       currentColorAttr = currentColorAttr.trim();
-      if (null == colorAttrs || colorAttrs.isEmpty()) {
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG,"createHdrAndColorFormatSlice currentColorAttr is null");
-        //currentColorAttr = "";
-      }else if(colorAttrs.contains(currentColorAttr)){
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG,"createHdrAndColorFormatSlice currentColorAttr is contains");
-      }else{
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG,"createHdrAndColorFormatSlice currentColorAttr isn't contains");
-        //mDisplayCapabilityManager.setColorAttribute(colorAttrs.get(0));
-        //currentColorAttr = colorAttrs.get(0);
-      }
+
+      Log.d(TAG, "createHdrAndColorFormatSlice;colorAttrsList:" + colorAttrs);
+      Log.d(TAG, "createHdrAndColorFormatSlice;currentColorAttr:" + currentColorAttr);
+
       psb.addPreference(
           new RowBuilder()
               .setTitle(getContext().getString(R.string.color_format_title))
               .setSubtitle(
-                  mDisplayCapabilityManager.getTitleByColorAttr(
-                      mDisplayCapabilityManager.getCurrentColorAttribute()))
+                  mDisplayCapabilityManager.getTitleByColorAttr(currentColorAttr))
               .setTargetSliceUri(
                   MediaSliceUtil.generateTargetSliceUri(MediaSliceConstants.COLOR_ATTRIBUTE_PATH)));
     }
@@ -391,22 +383,17 @@ public class HdrSliceProvider extends MediaSliceProvider {
 
     List<String> colorAttrs = mDisplayCapabilityManager.getColorAttributes();
     String currentColorAttr = mDisplayCapabilityManager.getCurrentColorAttribute();
-    if (MediaSliceUtil.CanDebug()) Log.d(TAG,"currentColorAttr:"+currentColorAttr);
     currentColorAttr = currentColorAttr.trim();
-    if (null == colorAttrs || colorAttrs.isEmpty()) {
-      if (MediaSliceUtil.CanDebug()) Log.d(TAG,"currentColorAttr is null");
-      //currentColorAttr = "";
-    }else if(colorAttrs.contains(currentColorAttr)){
-      if (MediaSliceUtil.CanDebug()) Log.d(TAG,"currentColorAttr is contains");
-    }else{
-      if (MediaSliceUtil.CanDebug()) Log.d(TAG,"currentColorAttr isn't contains");
-      //mDisplayCapabilityManager.setColorAttribute(colorAttrs.get(0));
-      //currentColorAttr = colorAttrs.get(0);
-    }
+
+    Log.d(TAG, "createColorAttributeSlice;colorAttrsList:" + colorAttrs);
+    Log.d(TAG, "createColorAttributeSlice;currentColorAttr:" + currentColorAttr);
+
     String currentMode = mDisplayCapabilityManager.getCurrentMode();
     for (String colorAttr : colorAttrs) {
       if (mDisplayCapabilityManager.doesModeSupportColor(currentMode, colorAttr)) {
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG,"currentMode:"+currentMode+" colorAttr:"+colorAttr);
+        if (MediaSliceUtil.CanDebug()) {
+          Log.d(TAG, "currentMode:" + currentMode + " colorAttr:" + colorAttr);
+        }
         psb.addPreference(
             new RowBuilder()
                 .setKey(colorAttr)
