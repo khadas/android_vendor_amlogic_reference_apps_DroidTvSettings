@@ -87,7 +87,16 @@
     <!-- DroidLogic end -->
 
     <application
-        android:persistent="true">
+        android:allowClearUserData="false"
+        android:banner="@drawable/ic_launcher_banner_settings"
+        android:defaultToDeviceProtectedStorage="true"
+        android:directBootAware="true"
+        android:forceQueryable="true"
+        android:icon="@drawable/logo_settings_color_48dp"
+        android:label="@string/settings_app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Settings"
+        android:usesCleartextTraffic="true">
 
          <!-- DroidLogic start -->
          <uses-library android:name="droidlogic.software.core" />
@@ -100,6 +109,10 @@
               android:configChanges="keyboard|keyboardHidden|navigation"
               android:excludeFromRecents="true"
               android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".TvSourceActivity"
               android:theme="@style/TvSettingsActivityTheme"
@@ -322,9 +335,9 @@
              android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothActionActivity"
              android:exported="false" />
 
-        <service
+        <!--<service
              android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService"
-             android:exported="false" />
+            android:exported="false" />-->
 
         <!-- <service android:name="com.droidlogic.tv.settings.sliceprovider.DisplayDensityManagerService"
             android:exported="false"/>-->
