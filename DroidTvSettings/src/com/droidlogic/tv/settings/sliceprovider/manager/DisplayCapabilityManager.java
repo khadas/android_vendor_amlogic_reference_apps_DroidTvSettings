@@ -274,6 +274,10 @@ public class DisplayCapabilityManager {
     contentResolver.notifyChange(MediaSliceConstants.DOLBY_VISION_MODE_URI, null);
   }
 
+  public void notifyChangeSlice(ContentResolver contentResolver) {
+    notifyModeChange(contentResolver);
+  }
+
   public static void shutdown() {
     if (mDisplayCapabilityManager != null) {
       synchronized (DisplayCapabilityManager.class) {

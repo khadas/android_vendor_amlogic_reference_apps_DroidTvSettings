@@ -52,6 +52,7 @@ public class PreferredModeChangeDialogActivity extends Activity {
         () -> {
           if (MediaSliceUtil.CanDebug()) Log.d(TAG,"mRestoreCallback currentPreferredFormat:"+currentPreferredFormat);
           mDisplayCapabilityManager.setPreferredFormat(currentPreferredFormat);
+          mDisplayCapabilityManager.notifyChangeSlice(getContentResolver());
           /*if (mDisplayModeWasChanged) {
             mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(currentMode);
           }
