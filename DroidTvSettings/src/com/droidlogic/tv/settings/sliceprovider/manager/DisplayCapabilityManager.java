@@ -149,12 +149,12 @@ public class DisplayCapabilityManager {
               .put("smpte24hz", new Display.Mode(4096, 2160, 24.000002f))
               .put("smpte23.976hz", new Display.Mode(4096, 2160, 23.976025f))
               .put("1080p60hz", new Display.Mode(1920, 1080, 60.000004f))
-              .put("1080p59.94", new Display.Mode(1920, 1080, 59.94006f))
+              .put("1080p59.94hz", new Display.Mode(1920, 1080, 59.94006f))
               .put("1080p50hz", new Display.Mode(1920, 1080, 50.0f))
               .put("1080p24hz", new Display.Mode(1920, 1080, 24.000002f))
               .put("1080p23.976hz", new Display.Mode(1920, 1080, 23.976025f))
               .put("720p60hz", new Display.Mode(1280, 720, 60.000004f))
-              .put("720p59.94", new Display.Mode(1280, 720, 59.94006f))
+              .put("720p59.94hz", new Display.Mode(1280, 720, 59.94006f))
               .put("720p50hz", new Display.Mode(1280, 720, 50.0f))
               .put("576p50hz", new Display.Mode(720, 576, 50.0f))
               .put("480p60hz", new Display.Mode(720, 480, 60.000004f))
@@ -336,13 +336,19 @@ public class DisplayCapabilityManager {
 
     String filterHdmiMdeStr = filterHdimMode;
     Log.d(TAG, "filterHdimMode: " + filterHdimMode);
-      if (filterHdimMode.contains("60Hz")) {
-        filterHdmiMdeStr = filterHdimMode.replace("60Hz", "59.94Hz");
-      } else if (filterHdimMode.contains("30Hz")) {
-        filterHdmiMdeStr = filterHdimMode.replace("30Hz", "29.97Hz");
-      } else if (filterHdimMode.contains("24Hz")) {
-        filterHdmiMdeStr = filterHdimMode.replace("24Hz", "23.976Hz");
-      }
+    if (filterHdimMode.contains("60Hz")) {
+      filterHdmiMdeStr = filterHdimMode.replace("60Hz", "59.94Hz");
+    } else if (filterHdimMode.contains("30Hz")) {
+      filterHdmiMdeStr = filterHdimMode.replace("30Hz", "29.97Hz");
+    } else if (filterHdimMode.contains("24Hz")) {
+      filterHdmiMdeStr = filterHdimMode.replace("24Hz", "23.976Hz");
+    } else if (filterHdimMode.contains("60hz")) {
+      filterHdmiMdeStr = filterHdimMode.replace("60hz", "59.94hz");
+    } else if (filterHdimMode.contains("30hz")) {
+      filterHdmiMdeStr = filterHdimMode.replace("30hz", "29.97hz");
+    } else if (filterHdimMode.contains("24hz")) {
+      filterHdmiMdeStr = filterHdimMode.replace("24hz", "23.976hz");
+    }
 
     Log.d(TAG, "filterHdmiMdeStr= " + filterHdmiMdeStr);
     return filterHdmiMdeStr;
@@ -522,8 +528,18 @@ public class DisplayCapabilityManager {
    * @param mode The resolution to be set
    * @param beastMode Whether to boot the best resolution
    */
-  private void setUserPreferredDisplayMode(String mode) {
-    Log.i(TAG, "setModes: " + mode);
+  private void setUserPreferredDisplayMode(String userSetMode) {
+    Log.i(TAG, "userSetMode: " + userSetMode);
+    String mode = filterHdmiModes(userSetMode);
+
+    // The framework filters when the system is at the current resolution, so use SystemControl to set it.
+    // Note: Mode filtering is not required when the systemcontrol is used to set resolution
+    boolean isSystemHdmiDispMode = checkSysCurrentMode(mDisplayManager.getDisplay(0).getMode(), getPreferredByMode(mode));
+    if (isSystemHdmiDispMode) {
+      mSystemControlManager.setMboxOutputMode(userSetMode);
+      Log.d(TAG, "setMboxOutputMode");
+      return;
+    }
 
     String  envIsBestMode = mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE);
     Display.Mode[] supportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
@@ -544,6 +560,25 @@ public class DisplayCapabilityManager {
      * and the density is assigned to DroidLogic.
      */
     // mDisplayDensityManager.adjustDisplayDensityByMode(modeMap.get(mode));
+  }
+
+  private Display.Mode getPreferredByMode(String userSetMode) {
+    Map<String, Display.Mode> modeMap = USER_PREFERRED_MODE_BY_MODE;
+    return modeMap.get(userSetMode);
+  }
+
+  private boolean checkSysCurrentMode(Display.Mode sysMode, Display.Mode userSetMode) {
+    if (MediaSliceUtil.CanDebug()) {
+      Log.d(TAG, "sysMode: " + sysMode + " userSetMode: " + userSetMode);
+    }
+
+    if (sysMode.matches(
+            userSetMode.getPhysicalWidth(),
+            userSetMode.getPhysicalHeight(),
+            userSetMode.getRefreshRate())) {
+      return true;
+    }
+    return false;
   }
 
   private void checkUserPreferredMode(Display.Mode[] modeArr, Display.Mode mode) {
@@ -805,11 +840,7 @@ public class DisplayCapabilityManager {
       Log.d(TAG, "state: " + state + " systemPrefHdmiDispMode: " + systemPrefHdmiDispMode + " currentMode: " + currentMode);
     }
 
-    if (systemPrefHdmiDispMode.equals(currentMode)) {
-        mSystemControlManager.setMboxOutputMode(systemPrefHdmiDispMode);
-    } else {
-        setUserPreferredDisplayMode(systemPrefHdmiDispMode);
-    }
+    setUserPreferredDisplayMode(systemPrefHdmiDispMode);
   }
 
   public boolean doesDolbyVisionSupportLL() {
