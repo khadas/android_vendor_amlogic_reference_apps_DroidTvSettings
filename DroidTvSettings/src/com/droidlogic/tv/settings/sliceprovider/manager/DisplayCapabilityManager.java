@@ -330,28 +330,30 @@ public class DisplayCapabilityManager {
   }
 
   private String filterHdmiModes(String filterHdimMode) {
-    if (!mOutputModeManager.getFrameRateOffset().contains("1")) {
+    Log.d(TAG, "filterHdimMode: " + filterHdimMode);
+    if (!mOutputModeManager.getFrameRateOffset().contains("1")
+            || filterHdimMode == null) {
+
       return filterHdimMode;
     }
 
-    String filterHdmiMdeStr = filterHdimMode;
-    Log.d(TAG, "filterHdimMode: " + filterHdimMode);
+    String filterHdmiModeStr = filterHdimMode;
     if (filterHdimMode.contains("60Hz")) {
-      filterHdmiMdeStr = filterHdimMode.replace("60Hz", "59.94Hz");
+      filterHdmiModeStr = filterHdimMode.replace("60Hz", "59.94Hz");
     } else if (filterHdimMode.contains("30Hz")) {
-      filterHdmiMdeStr = filterHdimMode.replace("30Hz", "29.97Hz");
+      filterHdmiModeStr = filterHdimMode.replace("30Hz", "29.97Hz");
     } else if (filterHdimMode.contains("24Hz")) {
-      filterHdmiMdeStr = filterHdimMode.replace("24Hz", "23.976Hz");
+      filterHdmiModeStr = filterHdimMode.replace("24Hz", "23.976Hz");
     } else if (filterHdimMode.contains("60hz")) {
-      filterHdmiMdeStr = filterHdimMode.replace("60hz", "59.94hz");
+      filterHdmiModeStr = filterHdimMode.replace("60hz", "59.94hz");
     } else if (filterHdimMode.contains("30hz")) {
-      filterHdmiMdeStr = filterHdimMode.replace("30hz", "29.97hz");
+      filterHdmiModeStr = filterHdimMode.replace("30hz", "29.97hz");
     } else if (filterHdimMode.contains("24hz")) {
-      filterHdmiMdeStr = filterHdimMode.replace("24hz", "23.976hz");
+      filterHdmiModeStr = filterHdimMode.replace("24hz", "23.976hz");
     }
 
-    Log.d(TAG, "filterHdmiMdeStr= " + filterHdmiMdeStr);
-    return filterHdmiMdeStr;
+    Log.d(TAG, "filterHdmiModeStr: " + filterHdmiModeStr);
+    return filterHdmiModeStr;
   }
 
   private boolean updateDolbyVisionModes() {

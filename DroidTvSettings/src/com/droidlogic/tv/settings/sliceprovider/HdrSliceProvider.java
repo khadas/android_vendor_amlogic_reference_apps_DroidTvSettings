@@ -209,6 +209,10 @@ public class HdrSliceProvider extends MediaSliceProvider {
   private void updateHdrResolutionDetails(PreferenceSliceBuilder psb) {
     String[] hdmiModes = mDisplayCapabilityManager.getHdmiModes();
     String currentMode = mDisplayCapabilityManager.getCurrentMode();
+    if (hdmiModes == null) {
+      Log.e(TAG, "hdmiModes is null !!");
+      return;
+    }
 
     Log.d(TAG, "hdmiModes:" + Arrays.toString(hdmiModes));
     Log.d(TAG, "currentMode:" + currentMode);
