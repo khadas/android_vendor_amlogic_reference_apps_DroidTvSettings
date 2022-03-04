@@ -19,7 +19,6 @@ package com.droidlogic.tv.settings.sliceprovider.accessories;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.IBluetoothA2dp;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -36,6 +35,7 @@ import android.view.InputDevice;
 import com.droidlogic.tv.settings.sliceprovider.utils.bluetooth.BluetoothDeviceCriteria;
 import com.droidlogic.tv.settings.sliceprovider.utils.bluetooth.BluetoothScanner;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -307,7 +307,7 @@ public class BluetoothDevicePairer {
 
         // Add Bluetooth a2dp on if the service is running and the
         // setting profile_supported_a2dp is set to true.
-        Intent intent = new Intent(IBluetoothA2dp.class.getName());
+        Intent intent = new Intent("android.bluetooth.IBluetoothA2dp");
         ComponentName comp = intent.resolveSystemService(mContext.getPackageManager(), 0);
         if (comp != null) {
             int enabledState = mContext.getPackageManager().getComponentEnabledSetting(comp);
@@ -358,6 +358,8 @@ public class BluetoothDevicePairer {
         if (scanMode != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Log.d(TAG, "Turning on discoverability, default scan mode: " + scanMode);
             mDefaultScanMode = scanMode;
+            // Remove discoverable timeout.
+            bluetoothAdapter.setDiscoverableTimeout(Duration.ZERO);
             bluetoothAdapter.setScanMode(
                     BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE);
         }
