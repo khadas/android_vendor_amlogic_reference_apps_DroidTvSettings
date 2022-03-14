@@ -8,17 +8,20 @@ import android.content.IntentFilter;
 import android.os.UserHandle;
 import android.util.Log;
 import android.provider.Settings;
+import android.hardware.hdmi.HdmiControlManager;
 import android.content.ContentResolver;
-import com.droidlogic.tv.settings.R;
 
+import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
 import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
 
-
 public class HdmiCecContentManager {
     private static final String TAG = HdmiCecContentManager.class.getSimpleName();
-    private static volatile HdmiCecContentManager mHdmiCecContentManager;
+
     private Context mContext;
+    private ContentResolver mResolver;
+    private static volatile HdmiCecContentManager mHdmiCecContentManager;
+    private HdmiControlManager mHdmiControlManager;  // This is a system service(HdmiControlManager).
 
     public static boolean isInit() {
         return mHdmiCecContentManager != null;
@@ -46,30 +49,37 @@ public class HdmiCecContentManager {
 
     private HdmiCecContentManager(final Context context) {
         mContext = context;
+        mResolver = mContext.getContentResolver();
+        mHdmiControlManager = mContext.getSystemService(HdmiControlManager.class);
     }
 
-    public boolean getHdmiCecStatus() {
-        ContentResolver resolver = mContext.getContentResolver();
-        return true;
-        //return Settings.Global.getInt(resolver, Settings.Global.HDMI_CONTROL_ENABLED, 1) != 0;
+    public boolean isHdmiControlEnabled() {
+        boolean hdmiCecEnable = (mHdmiControlManager.getHdmiCecEnabled()
+                == HdmiControlManager.HDMI_CEC_CONTROL_ENABLED);
+        if (MediaSliceUtil.CanDebug()) {
+            Log.d(TAG, "isHdmiControlEnabled: " + hdmiCecEnable);
+        }
+        return hdmiCecEnable;
     }
 
-    public void setHdmiCecStatus(int state) {
-        ContentResolver resolver = mContext.getContentResolver();
-        //Settings.Global.putInt(resolver, Settings.Global.HDMI_CONTROL_ENABLED, state);
-        resolver.notifyChange(MediaSliceConstants.DISPLAYSOUND_HDMI_CEC_URI, null);
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG, "setHdmiCecStatus cec swtich:" + state);
+    public void setHdmiCecEnabled(boolean enable) {
+        if (MediaSliceUtil.CanDebug()) {
+            Log.d(TAG, "setHdmiCecEnabled cec swtich: " + enable);
+        }
+
+        mHdmiControlManager.setHdmiCecEnabled(enable
+                ? HdmiControlManager.HDMI_CEC_CONTROL_ENABLED
+                : HdmiControlManager.HDMI_CEC_CONTROL_DISABLED);
+
+        mResolver.notifyChange(MediaSliceConstants.DISPLAYSOUND_HDMI_CEC_URI, null);
     }
 
 
-    public String getHdmiCecStatusName() {
-        ContentResolver resolver = mContext.getContentResolver();
-        // Note that default CEC is enabled. You'll find similar retrieval of property in
-        // HdmiControlService.
-        //boolean cecEnabled =
-            //    Settings.Global.getInt(resolver, Settings.Global.HDMI_CONTROL_ENABLED, 1) != 0;
-        //return cecEnabled ? "Enabled" : "Disabled" ;
-        return "Enabled";
+    public String isHdmiControlEnabledName() {
+        boolean cecEnabled = mHdmiControlManager.getHdmiCecEnabled()
+                == HdmiControlManager.HDMI_CEC_CONTROL_ENABLED;
+
+        return cecEnabled ? "Enabled" : "Disabled";
     }
 
 }

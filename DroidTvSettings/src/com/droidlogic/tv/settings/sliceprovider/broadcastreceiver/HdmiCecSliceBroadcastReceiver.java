@@ -54,7 +54,7 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
       case MediaSliceConstants.ACTION_HDMI_SWITCH_CEC_CHANGED:
         key = intent.getStringExtra(EXTRA_PREFERENCE_KEY);
         isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
-        getHdmiCecContentManager(context).setHdmiCecStatus(isChecked? 1 : 0);
+        getHdmiCecContentManager(context).setHdmiCecEnabled(isChecked);
         if (mProgress != null && !mProgress.isShowing()) {
             if (MediaSliceUtil.CanDebug()) Log.d(TAG, "check enable show dialog");
             mProgress.show();

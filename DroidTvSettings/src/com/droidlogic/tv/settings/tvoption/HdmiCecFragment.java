@@ -33,6 +33,7 @@ import com.droidlogic.app.AudioConfigManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.SoundFragment;
+import com.droidlogic.tv.settings.sliceprovider.manager.HdmiCecContentManager;
 
 import java.util.*;
 
@@ -150,15 +151,17 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         audioOutputLatencyPref.setSeekBarIncrement(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY_STEP);
         audioOutputLatencyPref.setValue(mAudioConfigManager.getAudioOutputAllDelay());
 
-        mCecOnekeyPlayPref.setVisible(!tvFlag);
-        mCecAutoWakeupPref.setVisible(tvFlag);
         mCecSwitchPref.setVisible(true);
-        mArcSwitchPref.setVisible(tvFlag);
+        mCecOnekeyPlayPref.setVisible(false); // AndroidT has removed this feature
+        mCecAutoWakeupPref.setVisible(false); // AndroidT has removed this feature
+        mArcSwitchPref.setVisible(false); // AndroidT has removed this feature
+        mCecDeviceAutoPoweroffPref.setVisible(false); // AndroidT has removed this feature
+        mCecAutoChangeLanguagePref.setVisible(false); // AndroidT has removed this feature
         hdmiDeviceSelectPref.setVisible(tvFlag);
         audioOutputLatencyPref.setVisible(tvFlag);
         digitalSoundPref.setVisible(false);
         // The project should use ro.hdmi.set_menu_language to device whether open this function.
-        mCecAutoChangeLanguagePref.setVisible(!tvFlag);
+        //mCecAutoChangeLanguagePref.setVisible(!tvFlag);
     }
 
     @Override
@@ -176,11 +179,6 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
             mHandler.removeMessages(MSG_ENABLE_CEC_SWITCH);
             mHandler.sendMessageDelayed(cecEnabled, ((timeDiff > TIME_DELAYED) ? 0 : TIME_DELAYED));
             mCecSwitchPref.setEnabled(false);
-            mCecOnekeyPlayPref.setEnabled(false);
-            mCecDeviceAutoPoweroffPref.setEnabled(false);
-            mCecAutoWakeupPref.setEnabled(false);
-            mCecAutoChangeLanguagePref.setEnabled(false);
-            mArcSwitchPref.setEnabled(false);
             return true;
         case KEY_CEC_ONE_KEY_PLAY:
             mHdmiCecManager.enableOneTouchPlay(mCecOnekeyPlayPref.isChecked());
@@ -220,20 +218,9 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     }
 
     private void refresh() {
-        boolean hdmiControlEnabled = mHdmiCecManager.isHdmiControlEnabled();
+        // boolean hdmiControlEnabled = mHdmiCecManager.isHdmiControlEnabled();
+        boolean hdmiControlEnabled = HdmiCecContentManager.getHdmiCecContentManager(getContext()).isHdmiControlEnabled();
         mCecSwitchPref.setChecked(hdmiControlEnabled);
-        mCecOnekeyPlayPref.setChecked(mHdmiCecManager.isOneTouchPlayEnabled());
-        mCecOnekeyPlayPref.setEnabled(hdmiControlEnabled);
-        mCecDeviceAutoPoweroffPref.setChecked(mHdmiCecManager.isAutoPowerOffEnabled());
-        mCecDeviceAutoPoweroffPref.setEnabled(hdmiControlEnabled);
-        mCecAutoWakeupPref.setChecked(mHdmiCecManager.isAutoWakeUpEnabled());
-        mCecAutoWakeupPref.setEnabled(hdmiControlEnabled);
-        mCecAutoChangeLanguagePref.setChecked(mHdmiCecManager.isAutoChangeLanguageEnabled());
-        mCecAutoChangeLanguagePref.setEnabled(hdmiControlEnabled);
-
-        boolean arcEnabled = mHdmiCecManager.isArcEnabled();
-        mArcSwitchPref.setChecked(arcEnabled);
-        mArcSwitchPref.setEnabled(hdmiControlEnabled);
     }
 
     private static final int MSG_ENABLE_CEC_SWITCH = 0;
@@ -245,13 +232,8 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
             switch (msg.what) {
                 case MSG_ENABLE_CEC_SWITCH:
                     mCecSwitchPref.setEnabled(true);
-                    mHdmiCecManager.enableHdmiControl(mCecSwitchPref.isChecked());
-                    boolean hdmiControlEnabled = mHdmiCecManager.isHdmiControlEnabled();
-                    mCecOnekeyPlayPref.setEnabled(hdmiControlEnabled);
-                    mCecDeviceAutoPoweroffPref.setEnabled(hdmiControlEnabled);
-                    mCecAutoWakeupPref.setEnabled(hdmiControlEnabled);
-                    mCecAutoChangeLanguagePref.setEnabled(hdmiControlEnabled);
-                    mArcSwitchPref.setEnabled(hdmiControlEnabled);
+                    //mHdmiCecManager.enableHdmiControl(mCecSwitchPref.isChecked());
+                    HdmiCecContentManager.getHdmiCecContentManager(getContext()).setHdmiCecEnabled(mCecSwitchPref.isChecked());
                     break;
                 case MSG_ENABLE_ARC_SWITCH:
                     mArcSwitchPref.setEnabled(true);

@@ -57,12 +57,13 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
         new RowBuilder()
             .setKey(getContext().getString(R.string.hdmi_cec_switch_key))
             .setTitle(getContext().getString(R.string.hdmi_cec_switch_title))
-            .setSubtitle(mHdmiCecContentManager.getHdmiCecStatusName())
+            .setSubtitle(mHdmiCecContentManager.isHdmiControlEnabledName())
             .addSwitch(
                 generatePendingIntent(
                     getContext(),
                     MediaSliceConstants.ACTION_HDMI_SWITCH_CEC_CHANGED,
-                    HdmiCecSliceBroadcastReceiver.class),mHdmiCecContentManager.getHdmiCecStatus()));
+                    HdmiCecSliceBroadcastReceiver.class),
+                    mHdmiCecContentManager.isHdmiControlEnabled()));
 
     return psb.build();
   }
