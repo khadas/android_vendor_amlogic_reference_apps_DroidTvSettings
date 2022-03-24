@@ -69,6 +69,10 @@
     <!-- TODO: implement this -->
     <!--android:fragment="com.android.settings.applications.RunningServices" />-->
 
+    <PreferenceScreen
+        android:key="convert_to_file_encryption"
+        android:title="@string/convert_to_file_encryption"
+        android:summary="@string/convert_to_file_encryption_enabled" />
     <!-- TODO: implement this-->
     <!--android:fragment="com.android.settings.applications.ConvertToFbe" />-->
 
