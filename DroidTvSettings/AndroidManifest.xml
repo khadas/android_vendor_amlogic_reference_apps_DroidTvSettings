@@ -302,6 +302,16 @@
         </provider>
 
         <provider
+            android:authorities="com.google.android.tv.settings.powerbehavior.sliceprovider"
+            android:name="com.droidlogic.tv.settings.sliceprovider.PowerBehaviorSliceProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.app.slice.category.SLICE"/>
+            </intent-filter>
+        </provider>
+
+        <provider
             android:authorities="com.google.android.tv.settings.advancedsound.sliceprovider"
             android:name="com.droidlogic.tv.settings.sliceprovider.AdvancedSoundSliceProvider"
             android:exported="true">
@@ -332,6 +342,7 @@
         </provider>
 
         <activity
+             android:theme="@android:style/Theme.NoTitleBar"
              android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothActionActivity"
              android:exported="false" />
 
@@ -359,6 +370,11 @@
 
         <receiver
             android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.AdvancedSoundSliceBroadcastReceiver"
+            android:exported="false">
+        </receiver>
+
+        <receiver
+            android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.PowerBehaviorSliceBroadcastReceiver"
             android:exported="false">
         </receiver>
 

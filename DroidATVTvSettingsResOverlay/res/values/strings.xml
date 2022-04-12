@@ -595,7 +595,6 @@
     <string name="power_and_energy">Power &amp; Energy</string>
     <!-- Title of power on behavior item [CHAR LIMIT=60] -->
     <string name="power_on_behavior">Power on behavior</string>
-    <string name="power_boot_resume_slice_uri" translatable="false">content://com.droidlogic.tv.settings.vendor.sliceprovider/power</string>
     <!-- Title of the Reset section, which lets user select from factory reset or other reset related operations. [CHAR LIMIT=60] -->
     <string name="reset_options_title">Reset</string>
     <!-- Preference which shows about screen with legal info, model, etc. [CHAR LIMIT=50] -->
