@@ -233,7 +233,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
                 DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_SHOW_STARTUP);
             }
         } else {
-            picturePref.setVisible(SettingsConstant.needDroidlogicTvFeature(getContext()));
+            picturePref.setVisible(!SettingsConstant.needDroidlogicTvFeature(getContext()));
             mTvOption.setVisible(false);
             mSoundsPref.setVisible(false);
             channelPref.setVisible(false);
