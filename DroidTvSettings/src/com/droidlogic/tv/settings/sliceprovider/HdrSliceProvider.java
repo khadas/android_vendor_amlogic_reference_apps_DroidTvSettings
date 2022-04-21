@@ -51,9 +51,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
 
   @Override
   public Slice onBindSlice(final Uri sliceUri) {
-    if (MediaSliceUtil.CanDebug()) {
-      Log.d(TAG, "onBindSlice: " + sliceUri);
-    }
+    Log.d(TAG, "onBindSlice: " + sliceUri);
     switch (MediaSliceUtil.getFirstSegment(sliceUri)) {
       case MediaSliceConstants.MATCH_CONTENT_PATH:
         return createHdrMatchContentSlice(sliceUri);
@@ -296,8 +294,8 @@ public class HdrSliceProvider extends MediaSliceProvider {
       String currentColorAttr = mDisplayCapabilityManager.getCurrentColorAttribute();
       currentColorAttr = currentColorAttr.trim();
 
-      Log.d(TAG, "createHdrAndColorFormatSlice;colorAttrsList:" + colorAttrs);
-      Log.d(TAG, "createHdrAndColorFormatSlice;currentColorAttr:" + currentColorAttr);
+      Log.d(TAG, "createHdrAndColorFormatSlice; colorAttrsList: " + colorAttrs);
+      Log.d(TAG, "createHdrAndColorFormatSlice; currentColorAttr: " + currentColorAttr);
 
       psb.addPreference(
           new RowBuilder()
@@ -385,8 +383,8 @@ public class HdrSliceProvider extends MediaSliceProvider {
     String currentColorAttr = mDisplayCapabilityManager.getCurrentColorAttribute();
     currentColorAttr = currentColorAttr.trim();
 
-    Log.d(TAG, "createColorAttributeSlice;colorAttrsList:" + colorAttrs);
-    Log.d(TAG, "createColorAttributeSlice;currentColorAttr:" + currentColorAttr);
+    Log.d(TAG, "createColorAttributeSlice; colorAttrsList: " + colorAttrs);
+    Log.d(TAG, "createColorAttributeSlice; currentColorAttr: " + currentColorAttr);
 
     String currentMode = mDisplayCapabilityManager.getCurrentMode();
     for (String colorAttr : colorAttrs) {
