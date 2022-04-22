@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService;
 
 /** The {@BroadcastReceiver} for performing actions upon device boot. */
 public class BootReceiver extends BroadcastReceiver {
@@ -36,7 +37,7 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (DEBUG) {
-            Log.i(TAG, "onReceive");
+            Log.d(TAG, "onReceive");
         }
 
         /*try {
@@ -50,8 +51,8 @@ public class BootReceiver extends BroadcastReceiver {
         if (context != null
                 && NATIVE_CONNECTED_DEVICE_SLICE_PROVIDER_URI.equals(
                         context.getResources().getString(R.string.connected_devices_slice_uri))) {
-            //Intent mainIntent = new Intent(context, BluetoothDevicesService.class);
-            //context.startService(mainIntent);
+            Intent mainIntent = new Intent(context, BluetoothDevicesService.class);
+            context.startService(mainIntent);
         }
     }
 }
