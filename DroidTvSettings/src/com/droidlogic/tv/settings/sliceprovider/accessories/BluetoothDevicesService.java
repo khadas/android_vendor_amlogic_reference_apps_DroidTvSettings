@@ -105,13 +105,15 @@ public class BluetoothDevicesService extends Service {
             final String action = intent.getAction();
             final BluetoothDevice device =
                     intent == null ? null : intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            if (DEBUG) {
+                Log.d(TAG, "mBluetoothReceiver onReceive " + action + "device" + device);
+            }
             // The sequence of a typical connection is: acl connected, bonding, bonded, profile
             // connecting, profile connected.
             if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
                 final int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
                 switch (state) {
                     case BluetoothDevice.BOND_BONDED:
-                        break;
                     case BluetoothDevice.BOND_NONE:
                         mHandler.post(() -> onDeviceUpdated(device));
                         break;
@@ -163,7 +165,7 @@ public class BluetoothDevicesService extends Service {
     public void onCreate() {
         super.onCreate();
         if (DEBUG) {
-            Log.e(TAG, "onCreate");
+            Log.d(TAG, "onCreate");
         }
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
