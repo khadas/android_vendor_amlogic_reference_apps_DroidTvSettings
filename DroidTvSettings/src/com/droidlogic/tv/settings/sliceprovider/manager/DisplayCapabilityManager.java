@@ -160,7 +160,7 @@ public class DisplayCapabilityManager {
               .put("480p60hz", new Display.Mode(720, 480, 60.000004f))
               .put("480p59.94hz", new Display.Mode(720, 480, 59.94006f))
               .put("576cvbs", new Display.Mode(720, 576, 50.0f))
-              .put("480cvbs", new Display.Mode(720, 480, 59.94006f))
+              .put("480cvbs", new Display.Mode(720, 480, 60.000004f))
               .build();
 
   private static final Map<String, String> MODE_TITLE_BY_MODE = new HashMap<>();
