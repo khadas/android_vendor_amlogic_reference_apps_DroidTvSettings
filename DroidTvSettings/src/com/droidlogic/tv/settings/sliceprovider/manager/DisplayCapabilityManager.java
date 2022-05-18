@@ -259,7 +259,7 @@ public class DisplayCapabilityManager {
     mOutputModeManager = new OutputModeManager(context);
     mDolbyVisionSettingManager = new DolbyVisionSettingManager(context);
     mContentResolver = context.getContentResolver();
-    mSetModeUEventObserver = new SetModeUEventObserver();
+    mSetModeUEventObserver = SetModeUEventObserver.getInstance();
     mSetModeUEventObserver.setOnUEventRunnable(() -> notifyModeChange(mContentResolver));
     mSetModeUEventObserver.startObserving();
     refresh();

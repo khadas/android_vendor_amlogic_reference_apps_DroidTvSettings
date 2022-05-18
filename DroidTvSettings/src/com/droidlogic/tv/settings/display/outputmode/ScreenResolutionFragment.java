@@ -17,39 +17,41 @@
 package com.droidlogic.tv.settings.display.outputmode;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemProperties;
 import android.provider.Settings;
-import androidx.preference.SwitchPreference;
-import com.droidlogic.tv.settings.SettingsPreferenceFragment;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-
-import com.droidlogic.tv.settings.SettingsConstant;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.util.Log;
+
+import androidx.preference.SwitchPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.util.Log;
-import com.droidlogic.tv.settings.R;
 import com.droidlogic.app.DolbyVisionSettingManager;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.SystemControlManager;
+import com.droidlogic.tv.settings.R;
+import com.droidlogic.tv.settings.SettingsPreferenceFragment;
+import com.droidlogic.tv.settings.sliceprovider.ueventobserver.SetModeUEventObserver;
+import com.droidlogic.tv.settings.SettingsConstant;
 
 
 public class ScreenResolutionFragment extends SettingsPreferenceFragment implements
@@ -81,6 +83,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     private Timer timer;
     private TimerTask task;
     private AlertDialog mAlertDialog = null;
+    private SetModeUEventObserver mSetModeUEventObserver;
     private int countdown = 15;
     private static String mode = null;
     private static final int MSG_FRESH_UI = 0;
@@ -144,6 +147,10 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mOutputUiManager = new OutputUiManager(getActivity());
+
+        mSetModeUEventObserver = SetModeUEventObserver.getInstance();
+        mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.sendEmptyMessage(MSG_FRESH_UI));
+        mSetModeUEventObserver.startObserving();
     }
 
     @Override

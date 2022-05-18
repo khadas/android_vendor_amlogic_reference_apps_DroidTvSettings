@@ -6,8 +6,18 @@ import android.os.UEventObserver;
 public class SetModeUEventObserver {
   private static final String TAG = SetModeUEventObserver.class.getSimpleName();
   private UEventObserver mUEventObserver;
+  private static volatile SetModeUEventObserver mSetModeUEventObserver;
   private boolean mIsObserved = false;
   Runnable mRunnable = () -> {};
+
+  public static SetModeUEventObserver getInstance() {
+    if (mSetModeUEventObserver == null)
+      synchronized (SetModeUEventObserver.class) {
+        if (mSetModeUEventObserver == null)
+          mSetModeUEventObserver = new SetModeUEventObserver();
+      }
+    return mSetModeUEventObserver;
+  }
 
   public SetModeUEventObserver() {
     mUEventObserver =
