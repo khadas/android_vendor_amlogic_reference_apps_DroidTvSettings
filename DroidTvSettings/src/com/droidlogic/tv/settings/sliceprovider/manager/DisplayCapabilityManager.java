@@ -554,6 +554,14 @@ public class DisplayCapabilityManager {
     Map<String, Display.Mode> modeMap = USER_PREFERRED_MODE_BY_MODE;
     checkUserPreferredMode(supportedModes, modeMap.get(mode));
 
+    Display.Mode userPreferredDispMode = mDisplayManager.getGlobalUserPreferredDisplayMode();
+    if (userPreferredDispMode != null) {
+      Log.w(TAG, "userPreferredDispMode: " + userPreferredDispMode);
+      if (checkSysCurrentMode(userPreferredDispMode, getPreferredByMode(mode))) {
+          mDisplayManager.clearGlobalUserPreferredDisplayMode();
+      }
+    }
+
     // set resolution
     mDisplayManager.setGlobalUserPreferredDisplayMode(modeMap.get(mode));
 
