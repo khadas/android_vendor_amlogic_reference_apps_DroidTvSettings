@@ -80,7 +80,7 @@ public class AdvancedSoundManager {
     }
 
     final String audioCap = mSystemControlManager.readSysFs(AUDIO_CAP_PATH);
-    if (audioCap.contains("Dobly_Digital+") && mFormats.containsKey(AudioFormat.ENCODING_E_AC3)) {
+    if (audioCap.contains("Dolby_Digital+") && mFormats.containsKey(AudioFormat.ENCODING_E_AC3)) {
       reportedFormats.put(AudioFormat.ENCODING_E_AC3, true);
     }
     if (audioCap.contains("ATMOS") && mFormats.containsKey(AudioFormat.ENCODING_E_AC3_JOC)) {

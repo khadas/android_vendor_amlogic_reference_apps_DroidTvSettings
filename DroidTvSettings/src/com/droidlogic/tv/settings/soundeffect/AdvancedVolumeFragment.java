@@ -389,22 +389,22 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
             final int selection1 = Integer.parseInt(newValue.toString());
             Log.d(TAG,"KEY_AC4_OUTPUT_SWITCH:" + selection1);
             switch (selection1) {
-                case OutputModeManager.DIAGLOGUE_ENHANCEMENT_OFF:
+                case OutputModeManager.DIALOGUE_ENHANCEMENT_OFF:
                     if (mOutputModeManager.isAudioSupportMs12System()) {
                         mOutputModeManager.setAc4DialogEnhancer(0);
                     }
                     break;
-                case OutputModeManager.DIAGLOGUE_ENHANCEMENT_LOW:
+                case OutputModeManager.DIALOGUE_ENHANCEMENT_LOW:
                     if (mOutputModeManager.isAudioSupportMs12System()) {
                         mOutputModeManager.setAc4DialogEnhancer(4);
                     }
                     break;
-                case OutputModeManager.DIAGLOGUE_ENHANCEMENT_MEDIUM:
+                case OutputModeManager.DIALOGUE_ENHANCEMENT_MEDIUM:
                     if (mOutputModeManager.isAudioSupportMs12System()) {
                         mOutputModeManager.setAc4DialogEnhancer(8);
                     }
                     break;
-                case OutputModeManager.DIAGLOGUE_ENHANCEMENT_HIGH:
+                case OutputModeManager.DIALOGUE_ENHANCEMENT_HIGH:
                     if (mOutputModeManager.isAudioSupportMs12System()) {
                         mOutputModeManager.setAc4DialogEnhancer(12);
                     }
@@ -496,18 +496,18 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
 
     static int getAc4EnhancerValueSetting(Context context) {
         final int value = Settings.Global.getInt(context.getContentResolver(),
-                OutputModeManager.DIAGLOGUE_ENHANCEMENT_SWITCH,
-                OutputModeManager.DIAGLOGUE_ENHANCEMENT_OFF);
+                OutputModeManager.DIALOGUE_ENHANCEMENT_SWITCH,
+                OutputModeManager.DIALOGUE_ENHANCEMENT_OFF);
         Log.d(TAG,"[getAc4EnhancerValueSetting]:" + value);
         switch (value) {
-            case OutputModeManager.DIAGLOGUE_ENHANCEMENT_OFF:
+            case OutputModeManager.DIALOGUE_ENHANCEMENT_OFF:
             default:
                  return 0;
-            case OutputModeManager.DIAGLOGUE_ENHANCEMENT_LOW:
+            case OutputModeManager.DIALOGUE_ENHANCEMENT_LOW:
                  return 4;
-            case OutputModeManager.DIAGLOGUE_ENHANCEMENT_MEDIUM:
+            case OutputModeManager.DIALOGUE_ENHANCEMENT_MEDIUM:
                  return 8;
-            case OutputModeManager.DIAGLOGUE_ENHANCEMENT_HIGH:
+            case OutputModeManager.DIALOGUE_ENHANCEMENT_HIGH:
                  return 12;
         }
     }
