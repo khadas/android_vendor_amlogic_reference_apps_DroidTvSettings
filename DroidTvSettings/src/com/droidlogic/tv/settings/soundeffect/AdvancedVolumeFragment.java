@@ -98,7 +98,7 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
     private List<AbstractPreferenceController> mPreferenceControllers;
 
     // DroidLogic start
-    private boolean isfromMainsettings = true;
+    private boolean isFromMainSettings = true;
     private String MainSettings = "MainSettings";
     private OutputModeManager mOutputModeManager;
     private SoundParameterSettingManager mSoundParameterSettingManager;
@@ -142,7 +142,7 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.advanced_sound, null /* key */);
         // DroidLogic start
-        isfromMainsettings = getActivity().toString().contains(MainSettings) ;
+        isFromMainSettings = getActivity().toString().contains(MainSettings) ;
         PreferenceScreen advancedSoundScreenPref = getPreferenceScreen();
         // DroidLogic end
         final ListPreference surroundPref = findPreference(KEY_SURROUND_PASSTHROUGH);

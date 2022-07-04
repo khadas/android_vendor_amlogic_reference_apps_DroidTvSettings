@@ -73,7 +73,7 @@ public class FrameLayoutWithShadows extends FrameLayout {
             if (background != null) {
                 // framework adds a callback on background to trigger a repaint
                 // when call Drawable.setAlpha(),  this is not desired when we override
-                // setAlpha();  if we call Drawable.setAlpha() in the overriden
+                // setAlpha();  if we call Drawable.setAlpha() in the overridden
                 // setAlpha(),  it will trigger another repaint event thus cause system
                 // never stop rendering.
                 background.setCallback(null);
@@ -86,12 +86,12 @@ public class FrameLayoutWithShadows extends FrameLayout {
             if (mAlpha != alpha) {
                 mAlpha = alpha;
                 Drawable d = getBackground();
-                int alphaMulitplied = (int)(alpha * 255);
+                int alphaMultiplied = (int)(alpha * 255);
                 if (d != null) {
-                    d.setAlpha(alphaMulitplied);
+                    d.setAlpha(alphaMultiplied);
                 }
                 if (mDrawableBottom != null) {
-                    mDrawableBottom.setAlpha(alphaMulitplied);
+                    mDrawableBottom.setAlpha(alphaMultiplied);
                 }
                 invalidate();
             }

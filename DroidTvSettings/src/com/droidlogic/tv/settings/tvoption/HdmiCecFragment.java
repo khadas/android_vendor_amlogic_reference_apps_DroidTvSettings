@@ -55,8 +55,8 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     private static final String KEY_CEC_DEVICE_LIST             = "key_cec_device_list";
 
     private TwoStatePreference mCecSwitchPref;
-    private TwoStatePreference mCecOnekeyPlayPref;
-    private TwoStatePreference mCecDeviceAutoPoweroffPref;
+    private TwoStatePreference mCecOneKeyPlayPref;
+    private TwoStatePreference mCecDeviceAutoPowerOffPref;
     private TwoStatePreference mCecAutoWakeupPref;
     private TwoStatePreference mCecAutoChangeLanguagePref;
     private TwoStatePreference mArcSwitchPref;
@@ -108,8 +108,8 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
                     && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false);
         mCecSwitchPref = (TwoStatePreference) findPreference(KEY_CEC_SWITCH);
-        mCecOnekeyPlayPref = (TwoStatePreference) findPreference(KEY_CEC_ONE_KEY_PLAY);
-        mCecDeviceAutoPoweroffPref = (TwoStatePreference) findPreference(KEY_CEC_AUTO_POWER_OFF);
+        mCecOneKeyPlayPref = (TwoStatePreference) findPreference(KEY_CEC_ONE_KEY_PLAY);
+        mCecDeviceAutoPowerOffPref = (TwoStatePreference) findPreference(KEY_CEC_AUTO_POWER_OFF);
         mCecAutoWakeupPref = (TwoStatePreference) findPreference(KEY_CEC_AUTO_WAKE_UP);
         mCecAutoChangeLanguagePref = (TwoStatePreference) findPreference(KEY_CEC_AUTO_CHANGE_LANGUAGE);
         mArcSwitchPref = (TwoStatePreference) findPreference(KEY_CEC_ARC_SWITCH);
@@ -152,10 +152,10 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         audioOutputLatencyPref.setValue(mAudioConfigManager.getAudioOutputAllDelay());
 
         mCecSwitchPref.setVisible(true);
-        mCecOnekeyPlayPref.setVisible(false); // AndroidT has removed this feature
+        mCecOneKeyPlayPref.setVisible(false); // AndroidT has removed this feature
         mCecAutoWakeupPref.setVisible(false); // AndroidT has removed this feature
         mArcSwitchPref.setVisible(false); // AndroidT has removed this feature
-        mCecDeviceAutoPoweroffPref.setVisible(false); // AndroidT has removed this feature
+        mCecDeviceAutoPowerOffPref.setVisible(false); // AndroidT has removed this feature
         mCecAutoChangeLanguagePref.setVisible(false); // AndroidT has removed this feature
         hdmiDeviceSelectPref.setVisible(tvFlag);
         audioOutputLatencyPref.setVisible(tvFlag);
@@ -181,10 +181,10 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
             mCecSwitchPref.setEnabled(false);
             return true;
         case KEY_CEC_ONE_KEY_PLAY:
-            mHdmiCecManager.enableOneTouchPlay(mCecOnekeyPlayPref.isChecked());
+            mHdmiCecManager.enableOneTouchPlay(mCecOneKeyPlayPref.isChecked());
             return true;
         case KEY_CEC_AUTO_POWER_OFF:
-            mHdmiCecManager.enableAutoPowerOff(mCecDeviceAutoPoweroffPref.isChecked());
+            mHdmiCecManager.enableAutoPowerOff(mCecDeviceAutoPowerOffPref.isChecked());
             return true;
         case KEY_CEC_AUTO_WAKE_UP:
             mHdmiCecManager.enableAutoWakeUp(mCecAutoWakeupPref.isChecked());

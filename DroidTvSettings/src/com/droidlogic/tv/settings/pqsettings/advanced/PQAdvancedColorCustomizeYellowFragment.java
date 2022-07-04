@@ -45,10 +45,10 @@ import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 public class PQAdvancedColorCustomizeYellowFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "PQAdvancedColorCustomizeYellowFragment";
 
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_SATURATION = "pq_pictrue_advanced_color_customize_yellow_saturation";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_LUMA = "pq_pictrue_advanced_color_customize_yellow_luma";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_HUE = "pq_pictrue_advanced_color_customize_yellow_hue";
-    private static final int PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_STEP = 1;
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_SATURATION = "pq_picture_advanced_color_customize_yellow_saturation";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_LUMA = "pq_picture_advanced_color_customize_yellow_luma";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_HUE = "pq_picture_advanced_color_customize_yellow_hue";
+    private static final int PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_STEP = 1;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -74,32 +74,32 @@ public class PQAdvancedColorCustomizeYellowFragment extends SettingsPreferenceFr
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_color_customize_yellow, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_color_customize_yellow, null);
 
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowSaturationPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_SATURATION);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowLumaPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_LUMA);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowHuePref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_HUE);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowSaturationPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_SATURATION);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowLumaPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_LUMA);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowHuePref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_HUE);
 
         PQPictureAdvancedColorCustomizeYellowSaturationPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeYellowSaturationPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_STEP);
+        PQPictureAdvancedColorCustomizeYellowSaturationPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_STEP);
         PQPictureAdvancedColorCustomizeYellowSaturationPref.setMin(-50);
         PQPictureAdvancedColorCustomizeYellowSaturationPref.setMax(50);
         PQPictureAdvancedColorCustomizeYellowSaturationPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeYellowSaturationStatus());
         PQPictureAdvancedColorCustomizeYellowSaturationPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeYellowLumaPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeYellowLumaPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_STEP);
+        PQPictureAdvancedColorCustomizeYellowLumaPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_STEP);
         PQPictureAdvancedColorCustomizeYellowLumaPref.setMin(-15);
         PQPictureAdvancedColorCustomizeYellowLumaPref.setMax(15);
         PQPictureAdvancedColorCustomizeYellowLumaPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeYellowLumaStatus());
         PQPictureAdvancedColorCustomizeYellowLumaPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeYellowHuePref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeYellowHuePref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_STEP);
+        PQPictureAdvancedColorCustomizeYellowHuePref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_STEP);
         PQPictureAdvancedColorCustomizeYellowHuePref.setMin(-50);
         PQPictureAdvancedColorCustomizeYellowHuePref.setMax(50);
         PQPictureAdvancedColorCustomizeYellowHuePref.setValue(mPQSettingsManager.getAdvancedColorCustomizeYellowHueStatus());
@@ -116,15 +116,15 @@ public class PQAdvancedColorCustomizeYellowFragment extends SettingsPreferenceFr
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_SATURATION:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_SATURATION:
                 mPQSettingsManager.setAdvancedColorCustomizeYellowSaturationStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_LUMA:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_LUMA:
                 mPQSettingsManager.setAdvancedColorCustomizeYellowLumaStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_HUE:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOW_HUE:
                 mPQSettingsManager.setAdvancedColorCustomizeYellowHueStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
                 break;

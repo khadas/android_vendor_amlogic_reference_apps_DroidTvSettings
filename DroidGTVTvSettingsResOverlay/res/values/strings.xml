@@ -186,7 +186,7 @@
     <string name="about_build">Android TV OS build</string>
     <!-- About screen,  setting option name  [CHAR LIMIT=40] -->
     <string name="selinux_status">SELinux status</string>
-    <!-- These statuses are displayed when a device was built with SE Android supoprt.
+    <!-- These statuses are displayed when a device was built with SE Android support.
     These are displayed by the settings app in the about section. -->
     <string name="selinux_status_disabled">Disabled</string>
     <string name="selinux_status_permissive">Permissive</string>

@@ -106,8 +106,8 @@ public class ProgressDialogFragment extends Fragment {
         mSummaryView.setText(summary);
     }
 
-    public void setIndeterminte(boolean indeterminte) {
-        mProgressBar.setIndeterminate(indeterminte);
+    public void setindeterminate(boolean indeterminate) {
+        mProgressBar.setIndeterminate(indeterminate);
     }
 
     public void setProgress(int progress) {

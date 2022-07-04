@@ -48,32 +48,32 @@ import java.util.ArrayList;
 public class PQAdvancedFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "PQAdvancedFragment";
 
-    private static final String PQ_PICTRUE_ADVANCED_DYNAMIC_TONE_MAPPING = "pq_pictrue_advanced_dynamic_tone_mapping";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_MANAGEMENT = "pq_pictrue_advanced_color_management";
+    private static final String PQ_PICTURE_ADVANCED_DYNAMIC_TONE_MAPPING = "pq_picture_advanced_dynamic_tone_mapping";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_MANAGEMENT = "pq_picture_advanced_color_management";
     private static final String PQ_HDMI_COLOR_RANGE = "pq_hdmi_color_range";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_SPACE = "pq_pictrue_advanced_color_space";
-    private static final String PQ_PICTRUE_ADVANCED_GLOBAL_DIMMING = "pq_pictrue_advanced_global_dimming";
-    private static final String PQ_PICTRUE_ADVANCED_LOCAL_DIMMING = "pq_pictrue_advanced_local_dimming";
-    private static final String PQ_PICTRUE_ADVANCED_BLACK_STRETCH = "pq_pictrue_advanced_black_stretch";
-    private static final String PQ_PICTRUE_ADVANCED_DNLP = "pq_pictrue_advanced_dnlp";
-    private static final String PQ_PICTRUE_ADVANCED_LOCAL_CONTRAST = "pq_pictrue_advanced_local_contrast";
-    private static final String PQ_PICTRUE_ADVANCED_SR = "pq_pictrue_advanced_sr";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_SPACE = "pq_picture_advanced_color_space";
+    private static final String PQ_PICTURE_ADVANCED_GLOBAL_DIMMING = "pq_picture_advanced_global_dimming";
+    private static final String PQ_PICTURE_ADVANCED_LOCAL_DIMMING = "pq_picture_advanced_local_dimming";
+    private static final String PQ_PICTURE_ADVANCED_BLACK_STRETCH = "pq_picture_advanced_black_stretch";
+    private static final String PQ_PICTURE_ADVANCED_DNLP = "pq_picture_advanced_dnlp";
+    private static final String PQ_PICTURE_ADVANCED_LOCAL_CONTRAST = "pq_picture_advanced_local_contrast";
+    private static final String PQ_PICTURE_ADVANCED_SR = "pq_picture_advanced_sr";
     private static final String PQ_DNR = "pq_dnr";
-    private static final String PQ_PICTRUE_ADVANCED_DEBLOCK = "pq_pictrue_advanced_deblock";
-    private static final String PQ_PICTRUE_ADVANCED_DEMOSQUITO = "pq_pictrue_advanced_demosquito";
-    private static final String PQ_PICTRUE_ADVANCED_DECONTOUR = "pq_pictrue_advanced_decontour";
+    private static final String PQ_PICTURE_ADVANCED_DEBLOCK = "pq_picture_advanced_deblock";
+    private static final String PQ_PICTURE_ADVANCED_DEMOSQUITO = "pq_picture_advanced_demosquito";
+    private static final String PQ_PICTURE_ADVANCED_DECONTOUR = "pq_picture_advanced_decontour";
 
-    private static final String PQ_PICTRUE_ADVANCED_GAMMA = "pq_pictrue_advanced_gamma";
-    private static final String PQ_PICTRUE_ADVANCED_MANUAL_GAMMA = "pq_pictrue_advanced_manual_gamma";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_TEMPERATURE = "pq_pictrue_advanced_color_temperature";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE = "pq_pictrue_advanced_color_customize";
-    private static final String PQ_PICTRUE_ADVANCED_MEMC = "pq_pictrue_advanced_memc";
+    private static final String PQ_PICTURE_ADVANCED_GAMMA = "pq_picture_advanced_gamma";
+    private static final String PQ_PICTURE_ADVANCED_MANUAL_GAMMA = "pq_picture_advanced_manual_gamma";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_TEMPERATURE = "pq_picture_advanced_color_temperature";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE = "pq_picture_advanced_color_customize";
+    private static final String PQ_PICTURE_ADVANCED_MEMC = "pq_picture_advanced_memc";
 
-    private static final String PQ_PICTRUE_T3 = "NNNN";
-    private static final String PQ_PICTRUE_T5 = "T963";
+    private static final String PQ_PICTURE_T3 = "NNNN";
+    private static final String PQ_PICTURE_T5 = "T963";
 
 
-    private static final int PQ_PICTRUE_ADVANCED_SOURCE_HDR = 1;
+    private static final int PQ_PICTURE_ADVANCED_SOURCE_HDR = 1;
 
 
     private PQSettingsManager mPQSettingsManager;
@@ -99,35 +99,35 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced, null);
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final ListPreference pictureAdvancedDynamicToneMappingPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_DYNAMIC_TONE_MAPPING);
-        final ListPreference pictureAdvancedColorManagementPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_MANAGEMENT);
+        final ListPreference pictureAdvancedDynamicToneMappingPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_DYNAMIC_TONE_MAPPING);
+        final ListPreference pictureAdvancedColorManagementPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_MANAGEMENT);
         final ListPreference pictureAdvancedColorRangeModePref = (ListPreference) findPreference(PQ_HDMI_COLOR_RANGE);
-        final ListPreference pictureAdvancedColorSpacePref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_SPACE);
-        final ListPreference pictureAdvancedGlobalDimmingPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_GLOBAL_DIMMING);
-        final ListPreference pictureAdvancedLocalDimmingPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_LOCAL_DIMMING);
-        final ListPreference pictureAdvancedBlackStretchPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_BLACK_STRETCH);
-        final ListPreference pictureAdvancedDNLPPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_DNLP);
-        final ListPreference pictureAdvancedLocalContrastPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_LOCAL_CONTRAST);
-        final ListPreference pictureAdvancedSRPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_SR);
+        final ListPreference pictureAdvancedColorSpacePref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_SPACE);
+        final ListPreference pictureAdvancedGlobalDimmingPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_GLOBAL_DIMMING);
+        final ListPreference pictureAdvancedLocalDimmingPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_LOCAL_DIMMING);
+        final ListPreference pictureAdvancedBlackStretchPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_BLACK_STRETCH);
+        final ListPreference pictureAdvancedDNLPPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_DNLP);
+        final ListPreference pictureAdvancedLocalContrastPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_LOCAL_CONTRAST);
+        final ListPreference pictureAdvancedSRPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_SR);
         final ListPreference pictureAdvancedDNRPref = (ListPreference) findPreference(PQ_DNR);
-        final ListPreference pictureAdvancedDeBlockPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_DEBLOCK);
-        final ListPreference pictureAdvancedDeMosquitoPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_DEMOSQUITO);
-        final ListPreference pictureAdvancedDecontourPref = (ListPreference) findPreference(PQ_PICTRUE_ADVANCED_DECONTOUR);
+        final ListPreference pictureAdvancedDeBlockPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_DEBLOCK);
+        final ListPreference pictureAdvancedDeMosquitoPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_DEMOSQUITO);
+        final ListPreference pictureAdvancedDecontourPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_DECONTOUR);
 
-        final Preference pictureAdvancedGammaPref = (Preference) findPreference(PQ_PICTRUE_ADVANCED_GAMMA);
-        final Preference pictureAdvancedManualGammaPref = (Preference) findPreference(PQ_PICTRUE_ADVANCED_MANUAL_GAMMA);
-        final Preference pictureAdvancedColorTemperaturePref = (Preference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_TEMPERATURE);
-        final Preference pictureAdvancedColorCustomizePref = (Preference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE);
-        final Preference pictureAdvancedMemcPref = (Preference) findPreference(PQ_PICTRUE_ADVANCED_MEMC);
+        final Preference pictureAdvancedGammaPref = (Preference) findPreference(PQ_PICTURE_ADVANCED_GAMMA);
+        final Preference pictureAdvancedManualGammaPref = (Preference) findPreference(PQ_PICTURE_ADVANCED_MANUAL_GAMMA);
+        final Preference pictureAdvancedColorTemperaturePref = (Preference) findPreference(PQ_PICTURE_ADVANCED_COLOR_TEMPERATURE);
+        final Preference pictureAdvancedColorCustomizePref = (Preference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE);
+        final Preference pictureAdvancedMemcPref = (Preference) findPreference(PQ_PICTURE_ADVANCED_MEMC);
 
-        if (PQ_PICTRUE_ADVANCED_SOURCE_HDR == mPQSettingsManager.GetSourceHdrType() &&
+        if (PQ_PICTURE_ADVANCED_SOURCE_HDR == mPQSettingsManager.GetSourceHdrType() &&
                  (mPQSettingsManager.getChipVersionInfo() != null &&
-                  PQ_PICTRUE_T5 == mPQSettingsManager.getChipVersionInfo())) {//Leave blank first, add conditions later
+                  PQ_PICTURE_T5 == mPQSettingsManager.getChipVersionInfo())) {//Leave blank first, add conditions later
             pictureAdvancedDynamicToneMappingPref.setValueIndex(mPQSettingsManager.getAdvancedDynamicToneMappingStatus());
             pictureAdvancedDynamicToneMappingPref.setOnPreferenceChangeListener(this);
         } else {
@@ -219,8 +219,8 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
         }
 
         if (mPQSettingsManager.getChipVersionInfo() != null &&
-                (PQ_PICTRUE_T5 == mPQSettingsManager.getChipVersionInfo() ||
-                 PQ_PICTRUE_T3 == mPQSettingsManager.getChipVersionInfo())) {//Leave blank first, add conditions later
+                (PQ_PICTURE_T5 == mPQSettingsManager.getChipVersionInfo() ||
+                 PQ_PICTURE_T3 == mPQSettingsManager.getChipVersionInfo())) {//Leave blank first, add conditions later
             pictureAdvancedDecontourPref.setValueIndex(mPQSettingsManager.getAdvancedDecontourStatus());
             pictureAdvancedDecontourPref.setOnPreferenceChangeListener(this);
         } else {
@@ -273,46 +273,46 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
         if (CanDebug()) Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
         final int selection = Integer.parseInt((String)newValue);
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_DYNAMIC_TONE_MAPPING:
+            case PQ_PICTURE_ADVANCED_DYNAMIC_TONE_MAPPING:
                 mPQSettingsManager.setAdvancedDynamicToneMappingStatus(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_MANAGEMENT:
+            case PQ_PICTURE_ADVANCED_COLOR_MANAGEMENT:
                 mPQSettingsManager.setAdvancedColorManagementStatus(selection);
                 break;
             case PQ_HDMI_COLOR_RANGE:
                 mPQSettingsManager.setHdmiColorRangeValue(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_SPACE:
+            case PQ_PICTURE_ADVANCED_COLOR_SPACE:
                 mPQSettingsManager.setAdvancedColorSpaceStatus(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_GLOBAL_DIMMING:
+            case PQ_PICTURE_ADVANCED_GLOBAL_DIMMING:
                 mPQSettingsManager.setAdvancedGlobalDimmingStatus(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_LOCAL_DIMMING:
+            case PQ_PICTURE_ADVANCED_LOCAL_DIMMING:
                 mPQSettingsManager.setAdvancedLocalDimmingStatus(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_BLACK_STRETCH:
+            case PQ_PICTURE_ADVANCED_BLACK_STRETCH:
                 mPQSettingsManager.setAdvancedBlackStretchStatus(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_DNLP:
+            case PQ_PICTURE_ADVANCED_DNLP:
                 mPQSettingsManager.setAdvancedDNLPStatus(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_LOCAL_CONTRAST:
+            case PQ_PICTURE_ADVANCED_LOCAL_CONTRAST:
                 mPQSettingsManager.setAdvancedLocalContrastStatus(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_SR:
+            case PQ_PICTURE_ADVANCED_SR:
                 mPQSettingsManager.setAdvancedSRStatus(selection);
                 break;
             case PQ_DNR:
                 mPQSettingsManager.setDnr(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_DEBLOCK:
+            case PQ_PICTURE_ADVANCED_DEBLOCK:
                 mPQSettingsManager.setAdvancedDeBlockStatus(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_DEMOSQUITO:
+            case PQ_PICTURE_ADVANCED_DEMOSQUITO:
                 mPQSettingsManager.setAdvancedDeMosquitoStatus(selection);
                 break;
-            case PQ_PICTRUE_ADVANCED_DECONTOUR:
+            case PQ_PICTURE_ADVANCED_DECONTOUR:
                 mPQSettingsManager.setAdvancedDecontourStatus(selection);
                 break;
         }

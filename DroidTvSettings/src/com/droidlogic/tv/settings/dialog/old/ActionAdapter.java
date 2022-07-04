@@ -476,7 +476,7 @@ public class ActionAdapter extends BaseAdapter implements ScrollAdapter,
                 }
             }
 
-            // If we we'ren't already checked, fade our checkmark in.
+            // If we were not already checked, fade our checkmark in.
             if (!action.isChecked()) {
                 action.setChecked(true);
                 if (mScrollAdapterView != null) {

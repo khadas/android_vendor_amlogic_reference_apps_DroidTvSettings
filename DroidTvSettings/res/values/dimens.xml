@@ -78,7 +78,7 @@
     <dimen name="lb_action_text_width_no_icon">284dp</dimen>
     <integer name="lb_dialog_action_title_max_lines">3</integer>
 
-    <!-- UI contants for SettingsLayoutFragment -->
+    <!-- UI contacts for SettingsLayoutFragment -->
     <integer name="animate_in_duration">250</integer>
     <integer name="animate_delay">550</integer>
     <integer name="secondary_animate_delay">120</integer>

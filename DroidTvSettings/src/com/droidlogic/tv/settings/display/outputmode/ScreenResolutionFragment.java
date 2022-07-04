@@ -207,17 +207,17 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
         boolean dvFlag = mOutputUiManager.isDolbyVisionEnable() && mOutputUiManager.isTvSupportDolbyVision();
         //socSupportDv: if the chip is G12A/G12B/SM1 and T962E/E2 etc, it will be true
-        //platformSuportDv: if the chip support dv and the code contains dovi.ko, it will be true
+        //platformSupportDv: if the chip support dv and the code contains dovi.ko, it will be true
         boolean isSocSupportDv = mDolbyVisionSettingManager.isSocSupportDolbyVision();
         boolean socSupportDv   = isSocSupportDv &&
                 (!SettingsConstant.needDroidlogicTvFeature(getPreferenceManager().getContext()) || SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false));
-        boolean platformSuportDv = mDolbyVisionSettingManager.isMboxSupportDolbyVision();
+        boolean platformSupportDv = mDolbyVisionSettingManager.isMboxSupportDolbyVision();
         boolean displayConfig    = SettingsConstant.needDroidlogicBestDolbyVision(getPreferenceManager().getContext());
         boolean customConfig     = mOutputModeManager.isSupportNetflix();
         boolean debugConfig      = mOutputModeManager.isSupportDisplayDebug();
 
         Log.d(LOG_TAG,"isSocSupportDv "+ isSocSupportDv);
-        Log.d(LOG_TAG,"platformSuportDv "+ platformSuportDv);
+        Log.d(LOG_TAG,"platformSupportDv "+ platformSupportDv);
         Log.d(LOG_TAG,"socSupportDv "+ socSupportDv);
         Log.d(LOG_TAG,"displayConfig "+ displayConfig);
         Log.d(LOG_TAG,"customConfig "+ customConfig);
@@ -239,14 +239,14 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             mDeepColorPref.setEnabled(!dvFlag);
             mDeepColorPref.setSummary(mOutputUiManager.getCurrentColorSpaceTitle());
 
-            // color sapce
+            // color space
             mColorDepthPref.setVisible(false);
             mColorDepthPref.setEnabled(!dvFlag);
             mColorDepthPref.setSummary(
                 mOutputUiManager.getCurrentColorDepthAttr().contains("8bit") ? "off":"on");
 
             // dolby vision
-            mDolbyVisionPref.setVisible(platformSuportDv && displayConfig);
+            mDolbyVisionPref.setVisible(platformSupportDv && displayConfig);
             mDolbyVisionPref.setEnabled(displayConfig);
             if (true == mOutputUiManager.isDolbyVisionEnable()) {
                 if (mDolbyVisionSettingManager.getDolbyVisionType() == 2) {
@@ -281,7 +281,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             }
 
             // hdr priority
-            mHdrPriorityPref.setVisible(platformSuportDv);
+            mHdrPriorityPref.setVisible(platformSupportDv);
             if (mOutputModeManager.getHdrPriority() == 1) {
                 mHdrPriorityPref.setSummary(R.string.hdr10);
             } else if (mOutputModeManager.getHdrPriority() == 2) {
@@ -292,8 +292,8 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
             // best dolby vision.
             mBestDolbyVisionPref.setVisible(false);
-            ((SwitchPreference)mBestDolbyVisionPref).setChecked(isBestDolbyVsion());
-            if (isBestDolbyVsion()) {
+            ((SwitchPreference)mBestDolbyVisionPref).setChecked(isBestDolbyVision());
+            if (isBestDolbyVision()) {
                 mBestDolbyVisionPref.setSummary(R.string.captions_display_on);
             }else {
                 mBestDolbyVisionPref.setSummary(R.string.captions_display_off);
@@ -351,7 +351,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         } else if (TextUtils.equals(preference.getKey(), KEY_BEST_DOLBYVISION)) {
             int type = mDolbyVisionSettingManager.getDolbyVisionType();
             String mode = mDolbyVisionSettingManager.isTvSupportDolbyVision();
-            if (!isBestDolbyVsion()) {
+            if (!isBestDolbyVision()) {
                 if (!mode.equals("")) {
                     if (mode.contains("LL_YCbCr_422_12BIT")) {
                         mDolbyVisionSettingManager.setDolbyVisionEnable(DV_LL_YUV);
@@ -379,8 +379,8 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     private boolean isBestResolution() {
         return mOutputUiManager.isBestOutputmode();
     }
-    private boolean isBestDolbyVsion() {
-        return mOutputUiManager.isBestDolbyVsion();
+    private boolean isBestDolbyVision() {
+        return mOutputUiManager.isBestDolbyVision();
     }
 
     /**

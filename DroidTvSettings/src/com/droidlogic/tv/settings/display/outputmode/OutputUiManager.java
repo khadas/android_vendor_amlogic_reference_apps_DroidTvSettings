@@ -374,7 +374,7 @@ public class OutputUiManager {
     public void setBestDolbyVision(boolean enable) {
         mOutputModeManager.setBestDolbyVision(enable);
     }
-    public boolean isBestDolbyVsion(){
+    public boolean isBestDolbyVision(){
         return mOutputModeManager.isBestDolbyVsion();
     }
     public void change2DeepColorMode() {

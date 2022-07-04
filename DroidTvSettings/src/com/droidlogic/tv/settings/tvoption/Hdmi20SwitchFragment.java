@@ -154,8 +154,8 @@ public class Hdmi20SwitchFragment extends SettingsPreferenceFragment implements 
 
     private String[] initswitchEntries() {
         String[] temp = new String[2];
-        temp[0] = getActivity().getResources().getString(R.string.tv_settins_off);
-        temp[1] = getActivity().getResources().getString(R.string.tv_settins_on);
+        temp[0] = getActivity().getResources().getString(R.string.tv_settings_off);
+        temp[1] = getActivity().getResources().getString(R.string.tv_settings_on);
         return temp;
     }
 

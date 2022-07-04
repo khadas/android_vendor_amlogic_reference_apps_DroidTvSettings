@@ -85,7 +85,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     private static final int UI_LOAD_TIMEOUT = 50;//100ms
     private static final int LOAD_UI = 0;
-    private static final int AUDIOONLY = 0;
+    private static final int AUDIO_ONLY_INT = 0;
 
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -118,10 +118,10 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         if (mAudioEffectManager != null) {
             final ListPreference eqmode = (ListPreference) findPreference(TV_EQ_MODE);
             eqmode.setValueIndex(mAudioEffectManager.getSoundModeStatus());
-            final Preference treblebass = (Preference) findPreference(TV_TREBLE_BASS_SETTINGS);
-            String treblebasssummary = getShowString(R.string.tv_treble, mAudioEffectManager.getTrebleStatus()) + " " +
+            final Preference trebleBass = (Preference) findPreference(TV_TREBLE_BASS_SETTINGS);
+            String trebleBassSummary = getShowString(R.string.tv_treble, mAudioEffectManager.getTrebleStatus()) + " " +
                     getShowString(R.string.tv_bass, mAudioEffectManager.getBassStatus());
-            treblebass.setSummary(treblebasssummary);
+            trebleBass.setSummary(trebleBassSummary);
             final Preference balance = (Preference) findPreference(TV_BALANCE_SETTINGS);
             balance.setSummary(getShowString(R.string.tv_balance_effect, mAudioEffectManager.getBalanceStatus()));
         }
@@ -175,18 +175,18 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         else
             dapPref.setVisible(false);
 
-        final ListPreference virtualsurround = (ListPreference) findPreference(TV_VIRTUAL_SURROUND_SETTINGS);
-        virtualsurround.setValueIndex(mAudioEffectManager.getVirtualSurroundStatus());
-        virtualsurround.setOnPreferenceChangeListener(this);
+        final ListPreference virtualSurround = (ListPreference) findPreference(TV_VIRTUAL_SURROUND_SETTINGS);
+        virtualSurround.setValueIndex(mAudioEffectManager.getVirtualSurroundStatus());
+        virtualSurround.setOnPreferenceChangeListener(this);
 
-        final ListPreference soundout = (ListPreference) findPreference(TV_SOUND_OUT);
-        soundout.setValueIndex(mSoundParameterSettingManager.getSoundOutputStatus());
-        soundout.setOnPreferenceChangeListener(this);
+        final ListPreference soundOut = (ListPreference) findPreference(TV_SOUND_OUT);
+        soundOut.setValueIndex(mSoundParameterSettingManager.getSoundOutputStatus());
+        soundOut.setOnPreferenceChangeListener(this);
 
-        final Preference treblebass = (Preference) findPreference(TV_TREBLE_BASS_SETTINGS);
-        String treblebasssummary = getShowString(R.string.tv_treble, mAudioEffectManager.getTrebleStatus()) + " " +
+        final Preference trebleBass = (Preference) findPreference(TV_TREBLE_BASS_SETTINGS);
+        String trebleBassSummary = getShowString(R.string.tv_treble, mAudioEffectManager.getTrebleStatus()) + " " +
                 getShowString(R.string.tv_bass, mAudioEffectManager.getBassStatus());
-        treblebass.setSummary(treblebasssummary);
+        trebleBass.setSummary(trebleBassSummary);
 
         final Preference balance = (Preference) findPreference(TV_BALANCE_SETTINGS);
         balance.setSummary(getShowString(R.string.tv_balance_effect, mAudioEffectManager.getBalanceStatus()));
@@ -199,7 +199,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     public boolean onPreferenceTreeClick(Preference preference) {
         if (CanDebug()) Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
         if (TextUtils.equals(preference.getKey(), AUDIO_ONLY)) {
-            createUiDialog(AUDIOONLY);
+            createUiDialog(AUDIO_ONLY_INT);
         }
 
         return super.onPreferenceTreeClick(preference);
@@ -285,7 +285,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         TextView button_cancel = (TextView)view.findViewById(R.id.dialog_cancel);
         TextView dialogtitle = (TextView)view.findViewById(R.id.dialog_title);
         TextView dialogdetails = (TextView)view.findViewById(R.id.dialog_details);
-        if (AUDIOONLY == type) {
+        if (AUDIO_ONLY_INT == type) {
             dialogtitle.setText(getActivity().getResources().getString(R.string.title_tv_sound_audio_only));
             dialogdetails.setText(getActivity().getResources().getString(R.string.msg_tv_sound_audio_only));
         }
@@ -301,7 +301,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         button_ok.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (AUDIOONLY == type) {
+                if (AUDIO_ONLY_INT == type) {
                     mTvControlManager.setLcdEnable(false);
                     SystemProperties.set("persist.audio.only.state", "true");
                 }

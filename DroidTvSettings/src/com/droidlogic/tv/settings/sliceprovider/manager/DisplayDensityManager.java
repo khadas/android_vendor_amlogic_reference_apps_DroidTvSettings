@@ -40,7 +40,7 @@ public class DisplayDensityManager {
 
     public void adjustDisplayDensityByMode(Display.Mode mode) {
         //Display.Mode mode = mDisplayManager.getDisplay(displayId).getMode();
-        final int diplayid = mode.getModeId();
+        final int displayId = mode.getModeId();
         Log.i(TAG, "according to the new display mode: " + mode);
         try {
             int density = MediaSliceConstants.MEDIA_DISPLAY_DENSITY_HIGH;  // The maximum resolution density is used by default

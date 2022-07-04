@@ -45,10 +45,10 @@ import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 public class PQAdvancedColorCustomizeSkinFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "PQAdvancedColorCustomizeSkinFragment";
 
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_SATURATION = "pq_pictrue_advanced_color_customize_skin_saturation";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_LUMA = "pq_pictrue_advanced_color_customize_skin_luma";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_HUE = "pq_pictrue_advanced_color_customize_skin_hue";
-    private static final int PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_STEP = 1;
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_SATURATION = "pq_picture_advanced_color_customize_skin_saturation";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_LUMA = "pq_picture_advanced_color_customize_skin_luma";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_HUE = "pq_picture_advanced_color_customize_skin_hue";
+    private static final int PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_STEP = 1;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -74,32 +74,32 @@ public class PQAdvancedColorCustomizeSkinFragment extends SettingsPreferenceFrag
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_color_customize_skin, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_color_customize_skin, null);
 
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final SeekBarPreference PQPictureAdvancedColorCustomizeSkinSaturationPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_SATURATION);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeSkinLumaPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_LUMA);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeSkinHuePref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_HUE);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeSkinSaturationPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_SATURATION);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeSkinLumaPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_LUMA);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeSkinHuePref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_HUE);
 
         PQPictureAdvancedColorCustomizeSkinSaturationPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeSkinSaturationPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_STEP);
+        PQPictureAdvancedColorCustomizeSkinSaturationPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_STEP);
         PQPictureAdvancedColorCustomizeSkinSaturationPref.setMin(-50);
         PQPictureAdvancedColorCustomizeSkinSaturationPref.setMax(50);
         PQPictureAdvancedColorCustomizeSkinSaturationPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeSkinSaturationStatus());
         PQPictureAdvancedColorCustomizeSkinSaturationPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeSkinLumaPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeSkinLumaPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_STEP);
+        PQPictureAdvancedColorCustomizeSkinLumaPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_STEP);
         PQPictureAdvancedColorCustomizeSkinLumaPref.setMin(-15);
         PQPictureAdvancedColorCustomizeSkinLumaPref.setMax(15);
         PQPictureAdvancedColorCustomizeSkinLumaPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeSkinLumaStatus());
         PQPictureAdvancedColorCustomizeSkinLumaPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeSkinHuePref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeSkinHuePref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_STEP);
+        PQPictureAdvancedColorCustomizeSkinHuePref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_STEP);
         PQPictureAdvancedColorCustomizeSkinHuePref.setMin(-50);
         PQPictureAdvancedColorCustomizeSkinHuePref.setMax(50);
         PQPictureAdvancedColorCustomizeSkinHuePref.setValue(mPQSettingsManager.getAdvancedColorCustomizeSkinHueStatus());
@@ -116,15 +116,15 @@ public class PQAdvancedColorCustomizeSkinFragment extends SettingsPreferenceFrag
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_SATURATION:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_SATURATION:
                 mPQSettingsManager.setAdvancedColorCustomizeSkinSaturationStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_LUMA:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_LUMA:
                 mPQSettingsManager.setAdvancedColorCustomizeSkinLumaStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_SKIN_HUE:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_SKIN_HUE:
                 mPQSettingsManager.setAdvancedColorCustomizeSkinHueStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
                 break;

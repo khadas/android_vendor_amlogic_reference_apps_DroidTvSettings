@@ -76,10 +76,10 @@
         android:key="hailstorm_ver"
         android:title="@string/hailstorm_ver"/>
     <Preference
-        android:fragment="com.droidlogic.tv.settings.pqsettings.PictrueModeFragment"
+        android:fragment="com.droidlogic.tv.settings.pqsettings.PictureModeFragment"
         android:icon="@drawable/ic_settings_more_amlogic_display"
-        android:key="pictrue_mode"
-        android:title="@string/pq_pictrue" />
+        android:key="picture_mode"
+        android:title="@string/pq_picture" />
     <Preference
         android:icon="@drawable/ic_settings_more_amlogic_display"
         android:key="keyStone"

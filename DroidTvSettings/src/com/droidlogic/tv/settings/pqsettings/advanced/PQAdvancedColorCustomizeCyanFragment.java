@@ -45,10 +45,10 @@ import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 public class PQAdvancedColorCustomizeCyanFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "PQAdvancedColorCustomizeCyanFragment";
 
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_SATURATION = "pq_pictrue_advanced_color_customize_cyan_saturation";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_LUMA = "pq_pictrue_advanced_color_customize_cyan_luma";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_HUE = "pq_pictrue_advanced_color_customize_cyan_hue";
-    private static final int PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_STEP = 1;
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_SATURATION = "pq_picture_advanced_color_customize_cyan_saturation";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_LUMA = "pq_picture_advanced_color_customize_cyan_luma";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_HUE = "pq_picture_advanced_color_customize_cyan_hue";
+    private static final int PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_STEP = 1;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -74,32 +74,32 @@ public class PQAdvancedColorCustomizeCyanFragment extends SettingsPreferenceFrag
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_color_customize_cyan, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_color_customize_cyan, null);
 
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final SeekBarPreference PQPictureAdvancedColorCustomizeCyanSaturationPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_SATURATION);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeCyanLumaPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_LUMA);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeCyanHuePref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_HUE);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeCyanSaturationPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_SATURATION);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeCyanLumaPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_LUMA);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeCyanHuePref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_HUE);
 
         PQPictureAdvancedColorCustomizeCyanSaturationPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeCyanSaturationPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_STEP);
+        PQPictureAdvancedColorCustomizeCyanSaturationPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_STEP);
         PQPictureAdvancedColorCustomizeCyanSaturationPref.setMin(-50);
         PQPictureAdvancedColorCustomizeCyanSaturationPref.setMax(50);
         PQPictureAdvancedColorCustomizeCyanSaturationPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeCyanSaturationStatus());
         PQPictureAdvancedColorCustomizeCyanSaturationPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeCyanLumaPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeCyanLumaPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_STEP);
+        PQPictureAdvancedColorCustomizeCyanLumaPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_STEP);
         PQPictureAdvancedColorCustomizeCyanLumaPref.setMin(-15);
         PQPictureAdvancedColorCustomizeCyanLumaPref.setMax(15);
         PQPictureAdvancedColorCustomizeCyanLumaPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeCyanLumaStatus());
         PQPictureAdvancedColorCustomizeCyanLumaPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeCyanHuePref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeCyanHuePref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_STEP);
+        PQPictureAdvancedColorCustomizeCyanHuePref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_STEP);
         PQPictureAdvancedColorCustomizeCyanHuePref.setMin(-50);
         PQPictureAdvancedColorCustomizeCyanHuePref.setMax(50);
         PQPictureAdvancedColorCustomizeCyanHuePref.setValue(mPQSettingsManager.getAdvancedColorCustomizeCyanHueStatus());
@@ -116,15 +116,15 @@ public class PQAdvancedColorCustomizeCyanFragment extends SettingsPreferenceFrag
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_SATURATION:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_SATURATION:
                 mPQSettingsManager.setAdvancedColorCustomizeCyanSaturationStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_LUMA:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_LUMA:
                 mPQSettingsManager.setAdvancedColorCustomizeCyanLumaStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_CYAN_HUE:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_CYAN_HUE:
                 mPQSettingsManager.setAdvancedColorCustomizeCyanHueStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
                 break;

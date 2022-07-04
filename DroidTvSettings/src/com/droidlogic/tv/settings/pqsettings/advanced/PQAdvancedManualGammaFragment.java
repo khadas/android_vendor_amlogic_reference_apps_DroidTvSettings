@@ -45,12 +45,12 @@ import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 public class PQAdvancedManualGammaFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "PQAdvancedManualGammaFragment";
 
-    private static final String PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_LEVEL = "pq_pictrue_advanced_manual_gamma_level";
-    private static final String PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_RGAIN = "pq_pictrue_advanced_manual_gamma_rgain";
-    private static final String PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_GGAIN = "pq_pictrue_advanced_manual_gamma_ggain";
-    private static final String PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_BGAIN = "pq_pictrue_advanced_manual_gamma_bgain";
-    private static final String PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_RESET = "pq_pictrue_advanced_manual_gamma_reset";
-    private static final int PQ_PICTRUE_ADVANCED_MANUAL_STEP = 1;
+    private static final String PQ_PICTURE_ADVANCED_MANUAL_GAMMA_LEVEL = "pq_picture_advanced_manual_gamma_level";
+    private static final String PQ_PICTURE_ADVANCED_MANUAL_GAMMA_RGAIN = "pq_picture_advanced_manual_gamma_rgain";
+    private static final String PQ_PICTURE_ADVANCED_MANUAL_GAMMA_GGAIN = "pq_picture_advanced_manual_gamma_ggain";
+    private static final String PQ_PICTURE_ADVANCED_MANUAL_GAMMA_BGAIN = "pq_picture_advanced_manual_gamma_bgain";
+    private static final String PQ_PICTURE_ADVANCED_MANUAL_GAMMA_RESET = "pq_picture_advanced_manual_gamma_reset";
+    private static final int PQ_PICTURE_ADVANCED_MANUAL_STEP = 1;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -76,41 +76,41 @@ public class PQAdvancedManualGammaFragment extends SettingsPreferenceFragment im
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_manual_gamma, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_manual_gamma, null);
 
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final SeekBarPreference PQPictureAdvancedManualGammaLevelPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_LEVEL);
-        final SeekBarPreference PQPictureAdvancedManualGammaRGainPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_RGAIN);
-        final SeekBarPreference PQPictureAdvancedManualGammaGGainPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_GGAIN);
-        final SeekBarPreference PQPictureAdvancedManualGammaBGainPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_BGAIN);
-        final Preference PQPictureAdvancedManualGammaResetPref = (Preference) findPreference(PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_RESET);
+        final SeekBarPreference PQPictureAdvancedManualGammaLevelPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_MANUAL_GAMMA_LEVEL);
+        final SeekBarPreference PQPictureAdvancedManualGammaRGainPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_MANUAL_GAMMA_RGAIN);
+        final SeekBarPreference PQPictureAdvancedManualGammaGGainPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_MANUAL_GAMMA_GGAIN);
+        final SeekBarPreference PQPictureAdvancedManualGammaBGainPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_MANUAL_GAMMA_BGAIN);
+        final Preference PQPictureAdvancedManualGammaResetPref = (Preference) findPreference(PQ_PICTURE_ADVANCED_MANUAL_GAMMA_RESET);
 
         PQPictureAdvancedManualGammaLevelPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedManualGammaLevelPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_MANUAL_STEP);
+        PQPictureAdvancedManualGammaLevelPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_MANUAL_STEP);
         PQPictureAdvancedManualGammaLevelPref.setMin(0);
         PQPictureAdvancedManualGammaLevelPref.setMax(10);
         PQPictureAdvancedManualGammaLevelPref.setValue(mPQSettingsManager.getAdvancedManualGammaLevelStatus());
         PQPictureAdvancedManualGammaLevelPref.setVisible(true);
 
         PQPictureAdvancedManualGammaRGainPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedManualGammaRGainPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_MANUAL_STEP);
+        PQPictureAdvancedManualGammaRGainPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_MANUAL_STEP);
         PQPictureAdvancedManualGammaRGainPref.setMin(-50);
         PQPictureAdvancedManualGammaRGainPref.setMax(50);
         PQPictureAdvancedManualGammaRGainPref.setValue(mPQSettingsManager.getAdvancedManualGammaRGainStatus());
         PQPictureAdvancedManualGammaRGainPref.setVisible(true);
 
         PQPictureAdvancedManualGammaGGainPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedManualGammaGGainPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_MANUAL_STEP);
+        PQPictureAdvancedManualGammaGGainPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_MANUAL_STEP);
         PQPictureAdvancedManualGammaGGainPref.setMin(-50);
         PQPictureAdvancedManualGammaGGainPref.setMax(50);
         PQPictureAdvancedManualGammaGGainPref.setValue(mPQSettingsManager.getAdvancedManualGammaGGainStatus());
         PQPictureAdvancedManualGammaGGainPref.setVisible(true);
 
         PQPictureAdvancedManualGammaBGainPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedManualGammaBGainPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_MANUAL_STEP);
+        PQPictureAdvancedManualGammaBGainPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_MANUAL_STEP);
         PQPictureAdvancedManualGammaBGainPref.setMin(-50);
         PQPictureAdvancedManualGammaBGainPref.setMax(50);
         PQPictureAdvancedManualGammaBGainPref.setValue(mPQSettingsManager.getAdvancedManualGammaBGainStatus());
@@ -122,7 +122,7 @@ public class PQAdvancedManualGammaFragment extends SettingsPreferenceFragment im
     public boolean onPreferenceTreeClick(Preference preference) {
         if (CanDebug()) Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_RESET:
+            case PQ_PICTURE_ADVANCED_MANUAL_GAMMA_RESET:
                 Intent PQPictureAdvancedManualGammaResetAllIntent = new Intent();
                 PQPictureAdvancedManualGammaResetAllIntent.setClassName(
                         "com.droidlogic.tv.settings",
@@ -136,21 +136,21 @@ public class PQAdvancedManualGammaFragment extends SettingsPreferenceFragment im
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_LEVEL:
+            case PQ_PICTURE_ADVANCED_MANUAL_GAMMA_LEVEL:
                 mPQSettingsManager.setAdvancedManualGammaLevelStatus((int)newValue);
                 //final int progress = Integer.parseInt((String)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_GEQ_ENABLE, progress);
                 //updateGeq(progress);
                 break;
-            case PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_RGAIN:
+            case PQ_PICTURE_ADVANCED_MANUAL_GAMMA_RGAIN:
                 mPQSettingsManager.setAdvancedManualGammaRGainStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_GGAIN:
+            case PQ_PICTURE_ADVANCED_MANUAL_GAMMA_GGAIN:
                 mPQSettingsManager.setAdvancedManualGammaGGainStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_MANUAL_GAMMA_BGAIN:
+            case PQ_PICTURE_ADVANCED_MANUAL_GAMMA_BGAIN:
                 mPQSettingsManager.setAdvancedManualGammaBGainStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
                 break;

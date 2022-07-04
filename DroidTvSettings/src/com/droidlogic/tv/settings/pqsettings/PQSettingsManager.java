@@ -640,58 +640,35 @@ public class PQSettingsManager {
         }
     }
 
-    public void setBrightness (int step) {
-        if (CanDebug())  Log.d(TAG, "setBrightness step : " + step );
+    public void setBrightness(int step) {
         int PQMode = mSystemControlManager.GetPQMode();
-        if (PQMode == 3) {
-            int tmp = mSystemControlManager.GetBrightness();
-            mSystemControlManager.SetBrightness(tmp + step, 1);
-        } else {
-            mSystemControlManager.SetBrightness(setPictureUserMode(KEY_BRIGHTNESS) + step, 1);
-        }
+        if (CanDebug()) Log.d(TAG, "setBrightness step : " + step);
+        int brightness = mSystemControlManager.GetBrightness();
+        mSystemControlManager.SetBrightness(brightness + step, 1);
     }
 
-    public void setContrast (int step) {
-        if (CanDebug())  Log.d(TAG, "setContrast step : " + step);
-        int PQMode = mSystemControlManager.GetPQMode();
-        if (PQMode == 3) {
-            int tmp = mSystemControlManager.GetContrast();
-            mSystemControlManager.SetContrast(tmp + step, 1);
-        } else {
-            mSystemControlManager.SetContrast(setPictureUserMode(KEY_CONTRAST) + step, 1);
-        }
+    public void setContrast(int step) {
+        if (CanDebug()) Log.d(TAG, "setContrast step : " + step);
+        int contrast = mSystemControlManager.GetContrast();
+        mSystemControlManager.SetContrast(contrast + step, 1);
     }
 
-    public void setColor (int step) {
-        if (CanDebug())  Log.d(TAG, "setColor step : " + step);
-        int PQMode = mSystemControlManager.GetPQMode();
-        if (PQMode == 3) {
-            int tmp = mSystemControlManager.GetSaturation();
-            mSystemControlManager.SetSaturation(tmp + step, 1);
-        } else {
-            mSystemControlManager.SetSaturation(setPictureUserMode(KEY_COLOR) + step, 1);
-        }
+    public void setColor(int step) {
+        if (CanDebug()) Log.d(TAG, "setColor step : " + step);
+        int saturation = mSystemControlManager.GetSaturation();
+        mSystemControlManager.SetSaturation(saturation + step, 1);
     }
 
-    public void setSharpness (int step) {
-        if (CanDebug())  Log.d(TAG, "setSharpness step : " + step);
-        int PQMode = mSystemControlManager.GetPQMode();
-        if (PQMode == 3) {
-            int tmp = mSystemControlManager.GetSharpness();
-            mSystemControlManager.SetSharpness(tmp + step , 1 , 1);
-        } else
-            mSystemControlManager.SetSharpness(setPictureUserMode(KEY_SHARPNESS) + step, 1 , 1);
+    public void setSharpness(int step) {
+        if (CanDebug()) Log.d(TAG, "setSharpness step : " + step);
+        int sharpness = mSystemControlManager.GetSharpness();
+        mSystemControlManager.SetSharpness(sharpness + step, 1, 1);
     }
 
     public void setTone(int step) {
-        if (CanDebug())  Log.d(TAG, "setTint step : " + step);
-        int PQMode = mSystemControlManager.GetPQMode();
-        if (PQMode == 3) {
-            int tmp = mSystemControlManager.GetHue();
-            mSystemControlManager.SetHue(tmp + step, 1);
-        } else {
-            mSystemControlManager.SetHue(setPictureUserMode(KEY_TONE) + step, 1);
-        }
+        if (CanDebug()) Log.d(TAG, "setTint step : " + step);
+        int hue = mSystemControlManager.GetHue();
+        mSystemControlManager.SetHue(hue + step, 1);
     }
 
     public String getVideoStd () {

@@ -76,14 +76,14 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     private static final String KEY_POWERKEY = "powerkey_action";
     private static final String KEY_POWERONMODE = "poweronmode_action";
     private static final String MORE_SETTINGS_APP_PACKAGE = "com.droidlogic.tv.settings";
-    private static final String KEY_UPGRADE_BLUTOOTH_REMOTE = "upgrade_bluetooth_remote";
+    private static final String KEY_UPGRADE_BLUETOOTH_REMOTE = "upgrade_bluetooth_remote";
     private static final String KEY_PLAYBACK_SETTINGS = "playback_settings";
     private static final String KEY_SOUNDS = "key_sound_effects";
     private static final String KEY_KEYSTONE = "keyStone";
     private static final String KEY_NETFLIX_ESN = "netflix_esn";
     private static final String KEY_VERSION = "hailstorm_ver";
     private static final String KEY_MORE_SETTINGS = "more";
-    private static final String KEY_PICTURE = "pictrue_mode";
+    private static final String KEY_PICTURE = "picture_mode";
     private static final String KEY_TV_OPTION = "tv_option";
     private static final String KEY_TV_CHANNEL = "channel";
     private static final String KEY_TV_SETTINGS = "tv_settings";
@@ -91,7 +91,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     private static final String KEY_ADVANCE_SOUND = "advanced_sound_settings";
     private static final String DTVKIT_PACKAGE = "org.dtvkit.inputsource";
     private static final String HAILSTORM_VERSION_PROP = "ro.vendor.hailstorm.version";
-    private static final String DEBUG_DISPLY_PROP = "vendor.display.debug";
+    private static final String DEBUG_DISPLAY_PROP = "vendor.display.debug";
     static final String KEY_DEVELOP_OPTION = "amlogic_developer_options";
     private static final String DEBUG_GLOBAL_SETTING = "droidsetting_debug";
 
@@ -146,7 +146,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         mSystemControlManager = SystemControlManager.getInstance();
 
         boolean customConfig     = getContext().getPackageManager().hasSystemFeature("droidlogic.software.netflix");
-        boolean debugConfig      = mSystemControlManager.getPropertyBoolean(DEBUG_DISPLY_PROP,false);
+        boolean debugConfig      = mSystemControlManager.getPropertyBoolean(DEBUG_DISPLAY_PROP, false);
 
         final Preference morePref = findPreference(KEY_MAIN_MENU);
         final Preference displayPref = findPreference(KEY_DISPLAY);
@@ -158,7 +158,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         final Preference powerKeyOnModePref = findPreference(KEY_POWERONMODE);
         final Preference keyStone = findPreference(KEY_KEYSTONE);
         //BluetoothRemote/HDMI cec/Playback Settings display only in Mbox
-        mUpgradeBluetoothRemote = findPreference(KEY_UPGRADE_BLUTOOTH_REMOTE);
+        mUpgradeBluetoothRemote = findPreference(KEY_UPGRADE_BLUETOOTH_REMOTE);
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
         final Preference versionPref = findPreference(KEY_VERSION);
         final Preference advanced_sound_settings_pref = findPreference(KEY_ADVANCE_SOUND);
@@ -225,7 +225,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
                 channelPref.setVisible(true);
             }
             if (!SettingsConstant.needDroidlogicTvFeature(getContext())) {
-                mSoundsPref.setVisible(false);//mbox doesn't surport sound effect
+                mSoundsPref.setVisible(false);//mbox doesn't support sound effect
             }
             if (inputId != null && inputId.startsWith(DTVKIT_PACKAGE)) {
                 DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_HIDE_STARTUP);

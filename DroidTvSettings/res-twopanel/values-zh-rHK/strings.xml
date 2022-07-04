@@ -39,7 +39,7 @@
     <string name="enable_unsupported_sound_format_dialog_ok_msg" msgid="4608591311195036141">"仍要變更"</string>
     <string name="enable_unsupported_sound_format_dialog_cancel_msg" msgid="8917939114197657217">"取消"</string>
     <string name="preferred_mode_change_dialog_desc" msgid="3500981786745907288">"請選擇 [確定] 以繼續。"</string>
-    <string name="preferred_mode_change_and_display_mode_change_dialog_desc" msgid="916054920893208929">"目前的顯示模式不支援 Dobly Vision。現已變更為 RESOLUTION_PLACEHOLDER。"</string>
+    <string name="preferred_mode_change_and_display_mode_change_dialog_desc" msgid="916054920893208929">"目前的顯示模式不支援 Dolby Vision。現已變更為 RESOLUTION_PLACEHOLDER。"</string>
     <string name="preferred_mode_change_dialog_title" msgid="4118230548907738654">"已變更模式偏好設定"</string>
     <string name="preferred_mode_change_dialog_ok_msg" msgid="7893137940567414019">"確定"</string>
     <string name="preferred_mode_change_dialog_cancel_msg" msgid="3884797091071820430">"取消 (COUNTDOWN_PLACEHOLDER)"</string>

@@ -43,8 +43,8 @@ import java.util.ArrayList;
 public class PQAdvancedGammaFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "PQAdvancedGammaFragment";
 
-    private static final int PQ_PICTRUE_ADVANCED_GAMMA_STEP= 1;
-    private static final String PQ_PICTRUE_ADVANCED_GAMMA= "pq_pictrue_advanced_gamma";
+    private static final int PQ_PICTURE_ADVANCED_GAMMA_STEP= 1;
+    private static final String PQ_PICTURE_ADVANCED_GAMMA= "pq_picture_advanced_gamma";
 
     private SeekBarPreference PQPictureAdvancedGammaPref;
 
@@ -70,16 +70,16 @@ public class PQAdvancedGammaFragment extends SettingsPreferenceFragment implemen
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_gamma, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_gamma, null);
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        PQPictureAdvancedGammaPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_GAMMA);
+        PQPictureAdvancedGammaPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_GAMMA);
 
         if (true) {//Leave blank first, add conditions later
             PQPictureAdvancedGammaPref.setOnPreferenceChangeListener(this);
-            PQPictureAdvancedGammaPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_GAMMA_STEP);
+            PQPictureAdvancedGammaPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_GAMMA_STEP);
             PQPictureAdvancedGammaPref.setMin(-5);
             PQPictureAdvancedGammaPref.setMax(5);
             PQPictureAdvancedGammaPref.setValue(mPQSettingsManager.getAdvancedGammaStatus());
@@ -100,7 +100,7 @@ public class PQAdvancedGammaFragment extends SettingsPreferenceFragment implemen
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey()+" newValue:"+newValue);
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_GAMMA:
+            case PQ_PICTURE_ADVANCED_GAMMA:
                 mPQSettingsManager.setAdvancedGammaStatus((int)newValue);
                 break;
 

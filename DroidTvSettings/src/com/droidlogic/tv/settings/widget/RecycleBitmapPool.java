@@ -129,7 +129,7 @@ public class RecycleBitmapPool {
             }
         }
         if (DEBUG) {
-            Log.d(TAG, "not avaialbe for " + width + "," + height);
+            Log.d(TAG, "not available for " + width + "," + height);
         }
         return null;
     }

@@ -352,11 +352,11 @@ public class BluetoothDevicePairer {
             }
         }
 
-        // Another device may initiate pairing. To accommodate this, turn on discoverability
+        // Another device may initiate pairing. To accommodate this, turn on discover ability
         // if it isn't already.
         final int scanMode = bluetoothAdapter.getScanMode();
         if (scanMode != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            Log.d(TAG, "Turning on discoverability, default scan mode: " + scanMode);
+            Log.d(TAG, "Turning on discover ability, default scan mode: " + scanMode);
             mDefaultScanMode = scanMode;
             // Remove discoverable timeout.
             bluetoothAdapter.setDiscoverableTimeout(Duration.ZERO);
@@ -400,7 +400,7 @@ public class BluetoothDevicePairer {
         final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mDefaultScanMode != SCAN_MODE_NOT_SET
                 && mDefaultScanMode != bluetoothAdapter.getScanMode()) {
-            Log.d(TAG, "Resetting discoverability to: " + mDefaultScanMode);
+            Log.d(TAG, "Resetting discover ability to: " + mDefaultScanMode);
             bluetoothAdapter.setScanMode(mDefaultScanMode);
         }
 

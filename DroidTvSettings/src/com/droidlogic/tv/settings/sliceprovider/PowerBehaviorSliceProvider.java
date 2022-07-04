@@ -31,7 +31,7 @@ public class PowerBehaviorSliceProvider extends MediaSliceProvider {
     public Slice onBindSlice(final Uri sliceUri) {
         Log.d(TAG, "onBindSlice: " + sliceUri);
         switch (MediaSliceUtil.getFirstSegment(sliceUri)) {
-            case MediaSliceConstants.DEVICE_POEWRBEHAVOIR_PATH:
+            case MediaSliceConstants.DEVICE_POWER_BEHAVIOR_PATH:
                 // fill in Netfilx Esn into general info purposely
                 return createPowerBehaviorSlice(sliceUri);
             default:

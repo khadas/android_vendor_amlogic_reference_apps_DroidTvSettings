@@ -45,10 +45,10 @@ import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 public class PQAdvancedColorCustomizeBlueGreenFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "PQAdvancedColorCustomizeBlueGreenFragment";
 
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_SATURATION = "pq_pictrue_advanced_color_customize_blue_green_saturation";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_LUMA = "pq_pictrue_advanced_color_customize_blue_green_luma";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_HUE = "pq_pictrue_advanced_color_customize_blue_green_hue";
-    private static final int PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_STEP = 1;
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_SATURATION = "pq_picture_advanced_color_customize_blue_green_saturation";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_LUMA = "pq_picture_advanced_color_customize_blue_green_luma";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_HUE = "pq_picture_advanced_color_customize_blue_green_hue";
+    private static final int PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_STEP = 1;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -74,32 +74,32 @@ public class PQAdvancedColorCustomizeBlueGreenFragment extends SettingsPreferenc
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_color_customize_blue_green, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_color_customize_blue_green, null);
 
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueGreenSaturationPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_SATURATION);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueGreenLumaPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_LUMA);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueGreenHuePref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_HUE);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueGreenSaturationPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_SATURATION);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueGreenLumaPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_LUMA);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueGreenHuePref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_HUE);
 
         PQPictureAdvancedColorCustomizeBlueGreenSaturationPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeBlueGreenSaturationPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_STEP);
+        PQPictureAdvancedColorCustomizeBlueGreenSaturationPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_STEP);
         PQPictureAdvancedColorCustomizeBlueGreenSaturationPref.setMin(-50);
         PQPictureAdvancedColorCustomizeBlueGreenSaturationPref.setMax(50);
         PQPictureAdvancedColorCustomizeBlueGreenSaturationPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeBlueGreenSaturationStatus());
         PQPictureAdvancedColorCustomizeBlueGreenSaturationPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeBlueGreenLumaPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeBlueGreenLumaPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_STEP);
+        PQPictureAdvancedColorCustomizeBlueGreenLumaPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_STEP);
         PQPictureAdvancedColorCustomizeBlueGreenLumaPref.setMin(-15);
         PQPictureAdvancedColorCustomizeBlueGreenLumaPref.setMax(15);
         PQPictureAdvancedColorCustomizeBlueGreenLumaPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeBlueGreenLumaStatus());
         PQPictureAdvancedColorCustomizeBlueGreenLumaPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeBlueGreenHuePref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeBlueGreenHuePref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_STEP);
+        PQPictureAdvancedColorCustomizeBlueGreenHuePref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_STEP);
         PQPictureAdvancedColorCustomizeBlueGreenHuePref.setMin(-50);
         PQPictureAdvancedColorCustomizeBlueGreenHuePref.setMax(50);
         PQPictureAdvancedColorCustomizeBlueGreenHuePref.setValue(mPQSettingsManager.getAdvancedColorCustomizeBlueGreenHueStatus());
@@ -116,15 +116,15 @@ public class PQAdvancedColorCustomizeBlueGreenFragment extends SettingsPreferenc
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_SATURATION:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_SATURATION:
                 mPQSettingsManager.setAdvancedColorCustomizeBlueGreenSaturationStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_LUMA:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_LUMA:
                 mPQSettingsManager.setAdvancedColorCustomizeBlueGreenLumaStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_HUE:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_GREEN_HUE:
                 mPQSettingsManager.setAdvancedColorCustomizeBlueGreenHueStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
                 break;

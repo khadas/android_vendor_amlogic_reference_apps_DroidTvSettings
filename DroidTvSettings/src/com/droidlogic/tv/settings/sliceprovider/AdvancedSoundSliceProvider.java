@@ -51,7 +51,7 @@ public class AdvancedSoundSliceProvider extends MediaSliceProvider {
     }
     if (!AdvancedSoundManager.isInit()) {
       final Context context = getContext();
-      // Hander is uesd to avoid executing IO operation in UI thread.
+      // Handler is use to avoid executing IO operation in UI thread.
       mHandler.post(
           () -> {
             AdvancedSoundManager.getAdvancedSoundManager(context);
@@ -84,7 +84,7 @@ public class AdvancedSoundSliceProvider extends MediaSliceProvider {
     }
 
     final PreferenceSliceBuilder psb = new PreferenceSliceBuilder(getContext(), sliceUri);
-    String surrondSoundPassthrough = mAdvancedSoundManager.getSurroundPassthroughSetting();
+    String surroundPassthroughSetting = mAdvancedSoundManager.getSurroundPassthroughSetting();
 
     psb.setEmbeddedPreference(
         new RowBuilder()
@@ -94,7 +94,7 @@ public class AdvancedSoundSliceProvider extends MediaSliceProvider {
                     getContext(),
                     MediaSliceConstants.ACTION_SURROUND_SOUND_ENABLED,
                     AdvancedSoundSliceBroadcastReceiver.class),
-                !surrondSoundPassthrough.equals(AdvancedSoundManager.VAL_SURROUND_SOUND_NEVER)));
+                !surroundPassthroughSetting.equals(AdvancedSoundManager.VAL_SURROUND_SOUND_NEVER)));
 
     return psb.build();
   }

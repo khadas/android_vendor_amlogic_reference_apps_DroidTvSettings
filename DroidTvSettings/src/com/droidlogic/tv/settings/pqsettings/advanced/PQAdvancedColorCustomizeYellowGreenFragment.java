@@ -45,10 +45,10 @@ import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 public class PQAdvancedColorCustomizeYellowGreenFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "PQAdvancedColorCustomizeYellowGreenFragment";
 
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_SATURATION = "pq_pictrue_advanced_color_customize_yellow_green_saturation";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_LUMA = "pq_pictrue_advanced_color_customize_yellow_green_luma";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_HUE = "pq_pictrue_advanced_color_customize_yellow_green_hue";
-    private static final int PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_STEP = 1;
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_SATURATION = "pq_picture_advanced_color_customize_yellow_green_saturation";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_LUMA = "pq_picture_advanced_color_customize_yellow_green_luma";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_HUE = "pq_picture_advanced_color_customize_yellow_green_hue";
+    private static final int PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_STEP = 1;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -74,32 +74,32 @@ public class PQAdvancedColorCustomizeYellowGreenFragment extends SettingsPrefere
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_color_customize_yellow_green, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_color_customize_yellow_green, null);
 
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowGreenSaturationPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_SATURATION);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowGreenLumaPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_LUMA);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowGreenHuePref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_HUE);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowGreenSaturationPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_SATURATION);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowGreenLumaPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_LUMA);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeYellowGreenHuePref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_HUE);
 
         PQPictureAdvancedColorCustomizeYellowGreenSaturationPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeYellowGreenSaturationPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_STEP);
+        PQPictureAdvancedColorCustomizeYellowGreenSaturationPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_STEP);
         PQPictureAdvancedColorCustomizeYellowGreenSaturationPref.setMin(-50);
         PQPictureAdvancedColorCustomizeYellowGreenSaturationPref.setMax(50);
         PQPictureAdvancedColorCustomizeYellowGreenSaturationPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeYellowGreenSaturationStatus());
         PQPictureAdvancedColorCustomizeYellowGreenSaturationPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeYellowGreenLumaPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeYellowGreenLumaPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_STEP);
+        PQPictureAdvancedColorCustomizeYellowGreenLumaPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_STEP);
         PQPictureAdvancedColorCustomizeYellowGreenLumaPref.setMin(-15);
         PQPictureAdvancedColorCustomizeYellowGreenLumaPref.setMax(15);
         PQPictureAdvancedColorCustomizeYellowGreenLumaPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeYellowGreenLumaStatus());
         PQPictureAdvancedColorCustomizeYellowGreenLumaPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeYellowGreenHuePref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeYellowGreenHuePref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_STEP);
+        PQPictureAdvancedColorCustomizeYellowGreenHuePref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_STEP);
         PQPictureAdvancedColorCustomizeYellowGreenHuePref.setMin(-50);
         PQPictureAdvancedColorCustomizeYellowGreenHuePref.setMax(50);
         PQPictureAdvancedColorCustomizeYellowGreenHuePref.setValue(mPQSettingsManager.getAdvancedColorCustomizeYellowGreenHueStatus());
@@ -116,15 +116,15 @@ public class PQAdvancedColorCustomizeYellowGreenFragment extends SettingsPrefere
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_SATURATION:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_SATURATION:
                 mPQSettingsManager.setAdvancedColorCustomizeYellowGreenSaturationStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_LUMA:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_LUMA:
                 mPQSettingsManager.setAdvancedColorCustomizeYellowGreenLumaStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_HUE:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_YELLOWGREEN_HUE:
                 mPQSettingsManager.setAdvancedColorCustomizeYellowGreenHueStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
                 break;

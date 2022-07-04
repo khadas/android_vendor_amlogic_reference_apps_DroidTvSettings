@@ -136,7 +136,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
 
     if (!DisplayCapabilityManager.isInit()) {
       final Context context = getContext();
-      // Hander is uesd to avoid executing IO operation in UI thread.
+      // Handler is ues to avoid executing IO operation in UI thread.
       mHandler.post(
           () -> {
             DisplayCapabilityManager.getDisplayCapabilityManager(context);
@@ -425,9 +425,9 @@ public class HdrSliceProvider extends MediaSliceProvider {
       return psb.build();
     }
 
-    boolean isDoblyVisionModeLL = mDisplayCapabilityManager.isDolbyVisionModeLLPreferred();
+    boolean isDolbyVisionModeLL = mDisplayCapabilityManager.isDolbyVisionModeLLPreferred();
     if (MediaSliceUtil.CanDebug()) {
-        Log.d(TAG, "isDoblyVisionModeLL:"+ isDoblyVisionModeLL
+        Log.d(TAG, "isDolbyVisionModeLL:"+ isDolbyVisionModeLL
                 + " doesDolbyVisionSupportLL:" + mDisplayCapabilityManager.doesDolbyVisionSupportLL()
                 + " doesDolbyVisionSupportStandard:" + mDisplayCapabilityManager.doesDolbyVisionSupportStandard());
     }
@@ -442,7 +442,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
                       getContext(),
                       MediaSliceConstants.ACTION_SET_DOLBY_VISION_MODE,
                       HdrSliceBroadcastReceiver.class),
-                  isDoblyVisionModeLL,
+                  isDolbyVisionModeLL,
                   getContext().getString(R.string.dolby_vision_mode_select_type_radio_group_name)));
     }
 
@@ -456,7 +456,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
                       getContext(),
                       MediaSliceConstants.ACTION_SET_DOLBY_VISION_MODE,
                       HdrSliceBroadcastReceiver.class),
-                  !isDoblyVisionModeLL,
+                  !isDolbyVisionModeLL,
                   getContext().getString(R.string.dolby_vision_mode_select_type_radio_group_name)));
     }
 

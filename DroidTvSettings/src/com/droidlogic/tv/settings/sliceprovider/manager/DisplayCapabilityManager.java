@@ -329,27 +329,27 @@ public class DisplayCapabilityManager {
     return !mHdmiModeList.equals(preList);
   }
 
-  private String filterHdmiModes(String filterHdimMode) {
-    Log.d(TAG, "filterHdimMode: " + filterHdimMode);
+  private String filterHdmiModes(String filterHdmiMode) {
+    Log.d(TAG, "filterHdmiMode: " + filterHdmiMode);
     if (!mOutputModeManager.getFrameRateOffset().contains("1")
-            || filterHdimMode == null) {
+            || filterHdmiMode == null) {
 
-      return filterHdimMode;
+      return filterHdmiMode;
     }
 
-    String filterHdmiModeStr = filterHdimMode;
-    if (filterHdimMode.contains("60Hz")) {
-      filterHdmiModeStr = filterHdimMode.replace("60Hz", "59.94Hz");
-    } else if (filterHdimMode.contains("30Hz")) {
-      filterHdmiModeStr = filterHdimMode.replace("30Hz", "29.97Hz");
-    } else if (filterHdimMode.contains("24Hz")) {
-      filterHdmiModeStr = filterHdimMode.replace("24Hz", "23.976Hz");
-    } else if (filterHdimMode.contains("60hz")) {
-      filterHdmiModeStr = filterHdimMode.replace("60hz", "59.94hz");
-    } else if (filterHdimMode.contains("30hz")) {
-      filterHdmiModeStr = filterHdimMode.replace("30hz", "29.97hz");
-    } else if (filterHdimMode.contains("24hz")) {
-      filterHdmiModeStr = filterHdimMode.replace("24hz", "23.976hz");
+    String filterHdmiModeStr = filterHdmiMode;
+    if (filterHdmiMode.contains("60Hz")) {
+      filterHdmiModeStr = filterHdmiMode.replace("60Hz", "59.94Hz");
+    } else if (filterHdmiMode.contains("30Hz")) {
+      filterHdmiModeStr = filterHdmiMode.replace("30Hz", "29.97Hz");
+    } else if (filterHdmiMode.contains("24Hz")) {
+      filterHdmiModeStr = filterHdmiMode.replace("24Hz", "23.976Hz");
+    } else if (filterHdmiMode.contains("60hz")) {
+      filterHdmiModeStr = filterHdmiMode.replace("60hz", "59.94hz");
+    } else if (filterHdmiMode.contains("30hz")) {
+      filterHdmiModeStr = filterHdmiMode.replace("30hz", "29.97hz");
+    } else if (filterHdmiMode.contains("24hz")) {
+      filterHdmiModeStr = filterHdmiMode.replace("24hz", "23.976hz");
     }
 
     Log.d(TAG, "filterHdmiModeStr: " + filterHdmiModeStr);
@@ -425,10 +425,10 @@ public class DisplayCapabilityManager {
     List<String> hdmiDeepColorAttrList = new ArrayList<>();
     // TODO: check. Does mOutputModeManager.getHdmiColorSupportList() returns the same list when in
     // SDR/HDR/DV mode?
-    String strColorlist = mOutputModeManager.getHdmiColorSupportList();
-    if (strColorlist != null && strColorlist.length() != 0 && !strColorlist.contains("null")) {
+    String strColorList = mOutputModeManager.getHdmiColorSupportList();
+    if (strColorList != null && strColorList.length() != 0 && !strColorList.contains("null")) {
       for (String hdmiColor : HDMI_COLOR_LIST) {
-        if (strColorlist.contains(hdmiColor)) {
+        if (strColorList.contains(hdmiColor)) {
           hdmiColorAttrList.add(hdmiColor);
           //if (HDMI_DEEP_COLOR_SET.contains(hdmiColor)) {
             hdmiDeepColorAttrList.add(hdmiColor);
@@ -445,7 +445,7 @@ public class DisplayCapabilityManager {
   private boolean updateSupportForHdr10() {
     final String hdrCap2 = mSystemControlManager.readSysFs(HDR_CAP2_PATH);
     // "SMPTE ST 2084" with value "1" represents the support of HDR10.
-    // If it is not suppported, the value will be "0"
+    // If it is not supported, the value will be "0"
     // TODO: check. Does mSystemControlManager.readSysFs returns the same value under DV/HDR/SDR
     // preferred?
     // TODO: do we have to read HLG?
@@ -716,8 +716,8 @@ public class DisplayCapabilityManager {
     return hdrPreference != null ? hdrPreference : getHdrPriority();
   }
 
-  private void setHdrPreference(HdrFormat hdrpreference) {
-    mSystemControlManager.setProperty(SYSTEM_PROPERTY_HDR_PREFERENCE, hdrpreference.getSysProp());
+  private void setHdrPreference(HdrFormat hdrPreference) {
+    mSystemControlManager.setProperty(SYSTEM_PROPERTY_HDR_PREFERENCE, hdrPreference.getSysProp());
   }
 
   private boolean isDolbyVisionSupported() {
@@ -808,7 +808,7 @@ public class DisplayCapabilityManager {
 
   public void setModeSupportingDolbyVision() {
     if (!isDolbyVisionSupported()) {
-      throw new IllegalArgumentException("There's no mode supporing Dolby Vision.");
+      throw new IllegalArgumentException("There's no mode supporting Dolby Vision.");
     }
     String mode = "1080p60hz";
     if (doesModeSupportDolbyVision(mode)) {

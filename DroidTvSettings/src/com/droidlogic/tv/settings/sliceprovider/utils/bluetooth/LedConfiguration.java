@@ -28,10 +28,10 @@ public class LedConfiguration implements Parcelable {
         public LedConfiguration createFromParcel(Parcel source) {
             int color0 = source.readInt();
             int color1 = source.readInt();
-            boolean[] bools = new boolean[2];
-                    source.readBooleanArray(bools);
-            LedConfiguration config = new LedConfiguration(color0, color1, bools[0]);
-            config.isTransient = bools[1];
+            boolean[] booleans = new boolean[2];
+                    source.readBooleanArray(booleans);
+            LedConfiguration config = new LedConfiguration(color0, color1, booleans[0]);
+            config.isTransient = booleans[1];
             return config;
         }
 

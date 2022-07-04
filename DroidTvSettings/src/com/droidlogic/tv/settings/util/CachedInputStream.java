@@ -39,7 +39,7 @@ public class CachedInputStream extends FilterInputStream {
     private int mPos = 0;  // current read position inside the chunk buffers
     private int mCount = 0; // total validate bytes in chunk buffers
     private int mMarkPos = -1; // marked read position in chunk buffers
-    private int mOverrideMarkLimit; // to override readlimit of mark() call
+    private int mOverrideMarkLimit; // to override readLimit of mark() call
     private int mMarkLimit; // effective marklimit
     private final byte[] tmp = new byte[1]; // tmp buffer used in read()
 
@@ -53,7 +53,7 @@ public class CachedInputStream extends FilterInputStream {
     }
 
     /**
-     * set the value that will override small readlimit passed in mark() call.
+     * set the value that will override small readLimit passed in mark() call.
      */
     public void setOverrideMarkLimit(int overrideMarkLimit) {
         mOverrideMarkLimit = overrideMarkLimit;
@@ -64,8 +64,8 @@ public class CachedInputStream extends FilterInputStream {
     }
 
     @Override
-    public void mark(int readlimit) {
-        readlimit = readlimit < mOverrideMarkLimit ? mOverrideMarkLimit : readlimit;
+    public void mark(int readLimit) {
+        readLimit = readLimit < mOverrideMarkLimit ? mOverrideMarkLimit : readLimit;
         if (mMarkPos >= 0) {
             // for replacing existing mark(), discard anything before mPos
             // and move mMarkPos to mPos
@@ -81,7 +81,7 @@ public class CachedInputStream extends FilterInputStream {
             }
         }
         mMarkPos = mPos;
-        mMarkLimit = readlimit;
+        mMarkLimit = readLimit;
     }
 
     @Override

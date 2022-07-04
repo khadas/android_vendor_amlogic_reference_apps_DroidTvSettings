@@ -550,7 +550,7 @@
     <string name="device_info_default">Unknown</string>
     <!-- About screen,  setting option name  [CHAR LIMIT=40] -->
     <string name="selinux_status">SELinux status</string>
-    <!-- These statuses are displayed when a device was built with SE Android supoprt.
+    <!-- These statuses are displayed when a device was built with SE Android support.
     These are displayed by the settings app in the about section. -->
     <string name="selinux_status_disabled">Disabled</string>
     <string name="selinux_status_permissive">Permissive</string>
@@ -1463,7 +1463,7 @@
     <!-- Disambiguation Activity-->
     <!-- Title of intent resolver activity when selecting an application to run. [CHAR LIMIT=50]-->
     <string name="whichApplication">Complete action using</string>
-    <!-- Quetsion about always using the selected application resolution in the future. See the "Complete action using" dialog title [CHAR LIMIT=50]-->
+    <!-- Question about always using the selected application resolution in the future. See the "Complete action using" dialog title [CHAR LIMIT=50]-->
     <string name="alwaysUseQuestion">Always use this option for this action?</string>
     <!-- Option to always use the selected application resolution in the future. See the "Complete action using" dialog title [CHAR LIMIT=50]-->
     <string name="alwaysUseOption">Always use</string>
@@ -1601,7 +1601,7 @@
     <!-- Toast message when an user couldn't pass the PIN confirmation. [CHAR LIMIT=128] -->
     <string name="pin_toast_not_match">Try again, PIN doesn\'t match</string>
 
-    <!-- Message displayed to prompt the user to input the network password, ^1 will be replaced with the name of the network and should be a possive form related to password [CHAR LIMIT=NONE] -->
+    <!-- Message displayed to prompt the user to input the network password, ^1 will be replaced with the name of the network and should be a possessive form related to password [CHAR LIMIT=NONE] -->
     <string name="wifi_setup_input_password">Enter password for <xliff:g id="ssid">%1$s</xliff:g></string>
     <!-- Summary displayed to explain next steps for user to submit network password, ^1 be replaced with keyboard icon to be selected [CHAR LIMIT=NONE] -->
     <string name="wifi_setup_description">Select <xliff:g id="wifi_submit_icon">%1$s</xliff:g> to continue.</string>
@@ -1636,7 +1636,7 @@
     <string name="device_apps_app_management_enable_desc">Do you want to enable this app?</string>
     <!-- Application management choice for displaying the application's size [CHAR LIMIT=40] -->
     <string name="device_apps_app_management_storage_used">Storage used</string>
-    <!-- Application management description for displaying the applicantion's size [CHAR_LIMIT=NONE] -->
+    <!-- Application management description for displaying the application's size [CHAR_LIMIT=NONE] -->
     <string name="device_apps_app_management_storage_used_desc"><xliff:g id="size" example="30.2MB">%1$s</xliff:g> used in <xliff:g id="volume" example="internal storage">%2$s</xliff:g></string>
     <!-- Application management choice for clearing the application's data [CHAR LIMIT=40] -->
     <string name="device_apps_app_management_clear_data">Clear data</string>
@@ -1938,7 +1938,7 @@
     <string name="cec_settings_slice_uri" translatable="false"/>
 
     <string name="storage_summary_fragment_name" translatable="false"/>
-    <!-- Slice uri for hdr fomat selection -->
+    <!-- Slice uri for hdr format selection -->
     <string name="hdr_and_color_format_slice_uri" translatable="false"/>
     <!-- Slice uri for resolution and frequency -->
     <string name="resolution_slice_uri" translatable="false"/>
@@ -2129,7 +2129,7 @@
     <string name="device_sound_dts_sound">Dts DRC Mode</string>
     <string name="device_sound_dts_trans_auto">Auto</string>
     <string name="device_sound_dolby">Dolby DRC Mode</string>
-    <string name="device_sound_ad_surport">"Associate Audio"</string>
+    <string name="device_sound_ad_support">"Associate Audio"</string>
     <string name="title_sound_device_hdmi_out">"HDMI output"</string>
 
     <string name="surround_sound_format_aac_lc">AAC</string>
@@ -2329,14 +2329,14 @@
 
     <string name="settings_menu">Menu</string>
     <!-- picture mode setting. -->
-    <string name="pq_pictrue">Picture</string>
-    <string name="pq_pictrue_mode">Picture Mode</string>
-    <string name="pq_pictrue_mode_sdr">Picture Mode SDR</string>
-    <string name="pq_pictrue_mode_hdr10">Picture Mode HDR10</string>
-    <string name="pq_pictrue_mode_hdr10plus">Picture Mode HDR10+</string>
-    <string name="pq_pictrue_mode_hlg">Picture Mode HLG</string>
-    <string name="pq_pictrue_mode_dolbyvision">Picture Mode DolbyVision</string>
-    <string name="pq_pictrue_mode_cvua">Picture Mode CVUA</string>
+    <string name="pq_picture">Picture</string>
+    <string name="pq_picture_mode">Picture Mode</string>
+    <string name="pq_picture_mode_sdr">Picture Mode SDR</string>
+    <string name="pq_picture_mode_hdr10">Picture Mode HDR10</string>
+    <string name="pq_picture_mode_hdr10plus">Picture Mode HDR10+</string>
+    <string name="pq_picture_mode_hlg">Picture Mode HLG</string>
+    <string name="pq_picture_mode_dolbyvision">Picture Mode DolbyVision</string>
+    <string name="pq_picture_mode_cvua">Picture Mode CVUA</string>
     <string name="pq_brightness">Brightness</string>
     <string name="pq_contrast">Contrast</string>
     <string name="pq_saturation">Saturation</string>
@@ -2357,7 +2357,7 @@
     <string name="pq_hue_zoomout">Hue Weakened</string>
     <string name="ntsc">NTSC</string>
     <string name="pal">PAL</string>
-    <string name="pq_color_temprature">Color Temprature</string>
+    <string name="pq_color_temperature">Color Temperature</string>
     <string name="pq_aspect_ratio">Aspect Ratio</string>
     <string name="pq_ai_pq">AI PQ</string>
     <string name="ai_sr_enable" translatable="false">Enable AI SR</string>
@@ -2391,80 +2391,80 @@
     <string name="pq_mode_3d_to_2d">3D to 2D</string>
     <string name="pq_custom">Custom Settings</string>
     <string name="pq_backlight_settings">Backlight Settings</string>
-    <string name="pq_pictrue_advanced">Advanced</string>
-    <string name="pq_pictrue_advanced_dynamic_tone_mapping">Dynamic Tone Mapping</string>
-    <string name="pq_pictrue_advanced_gamma">Gamma</string>
-    <string name="pq_pictrue_advanced_manual_gamma">Manual Gamma</string>
-    <string name="pq_pictrue_advanced_color_temperature">Color Temperature</string>
-    <string name="pq_pictrue_advanced_color_management">Color Management</string>
-    <string name="pq_pictrue_advanced_color_customize">Color Customize</string>
-    <string name="pq_pictrue_advanced_color_space">Color Space</string>
-    <string name="pq_pictrue_advanced_global_dimming">Global Dimming</string>
-    <string name="pq_pictrue_advanced_local_dimming">Lobal Dimming</string>
-    <string name="pq_pictrue_advanced_black_stretch">Black Stretch</string>
-    <string name="pq_pictrue_advanced_dnlp">DNLP</string>
-    <string name="pq_pictrue_advanced_local_contrast">Local Contrast</string>
-    <string name="pq_pictrue_advanced_sr">SR</string>
-    <string name="pq_pictrue_advanced_deblock">DeBlock</string>
-    <string name="pq_pictrue_advanced_demosquito">DeMosquito</string>
-    <string name="pq_pictrue_advanced_decontour">Decontour</string>
-    <string name="pq_pictrue_advanced_memc">MEMC</string>
-    <string name="pq_pictrue_advanced_memc_switch">MEMC Switch</string>
-    <string name="pq_pictrue_advanced_manual_gamma_level">Level</string>
-    <string name="pq_pictrue_advanced_manual_gamma_rgain">R Gain</string>
-    <string name="pq_pictrue_advanced_manual_gamma_ggain">G Gain</string>
-    <string name="pq_pictrue_advanced_manual_gamma_bgain">B Gain</string>
-    <string name="pq_pictrue_advanced_manual_gamma_reset">Reset</string>
-    <string name="pq_pictrue_advanced_color_temperature_wbsetting">WB Setting</string>
-    <string name="pq_pictrue_advanced_color_temperature_rgain">R Gain</string>
-    <string name="pq_pictrue_advanced_color_temperature_ggain">G Gain</string>
-    <string name="pq_pictrue_advanced_color_temperature_bgain">B Gain</string>
-    <string name="pq_pictrue_advanced_color_temperature_roffset">R Offset</string>
-    <string name="pq_pictrue_advanced_color_temperature_goffset">G Offset</string>
-    <string name="pq_pictrue_advanced_color_temperature_boffset">B Offset</string>
-    <string name="pq_pictrue_advanced_color_temperature_wbreset">WB Reset</string>
-    <string name="pq_pictrue_advanced_color_customize_red">Red</string>
-    <string name="pq_pictrue_advanced_color_customize_green">Green</string>
-    <string name="pq_pictrue_advanced_color_customize_blue">Blue</string>
-    <string name="pq_pictrue_advanced_color_customize_cyan">Cyan</string>
-    <string name="pq_pictrue_advanced_color_customize_magenta">Magenta</string>
-    <string name="pq_pictrue_advanced_color_customize_yellow">Yellow</string>
-    <string name="pq_pictrue_advanced_color_customize_skin">Skin</string>
-    <string name="pq_pictrue_advanced_color_customize_yellow_green">Yellow Green</string>
-    <string name="pq_pictrue_advanced_color_customize_blue_green">Blue Green</string>
-    <string name="pq_pictrue_advanced_color_customize_reset">Reset</string>
-    <string name="pq_pictrue_advanced_color_customize_blue_green_saturation">Saturation</string>
-    <string name="pq_pictrue_advanced_color_customize_blue_green_luma">Luma</string>
-    <string name="pq_pictrue_advanced_color_customize_blue_green_hue">Hue</string>
-    <string name="pq_pictrue_advanced_color_customize_cyan_saturation">Saturation</string>
-    <string name="pq_pictrue_advanced_color_customize_cyan_luma">Luma</string>
-    <string name="pq_pictrue_advanced_color_customize_cyan_hue">Hue</string>
-    <string name="pq_pictrue_advanced_color_customize_green_saturation">Saturation</string>
-    <string name="pq_pictrue_advanced_color_customize_green_luma">Luma</string>
-    <string name="pq_pictrue_advanced_color_customize_green_hue">Hue</string>
-    <string name="pq_pictrue_advanced_color_customize_magenta_saturation">Saturation</string>
-    <string name="pq_pictrue_advanced_color_customize_magenta_luma">Luma</string>
-    <string name="pq_pictrue_advanced_color_customize_magenta_hue">Hue</string>
-    <string name="pq_pictrue_advanced_color_customize_red_saturation">Saturation</string>
-    <string name="pq_pictrue_advanced_color_customize_red_luma">Luma</string>
-    <string name="pq_pictrue_advanced_color_customize_red_hue">Hue</string>
-    <string name="pq_pictrue_advanced_color_customize_skin_saturation">Saturation</string>
-    <string name="pq_pictrue_advanced_color_customize_skin_luma">Luma</string>
-    <string name="pq_pictrue_advanced_color_customize_skin_hue">Hue</string>
-    <string name="pq_pictrue_advanced_color_customize_yellow_saturation">Saturation</string>
-    <string name="pq_pictrue_advanced_color_customize_yellow_luma">Luma</string>
-    <string name="pq_pictrue_advanced_color_customize_yellow_hue">Hue</string>
-    <string name="pq_pictrue_advanced_color_customize_yellow_green_saturation">Saturation</string>
-    <string name="pq_pictrue_advanced_color_customize_yellow_green_luma">Luma</string>
-    <string name="pq_pictrue_advanced_color_customize_yellow_green_hue">Hue</string>
-    <string name="pq_pictrue_advanced_color_customize_blue_saturation">Saturation</string>
-    <string name="pq_pictrue_advanced_color_customize_blue_luma">Luma</string>
-    <string name="pq_pictrue_advanced_color_customize_blue_hue">Hue</string>
-    <string name="pq_pictrue_advanced_memc_off">Off</string>
-    <string name="pq_pictrue_advanced_memc_on">On</string>
-    <string name="pq_pictrue_advanced_memc_customize">Customize</string>
-    <string name="pq_pictrue_advanced_memc_customize_dejudder">DeJudder</string>
-    <string name="pq_pictrue_advanced_memc_customize_deblur">DeBlur</string>
+    <string name="pq_picture_advanced">Advanced</string>
+    <string name="pq_picture_advanced_dynamic_tone_mapping">Dynamic Tone Mapping</string>
+    <string name="pq_picture_advanced_gamma">Gamma</string>
+    <string name="pq_picture_advanced_manual_gamma">Manual Gamma</string>
+    <string name="pq_picture_advanced_color_temperature">Color Temperature</string>
+    <string name="pq_picture_advanced_color_management">Color Management</string>
+    <string name="pq_picture_advanced_color_customize">Color Customize</string>
+    <string name="pq_picture_advanced_color_space">Color Space</string>
+    <string name="pq_picture_advanced_global_dimming">Global Dimming</string>
+    <string name="pq_picture_advanced_local_dimming">Lobal Dimming</string>
+    <string name="pq_picture_advanced_black_stretch">Black Stretch</string>
+    <string name="pq_picture_advanced_dnlp">DNLP</string>
+    <string name="pq_picture_advanced_local_contrast">Local Contrast</string>
+    <string name="pq_picture_advanced_sr">SR</string>
+    <string name="pq_picture_advanced_deblock">DeBlock</string>
+    <string name="pq_picture_advanced_demosquito">DeMosquito</string>
+    <string name="pq_picture_advanced_decontour">Decontour</string>
+    <string name="pq_picture_advanced_memc">MEMC</string>
+    <string name="pq_picture_advanced_memc_switch">MEMC Switch</string>
+    <string name="pq_picture_advanced_manual_gamma_level">Level</string>
+    <string name="pq_picture_advanced_manual_gamma_rgain">R Gain</string>
+    <string name="pq_picture_advanced_manual_gamma_ggain">G Gain</string>
+    <string name="pq_picture_advanced_manual_gamma_bgain">B Gain</string>
+    <string name="pq_picture_advanced_manual_gamma_reset">Reset</string>
+    <string name="pq_picture_advanced_color_temperature_wbsetting">WB Setting</string>
+    <string name="pq_picture_advanced_color_temperature_rgain">R Gain</string>
+    <string name="pq_picture_advanced_color_temperature_ggain">G Gain</string>
+    <string name="pq_picture_advanced_color_temperature_bgain">B Gain</string>
+    <string name="pq_picture_advanced_color_temperature_roffset">R Offset</string>
+    <string name="pq_picture_advanced_color_temperature_goffset">G Offset</string>
+    <string name="pq_picture_advanced_color_temperature_boffset">B Offset</string>
+    <string name="pq_picture_advanced_color_temperature_wbreset">WB Reset</string>
+    <string name="pq_picture_advanced_color_customize_red">Red</string>
+    <string name="pq_picture_advanced_color_customize_green">Green</string>
+    <string name="pq_picture_advanced_color_customize_blue">Blue</string>
+    <string name="pq_picture_advanced_color_customize_cyan">Cyan</string>
+    <string name="pq_picture_advanced_color_customize_magenta">Magenta</string>
+    <string name="pq_picture_advanced_color_customize_yellow">Yellow</string>
+    <string name="pq_picture_advanced_color_customize_skin">Skin</string>
+    <string name="pq_picture_advanced_color_customize_yellow_green">Yellow Green</string>
+    <string name="pq_picture_advanced_color_customize_blue_green">Blue Green</string>
+    <string name="pq_picture_advanced_color_customize_reset">Reset</string>
+    <string name="pq_picture_advanced_color_customize_blue_green_saturation">Saturation</string>
+    <string name="pq_picture_advanced_color_customize_blue_green_luma">Luma</string>
+    <string name="pq_picture_advanced_color_customize_blue_green_hue">Hue</string>
+    <string name="pq_picture_advanced_color_customize_cyan_saturation">Saturation</string>
+    <string name="pq_picture_advanced_color_customize_cyan_luma">Luma</string>
+    <string name="pq_picture_advanced_color_customize_cyan_hue">Hue</string>
+    <string name="pq_picture_advanced_color_customize_green_saturation">Saturation</string>
+    <string name="pq_picture_advanced_color_customize_green_luma">Luma</string>
+    <string name="pq_picture_advanced_color_customize_green_hue">Hue</string>
+    <string name="pq_picture_advanced_color_customize_magenta_saturation">Saturation</string>
+    <string name="pq_picture_advanced_color_customize_magenta_luma">Luma</string>
+    <string name="pq_picture_advanced_color_customize_magenta_hue">Hue</string>
+    <string name="pq_picture_advanced_color_customize_red_saturation">Saturation</string>
+    <string name="pq_picture_advanced_color_customize_red_luma">Luma</string>
+    <string name="pq_picture_advanced_color_customize_red_hue">Hue</string>
+    <string name="pq_picture_advanced_color_customize_skin_saturation">Saturation</string>
+    <string name="pq_picture_advanced_color_customize_skin_luma">Luma</string>
+    <string name="pq_picture_advanced_color_customize_skin_hue">Hue</string>
+    <string name="pq_picture_advanced_color_customize_yellow_saturation">Saturation</string>
+    <string name="pq_picture_advanced_color_customize_yellow_luma">Luma</string>
+    <string name="pq_picture_advanced_color_customize_yellow_hue">Hue</string>
+    <string name="pq_picture_advanced_color_customize_yellow_green_saturation">Saturation</string>
+    <string name="pq_picture_advanced_color_customize_yellow_green_luma">Luma</string>
+    <string name="pq_picture_advanced_color_customize_yellow_green_hue">Hue</string>
+    <string name="pq_picture_advanced_color_customize_blue_saturation">Saturation</string>
+    <string name="pq_picture_advanced_color_customize_blue_luma">Luma</string>
+    <string name="pq_picture_advanced_color_customize_blue_hue">Hue</string>
+    <string name="pq_picture_advanced_memc_off">Off</string>
+    <string name="pq_picture_advanced_memc_on">On</string>
+    <string name="pq_picture_advanced_memc_customize">Customize</string>
+    <string name="pq_picture_advanced_memc_customize_dejudder">DeJudder</string>
+    <string name="pq_picture_advanced_memc_customize_deblur">DeBlur</string>
     <string name="pq_allreset">Reset</string>
     <string name="pq_allreset_title">Picture Mode Reset</string>
     <string name="pq_allreset_success">Picture Reset Success</string>
@@ -2527,11 +2527,11 @@
     <string name="tv_daylight_saving_time">Daylight Saving Time</string>
     <string name="tv_fbc_upgrade">FBC Upgrade</string>
     <string name="tv_hdmi_switch">HDMI 2.0</string>
-    <string name="tv_startup_lancher">launcher</string>
+    <string name="tv_startup_launcher">launcher</string>
     <string name="tv_factory_menu">Factory Menu</string>
     <string name="tv_startup_tv">TV</string>
-    <string name="tv_settins_on">on</string>
-    <string name="tv_settins_off">off</string>
+    <string name="tv_settings_on">on</string>
+    <string name="tv_settings_off">off</string>
     <string name="tv_hdmi1_switch">HDMI1</string>
     <string name="tv_hdmi2_switch">HDMI2</string>
     <string name="tv_hdmi3_switch">HDMI3</string>
@@ -2643,7 +2643,7 @@
     <string name="enable_unsupported_sound_format_dialog_cancel_msg">"Cancel"</string>
 
     <string name="preferred_mode_change_dialog_desc">Select OK to continue.</string>
-    <string description="The word RESOLUTION_PLACEHOLDER should not be translated. It will be replaced with a resolution message." name="preferred_mode_change_and_display_mode_change_dialog_desc">The current display mode does not support Dobly Vision. It has been changed to RESOLUTION_PLACEHOLDER.</string>
+    <string description="The word RESOLUTION_PLACEHOLDER should not be translated. It will be replaced with a resolution message." name="preferred_mode_change_and_display_mode_change_dialog_desc">The current display mode does not support Dolby Vision. It has been changed to RESOLUTION_PLACEHOLDER.</string>
     <string name="preferred_mode_change_dialog_title">Mode preference has been changed</string>
     <string name="preferred_mode_change_dialog_ok_msg">OK</string>
     <string description="The word COUNTDOWN_PLACEHOLDER should not be translated. It will be replaced with a countdown message." name="preferred_mode_change_dialog_cancel_msg">"Cancel (COUNTDOWN_PLACEHOLDER)"</string>

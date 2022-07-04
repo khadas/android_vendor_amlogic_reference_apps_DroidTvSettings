@@ -51,7 +51,7 @@ public class SafeDismissDialogFragment extends DialogFragment {
     public void dismiss() {
         if (!mAttached) {
             // dismiss() before getFragmentManager() is set cause NPE in dismissInternal().
-            // FragmentMananager is set when a fragment is used in a trasaction,
+            // FragmentManager is set when a fragment is used in a transaction,
             // so wait here until we can dismiss safely.
             mDismissPending = true;
         } else {

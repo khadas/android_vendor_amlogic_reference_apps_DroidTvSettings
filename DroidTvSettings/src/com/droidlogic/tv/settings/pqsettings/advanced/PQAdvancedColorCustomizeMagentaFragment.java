@@ -45,10 +45,10 @@ import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 public class PQAdvancedColorCustomizeMagentaFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "PQAdvancedColorCustomizeMagentaFragment";
 
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_SATURATION = "pq_pictrue_advanced_color_customize_magenta_saturation";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_LUMA = "pq_pictrue_advanced_color_customize_magenta_luma";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_HUE = "pq_pictrue_advanced_color_customize_magenta_hue";
-    private static final int PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_STEP = 1;
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_SATURATION = "pq_picture_advanced_color_customize_magenta_saturation";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_LUMA = "pq_picture_advanced_color_customize_magenta_luma";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_HUE = "pq_picture_advanced_color_customize_magenta_hue";
+    private static final int PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_STEP = 1;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -74,32 +74,32 @@ public class PQAdvancedColorCustomizeMagentaFragment extends SettingsPreferenceF
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_color_customize_magenta, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_color_customize_magenta, null);
 
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final SeekBarPreference PQPictureAdvancedColorCustomizeMagentaSaturationPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_SATURATION);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeMagentaLumaPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_LUMA);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeMagentaHuePref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_HUE);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeMagentaSaturationPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_SATURATION);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeMagentaLumaPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_LUMA);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeMagentaHuePref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_HUE);
 
         PQPictureAdvancedColorCustomizeMagentaSaturationPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeMagentaSaturationPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_STEP);
+        PQPictureAdvancedColorCustomizeMagentaSaturationPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_STEP);
         PQPictureAdvancedColorCustomizeMagentaSaturationPref.setMin(-50);
         PQPictureAdvancedColorCustomizeMagentaSaturationPref.setMax(50);
         PQPictureAdvancedColorCustomizeMagentaSaturationPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeMagentaSaturationStatus());
         PQPictureAdvancedColorCustomizeMagentaSaturationPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeMagentaLumaPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeMagentaLumaPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_STEP);
+        PQPictureAdvancedColorCustomizeMagentaLumaPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_STEP);
         PQPictureAdvancedColorCustomizeMagentaLumaPref.setMin(-15);
         PQPictureAdvancedColorCustomizeMagentaLumaPref.setMax(15);
         PQPictureAdvancedColorCustomizeMagentaLumaPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeMagentaLumaStatus());
         PQPictureAdvancedColorCustomizeMagentaLumaPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeMagentaHuePref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeMagentaHuePref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_STEP);
+        PQPictureAdvancedColorCustomizeMagentaHuePref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_STEP);
         PQPictureAdvancedColorCustomizeMagentaHuePref.setMin(-50);
         PQPictureAdvancedColorCustomizeMagentaHuePref.setMax(50);
         PQPictureAdvancedColorCustomizeMagentaHuePref.setValue(mPQSettingsManager.getAdvancedColorCustomizeMagentaHueStatus());
@@ -116,15 +116,15 @@ public class PQAdvancedColorCustomizeMagentaFragment extends SettingsPreferenceF
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_SATURATION:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_SATURATION:
                 mPQSettingsManager.setAdvancedColorCustomizeMagentaSaturationStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_LUMA:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_LUMA:
                 mPQSettingsManager.setAdvancedColorCustomizeMagentaLumaStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_HUE:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_MAGENTA_HUE:
                 mPQSettingsManager.setAdvancedColorCustomizeMagentaHueStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
                 break;

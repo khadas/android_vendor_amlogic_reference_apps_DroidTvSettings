@@ -40,7 +40,7 @@ public class MediaSliceConstants {
   public static final String MATCH_CONTENT_PATH = "match_content";
   public static final String ACTION_AUTO_BEST_RESOLUTIONS_ENABLED = "auto_best_resolution";
   public static final String RESOLUTION_PATH = "resolution";
-  public static final String DEVICE_POEWRBEHAVOIR_PATH = "power_boot_resume";
+  public static final String DEVICE_POWER_BEHAVIOR_PATH = "power_boot_resume";
   public static final String HDR_AND_COLOR_FORMAT_PATH = "hdr_and_color_format";
   public static final String HDR_FORMAT_PREFERENCE_PATH = "hdr_format_preference";
   public static final String COLOR_ATTRIBUTE_PATH = "color_attribute";
@@ -56,7 +56,7 @@ public class MediaSliceConstants {
       Uri.parse("content://" + HDR_AUTHORITY + "/" + MATCH_CONTENT_PATH);
 
   public static final Uri DEVICE_POWER_BOOT_URI =
-      Uri.parse("content://" + DEVICE_POWER_BOOT + "/" + DEVICE_POEWRBEHAVOIR_PATH);
+      Uri.parse("content://" + DEVICE_POWER_BOOT + "/" + DEVICE_POWER_BEHAVIOR_PATH);
   public static final Uri RESOLUTION_URI =
       Uri.parse("content://" + HDR_AUTHORITY + "/" + RESOLUTION_PATH);
   public static final Uri HDR_AND_COLOR_FORMAT_URI =

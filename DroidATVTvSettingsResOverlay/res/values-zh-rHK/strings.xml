@@ -19,7 +19,7 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- DroidLogic start -->
     <!-- Preference which manages more settings. [CHAR LIMIT=50] -->
-    <!-- DroidLogic mofify, text for a radio button that if selected will allow the user to passthrough select surround sound formats. [CHAR LIMIT=50] -->
+    <!-- DroidLogic modify, text for a radio button that if selected will allow the user to passthrough select surround sound formats. [CHAR LIMIT=50] -->
     <string name="surround_sound_passthrough_summary">"直通：根據所連接設備支持的格式，保留原始格式輸出"</string>
     <string name="device_displayandsound_audiooutput">音頻輸出</string>
     <string name="more_pref_category_title">更多設定</string>
@@ -62,7 +62,7 @@
     <string name="device_sound_dts_drcscale">"DTS DRC範圍"</string>
     <string name="device_sound_dts_sound">"DTS聲音"</string>
     <string name="device_sound_dolby">"杜比動態範圍模式"</string>
-    <string name="device_sound_ad_surport">"輔助音"</string>
+    <string name="device_sound_ad_support">"輔助音"</string>
 
     <string name="power_key_action">"電源"</string>
     <string name="power_action_suspend">"休眠"</string>
@@ -103,7 +103,7 @@
     <string name="crypt_keeper_settings_title">"加密"</string>
     <string name="crypt_keeper_encrypted_summary">"已加密"</string>
     <string name="enter_password">"如要啟動 Android，請輸入密碼"</string>
-    <string name="starting_android">"正在啟動 Andriod…"</string>
+    <string name="starting_android">"正在啟動 Android…"</string>
     <string name="crypt_keeper_switch_input_method">"切換輸入法"</string>
     <string name="cryptkeeper_wrong_password">"密碼錯誤"</string>
     <string name="cryptkeeper_return_to_call">"返回通話"</string>

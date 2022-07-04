@@ -41,7 +41,7 @@ public class SettingsModeFragment extends SettingsPreferenceFragment implements 
 
     private static final String TAG = "SettingsModeFragment";
 
-    private static final String SRATUP_SETTING = "tv_startup_setting";
+    private static final String STARTUP_SETTING = "tv_startup_setting";
     private static final String DYNAMIC_BACKLIGHT = "tv_dynamic_backlight";
     private static final String AUDIO_AD_SWITCH = "tv_audio_ad_switch";
     private static final String MULTI_SETTINGS = "multi_settings";
@@ -72,23 +72,23 @@ public class SettingsModeFragment extends SettingsPreferenceFragment implements 
         if (mTvOptionSettingManager == null) {
             mTvOptionSettingManager = new TvOptionSettingManager(getActivity(), false);
         }
-        final ListPreference startupseting = (ListPreference) findPreference(SRATUP_SETTING);
+        final ListPreference startUpSetting = (ListPreference) findPreference(STARTUP_SETTING);
         if (!DroidUtils.hasGtvsUiMode()) {
-            startupseting.setValueIndex(mTvOptionSettingManager.getStartupSettingStatus());
-            startupseting.setOnPreferenceChangeListener(this);
+            startUpSetting.setValueIndex(mTvOptionSettingManager.getStartupSettingStatus());
+            startUpSetting.setOnPreferenceChangeListener(this);
         } else {
-            startupseting.setVisible(false);
+            startUpSetting.setVisible(false);
         }
-        final ListPreference dynamicbacklight = (ListPreference) findPreference(DYNAMIC_BACKLIGHT);
-        dynamicbacklight.setEntries(initswitchEntries());
-        dynamicbacklight.setEntryValues(initSwitchEntryValue());
-        dynamicbacklight.setValueIndex(mTvOptionSettingManager.getDynamicBacklightStatus());
-        dynamicbacklight.setOnPreferenceChangeListener(this);
-        final ListPreference audioadswitch = (ListPreference) findPreference(AUDIO_AD_SWITCH);
-        audioadswitch.setEntries(initswitchEntries());
-        audioadswitch.setEntryValues(initSwitchEntryValue());
-        audioadswitch.setValueIndex(mTvOptionSettingManager.getADSwitchStatus());
-        audioadswitch.setOnPreferenceChangeListener(this);
+        final ListPreference dynamicBackLight = (ListPreference) findPreference(DYNAMIC_BACKLIGHT);
+        dynamicBackLight.setEntries(initswitchEntries());
+        dynamicBackLight.setEntryValues(initSwitchEntryValue());
+        dynamicBackLight.setValueIndex(mTvOptionSettingManager.getDynamicBacklightStatus());
+        dynamicBackLight.setOnPreferenceChangeListener(this);
+        final ListPreference audioAdSwitch = (ListPreference) findPreference(AUDIO_AD_SWITCH);
+        audioAdSwitch.setEntries(initswitchEntries());
+        audioAdSwitch.setEntryValues(initSwitchEntryValue());
+        audioAdSwitch.setValueIndex(mTvOptionSettingManager.getADSwitchStatus());
+        audioAdSwitch.setOnPreferenceChangeListener(this);
         final Preference fbcupgrade = (Preference) findPreference(FBC_UPGRADE);
         fbcupgrade.setVisible(false);
     }
@@ -108,7 +108,7 @@ public class SettingsModeFragment extends SettingsPreferenceFragment implements 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (CanDebug()) Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
         final int selection = Integer.parseInt((String)newValue);
-        if (TextUtils.equals(preference.getKey(), SRATUP_SETTING)) {
+        if (TextUtils.equals(preference.getKey(), STARTUP_SETTING)) {
             mTvOptionSettingManager.setStartupSetting(selection);
         } else if (TextUtils.equals(preference.getKey(), DYNAMIC_BACKLIGHT)) {
             mTvOptionSettingManager.setAutoBacklightStatus(selection);
@@ -125,8 +125,8 @@ public class SettingsModeFragment extends SettingsPreferenceFragment implements 
 
     private String[] initswitchEntries() {
         String[] temp = new String[2];
-        temp[0] = getActivity().getResources().getString(R.string.tv_settins_off);
-        temp[1] = getActivity().getResources().getString(R.string.tv_settins_on);
+        temp[0] = getActivity().getResources().getString(R.string.tv_settings_off);
+        temp[1] = getActivity().getResources().getString(R.string.tv_settings_on);
         return temp;
     }
 

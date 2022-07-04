@@ -32,7 +32,7 @@ public class PowerBehaviorContentManager {
 
     private HandlerThread mHandlerThread;
     private Handler mHandler;
-    private final Object mPowerHanderObject = new Object();
+    private final Object mPowerHandlerObject = new Object();
 
     private static final Map<String, Integer> POWER_BEHAVIOR_LIST = new HashMap();
 
@@ -84,14 +84,14 @@ public class PowerBehaviorContentManager {
 
     public int getCurrentBehavior() {
 
-        synchronized (mPowerHanderObject) {
+        synchronized (mPowerHandlerObject) {
             Message msg = Message.obtain();
             msg.what = MSG_BEHAVIOR_GET;
             mHandler.sendMessage(msg);
             try {
-                mPowerHanderObject.wait();
+                mPowerHandlerObject.wait();
             } catch (Exception e) {
-                Log.i(TAG,"mPowerHanderObject error " + e.getMessage());
+                Log.i(TAG,"mPowerHandlerObject error " + e.getMessage());
             }
         }
         Log.d(TAG, "PowerKeyDefinition: " + PowerKeyDefinition);
@@ -121,8 +121,8 @@ public class PowerBehaviorContentManager {
             switch (msg.what) {
                 case MSG_BEHAVIOR_GET:
                     whichPowerKeyDefinition();
-                    synchronized (mPowerHanderObject) {
-                        mPowerHanderObject.notifyAll();
+                    synchronized (mPowerHandlerObject) {
+                        mPowerHandlerObject.notifyAll();
                     }
                     break;
                 case MSG_BEHAVIOR_SET:

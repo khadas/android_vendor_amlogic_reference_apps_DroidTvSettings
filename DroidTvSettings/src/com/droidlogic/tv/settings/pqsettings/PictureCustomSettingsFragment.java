@@ -41,23 +41,17 @@ import java.util.ArrayList;
 public class PictureCustomSettingsFragment extends SettingsPreferenceFragment {
     private static final String TAG = "PictureCustomSettingsFragment";
 
-    private final static int ZOOMINSTEP = 1;
-    private final static int ZOOMOUTSTEP = -1;
+    private final static int ZOOM_IN_STEP = 1;
+    private final static int ZOOM_OUT_STEP = -1;
 
-    //private final static int MAXBRIGHTNESSHEIGHT = 100;
-    //private final static int MINBRIGHTNESSHEIGHT = 0;
     private static final String PQ_BRIGHTNESS = "pq_brightness";
     private static final String PQ_BRIGHTNESS_IN = "pq_brightness_in";
     private static final String PQ_BRIGHTNESS_OUT = "pq_brightness_out";
 
-    //private final static int MAXCONTRASTHEIGHT = 100;
-    //private final static int MINCONTRASTHEIGHT = 0;
     private static final String PQ_CONTRAST="pq_contrast";
     private static final String PQ_CONTRAST_IN = "pq_contrast_in";
     private static final String PQ_CONTRAST_OUT = "pq_contrast_out";
 
-    //private final static int MAXSATURATIONHEIGHT = 100;
-    //private final static int MINSATURATIONHEIGHT = 0;
     private static final String PQ_SATURATION="pq_saturation";
     private static final String PQ_SATURATION_IN = "pq_saturation_in";
     private static final String PQ_SATURATION_OUT = "pq_saturation_out";
@@ -74,28 +68,27 @@ public class PictureCustomSettingsFragment extends SettingsPreferenceFragment {
 
     private Preference pq_brightnessPref;
     private PreferenceCategory mPQBrightnessPref;
-    private Preference pq_brightnessinPref;
-    private Preference pq_brightnessoutPref;
+    private Preference pq_brightnessInPref;
+    private Preference pq_brightnessOutPref;
 
     private Preference pq_contrastPref;
     private PreferenceCategory mPQContrastPref;
-    private Preference pq_contrastinPref;
-    private Preference pq_contrastoutPref;
+    private Preference pq_contrastInPref;
+    private Preference pq_contrastOutPref;
 
     private Preference pq_saturationPref;
     private PreferenceCategory mPQSaturationPref;
-    private Preference pq_saturationinPref;
-    private Preference pq_saturationoutPref;
+    private Preference pq_saturationInPref;
+    private Preference pq_saturationOutPref;
 
     private Preference pq_sharpnessPref;
     private PreferenceCategory mPQSharpnessPref;
-    private Preference pq_sharpnessinPref;
-    private Preference pq_sharpnessoutPref;
+    private Preference pq_sharpnessInPref;
+    private Preference pq_sharpnessOutPref;
 
-    private Preference pq_huePref;
     private PreferenceCategory mPQHuePref;
-    private Preference pq_hueinPref;
-    private Preference pq_hueoutPref;
+    private Preference pq_hueInPref;
+    private Preference pq_hueOutPref;
 
 
     public static PictureCustomSettingsFragment newInstance() {
@@ -115,40 +108,40 @@ public class PictureCustomSettingsFragment extends SettingsPreferenceFragment {
         mPQHuePref       = (PreferenceCategory) findPreference(PQ_HUE);
         if ((isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_brightness)) ||
                 (!isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_brightness))) {
-            pq_brightnessinPref  = (Preference) findPreference(PQ_BRIGHTNESS_IN);
-            pq_brightnessoutPref = (Preference) findPreference(PQ_BRIGHTNESS_OUT);
+            pq_brightnessInPref  = (Preference) findPreference(PQ_BRIGHTNESS_IN);
+            pq_brightnessOutPref = (Preference) findPreference(PQ_BRIGHTNESS_OUT);
         }else{
             getPreferenceScreen().removePreference(mPQBrightnessPref);
         }
 
         if ((isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_contrast)) ||
                 (!isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_contrast))) {
-            pq_contrastinPref  = (Preference) findPreference(PQ_CONTRAST_IN);
-            pq_contrastoutPref = (Preference) findPreference(PQ_CONTRAST_OUT);
+            pq_contrastInPref  = (Preference) findPreference(PQ_CONTRAST_IN);
+            pq_contrastOutPref = (Preference) findPreference(PQ_CONTRAST_OUT);
         }else{
             getPreferenceScreen().removePreference(mPQContrastPref);
         }
 
         if ((isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_saturation)) ||
                 (!isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_saturation))) {
-            pq_saturationinPref  = (Preference) findPreference(PQ_SATURATION_IN);
-            pq_saturationoutPref = (Preference) findPreference(PQ_SATURATION_OUT);
+            pq_saturationInPref  = (Preference) findPreference(PQ_SATURATION_IN);
+            pq_saturationOutPref = (Preference) findPreference(PQ_SATURATION_OUT);
         }else{
             getPreferenceScreen().removePreference(mPQSaturationPref);
         }
 
         if ((isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_sharpness)) ||
                 (!isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_sharpness))) {
-            pq_sharpnessinPref  = (Preference) findPreference(PQ_SHARPNESS_IN);
-            pq_sharpnessoutPref = (Preference) findPreference(PQ_SHARPNESS_OUT);
+            pq_sharpnessInPref  = (Preference) findPreference(PQ_SHARPNESS_IN);
+            pq_sharpnessOutPref = (Preference) findPreference(PQ_SHARPNESS_OUT);
         }else{
             getPreferenceScreen().removePreference(mPQSharpnessPref);
         }
 
         if ((isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_hue)) ||
                 (!isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_hue))) {
-            pq_hueinPref  = (Preference) findPreference(PQ_HUE_IN);
-            pq_hueoutPref = (Preference) findPreference(PQ_HUE_OUT);
+            pq_hueInPref  = (Preference) findPreference(PQ_HUE_IN);
+            pq_hueOutPref = (Preference) findPreference(PQ_HUE_OUT);
         }else{
             getPreferenceScreen().removePreference(mPQHuePref);
         }
@@ -160,34 +153,34 @@ public class PictureCustomSettingsFragment extends SettingsPreferenceFragment {
     public boolean onPreferenceTreeClick(Preference preference) {
         switch (preference.getKey()) {
             case PQ_BRIGHTNESS_IN:
-                mPQSettingsManager.setBrightness(ZOOMINSTEP);
+                mPQSettingsManager.setBrightness(ZOOM_IN_STEP);
                 break;
             case PQ_BRIGHTNESS_OUT:
-                mPQSettingsManager.setBrightness(ZOOMOUTSTEP);
+                mPQSettingsManager.setBrightness(ZOOM_OUT_STEP);
                 break;
             case PQ_CONTRAST_IN:
-                mPQSettingsManager.setContrast(ZOOMINSTEP);
+                mPQSettingsManager.setContrast(ZOOM_IN_STEP);
                 break;
             case PQ_CONTRAST_OUT:
-                mPQSettingsManager.setContrast(ZOOMOUTSTEP);
+                mPQSettingsManager.setContrast(ZOOM_OUT_STEP);
                 break;
             case PQ_SATURATION_IN:
-                mPQSettingsManager.setColor(ZOOMINSTEP);
+                mPQSettingsManager.setColor(ZOOM_IN_STEP);
                 break;
             case PQ_SATURATION_OUT:
-                mPQSettingsManager.setColor(ZOOMOUTSTEP);
+                mPQSettingsManager.setColor(ZOOM_OUT_STEP);
                 break;
             case PQ_SHARPNESS_IN:
-                mPQSettingsManager.setSharpness(ZOOMINSTEP);
+                mPQSettingsManager.setSharpness(ZOOM_IN_STEP);
                 break;
             case PQ_SHARPNESS_OUT:
-                mPQSettingsManager.setSharpness(ZOOMOUTSTEP);
+                mPQSettingsManager.setSharpness(ZOOM_OUT_STEP);
                 break;
             case PQ_HUE_IN:
-                mPQSettingsManager.setTone(ZOOMINSTEP);
+                mPQSettingsManager.setTone(ZOOM_IN_STEP);
                 break;
             case PQ_HUE_OUT:
-                mPQSettingsManager.setTone(ZOOMOUTSTEP);
+                mPQSettingsManager.setTone(ZOOM_OUT_STEP);
                 break;
         }
         updateMainScreen();

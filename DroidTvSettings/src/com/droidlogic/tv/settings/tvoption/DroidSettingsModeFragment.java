@@ -152,27 +152,27 @@ public class DroidSettingsModeFragment extends SettingsPreferenceFragment implem
         } else {
             avParentalControls.setSummary(AV_PARENTAL_CONTROLS_OFF);
         }
-        final ListPreference startupseting = (ListPreference) findPreference(STARTUP_SETTING);
+        final ListPreference startUpSetting = (ListPreference) findPreference(STARTUP_SETTING);
         if (!DroidUtils.hasGtvsUiMode() && !hideStartUp) {
-            startupseting.setValueIndex(mTvOptionSettingManager.getStartupSettingStatus());
-            startupseting.setOnPreferenceChangeListener(this);
+            startUpSetting.setValueIndex(mTvOptionSettingManager.getStartupSettingStatus());
+            startUpSetting.setOnPreferenceChangeListener(this);
         } else {
-            startupseting.setVisible(false);
+            startUpSetting.setVisible(false);
         }
-        final ListPreference menutime = (ListPreference) findPreference(MENU_TIME);
-        menutime.setValueIndex(mTvOptionSettingManager.getMenuTimeStatus());
-        menutime.setOnPreferenceChangeListener(this);
-        final ListPreference sleeptimer = (ListPreference) findPreference(SLEEP_TIMER);
-        sleeptimer.setValueIndex(mTvOptionSettingManager.getSleepTimerStatus());
-        sleeptimer.setOnPreferenceChangeListener(this);
-        final ListPreference noSignalsleeptimer = (ListPreference) findPreference(NOSIGNAL_SLEEP_TIMER);
-        noSignalsleeptimer.setValueIndex(mTvOptionSettingManager.getNoSignalSleepTimeStatus());
-        noSignalsleeptimer.setOnPreferenceChangeListener(this);
-        final ListPreference dynamicbacklightPref = (ListPreference) findPreference(DYNAMIC_BACKLIGHT);
-        dynamicbacklightPref.setEntries(initswitchEntries());
-        dynamicbacklightPref.setEntryValues(initSwitchEntryValue());
-        dynamicbacklightPref.setValueIndex(mTvOptionSettingManager.getDynamicBacklightStatus());
-        dynamicbacklightPref.setOnPreferenceChangeListener(this);
+        final ListPreference menuTime = (ListPreference) findPreference(MENU_TIME);
+        menuTime.setValueIndex(mTvOptionSettingManager.getMenuTimeStatus());
+        menuTime.setOnPreferenceChangeListener(this);
+        final ListPreference sleepTimer = (ListPreference) findPreference(SLEEP_TIMER);
+        sleepTimer.setValueIndex(mTvOptionSettingManager.getSleepTimerStatus());
+        sleepTimer.setOnPreferenceChangeListener(this);
+        final ListPreference noSignalSleepTimer = (ListPreference) findPreference(NOSIGNAL_SLEEP_TIMER);
+        noSignalSleepTimer.setValueIndex(mTvOptionSettingManager.getNoSignalSleepTimeStatus());
+        noSignalSleepTimer.setOnPreferenceChangeListener(this);
+        final ListPreference dynamicBackLightPref = (ListPreference) findPreference(DYNAMIC_BACKLIGHT);
+        dynamicBackLightPref.setEntries(initswitchEntries());
+        dynamicBackLightPref.setEntryValues(initSwitchEntryValue());
+        dynamicBackLightPref.setValueIndex(mTvOptionSettingManager.getDynamicBacklightStatus());
+        dynamicBackLightPref.setOnPreferenceChangeListener(this);
         final Preference fbcupgrade = (Preference) findPreference(FBC_UPGRADE);
         fbcupgrade.setVisible(false);
 
@@ -260,8 +260,8 @@ public class DroidSettingsModeFragment extends SettingsPreferenceFragment implem
 
     private String[] initswitchEntries() {
         String[] temp = new String[2];
-        temp[0] = getActivity().getResources().getString(R.string.tv_settins_off);
-        temp[1] = getActivity().getResources().getString(R.string.tv_settins_on);
+        temp[0] = getActivity().getResources().getString(R.string.tv_settings_off);
+        temp[1] = getActivity().getResources().getString(R.string.tv_settings_on);
         return temp;
     }
 

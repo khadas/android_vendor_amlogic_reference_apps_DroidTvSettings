@@ -119,7 +119,7 @@ public class AccountImageChangeObserver {
             imageUri = imageUri.buildUpon().clearQuery().build();
 
             if (changeNotifUri == null) {
-                // No change Notiy URI specified
+                // No change Notif URI specified
                 return;
             }
 

@@ -117,15 +117,15 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
             mAudioEffectManager = AudioEffectManager.getInstance(getActivity().getApplicationContext());
         }
 
-        final ListPreference dolbyDrcmodePref = (ListPreference) findPreference(KEY_DOLBY_DRCMODE_PASSTHROUGH);
+        final ListPreference dolbyDrcModePref = (ListPreference) findPreference(KEY_DOLBY_DRCMODE_PASSTHROUGH);
 
-        final ListPreference dtsdrccustommodePref = (ListPreference) findPreference(KEY_DTSDRCCUSTOMMODE_PASSTHROUGH);
-        final ListPreference dtsdrcmodePref = (ListPreference) findPreference(KEY_DTSDRCMODE_PASSTHROUGH);
-        final TwoStatePreference adsurport = (TwoStatePreference) findPreference(KEY_SOUND_AD_MIXING);
+        final ListPreference dtsDrcCustomModePref = (ListPreference) findPreference(KEY_DTSDRCCUSTOMMODE_PASSTHROUGH);
+        final ListPreference dtsDrcModePref = (ListPreference) findPreference(KEY_DTSDRCMODE_PASSTHROUGH);
+        final TwoStatePreference adSupportPref = (TwoStatePreference) findPreference(KEY_SOUND_AD_MIXING);
         final Preference dapPref = (Preference) findPreference(KEY_DAP);
         final SeekBarPreference arcPref = (SeekBarPreference) findPreference(KEY_ARC_LATENCY);
         final SeekBarPreference audioOutputLatencyPref = (SeekBarPreference) findPreference(KEY_AUDIO_OUTPUT_LATENCY);
-        final TwoStatePreference forceddp = (TwoStatePreference) findPreference(KEY_FORCE_DDP);
+        final TwoStatePreference forcedDpPref = (TwoStatePreference) findPreference(KEY_FORCE_DDP);
         final TwoStatePreference hdmiOutPref = (TwoStatePreference) findPreference(KEY_SOUND_TV_OUTPUT_DEVICE_HDMI_OUT);
         final Preference mDtsVirtualxSettingsPref = (Preference) findPreference(KEY_DTS_VIRTUALX_SETTINGS);
         final TwoStatePreference mTruVolumeHdPref = (TwoStatePreference) findPreference(KEY_TV_DTS_VIRTUALX_EFFECT);
@@ -136,16 +136,16 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         if (!mOutputModeManager.isAudioSupportMs12System())
             dapPref.setVisible(false);
 
-        forceddp.setChecked(mOutputModeManager.getForceDDPEnable());
+        forcedDpPref.setChecked(mOutputModeManager.getForceDDPEnable());
         if (!mOutputModeManager.isAudioSupportMs12System())
-            forceddp.setVisible(false);
+            forcedDpPref.setVisible(false);
 
-        dolbyDrcmodePref.setValue(mSoundParameterSettingManager.getDrcModePassthroughSetting());
-        dolbyDrcmodePref.setOnPreferenceChangeListener(this);
+        dolbyDrcModePref.setValue(mSoundParameterSettingManager.getDrcModePassthroughSetting());
+        dolbyDrcModePref.setOnPreferenceChangeListener(this);
 
-        dtsdrcmodePref.setValue(mSystemControlManager.getPropertyString("persist.vendor.sys.dtsdrcscale", OutputModeManager.DEFAULT_DRC_SCALE));
-        dtsdrcmodePref.setOnPreferenceChangeListener(this);
-        adsurport.setChecked(mOutputModeManager.getAdSurportEnable());
+        dtsDrcModePref.setValue(mSystemControlManager.getPropertyString("persist.vendor.sys.dtsdrcscale", OutputModeManager.DEFAULT_DRC_SCALE));
+        dtsDrcModePref.setOnPreferenceChangeListener(this);
+        adSupportPref.setChecked(mOutputModeManager.getAdSurportEnable());
         arcPref.setOnPreferenceChangeListener(this);
         arcPref.setMax(OutputModeManager.TV_ARC_LATENCY_MAX);
         arcPref.setMin(OutputModeManager.TV_ARC_LATENCY_MIN);
@@ -165,17 +165,17 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
 
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext());
         if (!mSystemControlManager.getPropertyBoolean("ro.vendor.platform.support.dolby", false)) {
-            dolbyDrcmodePref.setVisible(false);
+            dolbyDrcModePref.setVisible(false);
             Log.d(TAG, "platform doesn't support dolby");
         }
         if (!mSystemControlManager.getPropertyBoolean("ro.vendor.platform.support.dts", false)) {
-            dtsdrcmodePref.setVisible(false);
-            dtsdrccustommodePref.setVisible(false);
+            dtsDrcModePref.setVisible(false);
+            dtsDrcCustomModePref.setVisible(false);
             Log.d(TAG, "platform doesn't support dts");
         } else if (mSystemControlManager.getPropertyBoolean("persist.vendor.sys.dtsdrccustom", false)) {
-            dtsdrcmodePref.setVisible(false);
+            dtsDrcModePref.setVisible(false);
         } else {
-            dtsdrccustommodePref.setVisible(false);
+            dtsDrcCustomModePref.setVisible(false);
         }
         hdmiOutPref.setVisible(true);
         // hdmiOutPref.setChecked(mOutputModeManager.isTvAudioHdmiOutOn());
@@ -200,7 +200,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         } else {
             digitalSoundPref.setEntries(R.array.digital_sounds_box_entries);
             digitalSoundPref.setEntryValues(R.array.digital_sounds_box_entry_values);
-            //adsurport.setVisible(false);
+            //adSupportPref.setVisible(false);
         }
         digitalSoundPref.setOnPreferenceChangeListener(this);
         mCategoryPref = (PreferenceCategory) findPreference(KEY_DIGITALSOUND_CATEGORY);
@@ -314,8 +314,8 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
                     Integer.parseInt(key.substring(KEY_DIGITALSOUND_PREFIX.length())),
                     ((SwitchPreference) preference).isChecked());
         } else if (KEY_SOUND_AD_MIXING.equals(key)) {
-            final TwoStatePreference adsurport = (TwoStatePreference) findPreference(KEY_SOUND_AD_MIXING);
-            mOutputModeManager.setAdSurportEnable(adsurport.isChecked());
+            final TwoStatePreference adSupportPref = (TwoStatePreference) findPreference(KEY_SOUND_AD_MIXING);
+            mOutputModeManager.setAdSurportEnable(adSupportPref.isChecked());
         } else if(KEY_FORCE_DDP.equals(key)) {
             TwoStatePreference pref = (TwoStatePreference)preference;
             mOutputModeManager.setForceDDPEnable(pref.isChecked());

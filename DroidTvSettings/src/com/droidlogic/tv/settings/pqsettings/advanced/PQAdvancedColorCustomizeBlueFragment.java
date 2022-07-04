@@ -45,10 +45,10 @@ import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 public class PQAdvancedColorCustomizeBlueFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "PQAdvancedColorCustomizeBlueFragment";
 
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_SATURATION = "pq_pictrue_advanced_color_customize_blue_saturation";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_LUMA = "pq_pictrue_advanced_color_customize_blue_luma";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_HUE = "pq_pictrue_advanced_color_customize_blue_hue";
-    private static final int PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_STEP = 1;
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_SATURATION = "pq_picture_advanced_color_customize_blue_saturation";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_LUMA = "pq_picture_advanced_color_customize_blue_luma";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_HUE = "pq_picture_advanced_color_customize_blue_hue";
+    private static final int PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_STEP = 1;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -74,32 +74,32 @@ public class PQAdvancedColorCustomizeBlueFragment extends SettingsPreferenceFrag
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_color_customize_blue, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_color_customize_blue, null);
 
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueSaturationPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_SATURATION);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueLumaPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_LUMA);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueHuePref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_HUE);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueSaturationPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_SATURATION);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueLumaPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_LUMA);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeBlueHuePref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_HUE);
 
         PQPictureAdvancedColorCustomizeBlueSaturationPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeBlueSaturationPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_STEP);
+        PQPictureAdvancedColorCustomizeBlueSaturationPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_STEP);
         PQPictureAdvancedColorCustomizeBlueSaturationPref.setMin(-50);
         PQPictureAdvancedColorCustomizeBlueSaturationPref.setMax(50);
         PQPictureAdvancedColorCustomizeBlueSaturationPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeBlueSaturationStatus());
         PQPictureAdvancedColorCustomizeBlueSaturationPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeBlueLumaPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeBlueLumaPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_STEP);
+        PQPictureAdvancedColorCustomizeBlueLumaPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_STEP);
         PQPictureAdvancedColorCustomizeBlueLumaPref.setMin(-15);
         PQPictureAdvancedColorCustomizeBlueLumaPref.setMax(15);
         PQPictureAdvancedColorCustomizeBlueLumaPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeBlueLumaStatus());
         PQPictureAdvancedColorCustomizeBlueLumaPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeBlueHuePref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeBlueHuePref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_STEP);
+        PQPictureAdvancedColorCustomizeBlueHuePref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_STEP);
         PQPictureAdvancedColorCustomizeBlueHuePref.setMin(-50);
         PQPictureAdvancedColorCustomizeBlueHuePref.setMax(50);
         PQPictureAdvancedColorCustomizeBlueHuePref.setValue(mPQSettingsManager.getAdvancedColorCustomizeBlueHueStatus());
@@ -116,15 +116,15 @@ public class PQAdvancedColorCustomizeBlueFragment extends SettingsPreferenceFrag
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_SATURATION:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_SATURATION:
                 mPQSettingsManager.setAdvancedColorCustomizeBlueSaturationStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_LUMA:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_LUMA:
                 mPQSettingsManager.setAdvancedColorCustomizeBlueLumaStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_BLUE_HUE:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_BLUE_HUE:
                 mPQSettingsManager.setAdvancedColorCustomizeBlueHueStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
                 break;

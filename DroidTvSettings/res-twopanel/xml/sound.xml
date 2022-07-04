@@ -69,7 +69,7 @@
     <SwitchPreference
         android:key="key_sound_ad_mixing"
         android:persistent="false"
-        android:title="@string/device_sound_ad_surport" />
+        android:title="@string/device_sound_ad_support" />
     <Preference
         android:fragment="com.droidlogic.tv.settings.soundeffect.DtsVirualXSettingFragment"
         android:key="key_dts_virtualx_settings"

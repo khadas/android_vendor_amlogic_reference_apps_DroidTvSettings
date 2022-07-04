@@ -91,7 +91,7 @@ public class ScrollController {
      * operation is using {@link Axis#mScrollMin} {@link Axis#mScrollMax}, see description in
      * {@link Axis#mScrollCenter}
      */
-    public final static int OPERATION_NOTOUCH = 1;
+    public final static int OPERATION_NO_TOUCH = 1;
 
     /**
      * operation is using {@link Axis#mTouchScrollMax} and {@link Axis#mTouchScrollMin}, see
@@ -114,14 +114,14 @@ public class ScrollController {
      * Maintains scroll information in one direction
      */
     public static class Axis {
-        private int mOperationMode = OPERATION_NOTOUCH;
+        private int mOperationMode = OPERATION_NO_TOUCH;
         /**
          * In {@link ScrollController#OPERATION_TOUCH} mode:<br>
          * {@link #mScrollCenter} changes from {@link #mTouchScrollMin} and
          * {@link #mTouchScrollMax}; focus won't moved to two sides when scroll to edge of view
          * port.
          * <p>
-         * In {@link ScrollController#OPERATION_NOTOUCH} mode:<br>
+         * In {@link ScrollController#OPERATION_NO_TOUCH} mode:<br>
          * mScrollCenter changes from {@link #mScrollMin} and {@link #mScrollMax}. It is different
          * than {@link View#getScrollX()} which starts from left edge of first child; mScrollCenter
          * starts from center of first child, ends at center of last child; expanded views are
@@ -633,7 +633,7 @@ public class ScrollController {
     private int mDragMode = OPERATION_AUTO;
 
     /** scroll operation mode (for DPAD) */
-    private int mScrollMode = OPERATION_NOTOUCH;
+    private int mScrollMode = OPERATION_NO_TOUCH;
 
     /** the major movement is in horizontal or vertical */
     private boolean mMainHorizontal;
@@ -737,7 +737,7 @@ public class ScrollController {
         if (mode == OPERATION_AUTO) {
             if (mContext.getResources().getConfiguration().touchscreen
                     == Configuration.TOUCHSCREEN_NOTOUCH) {
-                mode = OPERATION_NOTOUCH;
+                mode = OPERATION_NO_TOUCH;
             } else {
                 mode = OPERATION_TOUCH;
             }

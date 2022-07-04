@@ -121,8 +121,8 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
             if (allmmode == 0) {
                 /* set allmmode to 0 is not really disable the allm mode
                    the VSIF still contain the allm mode info (0), and it still
-                   will conflit with Dobly Vision.
-                   so amlogic add a new value -1 to readlly disable disable allm
+                   will conflit with Dolby Vision.
+                   so amlogic add a new value -1 to readily disable disable allm
                    mode, not only driver info, but also VSIF info
                 */
                 allmmode = -1;

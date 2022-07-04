@@ -45,10 +45,10 @@ import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 public class PQAdvancedColorCustomizeRedFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "PQAdvancedColorCustomizeRedFragment";
 
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_SATURATION = "pq_pictrue_advanced_color_customize_red_saturation";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_LUMA = "pq_pictrue_advanced_color_customize_red_luma";
-    private static final String PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_HUE = "pq_pictrue_advanced_color_customize_red_hue";
-    private static final int PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_STEP = 1;
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_SATURATION = "pq_picture_advanced_color_customize_red_saturation";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_LUMA = "pq_picture_advanced_color_customize_red_luma";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_HUE = "pq_picture_advanced_color_customize_red_hue";
+    private static final int PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_STEP = 1;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -74,32 +74,32 @@ public class PQAdvancedColorCustomizeRedFragment extends SettingsPreferenceFragm
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_color_customize_red, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_color_customize_red, null);
 
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final SeekBarPreference PQPictureAdvancedColorCustomizeRedSaturationPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_SATURATION);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeRedLumaPref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_LUMA);
-        final SeekBarPreference PQPictureAdvancedColorCustomizeRedHuePref = (SeekBarPreference) findPreference(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_HUE);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeRedSaturationPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_SATURATION);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeRedLumaPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_LUMA);
+        final SeekBarPreference PQPictureAdvancedColorCustomizeRedHuePref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_HUE);
 
         PQPictureAdvancedColorCustomizeRedSaturationPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeRedSaturationPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_STEP);
+        PQPictureAdvancedColorCustomizeRedSaturationPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_STEP);
         PQPictureAdvancedColorCustomizeRedSaturationPref.setMin(-50);
         PQPictureAdvancedColorCustomizeRedSaturationPref.setMax(50);
         PQPictureAdvancedColorCustomizeRedSaturationPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeRedSaturationStatus());
         PQPictureAdvancedColorCustomizeRedSaturationPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeRedLumaPref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeRedLumaPref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_STEP);
+        PQPictureAdvancedColorCustomizeRedLumaPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_STEP);
         PQPictureAdvancedColorCustomizeRedLumaPref.setMin(-15);
         PQPictureAdvancedColorCustomizeRedLumaPref.setMax(15);
         PQPictureAdvancedColorCustomizeRedLumaPref.setValue(mPQSettingsManager.getAdvancedColorCustomizeRedLumaStatus());
         PQPictureAdvancedColorCustomizeRedLumaPref.setVisible(true);
 
         PQPictureAdvancedColorCustomizeRedHuePref.setOnPreferenceChangeListener(this);
-        PQPictureAdvancedColorCustomizeRedHuePref.setSeekBarIncrement(PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_STEP);
+        PQPictureAdvancedColorCustomizeRedHuePref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_STEP);
         PQPictureAdvancedColorCustomizeRedHuePref.setMin(-50);
         PQPictureAdvancedColorCustomizeRedHuePref.setMax(50);
         PQPictureAdvancedColorCustomizeRedHuePref.setValue(mPQSettingsManager.getAdvancedColorCustomizeRedHueStatus());
@@ -116,15 +116,15 @@ public class PQAdvancedColorCustomizeRedFragment extends SettingsPreferenceFragm
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_SATURATION:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_SATURATION:
                 mPQSettingsManager.setAdvancedColorCustomizeRedSaturationStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_LUMA:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_LUMA:
                 mPQSettingsManager.setAdvancedColorCustomizeRedLumaStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT, (int)newValue);
                 break;
-            case PQ_PICTRUE_ADVANCED_COLOR_CUSTOMIZE_RED_HUE:
+            case PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE_RED_HUE:
                 mPQSettingsManager.setAdvancedColorCustomizeRedHueStatus((int)newValue);
                 //mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
                 break;

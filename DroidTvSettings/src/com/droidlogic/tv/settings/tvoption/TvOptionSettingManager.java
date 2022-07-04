@@ -93,7 +93,7 @@ public class TvOptionSettingManager {
     private DaylightSavingTime mDaylightSavingTime = null;
     private AudioManager mAudioManager;
 
-    public TvOptionSettingManager (Context context, boolean isothercontext) {
+    public TvOptionSettingManager (Context context, boolean isOtherContext) {
         mContext = context;
         mResources = mContext.getResources();
         mSystemControlManager = SystemControlManager.getInstance();
@@ -102,7 +102,7 @@ public class TvOptionSettingManager {
         if (SystemProperties.getBoolean("persist.sys.daylight.control", false)) {
             mDaylightSavingTime = DaylightSavingTime.getInstance();
         }
-        if (isothercontext) {
+        if (isOtherContext) {
             return;
         }
         mTvDataBaseManager = new TvDataBaseManager(mContext);
@@ -223,7 +223,7 @@ public class TvOptionSettingManager {
         return mode;
     }
 
-    //0 1 ~ luncher livetv
+    //0 1 ~ launcher livetv
     public int getStartupSettingStatus () {
         int type = DataProviderManager.getIntValue(mContext, DroidLogicTvUtils.TV_START_UP_ENTER_APP, 0);
         if (CanDebug()) Log.d(TAG, "getStartupSettingStatus = " + type);
@@ -280,18 +280,18 @@ public class TvOptionSettingManager {
     }
 
     public int[] getFourHdmi20Status() {
-        int[] fourhdmistatus = new int[4];
+        int[] fourHdmiStatus = new int[4];
         TvControlManager.HdmiPortID[] allport = {TvControlManager.HdmiPortID.HDMI_PORT_1, TvControlManager.HdmiPortID.HDMI_PORT_2,
             TvControlManager.HdmiPortID.HDMI_PORT_3, TvControlManager.HdmiPortID.HDMI_PORT_4};
         for (int i = 0; i < allport.length; i++) {
             if (mTvControlManager.GetHdmiEdidVersion(allport[i]) == TvControlManager.HdmiEdidVer.HDMI_EDID_VER_20.toInt()) {
-                fourhdmistatus[i] = 1;
+                fourHdmiStatus[i] = 1;
             } else {
-                fourhdmistatus[i] = 0;
+                fourHdmiStatus[i] = 0;
             }
         }
-        if (CanDebug()) Log.d(TAG, "getFourHdmi20Status 1 to 4 " + fourhdmistatus[0] + ", " + fourhdmistatus[1] + ", " + fourhdmistatus[2] + ", " + fourhdmistatus[3]);
-        return fourhdmistatus;
+        if (CanDebug()) Log.d(TAG, "getFourHdmi20Status 1 to 4 " + fourHdmiStatus[0] + ", " + fourHdmiStatus[1] + ", " + fourHdmiStatus[2] + ", " + fourHdmiStatus[3]);
+        return fourHdmiStatus;
     }
 
     public int getNumOfHdmi() {
@@ -509,10 +509,10 @@ public class TvOptionSettingManager {
     }
 
     private void resetAudioSettings() {
-        SoundParameterSettingManager soundparameter = new SoundParameterSettingManager(mContext);
+        SoundParameterSettingManager soundParameter = new SoundParameterSettingManager(mContext);
         sendResetSoundEffectBroadcast();
-        if (soundparameter != null) {
-            soundparameter.resetParameter();
+        if (soundParameter != null) {
+            soundParameter.resetParameter();
         }
     }
 

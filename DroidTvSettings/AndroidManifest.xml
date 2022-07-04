@@ -195,7 +195,7 @@
                   android:name=".tvoption.HdmiCecActivity"
                   android:theme="@style/TvSettingsActivityTheme"/>
         <activity
-            android:name=".pqsettings.PictrueModeActivity"
+            android:name=".pqsettings.PictureModeActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:theme="@style/TvSettingsActivityTheme"

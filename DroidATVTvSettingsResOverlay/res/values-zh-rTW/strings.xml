@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- DroidLogic start -->
-    <!-- DroidLogic mofify, text for a radio button that if selected will allow the user to passthrough select surround sound formats. [CHAR LIMIT=50] -->
+    <!-- DroidLogic modify, text for a radio button that if selected will allow the user to passthrough select surround sound formats. [CHAR LIMIT=50] -->
     <string name="surround_sound_passthrough_summary">"直通：根據所連接設備支持的格式，保留原始格式輸出"</string>
     <string name="device_displayandsound_audiooutput">音頻輸出</string>
     <string name="more_pref_category_title">更多設定</string>
@@ -55,7 +55,7 @@
 
     <string name="device_sound_digital">"數字音頻"</string>
     <string name="device_sound_dolby">"杜比動態範圍控制"</string>
-    <string name="device_sound_ad_surport">"輔助音"</string>
+    <string name="device_sound_ad_support">"輔助音"</string>
 
     <string name="power_key_action">"電源"</string>
     <string name="power_action_suspend">"休眠"</string>
@@ -96,7 +96,7 @@
     <string name="crypt_keeper_settings_title">"加密"</string>
     <string name="crypt_keeper_encrypted_summary">"已加密"</string>
     <string name="enter_password">"如要啟動 Android，請輸入密碼"</string>
-    <string name="starting_android">"正在啟動 Andriod…"</string>
+    <string name="starting_android">"正在啟動 Android…"</string>
     <string name="crypt_keeper_switch_input_method">"切換輸入法"</string>
     <string name="cryptkeeper_wrong_password">"密碼錯誤"</string>
     <string name="cryptkeeper_return_to_call">"返回通話"</string>
@@ -131,7 +131,7 @@
 
     <!-- Informational text when encryption fails -->
     <string name="crypt_keeper_failed_summary">
-     "加密程序中斷且未完成，因此您無法再存取設備上的資料。\n\n如要繼續使用設備，您必須恢復原廠設定。完成重設後，您可以在設定設備時，還原先前備份至「Google 帳戶」的資料。"
+     "加密程序中斷且未完成，因此您無法再存取設備上的資料。\n\n 如要繼續使用設備，您必須恢復原廠設定。完成重設後，您可以在設定設備時，還原先前備份至「Google 帳戶」的資料。"
     </string>
 
     <!-- Title of the encryption screen when decrypting the device failed -->

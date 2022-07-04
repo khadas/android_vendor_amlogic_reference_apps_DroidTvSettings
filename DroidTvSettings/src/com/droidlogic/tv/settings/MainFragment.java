@@ -79,13 +79,13 @@ public class MainFragment extends PreferenceControllerFragment {
     private static final String KEY_POWERKEY = "powerkey_action";
     private static final String KEY_POWERONMODE = "poweronmode_action";
     private static final String MORE_SETTINGS_APP_PACKAGE = "com.android.settings";
-    private static final String KEY_UPGRADE_BLUTOOTH_REMOTE = "upgrade_bluetooth_remote";
+    private static final String KEY_UPGRADE_BLUETOOTH_REMOTE = "upgrade_bluetooth_remote";
     private static final String KEY_PLAYBACK_SETTINGS = "playback_settings";
     private static final String KEY_SOUNDS = "sound_effects";
     private static final String KEY_KEYSTONE = "keyStone";
     private static final String KEY_NETFLIX_ESN = "netflix_esn";
     private static final String KEY_MORE_SETTINGS = "more";
-    private static final String KEY_PICTURE = "pictrue_mode";
+    private static final String KEY_PICTURE = "picture_mode";
     private static final String KEY_TV_OPTION = "tv_option";
     private static final String KEY_TV_CHANNEL = "channel";
     private static final String KEY_TV_SETTINGS = "tv_settings";
@@ -152,7 +152,7 @@ public class MainFragment extends PreferenceControllerFragment {
         final Preference powerKeyOnModePref = findPreference(KEY_POWERONMODE);
         final Preference keyStone = findPreference(KEY_KEYSTONE);
         //BluetoothRemote/HDMI cec/Playback Settings display only in Mbox
-        mUpgradeBluetoothRemote = findPreference(KEY_UPGRADE_BLUTOOTH_REMOTE);
+        mUpgradeBluetoothRemote = findPreference(KEY_UPGRADE_BLUETOOTH_REMOTE);
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
         //hide it forcedly as new bluetooth remote upgrade application is not available now
         mUpgradeBluetoothRemote.setVisible(false/*is_from_live_tv ? false : (SettingsConstant.needDroidlogicBluetoothRemoteFeature(getContext()) && !tvFlag)*/);
@@ -198,7 +198,7 @@ public class MainFragment extends PreferenceControllerFragment {
                 channelPref.setVisible(true);
             }
             if (!SettingsConstant.needDroidlogicTvFeature(getContext())) {
-                //mSoundsPref.setVisible(false);//mbox doesn't surport sound effect
+                //mSoundsPref.setVisible(false);//mbox doesn't support sound effect
             }
             if (inputId != null && inputId.startsWith(DTVKIT_PACKAGE)) {
                 DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_HIDE_STARTUP);

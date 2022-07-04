@@ -42,24 +42,7 @@ import java.util.ArrayList;
 
 public class PQAdvancedColorCustomizeFragment extends SettingsPreferenceFragment {
     private static final String TAG = "PQAdvancedColorCustomizeFragment";
-    private static final String PQ_ADVANCED_COLOR_CUSTOMIZE_ALLRESET = "pq_pictrue_advanced_color_customize_reset";
-
-    //private final static int ZOOMINSTEP = 1;
-    //private final static int ZOOMOUTSTEP = -1;
-
-    //private final static int MAXBRIGHTNESSHEIGHT = 100;
-    //private final static int MINBRIGHTNESSHEIGHT = 0;
-    //private static final String PQ_BRIGHTNESS = "pq_brightness";
-    //private static final String PQ_BRIGHTNESS_IN = "pq_brightness_in";
-    //private static final String PQ_BRIGHTNESS_OUT = "pq_brightness_out";
-
-    private PQSettingsManager mPQSettingsManager;
-
-    //private Preference pq_brightnessPref;
-    //private PreferenceCategory mPQBrightnessPref;
-    //private Preference pq_brightnessinPref;
-    //private Preference pq_brightnessoutPref;
-
+    private static final String PQ_ADVANCED_COLOR_CUSTOMIZE_ALLRESET = "pq_picture_advanced_color_customize_reset";
 
     public static PQAdvancedColorCustomizeFragment newInstance() {
         return new PQAdvancedColorCustomizeFragment();
@@ -68,7 +51,7 @@ public class PQAdvancedColorCustomizeFragment extends SettingsPreferenceFragment
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
-        setPreferencesFromResource(R.xml.pq_pictrue_advanced_color_customize, null);
+        setPreferencesFromResource(R.xml.pq_picture_advanced_color_customize, null);
         updateMainScreen();
     }
 
