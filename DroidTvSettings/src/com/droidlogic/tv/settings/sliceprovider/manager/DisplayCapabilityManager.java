@@ -15,10 +15,14 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import android.view.WindowManager;
 import android.view.Window;
@@ -166,6 +170,8 @@ public class DisplayCapabilityManager {
   private static final Map<String, String> MODE_TITLE_BY_MODE = new HashMap<>();
   private static final Map<String, String> COLOR_TITLE_BY_ATTR = new HashMap<>();
 
+  private final ReadWriteLock mRWLock = new ReentrantReadWriteLock();
+
   static {
     for (int i = 0; i < HDMI_MODE_LIST.size(); i++) {
       MODE_TITLE_BY_MODE.put(HDMI_MODE_LIST.get(i), HDMI_MODE_TITLE_LIST.get(i));
@@ -308,7 +314,11 @@ public class DisplayCapabilityManager {
   }
 
   private boolean updateHdmiModes() {
-    List<String> preList = mHdmiModeList;
+    List<String> preModeList = null;
+    if (mHdmiModeList!= null) {
+      preModeList = new ArrayList<>(mHdmiModeList);
+    }
+
     final String strEdid = mOutputModeManager.getHdmiSupportList();
     if (MediaSliceUtil.CanDebug()) {
         Log.d(TAG, "getHdmiSupportList:" + strEdid);
@@ -326,7 +336,49 @@ public class DisplayCapabilityManager {
       mHdmiModeList = HDMI_MODE_LIST;
     }
 
-    return !mHdmiModeList.equals(preList);
+    Lock lock = mRWLock.writeLock();
+    lock.lock();
+    filterNoSupportMode(mHdmiModeList);
+    lock.unlock();
+
+    return preModeList == null || !preModeList.equals(mHdmiModeList);
+  }
+  private boolean isContainsInFW(String sysCtrlMode) {
+    // CVBS mode does not do mode display contrast filtering.
+    if (isCvbsMode()) {
+      return true;
+    }
+    Display.Mode[] frameworkSupportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
+    Map<String, Display.Mode> modeMapTmp = USER_PREFERRED_MODE_BY_MODE;
+    if (MediaSliceUtil.CanDebug()) {
+      Log.d(TAG, "framework support mode: " + Arrays.toString(frameworkSupportedModes));
+    }
+
+    boolean matched = false;
+    for (Display.Mode mode2 : frameworkSupportedModes) {
+      if (mode2.matches(
+              modeMapTmp.get(sysCtrlMode).getPhysicalWidth(),
+              modeMapTmp.get(sysCtrlMode).getPhysicalHeight(),
+              modeMapTmp.get(sysCtrlMode).getRefreshRate())) {
+        matched = true;
+        break;
+      }
+    }
+
+    return matched;
+  }
+
+  private void filterNoSupportMode(List<String> systemControlModeList) {
+    Iterator<String> sysHdmiModeIterator = systemControlModeList.iterator();
+    while (sysHdmiModeIterator.hasNext()) {
+      String hdmiModeTmp = filterHdmiModes(sysHdmiModeIterator.next());
+      if (!isContainsInFW(hdmiModeTmp)) {
+        sysHdmiModeIterator.remove();
+      }
+    }
+    if (MediaSliceUtil.CanDebug()) {
+      Log.d(TAG, "sysHdmiModeIterator: " + sysHdmiModeIterator);
+    }
   }
 
   private String filterHdmiModes(String filterHdmiMode) {
@@ -468,7 +520,11 @@ public class DisplayCapabilityManager {
   }
 
   public String[] getHdmiModes() {
-    return mHdmiModeList.toArray(new String[0]);
+    Lock lock = mRWLock.readLock();
+    lock.lock();
+    String[] modeList = mHdmiModeList.toArray(new String[0]);
+    lock.unlock();
+    return modeList;
   }
 
   public boolean isCvbsMode() {
@@ -545,25 +601,24 @@ public class DisplayCapabilityManager {
 
     String  envIsBestMode = mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE);
     Display.Mode[] supportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
+    Display.Mode matcherMode = checkUserPreferredMode(supportedModes, USER_PREFERRED_MODE_BY_MODE.get(mode));
+    Display.Mode userPreferredDisplayMode = mDisplayManager.getGlobalUserPreferredDisplayMode();
 
     if (MediaSliceUtil.CanDebug()) {
       Log.d(TAG, " envIsBestMode: " + envIsBestMode);
       Log.d(TAG, "supportedModes: " + Arrays.toString(supportedModes));
+      Log.d(TAG, "matcherMode: " + matcherMode);
     }
 
-    Map<String, Display.Mode> modeMap = USER_PREFERRED_MODE_BY_MODE;
-    checkUserPreferredMode(supportedModes, modeMap.get(mode));
-
-    Display.Mode userPreferredDispMode = mDisplayManager.getGlobalUserPreferredDisplayMode();
-    if (userPreferredDispMode != null) {
-      Log.w(TAG, "userPreferredDispMode: " + userPreferredDispMode);
-      if (checkSysCurrentMode(userPreferredDispMode, getPreferredByMode(mode))) {
+    if (userPreferredDisplayMode != null) {
+      Log.w(TAG, "userPreferredDisplayMode: " + userPreferredDisplayMode);
+      if (checkSysCurrentMode(userPreferredDisplayMode, matcherMode)) {
           mDisplayManager.clearGlobalUserPreferredDisplayMode();
       }
     }
 
     // set resolution
-    mDisplayManager.setGlobalUserPreferredDisplayMode(modeMap.get(mode));
+    mDisplayManager.setGlobalUserPreferredDisplayMode(matcherMode);
 
     /**
      * set density, Unset the density after setting the resolution,
@@ -591,13 +646,24 @@ public class DisplayCapabilityManager {
     return false;
   }
 
-  private void checkUserPreferredMode(Display.Mode[] modeArr, Display.Mode mode) {
+  private Display.Mode checkUserPreferredMode(Display.Mode[] modeArr, Display.Mode mode) {
     for (Display.Mode mode2 : modeArr) {
-      if (mode2.matches(mode.getPhysicalWidth(), mode.getPhysicalHeight(), mode.getRefreshRate())) {
-        return;
+      /*In cvbs mode, the value of the resolution rate reported by hwc to the framework is fake
+      data (Google[b/229605079] needs to filter 16:9 mode), so only fps verification is performed in this mode
+      (the width and height of cvbs mode are determined, only fps is unique).
+      * */
+      boolean refreshRate = Float.floatToIntBits(mode2.getRefreshRate()) == Float.floatToIntBits(mode.getRefreshRate());
+      if ((isCvbsMode() && refreshRate)
+          || (!isCvbsMode()
+              &&(mode2.matches(
+                      mode.getPhysicalWidth(),
+                      mode.getPhysicalHeight(),
+                      mode.getRefreshRate())))) {
+        return mode2;
       }
     }
-    throw new IllegalArgumentException("Unrecognized user preferred mode");
+
+    throw new IllegalArgumentException("Unrecognized user preferred mode, invalid mode!!");
   }
 
   private void autoSelectColorAttributeByMode(String mode, boolean isBestMode) {
