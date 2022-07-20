@@ -17,9 +17,9 @@
 
     <!-- DroidLogic start -->
     <!-- Main app title [CHAR LIMIT=40] -->
-    <string name="settings_app_name">DroidSettings</string>
+    <string name="settings_app_name">More Settings</string>
     <!-- Leanback Launcher App Title for main Settings app [CHAR LIMIT=40] -->
-    <string name="launcher_settings_app_name">DroidSettings</string>
+    <string name="launcher_settings_app_name">More Settings</string>
     <string name="channels_vendor_title">Channels Vendor</string>
     <string name="energy_saver_vendor_title">Energy Saver Vendor</string>
     <string name="external_inputs_vendor_title">External Inputs Vendor</string>

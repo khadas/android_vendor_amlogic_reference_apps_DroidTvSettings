@@ -377,7 +377,7 @@ public class DisplayCapabilityManager {
       }
     }
     if (MediaSliceUtil.CanDebug()) {
-      Log.d(TAG, "sysHdmiModeIterator: " + sysHdmiModeIterator);
+      Log.d(TAG, "filterNoSupportModeList: " + systemControlModeList);
     }
   }
 
@@ -517,6 +517,16 @@ public class DisplayCapabilityManager {
   public void setHdrPolicySource(final boolean isSource) {
     if (isSource) mSystemControlManager.setHdrStrategy(VAL_HDR_POLICY_SOURCE);
     else mSystemControlManager.setHdrStrategy(VAL_HDR_POLICY_SINK);
+  }
+
+  public List<String> getHdmiModeLists() {
+    return mHdmiModeList;
+  }
+
+  public List<String> getHdmiTitleLists() {
+    // Need to use a new list to receive the return value of Arrays.asList,
+    // because its return value object does not override the add and remove methods.
+    return new ArrayList(Arrays.asList(getHdmiModes()));
   }
 
   public String[] getHdmiModes() {

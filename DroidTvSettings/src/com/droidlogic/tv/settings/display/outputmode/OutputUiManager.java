@@ -43,6 +43,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.UserHandle ;
@@ -70,19 +71,19 @@ public class OutputUiManager {
         "480p60hz"
     };
     private static final String[] HDMI_TITLE = {
-        "4k2k-60hz",
-        "4k2k-50hz",
-        "4k2k-30hz",
-        "4k2k-25hz",
-        "4k2k-24hz",
-        "4k2k-smpte",
-        "1080p-60hz",
-        "1080p-50hz",
-        "1080p-24hz",
-        "720p-60hz",
-        "720p-50hz",
-        "576p-50hz",
-        "480p-60hz"
+        "4k2k 60hz",
+        "4k2k 50hz",
+        "4k2k 30hz",
+        "4k2k 25hz",
+        "4k2k 24hz",
+        "4k2k smpte",
+        "1080p 60hz",
+        "1080p 50hz",
+        "1080p 24hz",
+        "720p 60hz",
+        "720p 50hz",
+        "576p 50hz",
+        "480p 60hz"
     };
 
     public static final String[] HDMI_COLOR_LIST = {
@@ -443,6 +444,12 @@ public class OutputUiManager {
                 }
 
             }
+
+            // The function of OutputUiManager will gradually weaken, and it will be attributed to DisplayCapabilityManager.
+            // The modification here is to adapt to non-16:9 mode filtering
+            // (the hdmi list in DisplayCapabilityManager has been filtered).
+            listHdmiMode = mDisplayCapabilityManager.getHdmiModeLists();
+            listHdmiTitle = mDisplayCapabilityManager.getHdmiTitleLists();
 
             List<String> listHdmiMode_tmp = new ArrayList<String>();
             List<String> listHdmiTitle_tmp = new ArrayList<String>();
