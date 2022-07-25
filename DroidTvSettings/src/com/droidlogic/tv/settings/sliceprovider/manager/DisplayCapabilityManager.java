@@ -42,7 +42,11 @@ public class DisplayCapabilityManager {
   private static final String DISPLAY_MODE_FALSE = "false";
   private static final String UBOOTENV_HDR_POLICY = "ubootenv.var.hdr_policy";
   private static final String ENV_IS_BEST_MODE = "ubootenv.var.is.bestmode";
+  private static final String ENV_SAVE_USER_MODE = "ubootenv.var.hdmimode";
+
   private static final String SYSTEM_PROPERTY_HDR_PREFERENCE = "persist.vendor.sys.hdr_preference";
+  private static final String VENDOR_PROPERTY_BOOT_CONFIG = "ro.vendor.default.config";
+
   private static final String HDR_CAP_PATH = "/sys/class/amhdmitx/amhdmitx0/hdr_cap";
   private static final String HDR_CAP2_PATH = "/sys/class/amhdmitx/amhdmitx0/hdr_cap2";
 
@@ -630,6 +634,13 @@ public class DisplayCapabilityManager {
 
     // set resolution
     mDisplayManager.setGlobalUserPreferredDisplayMode(matcherMode);
+    boolean bootConfig = mSystemControlManager.getPropertyBoolean(VENDOR_PROPERTY_BOOT_CONFIG, false);
+    if (MediaSliceUtil.CanDebug()) {
+    Log.d(TAG, "bootConfig: " + bootConfig);
+    }
+    if (!bootConfig) {
+      saveUserSetMode(userSetMode);
+    }
 
     /**
      * set density, Unset the density after setting the resolution,
@@ -962,5 +973,15 @@ public class DisplayCapabilityManager {
 
   public boolean isDolbyVisionEnable() {
      return mDolbyVisionSettingManager.isDolbyVisionEnable();
+  }
+
+  /**
+   * AndroidT new action. Need to save ubootenv after setmode notify hwc
+   * @param userSetMode user-set mode
+   */
+  private void saveUserSetMode (String userSetMode) {
+    if (!userSetMode.equals(mSystemControlManager.getBootenv(ENV_SAVE_USER_MODE, null))) {
+      mSystemControlManager.setBootenv(ENV_SAVE_USER_MODE, userSetMode);
+    }
   }
 }

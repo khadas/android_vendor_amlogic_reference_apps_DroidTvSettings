@@ -56,7 +56,8 @@ public class HdrSliceProvider extends MediaSliceProvider {
       case MediaSliceConstants.MATCH_CONTENT_PATH:
         return createHdrMatchContentSlice(sliceUri);
       case MediaSliceConstants.RESOLUTION_PATH:
-        return createHdrResolutionSlice(sliceUri);
+        // This slice is implemented by TvSetting using Preference on AndroidT, no need to implement slice using OEM.
+        return null; //createHdrResolutionSlice(sliceUri);
       case MediaSliceConstants.HDR_AND_COLOR_FORMAT_PATH:
         return createHdrAndColorFormatSlice(sliceUri);
       case MediaSliceConstants.HDR_FORMAT_PREFERENCE_PATH:
