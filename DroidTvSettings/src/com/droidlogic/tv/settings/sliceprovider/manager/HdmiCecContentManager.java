@@ -74,6 +74,21 @@ public class HdmiCecContentManager {
         mResolver.notifyChange(MediaSliceConstants.DISPLAYSOUND_HDMI_CEC_URI, null);
     }
 
+    public boolean getVolumeControlStatus() {
+        if (mHdmiControlManager != null) {
+            return mHdmiControlManager.getHdmiCecVolumeControlEnabled() == 1;
+        }
+        return false;
+    }
+
+    public void setVolumeControlStatus(int state) {
+        ContentResolver resolver = mContext.getContentResolver();
+        if (mHdmiControlManager != null) {
+            mHdmiControlManager.setHdmiCecVolumeControlEnabled(state);
+        }
+        resolver.notifyChange(MediaSliceConstants.DISPLAYSOUND_HDMI_CEC_URI, null);
+        Log.d(TAG, "setVolumeControlStatus volume control:" + state);
+    }
 
     public String isHdmiControlEnabledName() {
         boolean cecEnabled = mHdmiControlManager.getHdmiCecEnabled()

@@ -2201,7 +2201,7 @@
     <string name="system_cec">HDMI CEC</string>
     <string name="cec_control">CEC Control</string>
     <string name="title_cec_switch">CEC Switch</string>
-	<string name="cec_volume_control">Volume Control</string>
+    <string name="title_cec_volume_control">Volume Control</string>
     <string name="title_cec_one_key_play">One key play</string>
     <string name="title_cec_auto_power_off">Device auto power off</string>
     <string name="title_cec_auto_wake_up">Tv auto power on</string>
@@ -2209,12 +2209,14 @@
     <string name="title_cec_device_list">Device Select List</string>
     <string name="title_cec_arc_switch">ARC Switch</string>
     <string name="cec_switch_description">Allow the TV control HDMI devices </string>
+    <string name="cec_volume_control_description">Allow control the volume of the TV or audio device</string>
     <string name="cec_one_key_play_description">Allow the device to wake up TV and let TV the content of the device</string>
     <string name="cec_auto_power_off_description">Power off HDMI devices when TV is power off</string>
     <string name="cec_auto_wake_up_description">power on TV when HDMI device was waked up</string>
     <string name="cec_device_list_description">List the connecting HDMI devices</string>
     <string name="cec_auto_change_language_description">Change HDMI devices\' language to the same with TV</string>
     <string name="cec_arc_switch_description">Allow the TV control ARC device</string>
+    <string name="cec_wait">Updating, please wait</string>
     <string name="power_action_suspend">suspend</string>
     <string name="power_action_force_suspend">force suspend</string>
     <string name="power_action_restart">restart</string>
@@ -2685,6 +2687,8 @@
 
     <string name="hdmi_cec_switch_title" translatable="false">Enable HDMI-CEC</string>
     <string name="hdmi_cec_switch_key" translatable="false">HDMI-CEC</string>
+    <string name="hdmi_volume_control_title" translatable="false">Enable Volume Control</string>
+    <string name="hdmi_volume_control_key" translatable="false">Volume Control</string>
 
     <!-- Uri to be overlaid by partner to show remote control infrared settings. -->
     <string name="bluetooth_ir_entry_slice_uri" translatable="false" />
