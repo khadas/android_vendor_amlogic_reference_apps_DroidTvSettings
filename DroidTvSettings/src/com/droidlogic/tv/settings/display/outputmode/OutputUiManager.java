@@ -273,7 +273,7 @@ public class OutputUiManager {
         mOutputModeManager.setDeepColorAttribute(colorValue);
     }
 
-    public void changeColorAttribte(final String colorValue) {
+    public void changeColorAttribute(final String colorValue) {
         mOutputModeManager.setDeepColorAttribute(colorValue);
         mOutputModeManager.setOutputMode(getCurrentMode());
     }
@@ -553,7 +553,7 @@ public class OutputUiManager {
 
         if ((getCurrentColorAttribute() == null)
                 || (!getCurrentColorAttribute().equals("444,8bit"))) {
-            changeColorAttribte("444,8bit");
+            changeColorAttribute("444,8bit");
         }
     }
 }

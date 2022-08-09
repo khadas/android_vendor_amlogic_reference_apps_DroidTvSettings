@@ -214,10 +214,10 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
         Log.i(LOG_TAG,"Set Color Space Value: "+curValue + "CurValue: "+saveValue);
         if (!curValue.equals(saveValue)) {
             if (isModeSupportColor(curMode,curValue)) {
-               mOutputUiManager.changeColorAttribte(curValue);
+               mOutputUiManager.changeColorAttribute(curValue);
             } else {
                 curValue = DEFAULT_VALUE;
-                mOutputUiManager.changeColorAttribte(curValue);
+                mOutputUiManager.changeColorAttribute(curValue);
             }
             return true;
         }

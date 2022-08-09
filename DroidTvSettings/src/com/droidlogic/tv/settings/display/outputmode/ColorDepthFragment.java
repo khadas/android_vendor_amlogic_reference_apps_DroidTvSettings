@@ -218,7 +218,7 @@ public class ColorDepthFragment extends SettingsPreferenceFragment {
         if (!curValue.equals(saveValue)) {
             curValue = mOutputUiManager.getCurrentColorSpaceAttr().trim() + "," + curValue;
             if (isModeSupportColor(curMode,curValue)) {
-               mOutputUiManager.changeColorAttribte(curValue);
+               mOutputUiManager.changeColorAttribute(curValue);
                return true;
            }
         }

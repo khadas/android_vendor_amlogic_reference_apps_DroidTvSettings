@@ -64,7 +64,7 @@ public class HdmiCecContentManager {
 
     public void setHdmiCecEnabled(boolean enable) {
         if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "setHdmiCecEnabled cec swtich: " + enable);
+            Log.d(TAG, "setHdmiCecEnabled cec switch: " + enable);
         }
 
         mHdmiControlManager.setHdmiCecEnabled(enable
