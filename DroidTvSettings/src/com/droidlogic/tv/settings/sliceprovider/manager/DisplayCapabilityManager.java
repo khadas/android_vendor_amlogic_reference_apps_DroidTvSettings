@@ -611,14 +611,14 @@ public class DisplayCapabilityManager {
 
     String  envIsBestMode = mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE);
     Display.Mode[] supportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
-    Display.Mode matcherMode = checkUserPreferredMode(supportedModes, USER_PREFERRED_MODE_BY_MODE.get(mode));
-    Display.Mode userPreferredDisplayMode = mDisplayManager.getGlobalUserPreferredDisplayMode();
 
     if (MediaSliceUtil.CanDebug()) {
       Log.d(TAG, " envIsBestMode: " + envIsBestMode);
       Log.d(TAG, "supportedModes: " + Arrays.toString(supportedModes));
-      Log.d(TAG, "matcherMode: " + matcherMode);
     }
+
+    Display.Mode matcherMode = checkUserPreferredMode(supportedModes, USER_PREFERRED_MODE_BY_MODE.get(mode));
+    Display.Mode userPreferredDisplayMode = mDisplayManager.getGlobalUserPreferredDisplayMode();
 
     if (userPreferredDisplayMode != null) {
       Log.w(TAG, "userPreferredDisplayMode: " + userPreferredDisplayMode);
@@ -626,6 +626,7 @@ public class DisplayCapabilityManager {
           mDisplayManager.clearGlobalUserPreferredDisplayMode();
       }
     }
+    Log.d(TAG, "matcherMode: " + matcherMode);
 
     // set resolution
     mDisplayManager.setGlobalUserPreferredDisplayMode(matcherMode);
@@ -643,10 +644,6 @@ public class DisplayCapabilityManager {
   }
 
   private boolean checkSysCurrentMode(Display.Mode sysMode, Display.Mode userSetMode) {
-    if (MediaSliceUtil.CanDebug()) {
-      Log.d(TAG, "sysMode: " + sysMode + " userSetMode: " + userSetMode);
-    }
-
     if (sysMode.matches(
             userSetMode.getPhysicalWidth(),
             userSetMode.getPhysicalHeight(),
