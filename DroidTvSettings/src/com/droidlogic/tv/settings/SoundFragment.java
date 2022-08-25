@@ -145,7 +145,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
 
         dtsDrcModePref.setValue(mSystemControlManager.getPropertyString("persist.vendor.sys.dtsdrcscale", OutputModeManager.DEFAULT_DRC_SCALE));
         dtsDrcModePref.setOnPreferenceChangeListener(this);
-        adSupportPref.setChecked(mOutputModeManager.getAdSurportEnable());
+        adSupportPref.setChecked(mOutputModeManager.getAdSupportEnable());
         arcPref.setOnPreferenceChangeListener(this);
         arcPref.setMax(OutputModeManager.TV_ARC_LATENCY_MAX);
         arcPref.setMin(OutputModeManager.TV_ARC_LATENCY_MIN);
@@ -315,7 +315,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
                     ((SwitchPreference) preference).isChecked());
         } else if (KEY_SOUND_AD_MIXING.equals(key)) {
             final TwoStatePreference adSupportPref = (TwoStatePreference) findPreference(KEY_SOUND_AD_MIXING);
-            mOutputModeManager.setAdSurportEnable(adSupportPref.isChecked());
+            mOutputModeManager.setAdSupportEnable(adSupportPref.isChecked());
         } else if(KEY_FORCE_DDP.equals(key)) {
             TwoStatePreference pref = (TwoStatePreference)preference;
             mOutputModeManager.setForceDDPEnable(pref.isChecked());

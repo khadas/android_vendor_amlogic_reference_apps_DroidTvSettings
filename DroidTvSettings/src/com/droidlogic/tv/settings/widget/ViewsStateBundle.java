@@ -38,7 +38,7 @@ import android.view.View;
  */
 public abstract class ViewsStateBundle {
 
-    /** dont save states of any child views */
+    /** do not save states of any child views */
     public static final int SAVE_NO_CHILD = 0;
     /** only save visible child views, the states are lost when they are gone */
     public static final int SAVE_VISIBLE_CHILD = 1;

@@ -140,7 +140,6 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         } else {
             digitalSoundPref.setEntries(R.array.digital_sounds_box_entries);
             digitalSoundPref.setEntryValues(R.array.digital_sounds_box_entry_values);
-            //adsurport.setVisible(false);
         }
         digitalSoundPref.setOnPreferenceChangeListener(this);
 

@@ -173,7 +173,7 @@ public abstract class BasePreferenceController extends AbstractPreferenceControl
      * DashboardFragment, and it is up to the {@link BasePreferenceController} to enable the
      * preference at the right time.
      *
-     * TODO (mfritze) Build a dependency mechanism to allow a controller to easily define the
+     * TODO Build a dependency mechanism to allow a controller to easily define the
      * dependent setting.
      */
     @Override

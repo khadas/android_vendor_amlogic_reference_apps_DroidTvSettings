@@ -744,13 +744,13 @@
     <!-- Label for action to accept the currently connected wifi network [CHAR LIMIT=50] -->
     <string name="wifi_action_ok">OK</string>
     <!-- Label for action to continue in network summary screen in setup [CHAR LIMIT=50] -->
-    <string name="wifi_setup_action_dont_change_network">Continue</string>
+    <string name="wifi_setup_action_do_not_change_network">Continue</string>
     <!-- Label for action to try to connect to a different wifi network in setup [CHAR LIMIT=50] -->
     <string name="wifi_setup_action_change_network">Change network</string>
     <!-- Label for action to try to connect to a different wifi network [CHAR LIMIT=50] -->
     <string name="wifi_action_change_network">Change</string>
     <!-- Label for action to not try to connect to a different wifi network [CHAR LIMIT=50] -->
-    <string name="wifi_action_dont_change_network">Don\'t change</string>
+    <string name="wifi_action_do_not_change_network">Don\'t change</string>
     <!-- Label for action to use advanced settings for the wifi connection [CHAR LIMIT=50] -->
     <string name="wifi_action_advanced_yes">OK</string>
     <!-- Label for action to not use advanced settings for the wifi connection [CHAR LIMIT=50] -->
@@ -1284,7 +1284,7 @@
     <!-- Title for Set Enable traces in System Settings Developer options [CHAR LIMIT=50] -->
     <string name="system_enable_traces">Enable traces</string>
     <!-- Title for Set Don't keep activities in System Settings Developer options [CHAR LIMIT=100] -->
-    <string name="system_dont_keep_activities">Don\'t keep activities</string>
+    <string name="system_do_not_keep_activities">Don\'t keep activities</string>
     <!-- Title for Set Background process limit in System Settings Developer options [CHAR LIMIT=100] -->
     <string name="system_background_process_limit">Background process limit</string>
     <!-- Title for Set Show all ANRs in System Settings Developer options [CHAR LIMIT=50] -->
