@@ -372,7 +372,7 @@ public class DisplayCapabilityManager {
     Iterator<String> sysHdmiModeIterator = systemControlModeList.iterator();
     while (sysHdmiModeIterator.hasNext()) {
       String hdmiModeTmp = filterHdmiModes(sysHdmiModeIterator.next());
-      if (!isContainsInFW(hdmiModeTmp)) {
+      if (!hdmiModeTmp.isEmpty() && !isContainsInFW(hdmiModeTmp)) {
         sysHdmiModeIterator.remove();
       }
     }
