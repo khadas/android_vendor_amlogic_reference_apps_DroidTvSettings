@@ -71,8 +71,8 @@ public class TvOptionSettingManager {
     public static final int SET_ISDB_T = 6;
 
     public static final String KEY_MENU_TIME = DroidLogicTvUtils.KEY_MENU_TIME;
-    public static final int DEFAULT_MENU_TIME = 1;//DroidLogicTvUtils.DEFAULT_MENU_TIME;
-    public static final String KEY_NO_SIGNAL_TIMEOUT = "no_signal_timeout";//DroidLogicTvUtils.KEY_NO_SIGNAL_TIMEOUT;
+    public static final int DEFAULT_MENU_TIME = DroidLogicTvUtils.DEFAULT_MENU_TIME;
+    public static final String KEY_NO_SIGNAL_TIMEOUT = DroidLogicTvUtils.KEY_NO_SIGNAL_TIMEOUT;
     public static final String AUDIO_LATENCY = "vendor.media.dtv.passthrough.latencyms";
 
     public static final String STRING_NAME = "name";
