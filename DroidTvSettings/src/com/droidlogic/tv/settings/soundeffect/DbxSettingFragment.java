@@ -30,7 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.droidlogic.app.tv.AudioEffectManager;
+import com.droidlogic.app.AudioEffectManager;
 
 import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.R;

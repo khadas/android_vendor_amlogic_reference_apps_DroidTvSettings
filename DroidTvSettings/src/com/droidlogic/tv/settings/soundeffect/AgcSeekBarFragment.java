@@ -33,7 +33,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.droidlogic.app.tv.AudioEffectManager;
+import com.droidlogic.app.AudioEffectManager;
 
 import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.R;

@@ -45,7 +45,7 @@ import com.droidlogic.tv.settings.tvoption.TvOptionSettingManager;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 import com.droidlogic.tv.settings.soundeffect.OptionParameterManager;
 import com.droidlogic.app.DataProviderManager;
-import com.droidlogic.app.tv.AudioEffectManager;
+import com.droidlogic.app.AudioEffectManager;
 // DroidLogic end
 
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;

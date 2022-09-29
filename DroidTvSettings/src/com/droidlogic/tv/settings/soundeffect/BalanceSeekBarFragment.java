@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.R;
-import com.droidlogic.app.tv.AudioEffectManager;
+import com.droidlogic.app.AudioEffectManager;
 
 public class BalanceSeekBarFragment extends SettingsPreferenceFragment implements SeekBar.OnSeekBarChangeListener {
 

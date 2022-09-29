@@ -41,7 +41,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 
 import com.droidlogic.app.AudioConfigManager;
-import com.droidlogic.app.tv.AudioEffectManager;
+import com.droidlogic.app.AudioEffectManager;
 import com.droidlogic.app.tv.TvControlManager;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.SystemControlManager;

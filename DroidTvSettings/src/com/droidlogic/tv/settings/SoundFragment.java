@@ -40,7 +40,7 @@ import java.lang.reflect.Method;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.app.AudioConfigManager;
-import com.droidlogic.app.tv.AudioEffectManager;
+import com.droidlogic.app.AudioEffectManager;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.R;
