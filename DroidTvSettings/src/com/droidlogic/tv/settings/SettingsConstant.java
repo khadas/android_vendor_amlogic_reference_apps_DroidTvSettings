@@ -31,6 +31,7 @@ public class SettingsConstant {
 
     public static String PACKAGE = "com.droidlogic.tv.settings";
     public static String PACKAGENAME_LAUNCHERX = "com.google.android.apps.tv.launcherx";
+    public static String PACKAGENAME_MBOX_LAUNCHER2 = "com.droidlogic.mboxlauncher";
 
     public static boolean needDroidlogicMboxFeature(Context context){
         SystemControlManager sm = SystemControlManager.getInstance();
@@ -43,6 +44,17 @@ public class SettingsConstant {
                 .addCategory(Intent.CATEGORY_HOME);
         final ResolveInfo homeInfo = context.getPackageManager().resolveActivity(homeIntent, 0);
         if (Objects.equals(PACKAGENAME_LAUNCHERX, homeInfo.activityInfo.packageName)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean needAospFeature(Context context) {
+
+        final Intent homeIntent = new Intent(Intent.ACTION_MAIN)
+                .addCategory(Intent.CATEGORY_HOME);
+        final ResolveInfo homeInfo = context.getPackageManager().resolveActivity(homeIntent, 0);
+        if (Objects.equals(PACKAGENAME_MBOX_LAUNCHER2, homeInfo.activityInfo.packageName)) {
             return true;
         }
         return false;
