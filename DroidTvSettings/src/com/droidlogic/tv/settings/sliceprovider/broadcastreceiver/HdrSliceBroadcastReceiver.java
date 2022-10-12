@@ -6,6 +6,7 @@ import static com.android.tv.twopanelsettings.slices.SlicesConstants.EXTRA_PREFE
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
@@ -41,7 +42,11 @@ public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
         context
             .getContentResolver()
             .notifyChange(MediaSliceConstants.HDR_AND_COLOR_FORMAT_URI, null);
-        context.getContentResolver().notifyChange(MediaSliceConstants.DOLBY_VISION_MODE_URI, null);
+        // There may be some problems with refreshing immediately after set mode, here the refresh is delayed.
+        new Handler().postDelayed(
+            () -> {
+                context.getContentResolver().notifyChange(MediaSliceConstants.DOLBY_VISION_MODE_URI, null);
+            }, 500);
         break;
       case ACTION_HDMI_PLUGGED:
         if (MediaSliceUtil.CanDebug()) Log.d(TAG, "ACTION_HDMI_PLUGGED");

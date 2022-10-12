@@ -428,16 +428,13 @@ public class HdrSliceProvider extends MediaSliceProvider {
     }
 
     // Only at mode Dolby Vision should show content on this page
-    if (mDisplayCapabilityManager.getPreferredFormat() != HdrFormat.DOLBY_VISION) {
+    if (!HdrFormat.DOLBY_VISION.equals(mDisplayCapabilityManager.getPreferredFormat())) {
       return psb.build();
     }
-
     boolean isDolbyVisionModeLL = mDisplayCapabilityManager.isDolbyVisionModeLLPreferred();
-    if (MediaSliceUtil.CanDebug()) {
-        Log.d(TAG, "isDolbyVisionModeLL:"+ isDolbyVisionModeLL
-                + " doesDolbyVisionSupportLL:" + mDisplayCapabilityManager.doesDolbyVisionSupportLL()
-                + " doesDolbyVisionSupportStandard:" + mDisplayCapabilityManager.doesDolbyVisionSupportStandard());
-    }
+    Log.d(TAG, "isDolbyVisionModeLL: " + isDolbyVisionModeLL
+            + " doesDolbyVisionSupportLL: " + mDisplayCapabilityManager.doesDolbyVisionSupportLL()
+            + " doesDolbyVisionSupportStandard: " + mDisplayCapabilityManager.doesDolbyVisionSupportStandard());
 
     if (mDisplayCapabilityManager.doesDolbyVisionSupportLL()) {
       psb.addPreference(
