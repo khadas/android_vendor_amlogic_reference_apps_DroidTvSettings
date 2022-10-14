@@ -162,6 +162,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
         final Preference versionPref = findPreference(KEY_VERSION);
         final Preference advanced_sound_settings_pref = findPreference(KEY_ADVANCE_SOUND);
+        advanced_sound_settings_pref.setVisible(false);
         //hide it forcedly as new bluetooth remote upgrade application is not available now
         mUpgradeBluetoothRemote.setVisible(false/*is_from_live_tv ? false : (SettingsConstant.needDroidlogicBluetoothRemoteFeature(getContext()) && !tvFlag)*/);
         if (SettingsConstant.needGTVFeature(getContext())) {

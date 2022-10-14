@@ -40,6 +40,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 
+import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.AudioConfigManager;
 import com.droidlogic.app.AudioEffectManager;
 import com.droidlogic.app.tv.TvControlManager;
@@ -60,28 +61,19 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private static final String TV_VIRTUAL_SURROUND_SETTINGS                = "tv_sound_virtual_surround";
     private static final String TV_SOUND_OUT                                = "tv_sound_output_device";
     private static final String KEY_DOLBY_DAP_EFFECT                        = "key_dolby_dap_effect";
+    private static final String KEY_DOLBY_DAP_EFFECT_2_4                    = "key_dolby_audio_processing_2_4";
     private static final String AUDIO_ONLY                                  = "tv_sound_audio_only";
-    private static final String KEY_TV_SOUND_AUDIO_SOURCE_SELECT            = "key_tv_sound_audio_source_select";
+    private static final String KEY_AGC                                     = "effect_agc";
+    private static final String KEY_DBX_TV                                  = "key_tv_dbx_effect";
+    private static final String KEY_TRUSURROUND                             = "key_dts_effect_settings";
+    private static final String KEY_DTS_VX                                  = "key_dts_virtualx_settings";
+    private static final String KEY_AUDIO_LATENCY                           = "key_audio_latency";
 
     private AudioConfigManager mAudioConfigManager;
     private AudioEffectManager mAudioEffectManager;
-    private TvControlManager mTvControlManager;
+    //private TvControlManager mTvControlManager;
     private SoundParameterSettingManager mSoundParameterSettingManager;
     private OutputModeManager mOutputModeManager;
-
-    private static final int AUDIO_OUTPUT_DELAY_SOURCE_DEFAULT               = 0;
-
-    private static int mCurrentSettingSourceId = AudioConfigManager.AUDIO_OUTPUT_DELAY_SOURCE_ATV;
-    private ListPreference mTvSourceSelectPref;
-    private SeekBar mSeekBarAudioOutputDelaySpeaker;
-    private SeekBar mSeekBarAudioOutputDelaySpdif;
-    private SeekBar mSeekBarAudioOutputDelayHeadphone;
-    private SeekBar mSeekBarAudioPrescale;
-    private TextView mTextAudioOutputDelaySpeaker;
-    private TextView mTextAudioOutputDelaySpdif;
-    private TextView mTextAudioOutputDelayHeadphone;
-    private TextView mTextAudioPrescale;
-    private boolean mIsDelayAndPrescaleSeekBarInited = false;
 
     private static final int UI_LOAD_TIMEOUT = 50;//100ms
     private static final int LOAD_UI = 0;
@@ -117,15 +109,37 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         super.onResume();
         if (mAudioEffectManager != null) {
             final ListPreference eqmode = (ListPreference) findPreference(TV_EQ_MODE);
+            eqmode.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_HPEQ_UI));
             eqmode.setValueIndex(mAudioEffectManager.getSoundModeStatus());
-            final Preference trebleBass = (Preference) findPreference(TV_TREBLE_BASS_SETTINGS);
-            String trebleBassSummary = getShowString(R.string.tv_treble, mAudioEffectManager.getTrebleStatus()) + " " +
+            final Preference treblebass = (Preference) findPreference(TV_TREBLE_BASS_SETTINGS);
+            treblebass.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_TREBLEBASS_UI));
+            String treblebass_summary = getShowString(R.string.tv_treble, mAudioEffectManager.getTrebleStatus()) + " " +
                     getShowString(R.string.tv_bass, mAudioEffectManager.getBassStatus());
-            trebleBass.setSummary(trebleBassSummary);
+            treblebass.setSummary(treblebass_summary);
             final Preference balance = (Preference) findPreference(TV_BALANCE_SETTINGS);
+            balance.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_BALANCE_UI));
             balance.setSummary(getShowString(R.string.tv_balance_effect, mAudioEffectManager.getBalanceStatus()));
+            final ListPreference virtualsurround = (ListPreference) findPreference(TV_VIRTUAL_SURROUND_SETTINGS);
+            virtualsurround.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_SURROUND_UI));
+
+            final Preference agc = (Preference) findPreference(KEY_AGC);
+            final Preference dbx_tv = (Preference) findPreference(KEY_DBX_TV);
+            final Preference trusurround = (Preference) findPreference(KEY_TRUSURROUND);
+            final Preference dts_vx = (Preference) findPreference(KEY_DTS_VX);
+            agc.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_AGC_UI));
+            dbx_tv.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DBX_TV_UI));
+            trusurround.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_TRUSURROUND_UI));
+            dts_vx.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_X_UI));
+            final Preference dap24Pref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT_2_4);
+            dap24Pref.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI));
+            if (mOutputModeManager.isAudioSupportMs12System()) {
+                eqmode.setVisible(false);
+            } else {
+                dap24Pref.setVisible(false);
+            }
+            final Preference audio_atency = (Preference) findPreference(KEY_AUDIO_LATENCY);
+            audio_atency.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_AUDIO_LATENCY_UI));
         }
-        mTvSourceSelectPref.setValueIndex(mCurrentSettingSourceId);
     }
 
     @Override
@@ -138,7 +152,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private void init() {
         mAudioConfigManager = AudioConfigManager.getInstance(getActivity());
         mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
-        mTvControlManager = TvControlManager.getInstance();
+        //mTvControlManager = TvControlManager.getInstance();
         mSoundParameterSettingManager = ((TvSettingsActivity)getActivity()).getSoundParameterSettingManager();
         mOutputModeManager = OutputModeManager.getInstance(getActivity());
     }
@@ -157,41 +171,63 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.tv_sound_mode, null);
-        mTvSourceSelectPref = (ListPreference) findPreference(KEY_TV_SOUND_AUDIO_SOURCE_SELECT);
-        mTvSourceSelectPref.setValueIndex(mCurrentSettingSourceId);
-        mTvSourceSelectPref.setOnPreferenceChangeListener(this);
-        mTvSourceSelectPref.setEnabled(true);
         myHandler.sendEmptyMessage(LOAD_UI);
     }
 
     private boolean initView() {
+        Log.d(TAG, "initView");
         final ListPreference eqmode = (ListPreference) findPreference(TV_EQ_MODE);
+        eqmode.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_HPEQ_UI));
         eqmode.setValueIndex(mAudioEffectManager.getSoundModeStatus());
         eqmode.setOnPreferenceChangeListener(this);
 
-        final Preference dapPref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT);
-        if (mOutputModeManager.isAudioSupportMs12System())
+        //final Preference dapPref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT);
+        final Preference dap24Pref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT_2_4);
+        dap24Pref.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI));
+        if (mOutputModeManager.isAudioSupportMs12System()) {
             eqmode.setVisible(false);
-        else
-            dapPref.setVisible(false);
+        } else {
+            //dapPref.setVisible(false);
+            dap24Pref.setVisible(false);
+        }
+        final ListPreference virtualsurround = (ListPreference) findPreference(TV_VIRTUAL_SURROUND_SETTINGS);
+        virtualsurround.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_SURROUND_UI));
+        virtualsurround.setValueIndex(mAudioEffectManager.getVirtualSurroundStatus());
+        virtualsurround.setOnPreferenceChangeListener(this);
 
-        final ListPreference virtualSurround = (ListPreference) findPreference(TV_VIRTUAL_SURROUND_SETTINGS);
-        virtualSurround.setValueIndex(mAudioEffectManager.getVirtualSurroundStatus());
-        virtualSurround.setOnPreferenceChangeListener(this);
+        final ListPreference soundout = (ListPreference) findPreference(TV_SOUND_OUT);
+        soundout.setValueIndex(mSoundParameterSettingManager.getSoundOutputStatus());
+        soundout.setOnPreferenceChangeListener(this);
+        if (!DroidLogicUtils.isTv()) {
+            soundout.setVisible(false);
+        }
 
-        final ListPreference soundOut = (ListPreference) findPreference(TV_SOUND_OUT);
-        soundOut.setValueIndex(mSoundParameterSettingManager.getSoundOutputStatus());
-        soundOut.setOnPreferenceChangeListener(this);
-
-        final Preference trebleBass = (Preference) findPreference(TV_TREBLE_BASS_SETTINGS);
-        String trebleBassSummary = getShowString(R.string.tv_treble, mAudioEffectManager.getTrebleStatus()) + " " +
+        final Preference treblebass = (Preference) findPreference(TV_TREBLE_BASS_SETTINGS);
+        treblebass.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_TREBLEBASS_UI));
+        String treblebass_summary = getShowString(R.string.tv_treble, mAudioEffectManager.getTrebleStatus()) + " " +
                 getShowString(R.string.tv_bass, mAudioEffectManager.getBassStatus());
-        trebleBass.setSummary(trebleBassSummary);
+        treblebass.setSummary(treblebass_summary);
 
         final Preference balance = (Preference) findPreference(TV_BALANCE_SETTINGS);
+        balance.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_BALANCE_UI));
         balance.setSummary(getShowString(R.string.tv_balance_effect, mAudioEffectManager.getBalanceStatus()));
 
         final Preference audio_only = (Preference) findPreference(AUDIO_ONLY);
+        audio_only.setVisible(false); //the function is not finish, temporarily hidden
+
+        final Preference agc = (Preference) findPreference(KEY_AGC);
+        final Preference dbx_tv = (Preference) findPreference(KEY_DBX_TV);
+        final Preference trusurround = (Preference) findPreference(KEY_TRUSURROUND);
+        final Preference dts_vx = (Preference) findPreference(KEY_DTS_VX);
+
+        agc.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_AGC_UI));
+        dbx_tv.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DBX_TV_UI));
+        trusurround.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_TRUSURROUND_UI));
+        dts_vx.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_X_UI));
+
+        final Preference audio_latency = (Preference) findPreference(KEY_AUDIO_LATENCY);
+        audio_latency.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_AUDIO_LATENCY_UI));
+
         return true;
     }
 
@@ -211,24 +247,13 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         final int selection = Integer.parseInt((String)newValue);
         if (TextUtils.equals(preference.getKey(), TV_EQ_MODE)) {
             mAudioEffectManager.setSoundMode(selection);
-            // non-user sound mode, set default treble and bass value
-            int bassValue = AudioEffectManager.EFFECT_BASS_DEFAULT;
-            int trebleValue = AudioEffectManager.EFFECT_TREBLE_DEFAULT;
             if (selection == AudioEffectManager.EQ_SOUND_MODE_CUSTOM) {
                 createUiDialog();
-                // when sound mode is user, set DB treble and bass value
-                bassValue = mAudioEffectManager.getBassStatus();
-                trebleValue = mAudioEffectManager.getTrebleStatus();
             }
-            mAudioEffectManager.setBass(bassValue);
-            mAudioEffectManager.setTreble(trebleValue);
         } else if (TextUtils.equals(preference.getKey(), TV_VIRTUAL_SURROUND_SETTINGS)) {
             mAudioEffectManager.setVirtualSurround(selection);
         }else if (TextUtils.equals(preference.getKey(), TV_SOUND_OUT)) {
             mSoundParameterSettingManager.setSoundOutputStatus(selection);
-        } else if (TextUtils.equals(preference.getKey(), KEY_TV_SOUND_AUDIO_SOURCE_SELECT)) {
-            mCurrentSettingSourceId = selection;
-            createOutputDelayAndPrescaleUiDialog();
         }
         return true;
     }
@@ -236,23 +261,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     @Override
     public int getMetricsCategory() {
         return 0;
-    }
-
-    private void createOutputDelayAndPrescaleUiDialog() {
-        Context context = (Context) (getActivity());
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.xml.tv_sound_audio_settings_seekbar, null);//tv_sound_audio_settings_seekbar.xml
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mIsDelayAndPrescaleSeekBarInited = false;
-            }
-        });
-        mAlertDialog.show();
-        mAlertDialog.getWindow().setContentView(view);
-        initOutputDelayAndPrescaleSeekBar(view);
     }
 
     private void createUiDialog () {
@@ -302,7 +310,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             @Override
             public void onClick(View view) {
                 if (AUDIO_ONLY_INT == type) {
-                    mTvControlManager.setLcdEnable(false);
+                    //mTvControlManager.setLcdEnable(false);
                     SystemProperties.set("persist.audio.only.state", "true");
                 }
                 mAlertDialog.dismiss();
@@ -361,44 +369,9 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         mIsAudioEqSeekBarInited = true;
     }
 
-    private void initOutputDelayAndPrescaleSeekBar(View view) {
-        int delayMs = 0;
-
-        mSeekBarAudioOutputDelaySpeaker = (SeekBar) view.findViewById(R.id.id_seek_bar_audio_delay_speaker);
-        mTextAudioOutputDelaySpeaker = (TextView) view.findViewById(R.id.id_text_view_audio_delay_speaker);
-        delayMs = mAudioConfigManager.getAudioOutputSpeakerDelay(mCurrentSettingSourceId);
-        mSeekBarAudioOutputDelaySpeaker.setOnSeekBarChangeListener(this);
-        mSeekBarAudioOutputDelaySpeaker.setProgress(delayMs);
-        setShow(R.id.id_seek_bar_audio_delay_speaker, delayMs);
-        mSeekBarAudioOutputDelaySpeaker.requestFocus();
-
-        mSeekBarAudioOutputDelaySpdif = (SeekBar) view.findViewById(R.id.id_seek_bar_audio_delay_spdif);
-        mTextAudioOutputDelaySpdif = (TextView) view.findViewById(R.id.id_text_view_audio_delay_spdif);
-        delayMs = mAudioConfigManager.getAudioOutputSpdifDelay(mCurrentSettingSourceId);
-        mSeekBarAudioOutputDelaySpdif.setOnSeekBarChangeListener(this);
-        mSeekBarAudioOutputDelaySpdif.setProgress(delayMs);
-        setShow(R.id.id_seek_bar_audio_delay_spdif, delayMs);
-
-        mSeekBarAudioOutputDelayHeadphone = (SeekBar) view.findViewById(R.id.id_seek_bar_audio_delay_headphone);
-        mTextAudioOutputDelayHeadphone = (TextView) view.findViewById(R.id.id_text_view_audio_delay_headphone);
-        delayMs = mAudioConfigManager.getAudioOutputHeadphoneDelay(mCurrentSettingSourceId);
-        mSeekBarAudioOutputDelayHeadphone.setOnSeekBarChangeListener(this);
-        mSeekBarAudioOutputDelayHeadphone.setProgress(delayMs);
-        setShow(R.id.id_seek_bar_audio_delay_headphone, delayMs);
-
-        mSeekBarAudioPrescale = (SeekBar) view.findViewById(R.id.id_seek_bar_audio_prescale);
-        mTextAudioPrescale = (TextView) view.findViewById(R.id.id_text_view_audio_prescale);
-        int value = mAudioConfigManager.getAudioPrescale(mCurrentSettingSourceId);
-        mSeekBarAudioPrescale.setOnSeekBarChangeListener(this);
-        mSeekBarAudioPrescale.setProgress(value+150);
-        setShow(R.id.id_seek_bar_audio_prescale, value);
-
-        mIsDelayAndPrescaleSeekBarInited = true;
-    }
-
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (!mIsAudioEqSeekBarInited && !mIsDelayAndPrescaleSeekBarInited) {
+        if (!mIsAudioEqSeekBarInited) {
             return;
         }
         ((TvSettingsActivity)getActivity()).startShowActivityTimer();
@@ -426,31 +399,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             case R.id.seekbar_tv_audio_effect_band5:{
                 setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, progress);
                 mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, progress);
-                break;
-            }
-            case R.id.id_seek_bar_audio_delay_speaker:{
-                setShow(R.id.id_seek_bar_audio_delay_speaker, progress);
-                mAudioConfigManager.setAudioOutputSpeakerDelay(mCurrentSettingSourceId, progress);
-                setDelayEnabled();
-                break;
-            }
-            case R.id.id_seek_bar_audio_delay_spdif:{
-                setShow(R.id.id_seek_bar_audio_delay_spdif, progress);
-                mAudioConfigManager.setAudioOutputSpdifDelay(mCurrentSettingSourceId, progress);
-                setDelayEnabled();
-                break;
-            }
-            case R.id.id_seek_bar_audio_delay_headphone:{
-                setShow(R.id.id_seek_bar_audio_delay_headphone, progress);
-                mAudioConfigManager.setAudioOutputHeadphoneDelay(mCurrentSettingSourceId, progress);
-                setDelayEnabled();
-                break;
-            }
-            case R.id.id_seek_bar_audio_prescale:{
-                // UI display -150 - 150
-                setShow(R.id.id_seek_bar_audio_prescale, progress-150);
-                mAudioConfigManager.setAudioPrescale(mCurrentSettingSourceId, progress-150);
-                setDelayEnabled();
                 break;
             }
             default:
@@ -491,33 +439,9 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
                 mBand5Text.setText(getShowString(R.string.tv_audio_effect_band5, value));
                 break;
             }
-            case R.id.id_seek_bar_audio_delay_speaker:{
-                mTextAudioOutputDelaySpeaker.setText(getAudioDelayShowString(R.string.title_tv_audio_delay_speaker, value));
-                break;
-            }
-            case R.id.id_seek_bar_audio_delay_spdif:{
-                mTextAudioOutputDelaySpdif.setText(getAudioDelayShowString(R.string.title_tv_audio_delay_spdif, value));
-                break;
-            }
-            case R.id.id_seek_bar_audio_delay_headphone:{
-                mTextAudioOutputDelayHeadphone.setText(getAudioDelayShowString(R.string.title_tv_audio_delay_headphone, value));
-                break;
-            }
-            case R.id.id_seek_bar_audio_prescale:{
-                mTextAudioPrescale.setText(getActivity().getResources().getString(R.string.title_tv_audio_prescale) + ": " + value/10.0 + " dB");
-                break;
-            }
             default:
                 break;
         }
-    }
-
-    private String getAudioDelayShowString(int resid, int value) {
-        return getActivity().getResources().getString(resid) + ": " + value + " ms";
-    }
-
-    private void setDelayEnabled () {
-        SystemControlManager.getInstance().setProperty(AudioConfigManager.PROP_AUDIO_DELAY_ENABLED, "true");
     }
 
     private String getShowString(int resid, int value) {

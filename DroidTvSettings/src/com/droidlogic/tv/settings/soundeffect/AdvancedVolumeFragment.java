@@ -39,6 +39,7 @@ import com.android.internal.logging.nano.MetricsProto;
 import com.android.settingslib.core.AbstractPreferenceController;
 import com.droidlogic.tv.settings.PreferenceControllerFragment;
 import com.droidlogic.tv.settings.R;
+import com.droidlogic.tv.settings.SettingsConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,8 +189,13 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
         mAc4DialogEnhancerPref.setValueIndex(getAc4EnhancerValueSetting(getContext())/4);
         mAc4DialogEnhancerPref.setOnPreferenceChangeListener(this);
 
-        if (!mOutputModeManager.isAudioSupportMs12System()) {// when not the ms12 version hide the mAc4DialogEnhancerPref
+        //Dolby Audio Effect 2.4 already have Dialogue Enhance function, so disable it
+        boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
+        if (!mOutputModeManager.isAudioSupportMs12System() || isTv) {// when not the ms12 version hide the mAc4DialogEnhancerPref
             advancedSoundScreenPref.removePreference(mAc4DialogEnhancerPref);
+        }
+        if (isTv) {
+            mSpdifSwitchPref.setVisible(false);
         }
         // DroidLogic end
 

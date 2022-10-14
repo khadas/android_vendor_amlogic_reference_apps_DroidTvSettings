@@ -56,6 +56,19 @@ public class SoundParameterSettingManager {
     public static final String DIGITAL_SOUND_PASSTHROUGH        = "passthrough";
     public static final String TV_KEY_AD_SWITCH                 = "ad_switch";
 
+    public static final int DEBUG_DOLBY_DRC_UI                  = 0;
+    public static final int DEBUG_DTS_DRC_UI                    = 1;
+    public static final int DEBUG_FORCE_DDP_UI                  = 2;
+    public static final int DEBUG_AUDIO_LATENCY_UI              = 3;
+
+    public static final int DEBUG_AUDIO_UI_ON                   = 1;
+    public static final int DEBUG_AUDIO_UI_OFF                  = 0;
+
+    public static final String DB_ID_DOLBY_DRC_DEBUG            = "db_id_dobly_drc_debug";
+    public static final String DB_ID_DTS_DRC_DEBUG              = "db_id_dts_drc_debug";
+    public static final String DB_ID_FORCE_DDP_DEBUG            = "db_id_force_ddp_debug";
+    public static final String DB_ID_AUDIO_LATENCY_DEBUG        = "db_id_audio_latency_debug";
+
     private Resources mResources;
     private Context mContext;
     private AudioManager mAudioManager;
@@ -71,6 +84,46 @@ public class SoundParameterSettingManager {
     static public boolean CanDebug() {
         SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
         return mSystemControlManager.getPropertyBoolean("vendor.soundparameter.debug", false);
+    }
+
+    public void setDebugAudioOn (int id, boolean dbSwitch) {
+        if (DroidLogicUtils.getAudioDebugEnable()) Log.d(TAG, "setDebugAudioOn id:" + id + ", dbSwitch:" + dbSwitch);
+
+        switch (id) {
+            case DEBUG_DOLBY_DRC_UI:
+                Settings.Global.putInt(mContext.getContentResolver(), DB_ID_DOLBY_DRC_DEBUG, dbSwitch ? 1 : 0);
+                break;
+            case DEBUG_DTS_DRC_UI:
+                Settings.Global.putInt(mContext.getContentResolver(), DB_ID_DTS_DRC_DEBUG, dbSwitch ? 1 : 0);
+                break;
+            case DEBUG_FORCE_DDP_UI:
+                Settings.Global.putInt(mContext.getContentResolver(), DB_ID_FORCE_DDP_DEBUG, dbSwitch ? 1 : 0);
+                break;
+            case DEBUG_AUDIO_LATENCY_UI:
+                Settings.Global.putInt(mContext.getContentResolver(), DB_ID_AUDIO_LATENCY_DEBUG, dbSwitch ? 1 : 0);
+                break;
+        }
+    }
+
+    public boolean isDebugAudioOn(int id) {
+        int value = -1;
+        switch (id) {
+            case DEBUG_DOLBY_DRC_UI:
+                value = Settings.Global.getInt(mContext.getContentResolver(), DB_ID_DOLBY_DRC_DEBUG, DEBUG_AUDIO_UI_OFF);
+                break;
+            case DEBUG_DTS_DRC_UI:
+                value = Settings.Global.getInt(mContext.getContentResolver(), DB_ID_DTS_DRC_DEBUG, DEBUG_AUDIO_UI_OFF);
+                break;
+            case DEBUG_FORCE_DDP_UI:
+                value = Settings.Global.getInt(mContext.getContentResolver(), DB_ID_FORCE_DDP_DEBUG, DEBUG_AUDIO_UI_OFF);
+                break;
+            case DEBUG_AUDIO_LATENCY_UI:
+                value = Settings.Global.getInt(mContext.getContentResolver(), DB_ID_AUDIO_LATENCY_DEBUG, DEBUG_AUDIO_UI_OFF);
+                break;
+        }
+        if (DroidLogicUtils.getAudioDebugEnable()) Log.d(TAG, "isDebugAudioOn id:" + id + ", value:" + value);
+
+        return value == DEBUG_AUDIO_UI_ON;
     }
 
     // 0 1 ~ off on

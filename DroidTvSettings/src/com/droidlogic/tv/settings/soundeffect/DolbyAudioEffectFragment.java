@@ -76,6 +76,9 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (mAudioEffectManager == null) {
+            mAudioEffectManager = AudioEffectManager.getInstance(getActivity());
+        }
         super.onCreate(savedInstanceState);
     }
 
@@ -89,9 +92,6 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         boolean enable = false;
         int progress = 0;
-
-        if (mAudioEffectManager == null)
-            mAudioEffectManager = AudioEffectManager.getInstance(getActivity());
 
         setPreferencesFromResource(R.xml.dolby_audioeffect, null);
 

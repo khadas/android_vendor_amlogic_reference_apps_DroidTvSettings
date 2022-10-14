@@ -49,6 +49,9 @@ import com.droidlogic.tv.settings.R;
 import com.droidlogic.app.DataProviderManager;
 import com.droidlogic.app.tv.TvControlManager;
 import com.droidlogic.app.tv.DroidLogicTvUtils;
+import com.droidlogic.app.SystemControlManager;
+import androidx.preference.SwitchPreference;
+import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 
 public class DroidSettingsModeFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -102,8 +105,6 @@ public class DroidSettingsModeFragment extends SettingsPreferenceFragment implem
         if (mTvOptionSettingManager == null) {
             mTvOptionSettingManager = new TvOptionSettingManager(getActivity(), false);
         }
-        final Preference hdmiAudioLatency = (Preference) findPreference(KEY_HDMI_AUDIO_LATENCY);
-        hdmiAudioLatency.setSummary(mTvOptionSettingManager.getHdmiAudioLatency() + "ms");
     }
 
     @Override
@@ -191,13 +192,8 @@ public class DroidSettingsModeFragment extends SettingsPreferenceFragment implem
         }
         final Preference factoryRestore = (Preference) findPreference(RESTORE_FACTORY);
         factoryRestore.setVisible(false);
-        final Preference hdmiAudioLatency = (Preference) findPreference(KEY_HDMI_AUDIO_LATENCY);
-        if (isTv) {
-            hdmiAudioLatency.setTitle(getActivity().getResources().getString(R.string.arc_hdmi_audio_latency));
-        }
-        hdmiAudioLatency.setSummary(mTvOptionSettingManager.getHdmiAudioLatency() + "ms");
-    }
 
+    }
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
         if (CanDebug()) Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey());

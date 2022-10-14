@@ -63,8 +63,4 @@
         android:persistent="false"
         android:title="@string/device_sound_digital"
         android:summary="%s" />
-    <SeekBarPreference
-        android:key="key_audio_output_latency"
-        android:persistent="false"
-        android:title="@string/audio_output_latency" />
 </PreferenceScreen>

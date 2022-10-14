@@ -57,6 +57,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
     private static final String KEY_DTSDRCCUSTOMMODE_PASSTHROUGH            = "dtsdrc_custom_mode";
     private static final String KEY_SOUND_AD_MIXING                         = "key_sound_ad_mixing";
     private static final String KEY_DAP                                     = "dolby_audio_processing";
+    private static final String KEY_DAP_2_4                                 = "key_dolby_audio_processing_2_4";
     private static final String KEY_ARC_LATENCY                             = "arc_latency";                /* HDMI/ARC latency */
     public static final String KEY_AUDIO_OUTPUT_LATENCY                     = "key_audio_output_latency";   /* Audio Output Latency */
     public static final String KEY_FORCE_DDP                                = "key_force_ddp";   /* Audio Output DDP for ms12 v2 ,default is mat*/
@@ -80,6 +81,17 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
 
     private boolean CanDebug() {
         return SystemProperties.getBoolean("sys.sound.debug", false);
+    }
+
+    @Override
+    public void onResume() {
+        final ListPreference dolbyDrcModePref = (ListPreference) findPreference(KEY_DOLBY_DRCMODE_PASSTHROUGH);
+        final ListPreference dtsDrcModePref = (ListPreference) findPreference(KEY_DTSDRCMODE_PASSTHROUGH);
+        final TwoStatePreference forcedDpPref = (TwoStatePreference) findPreference(KEY_FORCE_DDP);
+        forcedDpPref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_FORCE_DDP_UI));
+        dolbyDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DOLBY_DRC_UI));
+        dtsDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DTS_DRC_UI));
+        super.onResume();
     }
 
     private String[] getArrayString(int resid) {
@@ -122,7 +134,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         final ListPreference dtsDrcCustomModePref = (ListPreference) findPreference(KEY_DTSDRCCUSTOMMODE_PASSTHROUGH);
         final ListPreference dtsDrcModePref = (ListPreference) findPreference(KEY_DTSDRCMODE_PASSTHROUGH);
         final TwoStatePreference adSupportPref = (TwoStatePreference) findPreference(KEY_SOUND_AD_MIXING);
-        final Preference dapPref = (Preference) findPreference(KEY_DAP);
+        final Preference dap24Pref = (Preference) findPreference(KEY_DAP_2_4);
         final SeekBarPreference arcPref = (SeekBarPreference) findPreference(KEY_ARC_LATENCY);
         final SeekBarPreference audioOutputLatencyPref = (SeekBarPreference) findPreference(KEY_AUDIO_OUTPUT_LATENCY);
         final TwoStatePreference forcedDpPref = (TwoStatePreference) findPreference(KEY_FORCE_DDP);
@@ -130,22 +142,30 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         final Preference mDtsVirtualxSettingsPref = (Preference) findPreference(KEY_DTS_VIRTUALX_SETTINGS);
         final TwoStatePreference mTruVolumeHdPref = (TwoStatePreference) findPreference(KEY_TV_DTS_VIRTUALX_EFFECT);
 
+        dap24Pref.setVisible(false);
         mSystemControlManager = SystemControlManager.getInstance();
 
         mOutputModeManager = OutputModeManager.getInstance(getActivity());
-        if (!mOutputModeManager.isAudioSupportMs12System())
-            dapPref.setVisible(false);
-
         forcedDpPref.setChecked(mOutputModeManager.getForceDDPEnable());
-        if (!mOutputModeManager.isAudioSupportMs12System())
+        if (!mOutputModeManager.isAudioSupportMs12System()) {
+            //dapPref.setVisible(false);
+            dap24Pref.setVisible(false);
             forcedDpPref.setVisible(false);
+        }
+        forcedDpPref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_FORCE_DDP_UI));
+
+
+        dolbyDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DOLBY_DRC_UI));
 
         dolbyDrcModePref.setValue(mSoundParameterSettingManager.getDrcModePassthroughSetting());
         dolbyDrcModePref.setOnPreferenceChangeListener(this);
 
+        dtsDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DTS_DRC_UI));
+
         dtsDrcModePref.setValue(mSystemControlManager.getPropertyString("persist.vendor.sys.dtsdrcscale", OutputModeManager.DEFAULT_DRC_SCALE));
         dtsDrcModePref.setOnPreferenceChangeListener(this);
-        adSupportPref.setChecked(mOutputModeManager.getAdSupportEnable());
+
+        adSupportPref.setVisible(false);
         arcPref.setOnPreferenceChangeListener(this);
         arcPref.setMax(OutputModeManager.TV_ARC_LATENCY_MAX);
         arcPref.setMin(OutputModeManager.TV_ARC_LATENCY_MIN);
@@ -177,7 +197,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         } else {
             dtsDrcCustomModePref.setVisible(false);
         }
-        hdmiOutPref.setVisible(true);
+        hdmiOutPref.setVisible(false);
         // hdmiOutPref.setChecked(mOutputModeManager.isTvAudioHdmiOutOn());
 
         final ListPreference digitalSoundPref = (ListPreference) findPreference(KEY_DIGITALSOUND_FORMAT);

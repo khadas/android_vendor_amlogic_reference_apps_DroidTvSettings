@@ -139,12 +139,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         }
         digitalSoundPref.setOnPreferenceChangeListener(this);
 
-        final SeekBarPreference audioOutputLatencyPref = (SeekBarPreference) findPreference(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY);
-        audioOutputLatencyPref.setOnPreferenceChangeListener(this);
-        audioOutputLatencyPref.setMax(AudioConfigManager.HAL_AUDIO_OUT_DEV_DELAY_MAX);
-        audioOutputLatencyPref.setMin(AudioConfigManager.HAL_AUDIO_OUT_DEV_DELAY_MIN);
-        audioOutputLatencyPref.setSeekBarIncrement(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY_STEP);
-        audioOutputLatencyPref.setValue(mAudioConfigManager.getAudioOutputAllDelay());
+
 
         mCecSwitchPref.setVisible(true);
         mCecOneKeyPlayPref.setVisible(!tvFlag);
@@ -153,7 +148,6 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         mCecDeviceAutoPowerOffPref.setVisible(true);
         mCecAutoChangeLanguagePref.setVisible(!tvFlag);
         hdmiDeviceSelectPref.setVisible(tvFlag);
-        audioOutputLatencyPref.setVisible(tvFlag);
         digitalSoundPref.setVisible(false);
 
         refresh();
