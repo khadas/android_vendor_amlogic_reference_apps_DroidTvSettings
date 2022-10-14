@@ -373,7 +373,7 @@ public class DisplayCapabilityManager {
   }
 
   private void filterNoSupportMode(List<String> systemControlModeList) {
-    Iterator<String> sysHdmiModeIterator = systemControlModeList.iterator();
+    Iterator<String> sysHdmiModeIterator = (new ArrayList(systemControlModeList)).iterator();
     while (sysHdmiModeIterator.hasNext()) {
       String hdmiModeTmp = filterHdmiModes(sysHdmiModeIterator.next());
       if (!hdmiModeTmp.isEmpty() && !isContainsInFW(hdmiModeTmp)) {
