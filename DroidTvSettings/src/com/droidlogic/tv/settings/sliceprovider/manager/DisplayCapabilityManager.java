@@ -586,6 +586,11 @@ public class DisplayCapabilityManager {
     return mOutputModeManager.getCurrentOutputMode().trim();
   }
 
+  public boolean getSystemPreferredDisplayMode() {
+    Display display = mDisplayManager.getDisplay(Display.DEFAULT_DISPLAY);
+    return display.getSystemPreferredDisplayMode() != null;
+  }
+
   public void setResolutionAndRefreshRateByMode(final String mode) {
     if (!DISPLAY_MODE_FALSE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
       mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_FALSE);

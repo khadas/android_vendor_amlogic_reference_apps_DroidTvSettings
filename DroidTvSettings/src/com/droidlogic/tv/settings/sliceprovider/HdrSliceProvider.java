@@ -56,8 +56,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
       case MediaSliceConstants.MATCH_CONTENT_PATH:
         return createHdrMatchContentSlice(sliceUri);
       case MediaSliceConstants.RESOLUTION_PATH:
-        // This slice is implemented by TvSetting using Preference on AndroidT, no need to implement slice using OEM.
-        return null; //createHdrResolutionSlice(sliceUri);
+        return createHdrResolutionSlice(sliceUri);
       case MediaSliceConstants.HDR_AND_COLOR_FORMAT_PATH:
         return createHdrAndColorFormatSlice(sliceUri);
       case MediaSliceConstants.HDR_FORMAT_PREFERENCE_PATH:
@@ -154,14 +153,21 @@ public class HdrSliceProvider extends MediaSliceProvider {
   private Slice createHdrResolutionSlice(final Uri sliceUri) {
     final PreferenceSliceBuilder psb = new PreferenceSliceBuilder(getContext(), sliceUri);
 
-    psb.addScreenTitle(
-        new RowBuilder().setTitle(getContext().getString(R.string.hdr_resolution_title)));
-
     if (!initDisplayCapabilityManager(sliceUri)) {
       return psb.build();
     } else {
       tryRefreshDisplayCapabilityManager(sliceUri);
     }
+
+    // If it is the system preferred display mode,
+    // This slice is implemented by TvSetting using Preference on AndroidT.
+    if (mDisplayCapabilityManager.getSystemPreferredDisplayMode()) {
+      Log.d(TAG, "TvSettings show!!");
+      return null;
+    }
+
+    psb.addScreenTitle(
+            new RowBuilder().setTitle(getContext().getString(R.string.hdr_resolution_title)));
 
     psb.setEmbeddedPreference(
         new RowBuilder()
