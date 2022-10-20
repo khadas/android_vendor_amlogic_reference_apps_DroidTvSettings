@@ -23,7 +23,7 @@
         android:persistent="false"
         android:title="@string/device_outputmode_auto"/>
     <Preference android:key="displaymode_setting"
-        android:persistent="false"
+        android:persistent="true"
         android:title="@string/device_displaymode"
         android:fragment="com.droidlogic.tv.settings.display.outputmode.OutputmodeFragment" />
     <Preference

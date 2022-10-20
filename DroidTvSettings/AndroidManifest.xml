@@ -247,7 +247,7 @@
             android:name=".sliceprovider.dialog.AdjustResolutionDialogActivity"
             android:label="Adjust Resolution Dialog Activity"
             android:launchMode="singleInstance"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/DialogActivityTranslucentTheme">
             <intent-filter>
                 <action android:name="com.droidlogic.tv.settings.sliceprovider.SHOW_RESOLUTION_CHNAGE_WARNING" />

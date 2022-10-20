@@ -23,12 +23,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+
 import androidx.annotation.Keep;
+import static com.android.tv.twopanelsettings.slices.SlicesConstants.EXTRA_PREFERENCE_KEY;
+
+import com.droidlogic.tv.settings.PreferenceControllerFragment;
+import com.droidlogic.tv.settings.sliceprovider.dialog.AdjustResolutionDialogActivity;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+
+import android.os.CountDownTimer;
 import android.text.TextUtils;
+
 import com.droidlogic.tv.settings.R;
 
 
@@ -36,6 +44,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
+import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.dialog.old.Action;
 import com.droidlogic.tv.settings.RadioPreference;
 import android.content.BroadcastReceiver;
@@ -51,11 +61,13 @@ import android.provider.Settings;
 import android.util.Log;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -64,45 +76,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-@Keep
-public class OutputmodeFragment extends SettingsPreferenceFragment implements OnClickListener {
+import java.util.concurrent.TimeUnit;
+
+public class OutputmodeFragment extends SettingsPreferenceFragment {
     private static final String LOG_TAG = "OutputmodeFragment";
     private OutputUiManager mOutputUiManager;
+    private TvSettingsActivity mTvSettingsActivity;
     private static String preMode;
     private static String curMode;
     RadioPreference prePreference;
     RadioPreference curPreference;
-    private View view_dialog;
-    private TextView tx_title;
-    private TextView tx_content;
-    private Timer timer;
-    private TimerTask task;
-    private AlertDialog mAlertDialog = null;
-    private int countdown = 15;
-    private static String mode = null;
-    private static final int MSG_FRESH_UI = 0;
-    private static final int MSG_COUNT_DOWN = 1;
-    private static final int MSG_PLUG_FRESH_UI = 2;
+    private static final int MSG_PLUG_FRESH_UI = 0;
     private IntentFilter mIntentFilter;
     public boolean hpdFlag = false;
     public ArrayList<String> outputmodeTitleList = new ArrayList();
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            hpdFlag = intent.getBooleanExtra ("state", false);
-            mHandler.sendEmptyMessageDelayed(MSG_PLUG_FRESH_UI, hpdFlag ^ isHdmiMode() ? 2000 : 1000);
+            hpdFlag = intent.getBooleanExtra("state", false);
+            mHandler.sendEmptyMessage(MSG_PLUG_FRESH_UI);
         }
     };
+
     public static OutputmodeFragment newInstance() {
         return new OutputmodeFragment();
     }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         mOutputUiManager = new OutputUiManager(getActivity());
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
-        mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
+        mTvSettingsActivity = (TvSettingsActivity) getActivity();
         updatePreferenceFragment();
+        getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
     }
+
     private ArrayList<Action> getMainActions() {
         ArrayList<Action> actions = new ArrayList<Action>();
         ArrayList<String> outputmodeValueList = mOutputUiManager.getOutputmodeValueList();
@@ -115,39 +123,32 @@ public class OutputmodeFragment extends SettingsPreferenceFragment implements On
         for (int i = 0; i < outputmodeTitleList.size(); i++) {
             if (i == currentModeIndex) {
                 actions.add(new Action.Builder().key(outputmodeValueList.get(i))
-                      .title("        " + outputmodeTitleList.get(i))
-                      .checked(true).build());
-             }else {
-                    actions.add(new Action.Builder().key(outputmodeValueList.get(i))
-                    .title("        " + outputmodeTitleList.get(i))
-                    .description("").build());
-             }
+                        .title("        " + outputmodeTitleList.get(i))
+                        .checked(true).build());
+            } else {
+                actions.add(new Action.Builder().key(outputmodeValueList.get(i))
+                        .title("        " + outputmodeTitleList.get(i))
+                        .description("").build());
+            }
         }
         return actions;
     }
 
     @Override
     public void onResume() {
+        mHandler.sendEmptyMessageDelayed(MSG_PLUG_FRESH_UI, 500);
         super.onResume();
-        getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
-        mHandler.sendEmptyMessage(MSG_PLUG_FRESH_UI);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(mIntentReceiver);
-        if (mAlertDialog != null) {
-            Log.d(LOG_TAG, "onPause dismiss AlertDialog");
-            mAlertDialog.dismiss();
-        }
-        if (task != null)
-            task.cancel();
-        mHandler.removeMessages(MSG_COUNT_DOWN);
     }
 
     @Override
     public void onDestroy() {
+        getActivity().unregisterReceiver(mIntentReceiver);
+        mHandler.removeMessages(MSG_PLUG_FRESH_UI);
         super.onDestroy();
     }
 
@@ -160,9 +161,12 @@ public class OutputmodeFragment extends SettingsPreferenceFragment implements On
                 preMode = mOutputUiManager.getCurrentMode().trim();
                 curMode = radioPreference.getKey();
                 curPreference = radioPreference;
-                Log.d(LOG_TAG, "currentMode: " + preMode + "; NetMode" + curMode);
-                mOutputUiManager.change2NewMode(curMode);
-                // showDialog();
+                Log.d(LOG_TAG, "currentMode: " + preMode + "; NewMode" + curMode);
+                Intent intent = new Intent();
+                intent.setClass(mTvSettingsActivity,
+                        AdjustResolutionDialogActivity.class);
+                intent.putExtra(EXTRA_PREFERENCE_KEY, curMode);
+                mTvSettingsActivity.startActivity(intent);
                 curPreference.setChecked(true);
             } else {
                 radioPreference.setChecked(true);
@@ -176,86 +180,10 @@ public class OutputmodeFragment extends SettingsPreferenceFragment implements On
         return 0;
     }
 
-    private void showDialog () {
-        if (mAlertDialog == null) {
-            LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view_dialog = inflater.inflate(R.layout.dialog_outputmode, null);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            mAlertDialog = builder.create();
-            mAlertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-
-            tx_title = (TextView)view_dialog.findViewById(R.id.dialog_title);
-            tx_content = (TextView)view_dialog.findViewById(R.id.dialog_content);
-
-            TextView button_cancel = (TextView)view_dialog.findViewById(R.id.dialog_cancel);
-            button_cancel.setOnClickListener(this);
-
-            TextView button_ok = (TextView)view_dialog.findViewById(R.id.dialog_ok);
-            button_ok.setOnClickListener(this);
-        }
-        mAlertDialog.show();
-        mAlertDialog.getWindow().setContentView(view_dialog);
-        mAlertDialog.setCancelable(false);
-
-        if (mOutputUiManager.getOutputmodeTitleList().size() <= 0) {
-            tx_content.setText("Get outputmode empty!");
-        } else if (mOutputUiManager.getCurrentModeIndex() < mOutputUiManager.getOutputmodeTitleList().size()) {
-            tx_content.setText(getResources().getString(R.string.device_outputmode_change)
-                + " " +mOutputUiManager.getOutputmodeTitleList().get(mOutputUiManager.getCurrentModeIndex()));
-        }
-        countdown = 15;
-        if (timer == null)
-            timer = new Timer();
-        if (task != null)
-            task.cancel();
-        task = new DialogTimerTask();
-        timer.schedule(task, 0, 1000);
-    }
-    private void recoverOutputMode() {
-       mOutputUiManager.change2NewMode(preMode);
-       // need revert Preference display.
-       curPreference = prePreference;
-       mHandler.sendEmptyMessage(MSG_FRESH_UI);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.dialog_cancel:
-                if (mAlertDialog != null) {
-                    mAlertDialog.dismiss();
-                }
-                recoverOutputMode();
-                break;
-            case R.id.dialog_ok:
-                if (mAlertDialog != null) {
-                    mAlertDialog.dismiss();
-                    prePreference = curPreference;
-                }
-                break;
-        }
-        task.cancel();
-    }
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case MSG_FRESH_UI:
-                    curPreference.clearOtherRadioPreferences(getPreferenceScreen());
-                    curPreference.setChecked(true);
-                    break;
-                case MSG_COUNT_DOWN:
-                    tx_title.setText(Integer.toString(countdown) + " " + getResources().getString(R.string.device_outputmode_countdown));
-                    if (countdown == 0) {
-                        if (mAlertDialog != null) {
-                            mAlertDialog.dismiss();
-                        }
-                        recoverOutputMode();
-                        task.cancel();
-                    }
-                    countdown--;
-                    break;
                 case MSG_PLUG_FRESH_UI:
                     updatePreferenceFragment();
                     break;
@@ -263,34 +191,11 @@ public class OutputmodeFragment extends SettingsPreferenceFragment implements On
         }
     };
 
-    private class DialogTimerTask extends TimerTask {
-        @Override
-        public void run() {
-            if (mHandler != null) {
-                mHandler.sendEmptyMessage(MSG_COUNT_DOWN);
-            }
-        }
-    };
-    private boolean needfresh() {
-        ArrayList<String> list = mOutputUiManager.getOutputmodeTitleList();
-        //Log.d(LOG_TAG, "outputmodeTitleList: " + outputmodeTitleList.toString() + "\n list: " + list.toString());
-        if (outputmodeTitleList.size() > 0 && outputmodeTitleList.size() == list.size()) {
-            for (String title:outputmodeTitleList) {
-                if (!list.contains(title))
-                    return true;
-            }
-        }else {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Display Outputmode list based on RadioPreference style.
      */
     private void updatePreferenceFragment() {
         mOutputUiManager.updateUiMode();
-        if (!needfresh()) return;
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
                 themedContext);
@@ -313,6 +218,7 @@ public class OutputmodeFragment extends SettingsPreferenceFragment implements On
             screen.addPreference(radioPreference);
         }
     }
+
     private boolean isHdmiMode() {
         return mOutputUiManager.isHdmiMode();
     }
