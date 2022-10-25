@@ -96,7 +96,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
 
     private BluetoothGattCharacteristic bleVersion;
     private BluetoothGatt mBluetoothGatt;
-
+    private int mNotifyChangeCount = 0;
     private boolean versionRequest = false;
 
     private final Map<Uri, Integer> mPinnedUris = new ArrayMap<>();
@@ -218,6 +218,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
                 context.unbindService(mBtDeviceServiceConnection);
                 mBtDeviceServiceBound = false;
             }
+            mNotifyChangeCount = 0;
         });
     }
 
@@ -741,6 +742,11 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
                     }
                 });
             }
+
+            if (mNotifyChangeCount <= 0) {
+                notifyChangeSlice(ConnectedDevicesSliceUtils.BLUETOOTH_DEVICE_SLICE_URI);
+            }
+
             onNextRequestIfneeded(gatt);
         }
     }
@@ -764,4 +770,10 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
             versionRequest = gatt.readCharacteristic(bleVersion);
         }
     }
+
+    private void notifyChangeSlice(Uri sliceUri) {
+        getContext().getContentResolver().notifyChange(sliceUri, null);
+        mNotifyChangeCount++;
+    }
+
 }
