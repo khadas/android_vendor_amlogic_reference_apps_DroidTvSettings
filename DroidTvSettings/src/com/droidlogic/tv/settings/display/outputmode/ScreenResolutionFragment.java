@@ -145,12 +145,14 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         mOutputUiManager = new OutputUiManager(getActivity());
-
         mSetModeUEventObserver = SetModeUEventObserver.getInstance();
         mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.sendEmptyMessage(MSG_FRESH_UI));
         mSetModeUEventObserver.startObserving();
+        mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
+        mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
+        getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -170,25 +172,14 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         mDolbyVisionPref = findPreference(KEY_DOLBYVISION);
         mHdrPriorityPref = findPreference(KEY_HDR_PRIORITY);
         mHdrPolicyPref = findPreference(KEY_HDR_POLICY);
-        mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
-        mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
         mGraphicsPriorityPref = findPreference(KEY_DOLBYVISION_PRIORITY);
+        updateScreenResolutionDisplay();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
-        mHandler.sendEmptyMessage(MSG_FRESH_UI);
-    }
-    @Override
     public void onDestroy() {
-        super.onDestroy();
-    }
-    @Override
-    public void onPause() {
-        super.onPause();
         getActivity().unregisterReceiver(mIntentReceiver);
+        super.onDestroy();
     }
 
     private void updateScreenResolutionDisplay() {
@@ -317,6 +308,23 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             mGraphicsPriorityPref.setVisible(false);
             mHdrPolicyPref.setVisible(false);
             mHdrPriorityPref.setVisible(false);
+        }
+        if (mOutputUiManager.getSystemPreferredDisplayMode()) {
+            removeResolutionPreference();
+        }
+
+    }
+
+    /**
+     * If it is the system preferred display mode,
+     * This slice is implemented by TvSetting using Preference on AndroidT.
+     */
+    private void removeResolutionPreference() {
+        if (mBestResolutionPref != null) {
+            getPreferenceScreen().removePreference(mBestResolutionPref);
+        }
+        if (mDisplayModePref != null) {
+            getPreferenceScreen().removePreference(mDisplayModePref);
         }
     }
 

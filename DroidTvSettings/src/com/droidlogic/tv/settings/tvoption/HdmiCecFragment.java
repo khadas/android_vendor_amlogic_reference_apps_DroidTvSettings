@@ -91,15 +91,9 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        refresh();
-    }
-
-    @Override
     public void onPause() {
-        super.onPause();
         mHandler.removeCallbacksAndMessages(null);
+        super.onPause();
     }
 
     @Override
@@ -161,6 +155,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         digitalSoundPref.setVisible(false);
         // The project should use ro.hdmi.set_menu_language to device whether open this function.
         //mCecAutoChangeLanguagePref.setVisible(!tvFlag);
+        refresh();
     }
 
     @Override

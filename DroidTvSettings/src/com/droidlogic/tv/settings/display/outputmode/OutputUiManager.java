@@ -556,4 +556,8 @@ public class OutputUiManager {
             changeColorAttribute("444,8bit");
         }
     }
+
+   public boolean getSystemPreferredDisplayMode() {
+        return mDisplayCapabilityManager.getSystemPreferredDisplayMode();
+    }
 }
