@@ -2156,11 +2156,15 @@
     <string name="surround_sound_format_ac4">Dolby AC-4</string>
 
     <!--audio out switch-->
-    <string name="device_box_audio_lineout">Lineout</string>
-    <string name="device_box_audio_hdmi">Hdmi</string>
-    <string name="device_tv_audio_speaker">Speaker</string>
-    <string name="device_tv_audio_arc">Arc</string>
-    <string name="device_audio_spdif">Spdif</string>
+    <string name="title_audio_settings_audio_output_dev">Audio Output Devices</string>
+    <string name="title_tv_sound_output_device_speaker">Speaker</string>
+    <string name="title_tv_sound_output_device_spdif">Spdif</string>
+    <string name="title_tv_sound_output_device_hdmi_out">HDMI OUT</string>
+    <string name="title_tv_sound_output_device_headphone">HeadPhone</string>
+    <string name="title_tv_sound_output_device_hdmi_arc">HDMI ARC</string>
+    <string name="title_tv_sound_output_device_usb">USB Speaker</string>
+    <string name="title_tv_sound_output_device_bluetooth">Bluetooth</string>
+    <string name="title_tv_sound_output_device_speaker_spdif">Spk + Spdif</string>
 
     <!-- tv setting. -->
     <string name="tv_sound">Sound</string>

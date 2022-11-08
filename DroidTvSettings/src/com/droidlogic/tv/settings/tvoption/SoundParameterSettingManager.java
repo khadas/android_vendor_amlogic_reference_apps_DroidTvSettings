@@ -134,26 +134,10 @@ public class SoundParameterSettingManager {
         return itemPosition;
     }
 
-    public int getSoundOutputStatus () {
-        final int itemPosition =  Settings.Global.getInt(mContext.getContentResolver(),
-                OutputModeManager.SOUND_OUTPUT_DEVICE, OutputModeManager.SOUND_OUTPUT_DEVICE_SPEAKER);
-        if (CanDebug()) Log.d(TAG, "getSoundOutputStatus = " + itemPosition);
-        return itemPosition;
-    }
-
     public void setVirtualSurround (int mode) {
         if (CanDebug()) Log.d(TAG, "setVirtualSurround = " + mode);
         mOutputModeManager.setVirtualSurround(mode);
         Settings.Global.putInt(mContext.getContentResolver(), OutputModeManager.VIRTUAL_SURROUND, mode);
-    }
-
-    public void setSoundOutputStatus (int mode) {
-        if (CanDebug()) Log.d(TAG, "setSoundOutputStatus = " + mode);
-        mOutputModeManager.setSoundOutputStatus(mode);
-        Settings.Global.putInt(mContext.getContentResolver(), OutputModeManager.SOUND_OUTPUT_DEVICE, mode);
-        Settings.Global.putInt(mContext.getContentResolver(),
-                "hdmi_system_audio_status_enabled" /* Settings.Global.HDMI_SYSTEM_AUDIO_STATUS_ENABLED */,
-                mode == OutputModeManager.SOUND_OUTPUT_DEVICE_ARC ? OutputModeManager.TV_ARC_ON : OutputModeManager.TV_ARC_OFF);
     }
 
     public void setDigitalAudioFormat (String mode) {
