@@ -24,6 +24,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import android.widget.Toast;
+import android.view.Gravity;
 import android.view.WindowManager;
 import android.view.Window;
 import android.view.Display;
@@ -243,6 +245,7 @@ public class DisplayCapabilityManager {
   private final DolbyVisionSettingManager mDolbyVisionSettingManager;
   private final SetModeUEventObserver mSetModeUEventObserver;
   private final ContentResolver mContentResolver;
+  private Context mContext;
 
   private boolean mIsHdr10Supported = false;
 
@@ -263,6 +266,7 @@ public class DisplayCapabilityManager {
   }
 
   private DisplayCapabilityManager(final Context context) {
+    mContext = context;
     mDisplayManager = (DisplayManager)context.getSystemService(Context.DISPLAY_SERVICE);
     // mDisplayDensityManager = new DisplayDensityManager(mDisplayManager);
     mSystemControlManager = SystemControlManager.getInstance();
@@ -626,9 +630,12 @@ public class DisplayCapabilityManager {
       Log.d(TAG, "supportedModes: " + Arrays.toString(supportedModes));
     }
 
-    Display.Mode matcherMode = checkUserPreferredMode(supportedModes, USER_PREFERRED_MODE_BY_MODE.get(mode));
-    Display.Mode userPreferredDisplayMode = mDisplayManager.getGlobalUserPreferredDisplayMode();
+    Display.Mode matcherMode = checkUserPreferredMode(supportedModes, USER_PREFERRED_MODE_BY_MODE.get(mode), userSetMode);
+    if (matcherMode == null) {
+      return;
+    }
 
+    Display.Mode userPreferredDisplayMode = mDisplayManager.getGlobalUserPreferredDisplayMode();
     if (userPreferredDisplayMode != null) {
       Log.w(TAG, "userPreferredDisplayMode: " + userPreferredDisplayMode);
       if (checkSysCurrentMode(userPreferredDisplayMode, matcherMode)) {
@@ -669,7 +676,7 @@ public class DisplayCapabilityManager {
     return false;
   }
 
-  private Display.Mode checkUserPreferredMode(Display.Mode[] modeArr, Display.Mode mode) {
+  private Display.Mode checkUserPreferredMode(Display.Mode[] modeArr, Display.Mode mode, String userSetMode) {
     for (Display.Mode mode2 : modeArr) {
       /*In cvbs mode, the value of the resolution rate reported by hwc to the framework is fake
       data (Google[b/229605079] needs to filter 16:9 mode), so only fps verification is performed in this mode
@@ -686,7 +693,19 @@ public class DisplayCapabilityManager {
       }
     }
 
-    throw new IllegalArgumentException("Unrecognized user preferred mode, invalid mode!!");
+    showToast(userSetMode);
+    return null;
+  }
+
+  /**
+   * When the switched resolution does not exist in the framework,
+   * show comes out with a friendly prompt.
+   */
+  private void showToast(String userSetMode) {
+    Toast toast = Toast.makeText(mContext, userSetMode + " is not supported by the system",
+            Toast.LENGTH_LONG);
+    toast.setGravity(Gravity.CENTER, 0, 0);
+    toast.show();
   }
 
   private void autoSelectColorAttributeByMode(String mode, boolean isBestMode) {
