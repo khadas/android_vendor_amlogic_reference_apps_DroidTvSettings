@@ -16,7 +16,6 @@
 
 package com.droidlogic.tv.settings.sliceprovider.accessories;
 
-import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.ACTION_CONNECT_INPUT;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver.ACTION_TOGGLE_CHANGED;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver.BLUETOOTH_ON;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver.EXTRA_TOGGLE_TYPE;
@@ -26,7 +25,6 @@ import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
 import android.app.tvsettings.TvSettingsEnums;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -37,6 +35,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ConditionVariable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -68,8 +67,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.lang.Thread;
-import java.lang.InterruptedException;
 
 /** The SliceProvider for "connected devices" settings */
 public class ConnectedDevicesSliceProvider extends SliceProvider implements
@@ -90,7 +87,6 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
     public static final String ACTION_CONNECT_INPUT =
             "com.google.android.intent.action.CONNECT_INPUT";
 
-    public static boolean deviceGattFlag = false;
     public String deviceBatteryLevel = "-1";
     public String deviceFirmwareVersion = "";
 
@@ -104,6 +100,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
 
     private boolean mBtDeviceServiceBound;
     private BluetoothDevicesService.LocalBinder mBtDeviceServiceBinder;
+    private final ConditionVariable mDataConditionVariable = new ConditionVariable(true);
 
     private final BluetoothDeviceProvider mLocalBluetoothDeviceProvider =
             new LocalBluetoothDeviceProvider() {
@@ -188,7 +185,6 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         if (ConnectedDevicesSliceUtils.isGeneralPath(sliceUri)) {
             return createGeneralSlice(sliceUri);
         } else if (ConnectedDevicesSliceUtils.isBluetoothDevicePath(sliceUri)) {
-            deviceGattFlag =false;
             return createBluetoothDeviceSlice(sliceUri);
         }
         return null;
@@ -218,7 +214,9 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
                 context.unbindService(mBtDeviceServiceConnection);
                 mBtDeviceServiceBound = false;
             }
+            versionRequest = false;
             mNotifyChangeCount = 0;
+            mDataConditionVariable.open();
         });
     }
 
@@ -252,12 +250,26 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         CachedBluetoothDevice cachedDevice =
                 AccessoryUtils.getCachedBluetoothDevice(getContext(), device);
         String deviceName = "";
-        if (device != null) {
-            if (device.getType() == BluetoothDevice.DEVICE_TYPE_LE || device.getType() == BluetoothDevice.DEVICE_TYPE_DUAL) {
-                Log.d(TAG,"device.connectGatt");
-                deviceGattFlag = true;
+
+        if (device != null && device.isConnected()) {
+            Log.d(TAG, deviceAddr + " connecting " + " device.getType: " + device.getType());
+
+            // Only LE devices have info information
+            if (device.getType() == BluetoothDevice.DEVICE_TYPE_LE) {
+                mDataConditionVariable.close();
+                mNotifyChangeCount = 0;
                 mBluetoothGatt = device.connectGatt(getContext(), true, new GattBatteryCallbacks());
+                mDataConditionVariable.block(3500);
                 //mBluetoothGatt.discoverServices();
+            } else {
+                /**
+                 * BluetoothGattCallback may not be able to connect between the client and the server
+                 * when it is quickly connected and disconnected, which will lead to no data to be displayed
+                 * in the interface when the underlying layer does not call back the data, so it cannot be
+                 * deleted directly, but can be deleted when it is a non-BLE device.
+                 */
+                deviceBatteryLevel = "-1";
+                deviceFirmwareVersion = "";
             }
             deviceName = AccessoryUtils.getLocalName(device);
         }
@@ -375,21 +387,19 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         psb.addPreference(forgetPref);
 
         // Update "bluetooth device info preference".
+        BluetoothDeviceProvider provider = mLocalBluetoothDeviceProvider;
+
         RowBuilder infoPref = new RowBuilder()
                 .setIcon(IconCompat.createWithResource(context, R.drawable.ic_baseline_info_24dp));
 
-        BluetoothDeviceProvider provider = mLocalBluetoothDeviceProvider;
-        //sleep 100ms
-        try {
-             Thread.sleep(100);
-        } catch (InterruptedException e) {
-             e.printStackTrace();
+        if ("-1" != deviceBatteryLevel) {
+            infoPref.addInfoItem(getString(R.string.bluetooth_battery_label), deviceBatteryLevel);
         }
-        if ( deviceGattFlag && "-1" != deviceBatteryLevel) infoPref.addInfoItem(getString(R.string.bluetooth_battery_label), deviceBatteryLevel);
-        if ( deviceGattFlag && "" != deviceFirmwareVersion) infoPref.addInfoItem(getString(R.string.bluetooth_fireware_label), deviceFirmwareVersion);
+        if ("" != deviceFirmwareVersion) {
+            infoPref.addInfoItem(getString(R.string.bluetooth_fireware_label), deviceFirmwareVersion);
+        }
         infoPref.addInfoItem(getString(R.string.bluetooth_serial_number_label), deviceAddr);
         psb.addPreference(infoPref);
-        deviceGattFlag = false;
         return psb.build();
     }
 
@@ -694,57 +704,29 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
                 return;
             }
 
+            Log.d(TAG, "onCharacteristicRead characteristic.uuid: " + characteristic.getUuid());
             if (GATT_BATTERY_LEVEL_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 final int batteryLevel =
                         characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d(TAG,"onCharacteristicRead mBatteryPref:"+batteryLevel);
-                        deviceGattFlag = true;
-                        //if(deviceBatteryLevel!="Good" || deviceBatteryLevel!="Low"){
-                            if (batteryLevel >= 50) {
-                                deviceBatteryLevel = "Good";
-                            }else{
-                                deviceBatteryLevel = "Low";
-                            }
-                            //getContext().getContentResolver().notifyChange(ConnectedDevicesSliceUtils.BLUETOOTH_DEVICE_SLICE_URI, null);
-                        //}
-                        /*if (mBatteryPref != null && !mUnpairing) {
-                            mBatteryPref.setTitle(getString(R.string.accessory_battery,
-                                    batteryLevel));
-                            mBatteryPref.setVisible(true);
-                        }*/
-                    }
-                });
+                Log.d(TAG, "onCharacteristicRead mBatteryPref:" + batteryLevel);
+                if (batteryLevel >= 50) {
+                    deviceBatteryLevel = "Good";
+                } else {
+                    deviceBatteryLevel = "Low";
+                }
             }
-
             if (GATT_VERSION_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 final byte[] versionData = characteristic.getValue();
-                final String version = transferVersionDataToString(versionData);
-                if ( DEBUG ) {
-                    Log.d(TAG, "version: "+version);
-                }
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d(TAG,"onCharacteristicRead mVersionPref:"+version);
-                        deviceGattFlag = true;
-                        //if(deviceFirmwareVersion != version){
-                            deviceFirmwareVersion = version;
-                            //getContext().getContentResolver().notifyChange(ConnectedDevicesSliceUtils.BLUETOOTH_DEVICE_SLICE_URI, null);
-                        //}
-                        /*if (mVersionPref != null && !mUnpairing) {
-                            mVersionPref.setTitle(getString(R.string.accessory_version,
-                                    version));
-                            mVersionPref.setVisible(true);
-                        }*/
-                    }
-                });
+                final String version = characteristic.getStringValue(0);
+                //final String version = transferVersionDataToString(versionData);
+                Log.d(TAG, "onCharacteristicRead mVersionPref:" + version);
+                deviceFirmwareVersion = version;
             }
 
-            if (mNotifyChangeCount <= 0) {
-                notifyChangeSlice(ConnectedDevicesSliceUtils.BLUETOOTH_DEVICE_SLICE_URI);
+            Log.d(TAG, "mNotifyChangeCount: " + mNotifyChangeCount);
+            if (mNotifyChangeCount >= 1) {
+                //You need to wait for the Bluetooth version number to be called back up before unwait.
+                mDataConditionVariable.open();
             }
 
             onNextRequestIfneeded(gatt);
@@ -768,12 +750,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
     private void onNextRequestIfneeded(BluetoothGatt gatt){
         if (!versionRequest && gatt != null && bleVersion != null) {
             versionRequest = gatt.readCharacteristic(bleVersion);
+            mNotifyChangeCount++;
         }
     }
-
-    private void notifyChangeSlice(Uri sliceUri) {
-        getContext().getContentResolver().notifyChange(sliceUri, null);
-        mNotifyChangeCount++;
-    }
-
 }
