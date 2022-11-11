@@ -65,6 +65,21 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
                     HdmiCecSliceBroadcastReceiver.class),
                     mHdmiCecContentManager.isHdmiControlEnabled()));
 
+    boolean volumeControl = mHdmiCecContentManager.getVolumeControlStatus();
+    String title = volumeControl ? getContext().getString(R.string.enabled)
+                                : getContext().getString(R.string.disabled);
+    psb.addPreference(
+        new RowBuilder()
+            .setKey(getContext().getString(R.string.hdmi_volume_control_key))
+            .setTitle(getContext().getString(R.string.hdmi_volume_control_title))
+            .setSubtitle(title)
+            .addSwitch(
+                generatePendingIntent(
+                    getContext(),
+                    MediaSliceConstants.ACTION_HDMI_VOLUME_CONTROL_CHANGED,
+                    HdmiCecSliceBroadcastReceiver.class),
+                    mHdmiCecContentManager.getVolumeControlStatus()));
+
     return psb.build();
   }
 }

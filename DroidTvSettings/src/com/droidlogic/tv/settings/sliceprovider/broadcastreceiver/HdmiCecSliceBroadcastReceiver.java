@@ -25,6 +25,10 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
   private ProgressDialog mProgress;
   private static final int MSG_ENABLE_CEC_SWITCH = 0;
   private static final int TIME_DELAYED = 5000;//ms
+
+  private static final int ENABLED = 1;
+  private static final int DISABLED = 0;
+
   private Handler mHandler = new Handler() {
       @Override
       public void handleMessage(Message msg) {
@@ -44,6 +48,7 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
   @Override
   public void onReceive(Context context, Intent intent) {
     final String action = intent.getAction();
+    Log.d(TAG, "onReceive " + intent);
     boolean isChecked;
     mProgress = new ProgressDialog(context);
     mProgress.setMessage("It takes a few seconds to update cec status, please wait...");
@@ -60,6 +65,10 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
             mProgress.show();
         }
         mHandler.sendEmptyMessageDelayed(MSG_ENABLE_CEC_SWITCH, TIME_DELAYED);
+        break;
+      case MediaSliceConstants.ACTION_HDMI_VOLUME_CONTROL_CHANGED:
+        isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
+        getHdmiCecContentManager(context).setVolumeControlStatus(isChecked ? 1 : 0);
         break;
     }
   }

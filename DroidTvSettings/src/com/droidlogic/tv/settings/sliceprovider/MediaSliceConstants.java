@@ -21,6 +21,8 @@ public class MediaSliceConstants {
       "com.google.android.settings.usage.ACTION_SET_UNSUPPORTED_SOUND_FORMAT";
   public static final String ACTION_HDMI_SWITCH_CEC_CHANGED =
       "com.google.android.settings.usage.ACTION_HDMI_SWITCH_CEC_CHANGED";
+  public static final String ACTION_HDMI_VOLUME_CONTROL_CHANGED =
+      "com.google.android.settings.usage.ACTION_HDMI_VOLUME_CONTROL_CHANGED";
 
   public static final String ACTION_DEVICE_POWER_BOOT_RESUME =
           "com.google.android.settings.usage.ACTION_DEVICE_POWER_BOOT_RESUME";
