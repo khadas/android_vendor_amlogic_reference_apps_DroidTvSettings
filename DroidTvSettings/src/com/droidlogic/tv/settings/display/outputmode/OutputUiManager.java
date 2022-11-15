@@ -448,6 +448,7 @@ public class OutputUiManager {
             // The function of OutputUiManager will gradually weaken, and it will be attributed to DisplayCapabilityManager.
             // The modification here is to adapt to non-16:9 mode filtering
             // (the hdmi list in DisplayCapabilityManager has been filtered).
+            mDisplayCapabilityManager.refresh();
             listHdmiMode = mDisplayCapabilityManager.getHdmiModeLists();
             listHdmiTitle = mDisplayCapabilityManager.getHdmiTitleLists();
 
