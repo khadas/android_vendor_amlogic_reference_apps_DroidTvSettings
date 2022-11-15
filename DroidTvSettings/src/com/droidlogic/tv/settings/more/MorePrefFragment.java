@@ -255,8 +255,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         if (!SettingsConstant.needAospFeature(getContext())) {
             Log.i(TAG, "hide powerkey_action");
             powerKeyPref.setVisible(false);
-        } else {
-            powerKeyPref.setVisible(true);
         }
 
         if (0 == Settings.Global.getInt(getContext().getContentResolver(), DEBUG_GLOBAL_SETTING, 0)) {
