@@ -72,6 +72,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
 
     private static final String KEY_MAIN_MENU = "moresettings";
     private static final String KEY_DISPLAY = "display";
+    private static final String KEY_WIFI_HOSTSPOT = "wifi_hotspot";
     private static final String KEY_MBOX_SOUNDS = "mbox_sound";
     private static final String KEY_POWERKEY = "powerkey_action";
     private static final String KEY_POWERONMODE = "poweronmode_action";
@@ -150,6 +151,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
 
         final Preference morePref = findPreference(KEY_MAIN_MENU);
         final Preference displayPref = findPreference(KEY_DISPLAY);
+        final Preference wifiHotspotPref = findPreference(KEY_WIFI_HOSTSPOT);
         final Preference hdmicecPref = findPreference(KEY_HDMI_CEC_CONTROL);
         final Preference playbackPref = findPreference(KEY_PLAYBACK_SETTINGS);
         mSoundsPref = findPreference(KEY_SOUNDS);
@@ -213,6 +215,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         if (is_from_live_tv) {
             morePref.setTitle(R.string.settings_menu);
             displayPref.setVisible(false);
+            wifiHotspotPref.setVisible(false);
             mboxSoundsPref.setVisible(false);
             powerKeyPref.setVisible(false);
             powerKeyOnModePref.setVisible(false);
