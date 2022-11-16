@@ -69,7 +69,8 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.display, null);
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
-            && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false);
+        && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false)
+        &&(SystemProperties.getBoolean("ro.vendor.platform.has.bdsuimode", false) == false);
         final Preference outputmodePref = findPreference(KEY_OUTPUTMODE);
         if (SettingsConstant.needGTVFeature(getContext())) {
             outputmodePref.setVisible(false);
