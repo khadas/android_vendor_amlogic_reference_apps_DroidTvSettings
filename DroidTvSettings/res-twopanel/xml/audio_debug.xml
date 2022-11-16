@@ -54,18 +54,6 @@
             android:persistent="false"
             android:title="@string/title_key_virtual_surround_debug" />
         <SwitchPreference
-            android:key="key_agc_debug"
-            android:persistent="false"
-            android:title="@string/title_key_agc_debug" />
-        <SwitchPreference
-            android:key="key_dbx_tv_debug"
-            android:persistent="false"
-            android:title="@string/title_key_dbx_tv_debug" />
-        <SwitchPreference
-            android:key="key_trusurround_debug"
-            android:persistent="false"
-            android:title="@string/title_key_trusurround_debug" />
-        <SwitchPreference
             android:key="key_virtual_x_debug"
             android:persistent="false"
             android:title="@string/title_key_virtual_x_debug" />

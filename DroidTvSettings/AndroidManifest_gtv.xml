@@ -148,25 +148,7 @@
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
              android:excludeFromRecents="true"
              android:exported="true"
-             android:name=".soundeffect.AgcSeekBarActivity"
-             android:theme="@style/TvSettingsActivityTheme">
-        </activity>
-        <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
              android:name=".soundeffect.BalanceSeekBarActivity"
-             android:theme="@style/TvSettingsActivityTheme">
-        </activity>
-        <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".soundeffect.DbxSettingActivity"
-             android:theme="@style/TvSettingsActivityTheme">
-        </activity>
-        <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".soundeffect.DtsSoundSettingActivity"
              android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
