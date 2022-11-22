@@ -225,12 +225,13 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             mTvOption.setVisible(false);
             //moreSettingsPref.setVisible(false);
             keyStone.setVisible(false);
-            boolean isPassthrough = isPassthroughInput(inputId);
+            /*boolean isPassthrough = isPassthroughInput(inputId);
             if (isPassthrough || is_from_new_live_tv) {
                 channelPref.setVisible(false);
             } else {
                 channelPref.setVisible(true);
-            }
+            }*/
+            channelPref.setVisible(false);
             if (!SettingsConstant.needDroidlogicTvFeature(getContext())) {
                 mSoundsPref.setVisible(false);//mbox doesn't support sound effect
             }
