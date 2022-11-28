@@ -16,6 +16,7 @@
 
 package com.droidlogic.tv.settings.tvoption;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -366,27 +367,14 @@ public class TvOptionSettingManager {
     }
 
     public void setSleepTimer (int mode) {
-        AlarmManager alarm = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent("droidlogic.intent.action.TIMER_SUSPEND");
-        intent.addFlags(0x01000000/*Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND*/);
-        intent.putExtra(DroidLogicTvUtils.KEY_ENABLE_SUSPEND_TIMEOUT, true);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0,
-                intent, PendingIntent.FLAG_MUTABLE);
-        alarm.cancel(pendingIntent);
-
         DataProviderManager.putIntValue(mContext, DroidLogicTvUtils.PROP_DROID_TV_SLEEP_TIME, mode);
-
-        long timeout = 0;
-        if (mode == 0) {
-            return;
-        } else if (mode < 5) {
-            timeout = (mode * 15  - 1) * 60 * 1000;
-        } else {
-            timeout = ((mode - 4) * 30 + 4 * 15  - 1) * 60 * 1000;
-        }
-
-        alarm.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + timeout, pendingIntent);
-        Log.d(TAG, "start time count down elapsedRealtime " + SystemClock.elapsedRealtime() + "  timeout after " + timeout + " ms");
+        String sleepTimerService = "com.droidlogic.droidlivetv.TimerSuspendService";
+        String targetPackage = "com.droidlogic.droidlivetvsettings";
+        Intent intent = new Intent();
+        intent.putExtra(DroidLogicTvUtils.KEY_ENABLE_SUSPEND_TIMEOUT, true);
+        intent.putExtra("mode", mode);
+        intent.setComponent(ComponentName.unflattenFromString(targetPackage + "/" + sleepTimerService));
+        mContext.startService (intent);
     }
 
     public void setNoSignalSleepTime (int mode) {
