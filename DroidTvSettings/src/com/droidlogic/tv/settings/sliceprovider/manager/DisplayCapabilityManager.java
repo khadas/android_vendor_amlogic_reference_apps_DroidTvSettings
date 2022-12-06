@@ -10,6 +10,7 @@ import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
 import com.droidlogic.tv.settings.sliceprovider.ueventobserver.SetModeUEventObserver;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
 
+import com.droidlogic.tv.settings.util.DroidUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableMap;
@@ -616,7 +617,7 @@ public class DisplayCapabilityManager {
     // The framework filters when the system is at the current resolution, so use SystemControl to set it.
     // Note: Mode filtering is not required when the systemcontrol is used to set resolution
     boolean isSystemHdmiDispMode = checkSysCurrentMode(mDisplayManager.getDisplay(0).getMode(), getPreferredByMode(mode));
-    if (isSystemHdmiDispMode) {
+    if (isSetDisplayModeByPrivate() || isSystemHdmiDispMode) {
       mSystemControlManager.setMboxOutputMode(userSetMode);
       Log.d(TAG, "setMboxOutputMode");
       return;
@@ -1008,5 +1009,13 @@ public class DisplayCapabilityManager {
     if (!userSetMode.equals(mSystemControlManager.getBootenv(ENV_SAVE_USER_MODE, null))) {
       mSystemControlManager.setBootenv(ENV_SAVE_USER_MODE, userSetMode);
     }
+  }
+
+  /**
+   * For some special scenarios such as double screen, the framework does not support resolution
+   * switching, so use amlogic private way, later this problem will promote Google fix.
+   */
+  private boolean isSetDisplayModeByPrivate() {
+    return DroidUtils.hasBdsUiMode();
   }
 }
