@@ -265,6 +265,10 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             advanced_sound_settings_pref.setVisible(false);
             mboxSoundsPref.setVisible(false);
         }
+
+        // androidT does not have an implementation of these two menus, so they are hidden for now.
+        powerKeyPref.setVisible(false);
+        powerKeyOnModePref.setVisible(false);
     }
 
     @Override
