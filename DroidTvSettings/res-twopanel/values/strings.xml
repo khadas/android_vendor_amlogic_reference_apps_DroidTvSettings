@@ -2170,6 +2170,8 @@
     <string name="title_tv_sound_output_device_bluetooth">Bluetooth</string>
     <string name="title_tv_sound_output_device_speaker_spdif">Spk + Spdif</string>
 
+    <string name="title_tv_vad_switch">Voice Wake Up</string>
+
     <!-- tv setting. -->
     <string name="tv_sound">Sound</string>
     <string name="tv_sound_mode">Equalizer Mode</string>

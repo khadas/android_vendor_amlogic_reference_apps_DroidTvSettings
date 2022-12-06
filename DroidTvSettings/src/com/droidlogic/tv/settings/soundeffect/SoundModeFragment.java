@@ -24,6 +24,7 @@ import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
+import androidx.preference.TwoStatePreference;
 import android.util.Log;
 import android.text.TextUtils;
 import android.view.View;
@@ -76,6 +77,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private static final String KEY_DPE                                     = "key_dpe_audio_effect";
     private static final String KEY_AUDIO_LATENCY                           = "key_audio_latency";
     private static final String KEY_TV_SOUND_AUDIO_DEVICE                   = "key_tv_sound_output_device";
+    private static final String KEY_VAD_SWITCH                              = "key_tv_vad_switch";
 
     /* index value, refer to array_audio_settings_output_dev_entries in xml*/
     public static final int UI_INDEX_DEVICE_OUT_SPEAKER                     = 0;
@@ -98,6 +100,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private SystemControlManager mSystemControl;
     private boolean mCoexistSpdif = false;
     private ListPreference mAudioOutputDevPref;
+    private TwoStatePreference mVadSwitchPref;
     private int mAudioDeviceOutputStrategy = AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO;
     private Context mContext = null;
     private HashSet<AudioDeviceInfo> mAudioOutputDevices = new HashSet<AudioDeviceInfo>();
@@ -212,6 +215,9 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             Log.w(TAG, "refreshPref strategy invalid:" + mAudioDeviceOutputStrategy);
             mAudioDeviceOutputStrategy = AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO;
         }
+
+        mVadSwitchPref = (TwoStatePreference) findPreference(KEY_VAD_SWITCH);
+        mVadSwitchPref.setChecked(mSoundParameterSettingManager.isVadOn());
     }
 
     private boolean initView() {
@@ -262,6 +268,8 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             createUiDialog(AUDIO_ONLY_INT);
         } else if (TextUtils.equals(key, KEY_TV_SOUND_AUDIO_DEVICE)) {
             refreshPref();
+        } else if (TextUtils.equals(key, KEY_VAD_SWITCH)) {
+            mSoundParameterSettingManager.setVadOn(mVadSwitchPref.isChecked());
         }
         return super.onPreferenceTreeClick(preference);
     }

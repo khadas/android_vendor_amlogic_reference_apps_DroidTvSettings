@@ -31,6 +31,7 @@ import android.content.ContentResolver;
 
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.SettingsConstant;
+import com.droidlogic.app.AudioSettingManager;
 import com.droidlogic.app.DataProviderManager;
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.OutputModeManager;
@@ -45,7 +46,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TimeZone;
 import java.util.SimpleTimeZone;
-import com.droidlogic.app.SystemControlManager;
 
 public class SoundParameterSettingManager {
 
@@ -73,16 +73,17 @@ public class SoundParameterSettingManager {
     private Context mContext;
     private AudioManager mAudioManager;
     private OutputModeManager mOutputModeManager;
+    static private SystemControlManager mSystemControlManager;
 
     public SoundParameterSettingManager (Context context) {
         mContext = context;
         mResources = mContext.getResources();
         mAudioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
         mOutputModeManager = OutputModeManager.getInstance(context);
+        mSystemControlManager = SystemControlManager.getInstance();
     }
 
     static public boolean CanDebug() {
-        SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
         return mSystemControlManager.getPropertyBoolean("vendor.soundparameter.debug", false);
     }
 
@@ -267,6 +268,23 @@ public class SoundParameterSettingManager {
     public void resetParameter() {
         Log.d(TAG, "resetParameter");
         mOutputModeManager.resetSoundParameters();
+    }
+
+    public boolean isVadOn() {
+        String vadUbootEnable = mSystemControlManager.getBootenv(AudioSettingManager.AUDIO_VAD_UBOOTENV_FFV_WAKE, AudioSettingManager.AUDIO_VAD_STRING_VAD_OFF);
+        String property = mSystemControlManager.getPropertyString(AudioSettingManager.AUDIO_VAD_PROPERTY_VADWAKE, AudioSettingManager.AUDIO_VAD_STRING_VAD_OFF);
+        if (CanDebug()) Log.d(TAG, "isVadOn:" + vadUbootEnable);
+        return vadUbootEnable.equals(AudioSettingManager.AUDIO_VAD_STRING_VAD_ON);
+    }
+
+    public void setVadOn(boolean enable) {
+        if (CanDebug()) Log.d(TAG, "setVadOn:" + enable);
+        String mode = AudioSettingManager.AUDIO_VAD_STRING_VAD_OFF;
+        if (enable) {
+            mode = AudioSettingManager.AUDIO_VAD_STRING_VAD_ON;
+        }
+        mSystemControlManager.setBootenv(AudioSettingManager.AUDIO_VAD_UBOOTENV_FFV_WAKE, mode);
+        mSystemControlManager.setProperty(AudioSettingManager.AUDIO_VAD_PROPERTY_VADWAKE, mode);
     }
 }
 
