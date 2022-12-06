@@ -693,6 +693,7 @@ public class DisplayCapabilityManager {
       }
     }
 
+    Log.e(TAG, "matcherMode failed, framework supportedModes: " + Arrays.toString(modeArr));
     showToast(userSetMode);
     return null;
   }

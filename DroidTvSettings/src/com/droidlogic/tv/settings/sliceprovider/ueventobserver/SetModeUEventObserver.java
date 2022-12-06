@@ -1,62 +1,73 @@
 package com.droidlogic.tv.settings.sliceprovider.ueventobserver;
 
-
+import android.os.SystemProperties;
 import android.os.UEventObserver;
 
+import com.droidlogic.tv.settings.util.DroidUtils;
+
 public class SetModeUEventObserver {
-  private static final String TAG = SetModeUEventObserver.class.getSimpleName();
-  private UEventObserver mUEventObserver;
-  private static volatile SetModeUEventObserver mSetModeUEventObserver;
-  private boolean mIsObserved = false;
-  Runnable mRunnable = () -> {};
+    private static final String TAG = SetModeUEventObserver.class.getSimpleName();
+    private UEventObserver mUEventObserver;
+    private static volatile SetModeUEventObserver mSetModeUEventObserver;
+    private boolean mIsObserved = false;
+    private String mUeventVoutPath = "DEVPATH=/devices/platform/vout";
+    private String mUeventVoutValue = "vout_setmode";
 
-  public static SetModeUEventObserver getInstance() {
-    if (mSetModeUEventObserver == null)
-      synchronized (SetModeUEventObserver.class) {
+    private final String UEVENT_VOUT_2_PATH = "DEVPATH=/devices/platform/vout2";
+    private final String UEVENT_VOUT_2_VALUE = "vout2_setmode";
+
+    Runnable mRunnable = () -> {
+    };
+
+    public static SetModeUEventObserver getInstance() {
         if (mSetModeUEventObserver == null)
-          mSetModeUEventObserver = new SetModeUEventObserver();
-      }
-    return mSetModeUEventObserver;
-  }
-
-  public SetModeUEventObserver() {
-    mUEventObserver =
-        new UEventObserver() {
-          @Override
-          public void onUEvent(UEvent uEvent) {
-            //Observe set mode completed event
-            /*(if (uEvent.get("STATE").equals("ACA=0")) {
-              mRunnable.run();
-              mIsObserved = true;
-            }*/
-
-            if (uEvent.get("vout_setmode").equals("0")) {
-              mRunnable.run();
-              mIsObserved = true;
+            synchronized (SetModeUEventObserver.class) {
+                if (mSetModeUEventObserver == null)
+                    mSetModeUEventObserver = new SetModeUEventObserver();
             }
-          }
-        };
-  }
+        return mSetModeUEventObserver;
+    }
 
-  public void setOnUEventRunnable(Runnable runnable) {
-    mRunnable = runnable;
-  }
+    public SetModeUEventObserver() {
+        mUEventObserver =
+            new UEventObserver() {
+                @Override
+                public void onUEvent(UEvent uEvent) {
+                    if (uEvent.get(mUeventVoutValue).equals("0")
+                            || uEvent.get(mUeventVoutValue).equals("1")) {
+                        mRunnable.run();
+                        mIsObserved = true;
+                    }
+                }
+            };
+    }
 
-  public void startObserving() {
-    resetObserved();
-    // mUEventObserver.startObserving("DEVPATH=/devices/platform/vout/extcon/setmode");
-    mUEventObserver.startObserving("DEVPATH=/devices/platform/vout");
-  }
+    public void setOnUEventRunnable(Runnable runnable) {
+        mRunnable = runnable;
+    }
 
-  public void stopObserving() {
-    mUEventObserver.stopObserving();
-  }
+    public void startObserving() {
+        initUeventParameter();
+        resetObserved();
+        mUEventObserver.startObserving(mUeventVoutPath);
+    }
 
-  public boolean isObserved() {
-    return mIsObserved;
-  }
+    public void stopObserving() {
+        mUEventObserver.stopObserving();
+    }
 
-  public void resetObserved() {
-    mIsObserved = false;
-  }
+    public boolean isObserved() {
+        return mIsObserved;
+    }
+
+    public void resetObserved() {
+        mIsObserved = false;
+    }
+
+    private void initUeventParameter() {
+        if (DroidUtils.hasBdsUiMode()) {
+            mUeventVoutPath = UEVENT_VOUT_2_PATH;
+            mUeventVoutValue = UEVENT_VOUT_2_VALUE;
+        }
+    }
 }

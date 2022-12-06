@@ -46,7 +46,9 @@ public final class DroidUtils {
     public static boolean hasMboxUiMode() {
         return SystemProperties.getBoolean("ro.vendor.platform.has.mboxuimode", false);
     }
-
+    public static boolean hasBdsUiMode() {
+        return  SystemProperties.getBoolean("ro.vendor.platform.has.bdsuimode", false);
+    }
     public static boolean hasGtvsUiMode() {
         return !TextUtils.isEmpty(SystemProperties.get("ro.com.google.gmsversion", ""));
     }
