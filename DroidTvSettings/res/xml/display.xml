@@ -56,4 +56,8 @@
             android:title="@string/memc"
             android:entries="@array/memc_entries"
             android:entryValues="@array/memc_entry_values" />
+        <SwitchPreference
+            android:key="device_dlg"
+            android:persistent="false"
+            android:title="@string/device_dlg"/>
 </PreferenceScreen>

@@ -22,15 +22,19 @@ import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.ListPreference;
+import androidx.preference.TwoStatePreference;
+
+import android.util.Log;
 import android.os.SystemProperties;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.text.TextUtils;
+import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.app.SystemControlManager;
-import android.util.Log;
+import com.droidlogic.app.tv.TvControlManager;
 
 public class DisplayFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -45,6 +49,7 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
     private static final String KEY_GAME_CONTENT_TYPE  = "game_content_type";
     private static final String KEY_MEMC               = "memc";
     private static final String PROP_MEMC              = "persist.vendor.sys.memc";
+    private static final String KEY_DLG               = "device_dlg";
 
     private static final int MEMC_OFF                  = 0;
     private static final int MEMC_ON                   = 1;
@@ -53,6 +58,7 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
     private ListPreference mAllmPref;
     private ListPreference mMEMCPref;
     private SystemControlManager mSystemControlManager;
+    private TvControlManager mTvControlManager;
     private String memcStatus = "0";
     private static boolean isT3Device = false;
 
@@ -67,6 +73,10 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        android.util.Log.d(TAG, "onCreatePreferences: DisplayFragment created!!!!");
+        mSystemControlManager = SystemControlManager.getInstance();
+        mTvControlManager = TvControlManager.getInstance();
+
         setPreferencesFromResource(R.xml.display, null);
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
         && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false)
@@ -91,28 +101,32 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
         dvPref.setVisible((SystemProperties.getBoolean("vendor.system.support.dolbyvision", false) == true)
             && tvFlag);
 
-        mSystemControlManager = SystemControlManager.getInstance();
         mAllmPref = (ListPreference) findPreference(KEY_ALLM_MODE);
         mAllmPref.setOnPreferenceChangeListener(this);
         mAllmPref.setVisible(SystemProperties.getBoolean("ro.vendor.debug.allm", false));
 
-        mSystemControlManager = SystemControlManager.getInstance();
         mAllmPref = (ListPreference) findPreference(KEY_GAME_CONTENT_TYPE);
         mAllmPref.setOnPreferenceChangeListener(this);
         mAllmPref.setVisible(SystemProperties.getBoolean("ro.vendor.debug.allm", false));
 
-        /* if (SystemProperties.getBoolean(PROP_MEMC, false)  == true) {
-                memcStatus = MEMC_ON;
-        }else {
-                memcStatus = MEMC_OFF;
-        } */
         memcStatus = Integer.toString(mSystemControlManager.GetMemcMode());
-        Log.d(TAG, "get memcStatus: " + memcStatus);
+        if (DroidUtils.CanDebug()) {
+            Log.d(TAG, "get memcStatus: " + memcStatus);
+        }
         isT3Device = mSystemControlManager.hasMemcFunc();
         mMEMCPref = (ListPreference) findPreference(KEY_MEMC);
         mMEMCPref.setValue(memcStatus);
         mMEMCPref.setVisible(isT3Device);
         mMEMCPref.setOnPreferenceChangeListener(this);
+
+        final TwoStatePreference deviceDlgPref = (TwoStatePreference) findPreference(KEY_DLG);
+        deviceDlgPref.setOnPreferenceChangeListener(this);
+        deviceDlgPref.setVisible(true);
+        int dlgState = mTvControlManager.GetDLGEnable();
+        if (DroidUtils.CanDebug()) {
+            Log.d(TAG, "GetDLGEnable: " + dlgState);
+        }
+        deviceDlgPref.setChecked(dlgState == 1 ? true : false);
     }
 
     @Override
@@ -135,16 +149,16 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
             int tep_memcStatus = Integer.parseInt((String)newValue);
             //mSystemControlManager.setALLMMode(allmmode);
             if (mSystemControlManager.hasMemcFunc()) {
-                /* if (memcStatus == MEMC_ON) {
-                    mSystemControlManager.memcContrl(true);
-                }else if (memcStatus == MEMC_OFF) {
-                    mSystemControlManager.memcContrl(false);
-                } */
                 Log.d(TAG, "set memcStatus: " + tep_memcStatus);
                 mSystemControlManager.SetMemcMode(tep_memcStatus, memcSave);
             }
         }
 
+        // SetDLGEnable param:1 enable; 0 disable.
+        if (TextUtils.equals(preference.getKey(), KEY_DLG)) {
+            mTvControlManager.SetDLGEnable((boolean) newValue ? 1 : 0);
+            return true;
+        }
         if (TextUtils.equals(preference.getKey(), KEY_GAME_CONTENT_TYPE)) {
             mSystemControlManager.sendHDMIContentType(Integer.parseInt((String)newValue));
         }

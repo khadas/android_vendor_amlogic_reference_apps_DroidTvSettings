@@ -81,4 +81,8 @@ public final class DroidUtils {
         Log.d(TAG, "read keyword: " + keyword + ",value: " + DealData.getString(keyword, null));
         return DealData.getString(keyword, null);
     }
+
+    static public boolean CanDebug() {
+        return SystemProperties.getBoolean("sys.droidTvsetting.debug", false);
+    }
 }

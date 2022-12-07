@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.SettingsConstant;
+import com.droidlogic.tv.settings.util.DroidUtils;
+
 import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.app.tv.TvControlManager;
 import com.droidlogic.app.tv.TvInSignalInfo;
@@ -149,7 +151,7 @@ public class PQSettingsManager {
     }
 
     static public boolean CanDebug() {
-        return SystemProperties.getBoolean("sys.pqsetting.debug", false);
+        return DroidUtils.CanDebug();
     }
 
     public static final int PIC_STANDARD = 0;
