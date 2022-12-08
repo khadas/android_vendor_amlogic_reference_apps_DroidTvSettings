@@ -38,8 +38,10 @@ import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.RemoteException;
 import android.provider.Settings;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
+
 import android.text.TextUtils;
 import android.util.ArraySet;
 import android.util.Log;
@@ -65,6 +67,7 @@ import com.droidlogic.app.SystemControlManager;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.List;
+
 import com.droidlogic.tv.settings.R;
 
 public class MorePrefFragment extends SettingsPreferenceFragment {
@@ -121,7 +124,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     }
 
     private int getPreferenceScreenResId() {
-        Log.d(TAG,"getPreferenceScreenResId = "+FlavorUtils.getFlavor(getContext()));
+        Log.d(TAG, "getPreferenceScreenResId = " + FlavorUtils.getFlavor(getContext()));
         switch (FlavorUtils.getFlavor(getContext())) {
             case FLAVOR_CLASSIC:
                 return R.xml.more;
@@ -147,8 +150,8 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
                 && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false);
         mSystemControlManager = SystemControlManager.getInstance();
 
-        boolean customConfig     = getContext().getPackageManager().hasSystemFeature("droidlogic.software.netflix");
-        boolean debugConfig      = mSystemControlManager.getPropertyBoolean(DEBUG_DISPLAY_PROP, false);
+        boolean customConfig = getContext().getPackageManager().hasSystemFeature("droidlogic.software.netflix");
+        boolean debugConfig = mSystemControlManager.getPropertyBoolean(DEBUG_DISPLAY_PROP, false);
 
         final Preference morePref = findPreference(KEY_MAIN_MENU);
         final Preference displayPref = findPreference(KEY_DISPLAY);
@@ -169,7 +172,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         final Preference aipq = findPreference(KEY_AI_PQ);
         //hide it forcedly as new bluetooth remote upgrade application is not available now
         mUpgradeBluetoothRemote.setVisible(false/*is_from_live_tv ? false : (SettingsConstant.needDroidlogicBluetoothRemoteFeature(getContext()) && !tvFlag)*/);
-        aipq.setVisible(mSystemControlManager.hasAipqFunc()? true : false);
+        aipq.setVisible(mSystemControlManager.hasAipqFunc() ? true : false);
         if (SettingsConstant.needGTVFeature(getContext())) {
             hdmicecPref.setVisible(false);
         } else {
@@ -185,7 +188,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
                 netflixesnPref.setVisible(true);
                 netflixesnPref.setSummary(mEsnText);
                 versionPref.setVisible(true);
-                versionPref.setSummary(mSystemControlManager.getPropertyString(HAILSTORM_VERSION_PROP,"no"));
+                versionPref.setSummary(mSystemControlManager.getPropertyString(HAILSTORM_VERSION_PROP, "no"));
                 powerKeyPref.setVisible(false);
                 keyStone.setVisible(false);
 
@@ -253,10 +256,10 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         }
 
         if (!debugConfig && customConfig) {
-             picturePref.setVisible(false);
+            picturePref.setVisible(false);
         }
 
-        if (!SettingsConstant.needAospFeature(getContext())) {
+        if (DroidUtils.hasGtvsUiMode()) {
             Log.i(TAG, "hide powerkey_action");
             powerKeyPref.setVisible(false);
         }
@@ -265,10 +268,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             advanced_sound_settings_pref.setVisible(false);
             mboxSoundsPref.setVisible(false);
         }
-
-        // androidT does not have an implementation of these two menus, so they are hidden for now.
-        powerKeyPref.setVisible(false);
-        powerKeyOnModePref.setVisible(false);
     }
 
     @Override
@@ -279,7 +278,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         } else if (TextUtils.equals(preference.getKey(), KEY_KEYSTONE)) {
             startKeyStoneCorrectionActivity(getActivity());
         } else if (TextUtils.equals(preference.getKey(), KEY_ADVANCE_SOUND)) {
-             startAdvancedSoundSettingsActivity(getActivity());
+            startAdvancedSoundSettingsActivity(getActivity());
         }
         return false;
     }
@@ -297,7 +296,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         getActivity().finish();
     }
 
-    public static void startKeyStoneCorrectionActivity(Context context){
+    public static void startKeyStoneCorrectionActivity(Context context) {
         try {
             Intent intent = new Intent();
             intent.setClassName("com.android.keystone", "com.android.keystone.keyStoneCorrectionActivity");
@@ -308,7 +307,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         }
     }
 
-    public static void startAdvancedSoundSettingsActivity(Context context){
+    public static void startAdvancedSoundSettingsActivity(Context context) {
         try {
             Intent intent = new Intent();
             intent.setClassName("com.droidlogic.tv.settings", "com.droidlogic.tv.settings.soundeffect.AdvancedVolumeActivity");
@@ -388,7 +387,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     public boolean isPassthroughInput(String inputId) {
         boolean result = false;
         try {
-            TvInputManager tvInputManager = (TvInputManager)getActivity().getSystemService(Context.TV_INPUT_SERVICE);
+            TvInputManager tvInputManager = (TvInputManager) getActivity().getSystemService(Context.TV_INPUT_SERVICE);
             List<TvInputInfo> inputList = tvInputManager.getTvInputList();
             for (TvInputInfo input : inputList) {
                 if (input.isPassthroughInput() && TextUtils.equals(inputId, input.getId())) {
