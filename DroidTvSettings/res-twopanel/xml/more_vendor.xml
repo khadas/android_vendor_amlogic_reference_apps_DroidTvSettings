@@ -104,4 +104,9 @@
         android:icon="@drawable/ic_settings_more_amlogic_develop"
         android:key="amlogic_developer_options"
         android:title="@string/amlogic_developer_options_title" />
+    <Preference
+        android:icon="@drawable/ic_settings_more"
+        android:key="ai_pq"
+        android:title="@string/ai_pq"
+        android:fragment="com.droidlogic.tv.settings.AiPqFragment"/>
 </PreferenceScreen>
