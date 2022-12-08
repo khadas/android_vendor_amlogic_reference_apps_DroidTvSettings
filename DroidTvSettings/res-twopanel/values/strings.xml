@@ -2214,6 +2214,7 @@
     <string name="key_audio_output_latency_description">(Speaker Spdif HeadPhone)</string>
     <string name="title_key_quick_setting_more_settings">More</string>
     <string name="title_key_quick_setting_picture_mode">Picture</string>
+    <string name="title_key_ai_pq">AI PQ</string>
     <string name="title_key_quick_setting_info">Info</string>
     <string name="title_debug_audio_ui">Debug Audio Setting</string>
     <string name="title_key_dolby_drc_debug">Dolby DRC Mode Debug</string>

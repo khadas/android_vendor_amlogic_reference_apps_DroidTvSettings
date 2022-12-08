@@ -56,7 +56,7 @@ public class QuickSettingActivity extends TvSettingsActivity {
         } else if (eventAction == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_PROG_BLUE){
             if (redLongPress) {
                 Intent intent=new Intent();
-                intent.setClassName("com.android.tv.settings","com.android.tv.settings.soundeffect.DebugAudioUIActivity");
+                intent.setClassName("com.droidlogic.tv.settings","com.droidlogic.tv.settings.soundeffect.DebugAudioUIActivity");
                 startActivity(intent);
                 redLongPress = false;
                 return true;
