@@ -619,6 +619,7 @@ public class DisplayCapabilityManager {
     boolean isSystemHdmiDispMode = checkSysCurrentMode(mDisplayManager.getDisplay(0).getMode(), getPreferredByMode(mode));
     if (isSetDisplayModeByPrivate() || isSystemHdmiDispMode) {
       mSystemControlManager.setMboxOutputMode(userSetMode);
+      saveUserSetMode(userSetMode);
       Log.d(TAG, "setMboxOutputMode");
       return;
     }
@@ -1002,13 +1003,11 @@ public class DisplayCapabilityManager {
   }
 
   /**
-   * AndroidT new action. Need to save ubootenv after setmode notify hwc
+   * AndroidT new action. Need to save ubootenv after setmode notify systemcontrol
    * @param userSetMode user-set mode
    */
   private void saveUserSetMode (String userSetMode) {
-    if (!userSetMode.equals(mSystemControlManager.getBootenv(ENV_SAVE_USER_MODE, null))) {
-      mSystemControlManager.setBootenv(ENV_SAVE_USER_MODE, userSetMode);
-    }
+    mSystemControlManager.setBootDisplayConfig(userSetMode);
   }
 
   /**
