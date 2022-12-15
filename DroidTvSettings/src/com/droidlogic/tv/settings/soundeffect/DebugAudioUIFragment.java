@@ -41,6 +41,7 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
     private static final String KEY_BALANCE_DEBUG = "key_balance_debug";
     private static final String KEY_TREBLEBASS_DEBUG = "key_treblebass_debug";
     private static final String KEY_VIRTUAL_SURROUND_DEBUG = "key_virtual_surround_debug";
+    private static final String KEY_DPE_DEBUG = "key_dpe_debug";
     private static final String KEY_VIRTUAL_X_DEBUG = "key_virtual_x_debug";
     private static final String KEY_DAP_2_DEBUG = "key_dap_2_debug";
     private static final String KEY_DOLBY_DRC_DEBUG = "key_dolby_drc_debug";
@@ -53,6 +54,7 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
     private TwoStatePreference mBalanceDebug;
     private TwoStatePreference mTreblebassDebug;
     private TwoStatePreference mVirtualSDebug;
+    private TwoStatePreference mDpeDebug;
     private TwoStatePreference mVirtualXDebug;
     private TwoStatePreference mDap2Debug;
     private TwoStatePreference mDolbyDrcDebug;
@@ -111,6 +113,8 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
 
         mVirtualSDebug = (TwoStatePreference) findPreference(KEY_VIRTUAL_SURROUND_DEBUG);
         mVirtualSDebug.setOnPreferenceChangeListener(this);
+        mDpeDebug = (TwoStatePreference) findPreference(KEY_DPE_DEBUG);
+        mDpeDebug.setOnPreferenceChangeListener(this);
 
         mVirtualXDebug = (TwoStatePreference) findPreference(KEY_VIRTUAL_X_DEBUG);
         mVirtualXDebug.setOnPreferenceChangeListener(this);
@@ -167,6 +171,8 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_SURROUND_UI);
         mVirtualSDebug.setChecked(enable);
 
+        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DPE_UI);
+        mDpeDebug.setChecked(enable);
         enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_X_UI);
         mVirtualXDebug.setChecked(enable);
 
@@ -207,6 +213,10 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
             case KEY_VIRTUAL_SURROUND_DEBUG:
                 isChecked = mVirtualSDebug.isChecked();
                 mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_SURROUND_UI, isChecked);
+                break;
+            case KEY_DPE_DEBUG:
+                isChecked = mDpeDebug.isChecked();
+                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_DPE_UI, isChecked);
                 break;
             case KEY_VIRTUAL_X_DEBUG:
                 isChecked = mVirtualXDebug.isChecked();

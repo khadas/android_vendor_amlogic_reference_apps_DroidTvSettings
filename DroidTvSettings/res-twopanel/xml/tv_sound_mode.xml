@@ -61,6 +61,10 @@
             android:fragment="com.droidlogic.tv.settings.soundeffect.DtsVirualXSettingFragment"
             android:key="key_dts_virtualx_settings"
             android:title="@string/title_tv_dts_virtualx" />
+        <Preference
+            android:fragment="com.droidlogic.tv.settings.soundeffect.DpeModeFragment"
+            android:key="key_dpe_audio_effect"
+            android:title="@string/title_dpe_audio_effect" />
         <ListPreference
             android:key="tv_sound_virtual_surround"
             android:persistent="false"

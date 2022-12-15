@@ -73,6 +73,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private static final String KEY_DOLBY_DAP_EFFECT_2_4                    = "key_dolby_audio_processing_2_4";
     private static final String AUDIO_ONLY                                  = "tv_sound_audio_only";
     private static final String KEY_DTS_VX                                  = "key_dts_virtualx_settings";
+    private static final String KEY_DPE                                     = "key_dpe_audio_effect";
     private static final String KEY_AUDIO_LATENCY                           = "key_audio_latency";
     private static final String KEY_TV_SOUND_AUDIO_DEVICE                   = "key_tv_sound_output_device";
 
@@ -150,6 +151,8 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             virtualsurround.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_SURROUND_UI));
 
             final Preference dts_vx = (Preference) findPreference(KEY_DTS_VX);
+            final Preference dpe = (Preference) findPreference(KEY_DPE);
+            dpe.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DPE_UI));
             dts_vx.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_X_UI));
             final Preference dap24Pref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT_2_4);
             dap24Pref.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI));
@@ -249,6 +252,8 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         audio_only.setVisible(false); //the function is not finish, temporarily hidden
 
         final Preference dts_vx = (Preference) findPreference(KEY_DTS_VX);
+        final Preference dpe = (Preference) findPreference(KEY_DPE);
+        dpe.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DPE_UI));
         dts_vx.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_X_UI));
 
         final Preference audio_latency = (Preference) findPreference(KEY_AUDIO_LATENCY);

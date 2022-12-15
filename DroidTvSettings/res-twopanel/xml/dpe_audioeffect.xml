@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2015 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/title_dpe_audio_effect">
+
+    <SwitchPreference
+        android:key="key_dpe_enabled"
+        android:persistent="false"
+        android:title="@string/title_dpe_enabled" />
+    <SeekBarPreference
+        android:key="key_dpe_inputgain"
+        android:persistent="false"
+        android:min="-10"
+        android:max="10" />
+
+    <!-- pre eq -->
+    <SwitchPreference
+        android:key="key_dpe_pre_eq"
+        android:title="@string/title_dpe_pre_eq"
+        android:persistent="false" />
+
+    <!-- pre eq  band 0 -->
+    <SwitchPreference
+        android:key="key_dpe_pre_eq_band_0"
+        android:persistent="false"
+        android:title="@string/title_dpe_pre_eq_band_0" />
+
+    <SeekBarPreference
+        android:key="key_dpe_pre_eq_band_0_cutofffrequency"
+        android:persistent="false"
+        android:min="100"
+        android:max="9000" />
+    <SeekBarPreference
+        android:key="key_dpe_pre_eq_band_0_gain"
+        android:persistent="false"
+        android:min="-5"
+        android:max="5" />
+
+    <!-- pre eq  band 1-->
+    <SwitchPreference
+        android:key="key_dpe_pre_eq_band_1"
+        android:persistent="false"
+        android:title="@string/title_dpe_pre_eq_band_1" />
+    <SeekBarPreference
+        android:key="key_dpe_pre_eq_band_1_cutofffrequency"
+        android:persistent="false"
+        android:min="100"
+        android:max="9000" />
+    <SeekBarPreference
+        android:key="key_dpe_pre_eq_band_1_gain"
+        android:persistent="false"
+        android:min="-5"
+        android:max="5" />
+
+    <!-- pre eq  band 2-->
+    <SwitchPreference
+        android:key="key_dpe_pre_eq_band_2"
+        android:persistent="false"
+        android:title="@string/title_dpe_pre_eq_band_2" />
+    <SeekBarPreference
+        android:key="key_dpe_pre_eq_band_2_cutofffrequency"
+        android:persistent="false"
+        android:min="100"
+        android:max="9000" />
+    <SeekBarPreference
+        android:key="key_dpe_pre_eq_band_2_gain"
+        android:persistent="false"
+        android:min="-5"
+        android:max="5" />
+
+    <!-- mbc -->
+    <SwitchPreference
+        android:key="key_dpe_mbc"
+        android:persistent="false"
+        android:title="@string/title_dpe_mbc" />
+
+    <!-- mbc band 0 -->
+    <SwitchPreference
+        android:key="key_dpe_mbc_band_0"
+        android:persistent="false"
+        android:title="@string/title_dpe_mbc_band_0" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_0_cutoffFrequency"
+        android:persistent="false"
+        android:min="100"
+        android:max="9000" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_0_attacktime"
+        android:persistent="false"
+        android:min="0"
+        android:max="2000" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_0_releasetime"
+        android:persistent="false"
+        android:min="0"
+        android:max="2000" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_0_ratio"
+        android:persistent="false"
+        android:min="1"
+        android:max="20" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_0_threshold"
+        android:persistent="false"
+        android:min="-60"
+        android:max="0" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_0_kneewidth"
+        android:persistent="false"
+        android:min="0"
+        android:max="10" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_0_noisegatethreshold"
+        android:persistent="false"
+        android:min="-80"
+        android:max="-20" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_0_expanderratio"
+        android:persistent="false"
+        android:min="1"
+        android:max="30" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_0_pregain"
+        android:persistent="false"
+        android:min="-10"
+        android:max="10" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_0_postgain"
+        android:persistent="false"
+        android:min="-10"
+        android:max="10" />
+
+    <!-- mbc band 1 -->
+    <SwitchPreference
+        android:key="key_dpe_mbc_band_1"
+        android:persistent="false"
+        android:title="@string/title_dpe_mbc_band_1" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_1_cutoffFrequency"
+        android:persistent="false"
+        android:min="100"
+        android:max="9000" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_1_attacktime"
+        android:persistent="false"
+        android:min="0"
+        android:max="2000" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_1_releasetime"
+        android:persistent="false"
+        android:min="0"
+        android:max="2000" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_1_ratio"
+        android:persistent="false"
+        android:min="1"
+        android:max="20" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_1_threshold"
+        android:persistent="false"
+        android:min="-60"
+        android:max="0" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_1_kneewidth"
+        android:persistent="false"
+        android:min="0"
+        android:max="10" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_1_noisegatethreshold"
+        android:persistent="false"
+        android:min="-80"
+        android:max="-20" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_1_expanderratio"
+        android:persistent="false"
+        android:min="1"
+        android:max="30" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_1_pregain"
+        android:persistent="false"
+        android:min="-10"
+        android:max="10" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_1_postgain"
+        android:persistent="false"
+        android:min="-10"
+        android:max="10" />
+
+    <!-- mbc band 2 -->
+    <SwitchPreference
+        android:key="key_dpe_mbc_band_2"
+        android:persistent="false"
+        android:title="@string/title_dpe_mbc_band_2" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_2_cutoffFrequency"
+        android:persistent="false"
+        android:min="100"
+        android:max="9000" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_2_attacktime"
+        android:persistent="false"
+        android:min="0"
+        android:max="2000" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_2_releasetime"
+        android:persistent="false"
+        android:min="0"
+        android:max="2000" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_2_ratio"
+        android:persistent="false"
+        android:min="1"
+        android:max="20" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_2_threshold"
+        android:persistent="false"
+        android:min="-60"
+        android:max="0" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_2_kneewidth"
+        android:persistent="false"
+        android:min="0"
+        android:max="10" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_2_noisegatethreshold"
+        android:persistent="false"
+        android:min="-80"
+        android:max="-20" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_2_expanderratio"
+        android:persistent="false"
+        android:min="1"
+        android:max="30" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_2_pregain"
+        android:persistent="false"
+        android:min="-10"
+        android:max="10" />
+    <SeekBarPreference
+        android:key="key_dpe_mbc_band_2_postgain"
+        android:persistent="false"
+        android:min="-10"
+        android:max="10" />
+
+    <!-- post eq -->
+    <SwitchPreference
+        android:key="key_dpe_post_eq"
+        android:persistent="false"
+        android:title="@string/title_dpe_post_eq" />
+
+    <!-- post eq  band 0-->
+    <SwitchPreference
+        android:key="key_dpe_post_eq_band_0"
+        android:persistent="false"
+        android:title="@string/title_dpe_post_eq_band_0" />
+    <SeekBarPreference
+        android:key="key_dpe_post_eq_band_0_cutofffrequency"
+        android:persistent="false"
+        android:min="100"
+        android:max="9000" />
+    <SeekBarPreference
+        android:key="key_dpe_post_eq_band_0_gain"
+        android:persistent="false"
+        android:min="-5"
+        android:max="5" />
+
+    <!-- post eq  band 1-->
+    <SwitchPreference
+        android:key="key_dpe_post_eq_band_1"
+        android:persistent="false"
+        android:title="@string/title_dpe_post_eq_band_1" />
+    <SeekBarPreference
+        android:key="key_dpe_post_eq_band_1_cutofffrequency"
+        android:persistent="false"
+        android:min="100"
+        android:max="9000" />
+    <SeekBarPreference
+        android:key="key_dpe_post_eq_band_1_gain"
+        android:persistent="false"
+        android:min="-5"
+        android:max="5" />
+
+    <!-- post eq  band 2-->
+    <SwitchPreference
+        android:key="key_dpe_post_eq_band_2"
+        android:persistent="false"
+        android:title="@string/title_dpe_post_eq_band_2" />
+    <SeekBarPreference
+        android:key="key_dpe_post_eq_band_2_cutofffrequency"
+        android:persistent="false"
+        android:min="100"
+        android:max="9000" />
+    <SeekBarPreference
+        android:key="key_dpe_post_eq_band_2_gain"
+        android:persistent="false"
+        android:min="-5"
+        android:max="5" />
+
+    <!-- limiter -->
+    <SwitchPreference
+        android:key="key_dpe_limiter"
+        android:persistent="false"
+        android:title="@string/title_dpe_limiter" />
+    <SeekBarPreference
+        android:key="key_dpe_limiter_attacktime"
+        android:persistent="false"
+        android:min="0"
+        android:max="2000" />
+    <SeekBarPreference
+        android:key="key_dpe_limiter_releasetime"
+        android:persistent="false"
+        android:min="0"
+        android:max="2000" />
+    <SeekBarPreference
+        android:key="key_dpe_limiter_ratio"
+        android:persistent="false"
+        android:min="1"
+        android:max="30" />
+    <SeekBarPreference
+        android:key="key_dpe_limiter_threshold"
+        android:persistent="false"
+        android:min="-60"
+        android:max="0" />
+    <SeekBarPreference
+        android:key="key_dpe_limiter_postgain"
+        android:persistent="false"
+        android:min="-10"
+        android:max="10" />
+
+</PreferenceScreen>

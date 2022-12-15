@@ -2213,6 +2213,78 @@
     <string name="title_tv_sound_audio_settings">Audio Settings</string>
     <string name="title_tv_sound_audio_settings_by_source">Audio Latency Settings by source id</string>
 
+    <!-- DPE setting title -->
+    <string name="title_dpe_audio_effect">DPE</string>
+    <string name="title_dpe_enabled">DPE Enable</string>
+    <string name="title_dpe_inputgain">Input Gain</string>
+
+    <!-- DPE Pre EQ title-->
+    <string name="title_dpe_pre_eq">Pre EQ</string>
+    <string name="title_dpe_pre_eq_band_0">Pre EQ Band0</string>
+    <string name="title_dpe_pre_eq_band_0_cutofffrequency">Pre EQ Band0 CutoffFrequency</string>
+    <string name="title_dpe_pre_eq_band_0_gain">Pre EQ Band0 Gain</string>
+    <string name="title_dpe_pre_eq_band_1">Pre EQ Band1</string>
+    <string name="title_dpe_pre_eq_band_1_cutofffrequency">Pre EQ Band1 CutoffFrequency</string>
+    <string name="title_dpe_pre_eq_band_1_gain">Pre EQ Band1 Gain</string>
+    <string name="title_dpe_pre_eq_band_2">Pre EQ Band2</string>
+    <string name="title_dpe_pre_eq_band_2_cutofffrequency">Pre EQ Band2 CutoffFrequency</string>
+    <string name="title_dpe_pre_eq_band_2_gain">Pre EQ Band2 Gain</string>
+
+    <!-- DPE MBC title-->
+    <string name="title_dpe_mbc">MBC</string>
+    <string name="title_dpe_mbc_band_0">MBC Band0</string>
+    <string name="title_dpe_mbc_band_0_cutoffFrequency">MBC Band0 CutoffFrequency</string>
+    <string name="title_dpe_mbc_band_0_attacktime">MBC Band0 AttackTime</string>
+    <string name="title_dpe_mbc_band_0_releasetime">MBC Band0 ReleaseTime</string>
+    <string name="title_dpe_mbc_band_0_ratio">MBC Band0 Ratio</string>
+    <string name="title_dpe_mbc_band_0_threshold">MBC Band0 Threshold</string>
+    <string name="title_dpe_mbc_band_0_kneewidth">MBC Band0 KneeWidth</string>
+    <string name="title_dpe_mbc_band_0_noisegatethreshold">MBC Band0 NoiseGateThreshold</string>
+    <string name="title_dpe_mbc_band_0_expanderratio">MBC Band0 ExpanderRatio</string>
+    <string name="title_dpe_mbc_band_0_pregain">MBC Band0 Pre Gain</string>
+    <string name="title_dpe_mbc_band_0_postgain">MBC Band Post0 Gain</string>
+    <string name="title_dpe_mbc_band_1">MBC Band1</string>
+    <string name="title_dpe_mbc_band_1_cutoffFrequency">MBC Band1 CutoffFrequency</string>
+    <string name="title_dpe_mbc_band_1_attacktime">MBC Band1 AttackTime</string>
+    <string name="title_dpe_mbc_band_1_releasetime">MBC Band1 ReleaseTime</string>
+    <string name="title_dpe_mbc_band_1_ratio">MBC Band1 Ratio</string>
+    <string name="title_dpe_mbc_band_1_threshold">MBC Band1 Threshold</string>
+    <string name="title_dpe_mbc_band_1_kneewidth">MBC Band1 KneeWidth</string>
+    <string name="title_dpe_mbc_band_1_noisegatethreshold">MBC Band1 NoiseGateThreshold</string>
+    <string name="title_dpe_mbc_band_1_expanderratio">MBC Band1 ExpanderRatio</string>
+    <string name="title_dpe_mbc_band_1_pregain">MBC Band1 Pre Gain</string>
+    <string name="title_dpe_mbc_band_1_postgain">MBC Band1 Post Gain</string>
+    <string name="title_dpe_mbc_band_2">MBC Band2</string>
+    <string name="title_dpe_mbc_band_2_cutoffFrequency">MBC Band2 CutoffFrequency</string>
+    <string name="title_dpe_mbc_band_2_attacktime">MBC Band2 AttackTime</string>
+    <string name="title_dpe_mbc_band_2_releasetime">MBC Band2 ReleaseTime</string>
+    <string name="title_dpe_mbc_band_2_ratio">MBC Band2 Ratio</string>
+    <string name="title_dpe_mbc_band_2_threshold">MBC Band2 Threshold</string>
+    <string name="title_dpe_mbc_band_2_kneewidth">MBC Band2 KneeWidth</string>
+    <string name="title_dpe_mbc_band_2_noisegatethreshold">MBC Band2 NoiseGateThreshold</string>
+    <string name="title_dpe_mbc_band_2_expanderratio">MBC Band2 ExpanderRatio</string>
+    <string name="title_dpe_mbc_band_2_pregain">MBC Band2 Pre Gain</string>
+    <string name="title_dpe_mbc_band_2_postgain">MBC Band2 Post Gain</string>
+
+    <!-- DPE Post EQ title-->
+    <string name="title_dpe_post_eq">Post EQ</string>
+    <string name="title_dpe_post_eq_band_0">Post EQ Band0</string>
+    <string name="title_dpe_post_eq_band_0_cutofffrequency">Post EQ Band0 CutoffFrequency</string>
+    <string name="title_dpe_post_eq_band_0_gain">Post EQ Band0 Gain</string>
+    <string name="title_dpe_post_eq_band_1">Post EQ Band1</string>
+    <string name="title_dpe_post_eq_band_1_cutofffrequency">Post EQ Band1 CutoffFrequency</string>
+    <string name="title_dpe_post_eq_band_1_gain">Post EQ Band1 Gain</string>
+    <string name="title_dpe_post_eq_band_2">Post EQ Band2</string>
+    <string name="title_dpe_post_eq_band_2_cutofffrequency">Post EQ Band2 CutoffFrequency</string>
+    <string name="title_dpe_post_eq_band_2_gain">Post EQ Band2 Gain</string>
+
+    <!-- DPE Limiter title-->
+    <string name="title_dpe_limiter">Limiter</string>
+    <string name="title_dpe_limiter_attacktime">Limiter AttackTime</string>
+    <string name="title_dpe_limiter_releasetime">Limiter ReleaseTime</string>
+    <string name="title_dpe_limiter_ratio">Limiter Ratio</string>
+    <string name="title_dpe_limiter_threshold">Limiter Threshold</string>
+    <string name="title_dpe_limiter_postgain">Limiter Post Gain</string>
 
     <!-- debug audio UI title-->
     <string name="title_quick_setting">Quick Setting</string>
