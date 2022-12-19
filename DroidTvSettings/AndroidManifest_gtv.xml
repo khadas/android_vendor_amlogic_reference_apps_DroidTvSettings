@@ -87,12 +87,12 @@
 
     <application
         android:allowClearUserData="false"
-        android:banner="@drawable/ic_launcher_banner_settings"
+        android:banner="@drawable/ic_launcher_banner_settings_gtv"
         android:defaultToDeviceProtectedStorage="true"
         android:directBootAware="true"
         android:forceQueryable="true"
-        android:icon="@drawable/logo_settings_color_48dp"
-        android:label="@string/settings_app_name"
+        android:icon="@drawable/logo_settings_color_48dp_gtv"
+        android:label="@string/settings_app_name_gtv"
         android:supportsRtl="true"
         android:theme="@style/Theme.Settings"
         android:usesCleartextTraffic="true">
@@ -108,15 +108,24 @@
               android:configChanges="keyboard|keyboardHidden|navigation"
               android:excludeFromRecents="true"
               android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
+
+        <!--
+          * GTV's system droidTvSettings originally does not display launcher activity,
+          * but since Google launch x removed the input entry, it is a helpless move to use
+          * droidTvSettings' launcher activity as the entry point to input from launch x.
+         -->
         <activity android:name=".TvSourceActivity"
+              android:launchMode="singleInstance"
               android:theme="@style/TvSettingsActivityTheme"
               android:configChanges="keyboard|keyboardHidden|navigation"
               android:excludeFromRecents="true"
               android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
              android:excludeFromRecents="true"
