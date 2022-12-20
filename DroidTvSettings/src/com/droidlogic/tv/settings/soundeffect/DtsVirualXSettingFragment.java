@@ -59,7 +59,7 @@ public class DtsVirualXSettingFragment extends SettingsPreferenceFragment implem
         mVirtualXEffectPref = (ListPreference) findPreference(KEY_TV_DTS_VIRTUALX_EFFECT);
         mVirtualXEffectPref.setValueIndex(mAudioEffectManager.getDtsVirtualXMode());
         mVirtualXEffectPref.setOnPreferenceChangeListener(this);
-        mVirtualXEffectPref.setEnabled(mAudioEffectManager.isSupportVirtualX());
+        //mVirtualXEffectPref.setEnabled(mAudioEffectManager.isSupportVirtualX());
 
         //mTruVolumeHdPref = (TwoStatePreference) findPreference(KEY_TV_DTS_TRUVOLUMEHD_EFFECT);
         //mTruVolumeHdPref.setChecked(mAudioEffectManager.getDtsTruVolumeHdEnable());

@@ -122,13 +122,6 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         mDap2Debug = (TwoStatePreference) findPreference(KEY_DAP_2_DEBUG);
         mDap2Debug.setOnPreferenceChangeListener(this);
 
-        if (mOutputModeManager.isAudioSupportMs12System()) {
-            mHpeqDebug.setVisible(false);
-            mHpeqBandNumDebug.setVisible(false);
-        } else {
-            mDap2Debug.setVisible(false);
-        }
-
         mDolbyDrcDebug = (TwoStatePreference) findPreference(KEY_DOLBY_DRC_DEBUG);
         mDolbyDrcDebug.setOnPreferenceChangeListener(this);
 

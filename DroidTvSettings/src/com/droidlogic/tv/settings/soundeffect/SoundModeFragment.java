@@ -156,13 +156,10 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             dts_vx.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_X_UI));
             final Preference dap24Pref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT_2_4);
             dap24Pref.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI));
-            if (mOutputModeManager.isAudioSupportMs12System()) {
-                eqmode.setVisible(false);
-            } else {
-                dap24Pref.setVisible(false);
-            }
+
             final Preference audio_latency = (Preference) findPreference(KEY_AUDIO_LATENCY);
             audio_latency.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_AUDIO_LATENCY_UI));
+
         }
         refreshPref();
     }
@@ -227,12 +224,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         //final Preference dapPref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT);
         final Preference dap24Pref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT_2_4);
         dap24Pref.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI));
-        if (mOutputModeManager.isAudioSupportMs12System()) {
-            eqmode.setVisible(false);
-        } else {
-            //dapPref.setVisible(false);
-            dap24Pref.setVisible(false);
-        }
+
         final ListPreference virtualsurround = (ListPreference) findPreference(TV_VIRTUAL_SURROUND_SETTINGS);
         virtualsurround.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_SURROUND_UI));
         virtualsurround.setValueIndex(mAudioEffectManager.getVirtualSurroundStatus());
