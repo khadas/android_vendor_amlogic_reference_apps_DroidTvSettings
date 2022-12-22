@@ -564,17 +564,14 @@ public class DisplayCapabilityManager {
         return mOutputModeManager.isBestOutputmode();
   }
 
-  public void change2BestMode(String mode) {
-    // Interface abandoned
-    // mOutputModeManager.setBestMode(mode);
-  }
-
   public void change2BestMode() {
-    if (!DISPLAY_MODE_TRUE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_FALSE))) {
-      mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE);
+    String systemBestOutputMode = mSystemControlManager.getPreferredDisplayConfig();
+    if (isSetDisplayModeByPrivate(systemBestOutputMode)) {
+      mSystemControlManager.clearBootDisplayConfig("true");
+      setUserPreferredDisplayModeByPrivate(systemBestOutputMode, true);
+    } else {
+      mDisplayManager.clearGlobalUserPreferredDisplayMode();
     }
-    String systemBestOutputMode = mSystemControlManager.getPrefHdmiDispMode();
-    setUserPreferredDisplayMode(systemBestOutputMode);
   }
 
   /**
@@ -596,11 +593,23 @@ public class DisplayCapabilityManager {
     return display.getSystemPreferredDisplayMode() != null;
   }
 
-  public void setResolutionAndRefreshRateByMode(final String mode) {
+  public void setResolutionAndRefreshRateByMode(final String userSetMode) {
     if (!DISPLAY_MODE_FALSE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
       mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_FALSE);
     }
-    setUserPreferredDisplayMode(mode);
+    if (isSetDisplayModeByPrivate(userSetMode)) {
+      setUserPreferredDisplayModeByPrivate(userSetMode, false);
+    } else {
+      setUserPreferredDisplayMode(userSetMode);
+    }
+  }
+
+  private void setUserPreferredDisplayModeByPrivate(String userSetMode, boolean isBestMode) {
+    mSystemControlManager.setMboxOutputMode(userSetMode);
+    if (!isBestMode) {
+      saveUserSetMode(userSetMode);
+    }
+    Log.d(TAG, "Switching mode using private methods");
   }
 
   /**
@@ -613,17 +622,6 @@ public class DisplayCapabilityManager {
   private void setUserPreferredDisplayMode(String userSetMode) {
     Log.i(TAG, "userSetMode: " + userSetMode);
     String mode = filterHdmiModes(userSetMode);
-
-    // The framework filters when the system is at the current resolution, so use SystemControl to set it.
-    // Note: Mode filtering is not required when the systemcontrol is used to set resolution
-    boolean isSystemHdmiDispMode = checkSysCurrentMode(mDisplayManager.getDisplay(0).getMode(), getPreferredByMode(mode));
-    if (isSetDisplayModeByPrivate() || isSystemHdmiDispMode) {
-      mSystemControlManager.setMboxOutputMode(userSetMode);
-      saveUserSetMode(userSetMode);
-      Log.d(TAG, "setMboxOutputMode");
-      return;
-    }
-
     String  envIsBestMode = mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE);
     Display.Mode[] supportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
 
@@ -1014,7 +1012,12 @@ public class DisplayCapabilityManager {
    * For some special scenarios such as double screen, the framework does not support resolution
    * switching, so use amlogic private way, later this problem will promote Google fix.
    */
-  private boolean isSetDisplayModeByPrivate() {
-    return DroidUtils.hasBdsUiMode();
+  private boolean isSetDisplayModeByPrivate(String userSetMode) {
+    // The framework filters when the system is at the current resolution, so use SystemControl to set it.
+    // Note: Mode filtering is not required when the systemcontrol is used to set resolution
+    boolean isSystemHdmiDispMode = checkSysCurrentMode(
+            mDisplayManager.getDisplay(0).getMode(),getPreferredByMode(userSetMode));
+
+    return DroidUtils.hasBdsUiMode() || isSystemHdmiDispMode;
   }
 }
