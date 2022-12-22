@@ -92,6 +92,7 @@
         <item>TV</item>
     </string-array>
 
+    <string name="channels_and_inputs_slice_uri" translatable="false">content://com.google.android.tv.settings.vendor.sliceprovider/channels_and_inputs</string>
     <string name="cec_settings_slice_uri" translatable="false">content://com.google.android.tv.settings.displaysound.hdmi.sliceprovider/switch_cec</string>
     <string name="match_content_slice_uri" translatable="false">content://com.google.android.tv.settings.hdr.sliceprovider/match_content</string>
     <string name="hdr_and_color_format_slice_uri" translatable="false">content://com.google.android.tv.settings.hdr.sliceprovider/hdr_and_color_format</string>
@@ -135,7 +136,7 @@
     <!-- Title for "Channels & Inputs" settings [CHAR LIMIT=60] -->
     <string name="channels_and_inputs_title">Channels &amp; Inputs</string>
     <!-- Summary for "Channels & Inputs" settings [CHAR LIMIT=60] -->
-    <string name="channels_and_inputs_summary">Channels, external inputs</string>
+    <string name="channels_and_inputs_summary">Signal Source</string>
     <!-- Title for "Channels" settings [CHAR LIMIT=60] -->
     <string name="channels_settings_title">Channels</string>
     <!-- Title for "External inputs" settings [CHAR LIMIT=60] -->
@@ -224,5 +225,19 @@
     <!-- Title for preference which when clicked lets the user configure advanced display settings. [CHAR LIMIT=50] -->
     <string name="advanced_display_settings_title">Advanced display settings</string>
     <!-- Amlogic add end -->
+
+    <!-- Title for preference which when clicked lets the user configure text scaling. [CHAR LIMIT=50] -->
+    <string name="font_scale_settings_title">Text scaling</string>
+    <!-- Title for preference for forcing a display's frame
+    rate to match the content's frame rate. [CHAR LIMIT=60] -->
+    <string name="match_content_frame_rate_title">Match content frame rate</string>
+    <!-- Title for preference for Resolution selection. [CHAR LIMIT=50] -->
+    <string name="resolution_selection_title">Resolution</string>
+    <!-- Title of settings entry for default audio output settings. -->
+    <string name="default_audio_output_settings_title" translatable="true"/>
+    <string name="default_audio_output_settings_slice_uri" translatable="false"/>
+    <string name="tv_source">Signal Source</string>
+    <!-- Title of channels and inputs page [CHAR LIMIT=60] -->
+    <string name="channels_and_inputs">Channels &amp; Inputs</string>
 
 </resources>

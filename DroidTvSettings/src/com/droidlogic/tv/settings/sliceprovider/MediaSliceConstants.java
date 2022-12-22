@@ -33,6 +33,7 @@ public class MediaSliceConstants {
       "com.google.android.chromecast.chromecastservice.sliceprovider.SHOW_UNSUPPORTED_FORMAT_CHNAGE_WARNING";
 
   public static final String HDR_AUTHORITY = "com.google.android.tv.settings.hdr.sliceprovider";
+  public static final String CHANNELS_AND_INPUTS = "com.google.android.tv.settings.vendor.sliceprovider";
   public static final String DEVICE_POWER_BOOT = "com.google.android.tv.settings.powerbehavior.sliceprovider";
   public static final String DISPLAYSOUND_HDMI_AUTHORITY = "com.google.android.tv.settings.displaysound.hdmi.sliceprovider";
   public static final String ADVANCED_SOUND_AUTHORITY =
@@ -43,6 +44,7 @@ public class MediaSliceConstants {
   public static final String ACTION_AUTO_BEST_RESOLUTIONS_ENABLED = "auto_best_resolution";
   public static final String RESOLUTION_PATH = "resolution";
   public static final String DEVICE_POWER_BEHAVIOR_PATH = "power_boot_resume";
+  public static final String CHANNELS_AND_INPUTS_PATH = "channels_and_inputs";
   public static final String HDR_AND_COLOR_FORMAT_PATH = "hdr_and_color_format";
   public static final String HDR_FORMAT_PREFERENCE_PATH = "hdr_format_preference";
   public static final String COLOR_ATTRIBUTE_PATH = "color_attribute";
@@ -56,7 +58,8 @@ public class MediaSliceConstants {
 
   public static final Uri MATCH_CONTENT_URI =
       Uri.parse("content://" + HDR_AUTHORITY + "/" + MATCH_CONTENT_PATH);
-
+  public static final Uri CHANNELS_AND_INPUTS_URI =
+          Uri.parse("content://" + CHANNELS_AND_INPUTS + "/" + CHANNELS_AND_INPUTS_PATH);
   public static final Uri DEVICE_POWER_BOOT_URI =
       Uri.parse("content://" + DEVICE_POWER_BOOT + "/" + DEVICE_POWER_BEHAVIOR_PATH);
   public static final Uri RESOLUTION_URI =

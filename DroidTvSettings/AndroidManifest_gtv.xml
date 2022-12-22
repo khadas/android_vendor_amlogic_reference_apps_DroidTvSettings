@@ -331,6 +331,16 @@
             </intent-filter>
         </provider>
 
+        <provider
+            android:authorities="com.google.android.tv.settings.vendor.sliceprovider"
+            android:name="com.droidlogic.tv.settings.sliceprovider.TvInputSliceProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.app.slice.category.SLICE"/>
+            </intent-filter>
+        </provider>
+
         <activity
              android:theme="@android:style/Theme.NoTitleBar"
              android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothActionActivity"
@@ -375,6 +385,11 @@
 
         <receiver
             android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.HdmiCecSliceBroadcastReceiver"
+            android:exported="false">
+        </receiver>
+
+        <receiver
+            android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.TvInputSliceBroadcastReceiver"
             android:exported="false">
         </receiver>
 

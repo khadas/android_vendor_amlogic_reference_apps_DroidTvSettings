@@ -2004,7 +2004,7 @@
     <!-- Title for "Channels & Inputs" settings [CHAR LIMIT=60] -->
     <string name="channels_and_inputs_title">Channels &amp; Inputs</string>
     <!-- Summary for "Channels & Inputs" settings [CHAR LIMIT=60] -->
-    <string name="channels_and_inputs_summary">Channels, external inputs</string>
+    <string name="channels_and_inputs_summary">Signal Source</string>
     <!-- Title for "Channels" settings [CHAR LIMIT=60] -->
     <string name="channels_settings_title">Channels</string>
     <!-- Title for "External inputs" settings [CHAR LIMIT=60] -->
@@ -2029,6 +2029,8 @@
     <string name="font_sans_serif_light" translatable="false">sans-serif-light</string>
     <string name="font_sans_serif_thin" translatable="false">sans-serif-thin</string>
     <string name="font_sans_serif_condensed" translatable="false">sans-serif-condensed</string>
+    <!-- Title of channels and inputs page [CHAR LIMIT=60] -->
+    <string name="channels_and_inputs">Channels &amp; Inputs</string>
 
     <!-- DroidLogic start -->
     <!-- Preference which manages more settings. [CHAR LIMIT=50] -->
