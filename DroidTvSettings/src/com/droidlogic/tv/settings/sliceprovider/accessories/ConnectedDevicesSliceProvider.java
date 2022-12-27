@@ -285,12 +285,10 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         // Update "connect/disconnect preference"
         if (cachedDevice != null && !cachedDevice.isBusy()) {
             // Whether the device is actually connected from CachedBluetoothDevice's perceptive.
-            boolean isConnected =false;
-            //if(device.getType() == BluetoothDevice.DEVICE_TYPE_LE || device.getType() == BluetoothDevice.DEVICE_TYPE_DUAL){
-            //    isConnected = AccessoryUtils.isConnected(device) && cachedDevice.isConnected();
-            //}else{
-                   isConnected = AccessoryUtils.isConnected(device);
-            //}
+            boolean isConnected = AccessoryUtils.isConnected(device) && cachedDevice.isConnected();
+            Log.d(TAG, "AccessoryUtils.isConnected:" + AccessoryUtils.isConnected(device)
+                    + " cachedDevice.isConnected:" + cachedDevice.isConnected());
+
             RowBuilder connectionActionPref = new RowBuilder()
                     .setKey(isConnected ? KEY_DISCONNECT : KEY_CONNECT)
                     .setTitle(getString(isConnected
@@ -570,16 +568,10 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
     private PreferenceSliceBuilder.RowBuilder createBtDeviceSlicePreference(
             Context context, BluetoothDevice device) {
         PreferenceSliceBuilder.RowBuilder pref = new PreferenceSliceBuilder.RowBuilder();
-        boolean isConnected =false;
-        //if(device.getType() == BluetoothDevice.DEVICE_TYPE_LE || device.getType() == BluetoothDevice.DEVICE_TYPE_DUAL){
-        //    isConnected = AccessoryUtils.isConnected(device)
-        //        && AccessoryUtils.getCachedBluetoothDevice(getContext(), device) != null
-         //        && AccessoryUtils.getCachedBluetoothDevice(getContext(), device).isConnected();
-        //}else{
-            isConnected = AccessoryUtils.isConnected(device)
-                && AccessoryUtils.getCachedBluetoothDevice(getContext(), device) != null;
-        //}
-        Log.d(TAG,"AccessoryUtils.isConnected: "+(AccessoryUtils.isConnected(device))+" AccessoryUtils.getCachedBluetoothDevice:"+(AccessoryUtils.getCachedBluetoothDevice(getContext(), device) != null));
+        boolean isConnected = AccessoryUtils.isConnected(device)
+                 && AccessoryUtils.getCachedBluetoothDevice(getContext(), device).isConnected();
+        Log.d(TAG, "createBtDeviceSlicePreference isConnected:" + isConnected);
+
         pref.setKey(device.getAddress());
         pref.setTitle(AccessoryUtils.getLocalName(device));
         pref.setSubtitle(
