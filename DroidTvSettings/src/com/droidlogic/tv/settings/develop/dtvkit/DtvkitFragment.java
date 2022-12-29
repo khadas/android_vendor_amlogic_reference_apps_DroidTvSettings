@@ -162,11 +162,11 @@ public class DtvkitFragment extends SettingsPreferenceFragment implements Prefer
         Fragment fragment = getCallbackFragment();
         if (fragment instanceof LeanbackSettingsFragmentCompat) {
             ((LeanbackSettingsFragmentCompat) fragment).startImmersiveFragment(
-                    DtvkitRebootConfirmFragment.newInstance(true /* safeMode */));
+                    DtvkitRebootConfirmFragment.newInstance(false /* resetMode */));
             return true;
         } else if (fragment instanceof TwoPanelSettingsFragment) {
             ((TwoPanelSettingsFragment) fragment).startImmersiveFragment(
-                    DtvkitRebootConfirmFragment.newInstance(true /* safeMode */));
+                    DtvkitRebootConfirmFragment.newInstance(false /* resetMode */));
             return true;
         }
         return false;
