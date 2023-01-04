@@ -183,7 +183,7 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment implements 
 
     private void createOutputDelayAndPrescaleUiDialog() {
         Context context = (Context) (getActivity());
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = context.getSystemService(LayoutInflater.class);
         View view = inflater.inflate(R.xml.tv_sound_audio_settings_seekbar, null);//tv_sound_audio_settings_seekbar.xml
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final AlertDialog mAlertDialog = builder.create();
