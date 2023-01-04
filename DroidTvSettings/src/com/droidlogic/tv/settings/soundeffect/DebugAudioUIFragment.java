@@ -37,6 +37,7 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
     private static final String TAG = "DebugAudioUIFragment";
 
     private static final String KEY_HPEQ_DEBUG = "key_hpeq_debug";
+    private static final String KEY_HPEQ_BAND_NUM_DEBUG = "key_hpeq_band_num_debug";
     private static final String KEY_BALANCE_DEBUG = "key_balance_debug";
     private static final String KEY_TREBLEBASS_DEBUG = "key_treblebass_debug";
     private static final String KEY_VIRTUAL_SURROUND_DEBUG = "key_virtual_surround_debug";
@@ -48,6 +49,7 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
     private static final String KEY_AUDIO_LATENCY_DEBUG = "key_audio_latency_debug";
 
     private TwoStatePreference mHpeqDebug;
+    private ListPreference mHpeqBandNumDebug;
     private TwoStatePreference mBalanceDebug;
     private TwoStatePreference mTreblebassDebug;
     private TwoStatePreference mVirtualSDebug;
@@ -96,6 +98,11 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         mHpeqDebug = (TwoStatePreference) findPreference(KEY_HPEQ_DEBUG);
         mHpeqDebug.setOnPreferenceChangeListener(this);
 
+        mHpeqBandNumDebug = (ListPreference) findPreference(KEY_HPEQ_BAND_NUM_DEBUG);
+        mHpeqBandNumDebug.setOnPreferenceChangeListener(this);
+        if (mHpeqDebug.isChecked() == false) {
+            mHpeqBandNumDebug.setVisible(false);
+        }
         mBalanceDebug = (TwoStatePreference) findPreference(KEY_BALANCE_DEBUG);
         mBalanceDebug.setOnPreferenceChangeListener(this);
 
@@ -113,6 +120,7 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
 
         if (mOutputModeManager.isAudioSupportMs12System()) {
             mHpeqDebug.setVisible(false);
+            mHpeqBandNumDebug.setVisible(false);
         } else {
             mDap2Debug.setVisible(false);
         }
@@ -140,9 +148,15 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
 
     private void updateDetail() {
         boolean enable = false;
+        int value = 0;
 
         enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_HPEQ_UI);
         mHpeqDebug.setChecked(enable);
+        mHpeqBandNumDebug.setVisible(enable);
+
+        value = mAudioEffectManager.getHpeqBandNum(AudioEffectManager.DEBUG_HPEQ_BAND_NUM_UI);
+        String hpeqBandIndex = Integer.toString(value);
+        mHpeqBandNumDebug.setValueIndex(mHpeqBandNumDebug.findIndexOfValue(hpeqBandIndex));
 
         enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_BALANCE_UI);
         mBalanceDebug.setChecked(enable);
@@ -180,6 +194,7 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
             case KEY_HPEQ_DEBUG:
                 isChecked = mHpeqDebug.isChecked();
                 mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_HPEQ_UI, isChecked);
+                mHpeqBandNumDebug.setVisible(isChecked);
                 break;
             case KEY_BALANCE_DEBUG:
                 isChecked = mBalanceDebug.isChecked();
@@ -223,6 +238,12 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
+        switch (preference.getKey()) {
+            case KEY_HPEQ_BAND_NUM_DEBUG:
+                final int selection = Integer.parseInt((String)newValue);
+                mAudioEffectManager.setHpeqBandNum(AudioEffectManager.DEBUG_HPEQ_BAND_NUM_UI, selection);
+                break;
+        }
         return true;
     }
 

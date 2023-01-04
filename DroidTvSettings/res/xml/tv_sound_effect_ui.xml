@@ -5,16 +5,7 @@
     android:background="@color/settings_background"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/tv_audio_five_band"
-        android:focusable="false"
-        android:textSize="@dimen/pq_seekbar_title"
-        android:layout_marginTop="@dimen/pq_seekbar_title_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
-        android:layout_marginLeft="@dimen/pq_seekbar_item_marginLeft"
-        />
+
     <TextView
         android:id="@+id/text_tv_audio_effect_band1"
         android:layout_height="wrap_content"
@@ -22,8 +13,8 @@
         android:text="@string/tv_audio_effect_band1"
         android:focusable="false"
         android:textSize="@dimen/pq_seekbar_item"
-        android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="@dimen/pq_seekbar_item_marginLeft"
         />
     <SeekBar
@@ -31,8 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="100"
-        android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         />
     <TextView
         android:id="@+id/text_tv_audio_effect_band2"
@@ -41,8 +32,8 @@
         android:text="@string/tv_audio_effect_band2"
         android:focusable="false"
         android:textSize="@dimen/pq_seekbar_item"
-        android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="@dimen/pq_seekbar_item_marginLeft"
         />
     <SeekBar
@@ -50,8 +41,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="100"
-        android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         />
     <TextView
         android:id="@+id/text_tv_audio_effect_band3"
@@ -60,8 +51,8 @@
         android:text="@string/tv_audio_effect_band3"
         android:focusable="false"
         android:textSize="@dimen/pq_seekbar_item"
-        android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="@dimen/pq_seekbar_item_marginLeft"
         />
     <SeekBar
@@ -69,8 +60,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="100"
-        android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         />
     <TextView
         android:id="@+id/text_tv_audio_effect_band4"
@@ -79,8 +70,8 @@
         android:text="@string/tv_audio_effect_band4"
         android:focusable="false"
         android:textSize="@dimen/pq_seekbar_item"
-        android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="@dimen/pq_seekbar_item_marginLeft"
         />
     <SeekBar
@@ -88,8 +79,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="100"
-        android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         />
     <TextView
         android:id="@+id/text_tv_audio_effect_band5"
@@ -98,8 +89,8 @@
         android:text="@string/tv_audio_effect_band5"
         android:focusable="false"
         android:textSize="@dimen/pq_seekbar_item"
-        android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="@dimen/pq_seekbar_item_marginLeft"
         />
     <SeekBar
@@ -107,7 +98,83 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="100"
-        android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
-        android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        />
+    <TextView
+        android:id="@+id/text_tv_audio_effect_band6"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/tv_audio_effect_band6"
+        android:focusable="false"
+        android:textSize="@dimen/pq_seekbar_item"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="@dimen/pq_seekbar_item_marginLeft"
+        />
+    <SeekBar
+        android:id="@+id/seekbar_tv_audio_effect_band6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        />
+    <TextView
+        android:id="@+id/text_tv_audio_effect_band7"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/tv_audio_effect_band7"
+        android:focusable="false"
+        android:textSize="@dimen/pq_seekbar_item"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="@dimen/pq_seekbar_item_marginLeft"
+        />
+    <SeekBar
+        android:id="@+id/seekbar_tv_audio_effect_band7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        />
+    <TextView
+        android:id="@+id/text_tv_audio_effect_band8"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/tv_audio_effect_band8"
+        android:focusable="false"
+        android:textSize="@dimen/pq_seekbar_item"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="@dimen/pq_seekbar_item_marginLeft"
+        />
+    <SeekBar
+        android:id="@+id/seekbar_tv_audio_effect_band8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        />
+    <TextView
+        android:id="@+id/text_tv_audio_effect_band9"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/tv_audio_effect_band9"
+        android:focusable="false"
+        android:textSize="@dimen/pq_seekbar_item"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="@dimen/pq_seekbar_item_marginLeft"
+        />
+    <SeekBar
+        android:id="@+id/seekbar_tv_audio_effect_band9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         />
 </LinearLayout>

@@ -41,6 +41,13 @@
             android:key="key_hpeq_debug"
             android:persistent="false"
             android:title="@string/title_key_hpeq_debug" />
+        <ListPreference
+            android:key="key_hpeq_band_num_debug"
+            android:persistent="false"
+            android:entries="@array/key_hpeq_band_num_debug_entries"
+            android:entryValues="@array/key_hpeq_band_num_debug_entry_values"
+            android:title="@string/title_key_hpeq_band_num_debug"
+            android:summary="%s" />
         <SwitchPreference
             android:key="key_balance_debug"
             android:persistent="false"

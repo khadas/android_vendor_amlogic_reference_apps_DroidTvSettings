@@ -133,6 +133,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume");
         if (mAudioEffectManager != null) {
             final ListPreference eqmode = (ListPreference) findPreference(TV_EQ_MODE);
             eqmode.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_HPEQ_UI));
@@ -157,8 +158,8 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             } else {
                 dap24Pref.setVisible(false);
             }
-            final Preference audio_atency = (Preference) findPreference(KEY_AUDIO_LATENCY);
-            audio_atency.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_AUDIO_LATENCY_UI));
+            final Preference audio_latency = (Preference) findPreference(KEY_AUDIO_LATENCY);
+            audio_latency.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_AUDIO_LATENCY_UI));
         }
         refreshPref();
     }
@@ -199,6 +200,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        Log.d(TAG, "onCreatePreferences");
         setPreferencesFromResource(R.xml.tv_sound_mode, null);
         myHandler.sendEmptyMessage(LOAD_UI);
 
@@ -357,11 +359,21 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private TextView mBand4Text;
     private SeekBar mBand5Seekbar;
     private TextView mBand5Text;
+    private SeekBar mBand6Seekbar;
+    private TextView mBand6Text;
+    private SeekBar mBand7Seekbar;
+    private TextView mBand7Text;
+    private SeekBar mBand8Seekbar;
+    private TextView mBand8Text;
+    private SeekBar mBand9Seekbar;
+    private TextView mBand9Text;
 
     private void initSoundModeEqBandSeekBar(View view) {
         if (mAudioEffectManager == null) {
             mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
         }
+        int hpeq_band_num = mAudioEffectManager.getHpeqBandNum(AudioEffectManager.DEBUG_HPEQ_BAND_NUM_UI);
+
         int status = -1;
         mBand1Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band1);
         mBand1Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band1);
@@ -394,6 +406,49 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         mBand5Seekbar.setOnSeekBarChangeListener(this);
         mBand5Seekbar.setProgress(status);
         setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, status);
+
+        mBand6Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band6);
+        mBand6Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band6);
+        status = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND6);
+        mBand6Seekbar.setOnSeekBarChangeListener(this);
+        mBand6Seekbar.setProgress(status);
+        setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND6, status);
+
+        mBand7Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band7);
+        mBand7Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band7);
+        status = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND7);
+        mBand7Seekbar.setOnSeekBarChangeListener(this);
+        mBand7Seekbar.setProgress(status);
+        setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND7, status);
+
+        mBand8Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band8);
+        mBand8Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band8);
+        status = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND8);
+        mBand8Seekbar.setOnSeekBarChangeListener(this);
+        mBand8Seekbar.setProgress(status);
+        setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND8, status);
+
+        mBand9Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band9);
+        mBand9Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band9);
+        status = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND9);
+        mBand9Seekbar.setOnSeekBarChangeListener(this);
+        mBand9Seekbar.setProgress(status);
+        setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND9, status);
+
+        if (hpeq_band_num == 5 || hpeq_band_num == 7) {
+            mBand8Seekbar.setVisibility(View.GONE);
+            mBand8Text.setVisibility(View.GONE);
+            mBand9Seekbar.setVisibility(View.GONE);
+            mBand9Text.setVisibility(View.GONE);
+        }
+
+        if (hpeq_band_num == 5) {
+            mBand6Seekbar.setVisibility(View.GONE);
+            mBand6Text.setVisibility(View.GONE);
+            mBand7Seekbar.setVisibility(View.GONE);
+            mBand7Text.setVisibility(View.GONE);
+        }
+
         mIsAudioEqSeekBarInited = true;
     }
 
@@ -403,32 +458,55 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             return;
         }
         ((TvSettingsActivity)getActivity()).startShowActivityTimer();
+        int hpeq_band_num = mAudioEffectManager.getHpeqBandNum(AudioEffectManager.DEBUG_HPEQ_BAND_NUM_UI);
         switch (seekBar.getId()) {
             case R.id.seekbar_tv_audio_effect_band1:{
                 setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1, progress, hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band2:{
                 setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2, progress, hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band3:{
                 setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3, progress, hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band4:{
                 setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4, progress, hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band5:{
                 setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, progress, hpeq_band_num);
                 break;
             }
+
+            case R.id.seekbar_tv_audio_effect_band6:{
+                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND6, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND6, progress, hpeq_band_num);
+                break;
+            }
+            case R.id.seekbar_tv_audio_effect_band7:{
+                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND7, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND7, progress, hpeq_band_num);
+                break;
+            }
+            case R.id.seekbar_tv_audio_effect_band8:{
+                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND8, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND8, progress, hpeq_band_num);
+                break;
+            }
+            case R.id.seekbar_tv_audio_effect_band9:{
+                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND9, progress);
+                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND9, progress, hpeq_band_num);
+                break;
+            }
+
             default:
                 Log.w(TAG, "onProgressChanged unsupported seekbar id:" + seekBar.getId());
                 break;
@@ -467,6 +545,24 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
                 mBand5Text.setText(getShowString(R.string.tv_audio_effect_band5, value));
                 break;
             }
+
+            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND6:{
+                mBand6Text.setText(getShowString(R.string.tv_audio_effect_band6, value));
+                break;
+            }
+            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND7:{
+                mBand7Text.setText(getShowString(R.string.tv_audio_effect_band7, value));
+                break;
+            }
+            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND8:{
+                mBand8Text.setText(getShowString(R.string.tv_audio_effect_band8, value));
+                break;
+            }
+            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND9:{
+                mBand9Text.setText(getShowString(R.string.tv_audio_effect_band9, value));
+                break;
+            }
+
             default:
                 break;
         }

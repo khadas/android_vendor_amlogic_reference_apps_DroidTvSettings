@@ -397,6 +397,18 @@
         <item>2</item>
     </string-array>
 
+    <string-array name="key_hpeq_band_num_debug_entries">
+        <item>5 band</item>
+        <item>7 band</item>
+        <item>9 band</item>
+    </string-array>
+
+    <string-array name="key_hpeq_band_num_debug_entry_values" translatable="false">
+        <item>5</item>
+        <item>7</item>
+        <item>9</item>
+    </string-array>
+
     <string-array name="digital_sounds_box_entries">
         <item>PCM</item>
         <item>AUTO</item>

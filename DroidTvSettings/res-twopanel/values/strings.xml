@@ -2175,7 +2175,11 @@
     <string name="tv_audio_effect_band3">Band 3:</string>
     <string name="tv_audio_effect_band4">Band 4:</string>
     <string name="tv_audio_effect_band5">Band 5:</string>
-    <string name="tv_audio_five_band">Five Band Settings</string>
+    <string name="tv_audio_effect_band6">Band 6:</string>
+    <string name="tv_audio_effect_band7">Band 7:</string>
+    <string name="tv_audio_effect_band8">Band 8:</string>
+    <string name="tv_audio_effect_band9">Band 9:</string>
+    <string name="tv_audio_eq_band">Equalizer Band Settings</string>
     <string name="multi_settings">Multi settings</string>
     <string name="tv_treble_bass_effect">Treblebass</string>
     <string name="tv_treble">Treble</string>
@@ -2227,6 +2231,7 @@
     <string name="title_key_virtual_x_debug">DTS Virtual:X Debug</string>
     <string name="title_key_dap_2_debug">DAP 2.4 Debug</string>
     <string name="title_key_hpeq_debug">Equalizer Mode Debug</string>
+    <string name="title_key_hpeq_band_num_debug">Equalizer Band Number Debug</string>
     <string name="title_key_balance_debug">Balance Debug</string>
     <string name="title_key_treblebass_debug">Treblebass Debug</string>
     <string name="title_key_virtual_surround_debug">Virtual Surround Debug</string>
