@@ -111,8 +111,9 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_FRESH_UI:
-                    if (!(HDMI_OUTPUT_MODE.equals(mOutputModeManager.getCurrentOutputMode()) && isHdmiMode())) {
-                       if (DEBUG) Log.d(LOG_TAG,"CurrentOutputMode:"+mOutputModeManager.getCurrentOutputMode() +" HdmiMode"+isHdmiMode());
+                    if (DEBUG) Log.d(LOG_TAG,"CurrentOutputMode:" + mOutputModeManager.getCurrentOutputMode()+" HdmiMode:" + isHdmiMode());
+                    if (!(HDMI_OUTPUT_MODE.equals(mOutputModeManager.getCurrentOutputMode())
+                            && isHdmiMode())) {
                        updateScreenResolutionDisplay();
                     }
                     break;
@@ -174,6 +175,12 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         mHdrPolicyPref = findPreference(KEY_HDR_POLICY);
         mGraphicsPriorityPref = findPreference(KEY_DOLBYVISION_PRIORITY);
         updateScreenResolutionDisplay();
+    }
+
+    @Override
+    public void onResume() {
+        mHandler.sendEmptyMessage(MSG_FRESH_UI);
+        super.onResume();
     }
 
     @Override
