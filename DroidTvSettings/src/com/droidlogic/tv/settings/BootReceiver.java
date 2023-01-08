@@ -24,6 +24,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService;
+import com.droidlogic.app.tv.TvControlDataManager;
+import com.droidlogic.app.SystemControlManager;
 
 /** The {@BroadcastReceiver} for performing actions upon device boot. */
 public class BootReceiver extends BroadcastReceiver {
@@ -33,6 +35,10 @@ public class BootReceiver extends BroadcastReceiver {
 
     private static final String NATIVE_CONNECTED_DEVICE_SLICE_PROVIDER_URI =
             "content://com.droidlogic.tv.settings.accessories.sliceprovider/general";
+
+    int WOL_MODE = 0;
+    private static final String SAVE_WOL = "WOL";
+    private SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -59,6 +65,12 @@ public class BootReceiver extends BroadcastReceiver {
                         context.getResources().getString(R.string.connected_devices_slice_uri))) {
             Intent mainIntent = new Intent(context, BluetoothDevicesService.class);
             context.startService(mainIntent);
+        }
+        WOL_MODE = TvControlDataManager.getInstance(context).getInt(context.getContentResolver(), SAVE_WOL, 0);
+        if (WOL_MODE == 0) {
+            boolean a = mSystemControlManager.writeSysFs("/sys/class/ethernet/wol" , "0");
+        }else{
+            boolean a = mSystemControlManager.writeSysFs("/sys/class/ethernet/wol" , "1");
         }
     }
 }

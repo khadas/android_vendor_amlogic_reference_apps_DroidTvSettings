@@ -121,4 +121,9 @@
         android:key="power_and_energy_settings"
         android:title="@string/power_on_behavior"
         android:icon="@drawable/ic_settings_power"/>
+	<Preference
+        android:icon="@drawable/ic_settings_more"
+        android:key="wake_on_lan"
+        android:title="@string/wake_on_lan_enable"
+        android:fragment="com.droidlogic.tv.settings.WolFragment"/>
 </PreferenceScreen>

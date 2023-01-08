@@ -547,6 +547,8 @@
     <string name="show_dev_on">You are now a developer!</string>
     <!-- Device Info screen. Okay we get it, stop pressing, you already have it on [CHAR LIMIT=NONE] -->
     <string name="show_dev_already">No need, you are already a developer</string>
+	<!-- Device Info screen. if you want to use the WOL, please connect your ethernet first -->
+	<string name="show_ethernet_request">Please connect your ethernet first</string>
     <!-- Device Info screen. Used for a status item's value when the proper value is not known -->
     <string name="device_info_default">Unknown</string>
     <!-- About screen,  setting option name  [CHAR LIMIT=40] -->
@@ -2853,11 +2855,17 @@
     <string name="frame_rate" translatable="false">FrameRate</string>
     <string name="frame_rate_enable" translatable="false">Enable FrameRate</string>
     <string name="frame_rate_prepare">invalid value...</string>
+
     <!-- Processing Dialog -->
     <string name="resolution_selection_dialog_desc">Select OK to use %1$s from now on.</string>
     <string name="resolution_selection_dialog_title">New Settings has been applied</string>
     <string name="resolution_selection_dialog_ok">OK</string>
     <string name="resolution_selection_dialog_cancel">Cancel</string>
     <string name="start_activity">Start Activity</string>
+
+	<!-- wol -->
+	<string name="wake_on_lan" translatable="false">Wake On Lan</string>
+	<string name="wake_on_lan_enable" translatable="false">Wake On Lan</string>
+	<string name="wake_on_lan_description">Allow TV waked by ethernel</string>
     <!-- DroidLogic end -->
 </resources>
