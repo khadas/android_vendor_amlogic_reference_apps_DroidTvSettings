@@ -16,7 +16,8 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/cec_control" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/cec_and_earc_control" >
 
     <SwitchPreference
         android:key="key_cec_switch"
@@ -53,6 +54,26 @@
         android:persistent="false"
         android:title="@string/title_cec_arc_switch"
         android:summary="@string/cec_arc_switch_description"/>
+    <SwitchPreference
+        android:key="key_earc_switch"
+        android:persistent="false"
+        android:title="@string/title_earc_switch"
+        android:summary="@string/earc_switch_description"/>
+    <SwitchPreference
+        android:key="key_arc_and_earc_switch"
+        android:persistent="false"
+        android:title="@string/title_arc_and_earc_switch"
+        android:summary="@string/earc_switch_description"/>
+    <com.droidlogic.tv.settings.RadioPreference
+        android:key="arc_earc_mode_auto"
+        android:persistent="true"
+        android:title="@string/title_arc_and_earc_mode_auto"
+        app:radioGroup="arc_earc_mode" />
+    <com.droidlogic.tv.settings.RadioPreference
+        android:key="arc_earc_mode_arc"
+        android:persistent="true"
+        android:title="@string/title_arc_and_earc_mode_arc"
+        app:radioGroup="arc_earc_mode"/>
     <Preference
         android:fragment="com.droidlogic.tv.settings.tvoption.HdmiCecDeviceSelectFragment"
         android:key="key_cec_device_list"

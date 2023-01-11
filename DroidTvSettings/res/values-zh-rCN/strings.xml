@@ -74,6 +74,12 @@
     <string name="title_cec_auto_power_off">"单键关机"</string>
     <string name="title_cec_auto_change_language">"语言切换"</string>
     <string name="title_cec_arc_switch">"ARC 开关"</string>
+    <string name="title_earc_switch">"eARC 开关"</string>
+    <string name="title_arc_and_earc_switch">ARC/eARC</string>
+    <string name="title_arc_and_earc_mode_auto">自动</string>
+    <string name="title_arc_and_earc_mode_arc">ARC</string>
+    <string name="tips_turn_on_arc_earc">打开 ARC/eARC 将会同时打开CEC。是否继续？</string>
+    <string name="tips_turn_off_cec">关闭CEC将会同时关闭 ARC/eARC。是否继续？</string>
     <string name="cec_switch_description">允许电视控制HDMI设备</string>
     <string name="cec_volume_control_description">允许控制电视或音频设备的音量</string>
     <string name="cec_one_key_play_description">允许设备唤醒电视并让电视播放设备的内容</string>
