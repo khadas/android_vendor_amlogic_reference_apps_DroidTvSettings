@@ -54,6 +54,10 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
 
     private static final String TAG = "QuickSettingFragment";
 
+    private static final String KEY_MORE_SETTINGS = "key_quick_setting_more_settings";
+
+    private Preference mMoreSettings;
+
     private AudioEffectManager mAudioEffectManager;
 
     public static QuickSettingFragment newInstance() {
@@ -71,11 +75,21 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
     @Override
     public void onResume() {
         super.onResume();
+        mMoreSettings = (Preference) findPreference(KEY_MORE_SETTINGS);
+        boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
+        if (!isTv) {
+            mMoreSettings.setVisible(false);
+        }
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.quick_setting, null);
+        mMoreSettings = (Preference) findPreference(KEY_MORE_SETTINGS);
+        boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
+        if (!isTv) {
+            mMoreSettings.setVisible(false);
+        }
     }
 
     private String getShowString(int resid) {
