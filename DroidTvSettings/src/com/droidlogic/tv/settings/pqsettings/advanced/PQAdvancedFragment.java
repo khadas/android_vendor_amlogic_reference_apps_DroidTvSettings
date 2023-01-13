@@ -19,7 +19,6 @@ import android.os.RemoteException;
 import android.os.SystemProperties;
 import android.provider.Settings;
 import androidx.preference.SwitchPreference;
-import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
@@ -32,18 +31,18 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 
 import com.droidlogic.app.DisplayPositionManager;
+import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.RadioPreference;
 import com.droidlogic.tv.settings.dialog.old.Action;
 import com.droidlogic.tv.settings.SettingsConstant;
+import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
-
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
 
 public class PQAdvancedFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "PQAdvancedFragment";
@@ -63,6 +62,8 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
     private static final String PQ_PICTURE_ADVANCED_DEMOSQUITO = "pq_picture_advanced_demosquito";
     private static final String PQ_PICTURE_ADVANCED_DECONTOUR = "pq_picture_advanced_decontour";
 
+    private static final String PQ_PICTURE_ADVANCED_DARK_DETAIL = "pq_picture_advanced_dark_detail";
+    private static final String PQ_PICTURE_ADVANCED_VRR = "pq_picture_advanced_vrr";
     private static final String PQ_PICTURE_ADVANCED_GAMMA = "pq_picture_advanced_gamma";
     private static final String PQ_PICTURE_ADVANCED_MANUAL_GAMMA = "pq_picture_advanced_manual_gamma";
     private static final String PQ_PICTURE_ADVANCED_COLOR_TEMPERATURE = "pq_picture_advanced_color_temperature";
@@ -72,14 +73,15 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
     private static final String PQ_PICTURE_T3 = "NNNN";
     private static final String PQ_PICTURE_T5 = "T963";
 
-
     private static final int PQ_PICTURE_ADVANCED_SOURCE_HDR = 1;
-
 
     private PQSettingsManager mPQSettingsManager;
 
     private Preference pq_brightnessPref;
+    private boolean mHasMemc = false;
+    private boolean mHasLocalDimming = true;
 
+    private SystemControlManager mSystemControlManager;
 
     public static PQAdvancedFragment newInstance() {
         return new PQAdvancedFragment();
@@ -119,139 +121,91 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
         final ListPreference pictureAdvancedDeMosquitoPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_DEMOSQUITO);
         final ListPreference pictureAdvancedDecontourPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_DECONTOUR);
 
+        final TwoStatePreference pictureAdvancedDarkDetailPref = (TwoStatePreference) findPreference(PQ_PICTURE_ADVANCED_DARK_DETAIL);
+        final TwoStatePreference pictureAdvancedVRRPref = (TwoStatePreference) findPreference(PQ_PICTURE_ADVANCED_VRR);
         final Preference pictureAdvancedGammaPref = (Preference) findPreference(PQ_PICTURE_ADVANCED_GAMMA);
         final Preference pictureAdvancedManualGammaPref = (Preference) findPreference(PQ_PICTURE_ADVANCED_MANUAL_GAMMA);
         final Preference pictureAdvancedColorTemperaturePref = (Preference) findPreference(PQ_PICTURE_ADVANCED_COLOR_TEMPERATURE);
         final Preference pictureAdvancedColorCustomizePref = (Preference) findPreference(PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE);
         final Preference pictureAdvancedMemcPref = (Preference) findPreference(PQ_PICTURE_ADVANCED_MEMC);
 
-        if (PQ_PICTURE_ADVANCED_SOURCE_HDR == mPQSettingsManager.GetSourceHdrType() &&
-                 (mPQSettingsManager.getChipVersionInfo() != null &&
-                  PQ_PICTURE_T5 == mPQSettingsManager.getChipVersionInfo())) {//Leave blank first, add conditions later
+        mSystemControlManager = SystemControlManager.getInstance();
+        mHasMemc = mSystemControlManager.hasMemcFunc();
+        if (PQ_PICTURE_ADVANCED_SOURCE_HDR == mPQSettingsManager.GetSourceHdrType()
+                && (mPQSettingsManager.getChipVersionInfo() != null
+                && PQ_PICTURE_T5 == mPQSettingsManager.getChipVersionInfo())) {
             pictureAdvancedDynamicToneMappingPref.setValueIndex(mPQSettingsManager.getAdvancedDynamicToneMappingStatus());
             pictureAdvancedDynamicToneMappingPref.setOnPreferenceChangeListener(this);
         } else {
             pictureAdvancedDynamicToneMappingPref.setVisible(false);
         }
 
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedColorManagementPref.setValueIndex(mPQSettingsManager.getAdvancedColorManagementStatus());
-            pictureAdvancedColorManagementPref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedColorManagementPref.setVisible(false);
-        }
+        pictureAdvancedColorManagementPref.setValueIndex(mPQSettingsManager.getAdvancedColorManagementStatus());
+        pictureAdvancedColorManagementPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedColorRangeModePref.setValueIndex(mPQSettingsManager.getHdmiColorRangeStatus());
+        pictureAdvancedColorRangeModePref.setOnPreferenceChangeListener(this);
+        pictureAdvancedColorSpacePref.setValueIndex(mPQSettingsManager.getAdvancedColorSpaceStatus());
+        pictureAdvancedColorSpacePref.setOnPreferenceChangeListener(this);
+        pictureAdvancedGlobalDimmingPref.setValueIndex(mPQSettingsManager.getAdvancedGlobalDimmingStatus());
+        pictureAdvancedGlobalDimmingPref.setOnPreferenceChangeListener(this);
 
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedColorRangeModePref.setValueIndex(mPQSettingsManager.getHdmiColorRangeStatus());
-            pictureAdvancedColorRangeModePref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedColorRangeModePref.setVisible(false);
-        }
-
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedColorSpacePref.setValueIndex(mPQSettingsManager.getAdvancedColorSpaceStatus());
-            pictureAdvancedColorSpacePref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedColorSpacePref.setVisible(false);
-        }
-
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedGlobalDimmingPref.setValueIndex(mPQSettingsManager.getAdvancedGlobalDimmingStatus());
-            pictureAdvancedGlobalDimmingPref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedGlobalDimmingPref.setVisible(false);
-        }
-
-        if (true) {//Leave blank first, add conditions later
+        if (mHasLocalDimming) {
             pictureAdvancedLocalDimmingPref.setValueIndex(mPQSettingsManager.getAdvancedLocalDimmingStatus());
             pictureAdvancedLocalDimmingPref.setOnPreferenceChangeListener(this);
         } else {
             pictureAdvancedLocalDimmingPref.setVisible(false);
         }
 
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedBlackStretchPref.setValueIndex(mPQSettingsManager.getAdvancedBlackStretchStatus());
-            pictureAdvancedBlackStretchPref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedBlackStretchPref.setVisible(false);
-        }
+        pictureAdvancedBlackStretchPref.setValueIndex(mPQSettingsManager.getAdvancedBlackStretchStatus());
+        pictureAdvancedBlackStretchPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedDNLPPref.setValueIndex(mPQSettingsManager.getAdvancedDNLPStatus());
+        pictureAdvancedDNLPPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedLocalContrastPref.setValueIndex(mPQSettingsManager.getAdvancedLocalContrastStatus());
+        pictureAdvancedLocalContrastPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedSRPref.setValueIndex(mPQSettingsManager.getAdvancedSRStatus());
+        pictureAdvancedSRPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedDNRPref.setValueIndex(mPQSettingsManager.getDnrStatus());
+        pictureAdvancedDNRPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedDeBlockPref.setValueIndex(mPQSettingsManager.getAdvancedDeBlockStatus());
+        pictureAdvancedDeBlockPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedDeMosquitoPref.setValueIndex(mPQSettingsManager.getAdvancedDeMosquitoStatus());
+        pictureAdvancedDeMosquitoPref.setOnPreferenceChangeListener(this);
 
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedDNLPPref.setValueIndex(mPQSettingsManager.getAdvancedDNLPStatus());
-            pictureAdvancedDNLPPref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedDNLPPref.setVisible(false);
-        }
-
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedLocalContrastPref.setValueIndex(mPQSettingsManager.getAdvancedLocalContrastStatus());
-            pictureAdvancedLocalContrastPref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedLocalContrastPref.setVisible(false);
-        }
-
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedSRPref.setValueIndex(mPQSettingsManager.getAdvancedSRStatus());
-            pictureAdvancedSRPref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedSRPref.setVisible(false);
-        }
-
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedDNRPref.setValueIndex(mPQSettingsManager.getDnrStatus());
-            pictureAdvancedDNRPref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedDNRPref.setVisible(false);
-        }
-
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedDeBlockPref.setValueIndex(mPQSettingsManager.getAdvancedDeBlockStatus());
-            pictureAdvancedDeBlockPref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedDeBlockPref.setVisible(false);
-        }
-
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedDeMosquitoPref.setValueIndex(mPQSettingsManager.getAdvancedDeMosquitoStatus());
-            pictureAdvancedDeMosquitoPref.setOnPreferenceChangeListener(this);
-        } else {
-            pictureAdvancedDeMosquitoPref.setVisible(false);
-        }
-
-        if (mPQSettingsManager.getChipVersionInfo() != null &&
-                (PQ_PICTURE_T5 == mPQSettingsManager.getChipVersionInfo() ||
-                 PQ_PICTURE_T3 == mPQSettingsManager.getChipVersionInfo())) {//Leave blank first, add conditions later
+        if (mPQSettingsManager.getChipVersionInfo() != null
+                && (PQ_PICTURE_T5 == mPQSettingsManager.getChipVersionInfo()
+                || PQ_PICTURE_T3 == mPQSettingsManager.getChipVersionInfo())) {
             pictureAdvancedDecontourPref.setValueIndex(mPQSettingsManager.getAdvancedDecontourStatus());
             pictureAdvancedDecontourPref.setOnPreferenceChangeListener(this);
         } else {
             pictureAdvancedDecontourPref.setVisible(false);
         }
 
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedGammaPref.setVisible(true);
+        if (mPQSettingsManager.HDR_TYPE_DOVI == mPQSettingsManager.GetSourceHdrType()) {
+            pictureAdvancedDarkDetailPref.setVisible(true);
+            pictureAdvancedDarkDetailPref.setOnPreferenceChangeListener(this);
+            pictureAdvancedDarkDetailPref.setChecked(mPQSettingsManager.getDolbyDarkDetail());
+            String pictureMode = mPQSettingsManager.getPictureModeStatus();
+            if (mPQSettingsManager.STATUS_DARK.equals(pictureMode) || mPQSettingsManager.STATUS_GAME.equals(pictureMode)) {
+                pictureAdvancedDarkDetailPref.setEnabled(false);
+            }
         } else {
-            pictureAdvancedGammaPref.setVisible(false);
+            pictureAdvancedDarkDetailPref.setVisible(false);
         }
 
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedManualGammaPref.setVisible(true);
-        } else {
-            pictureAdvancedManualGammaPref.setVisible(false);
+        pictureAdvancedVRRPref.setVisible(true);
+        pictureAdvancedVRRPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedVRRPref.setChecked(mPQSettingsManager.getVrr());
+        String pictureMode = mPQSettingsManager.getPictureModeStatus();
+        if (!mPQSettingsManager.STATUS_GAME.equals(pictureMode) || !mPQSettingsManager.isHdmi20Status()) {
+            pictureAdvancedVRRPref.setEnabled(false);
         }
 
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedColorTemperaturePref.setVisible(true);
-        } else {
-            pictureAdvancedColorTemperaturePref.setVisible(false);
-        }
+        pictureAdvancedGammaPref.setVisible(true);
+        pictureAdvancedManualGammaPref.setVisible(true);
+        pictureAdvancedColorTemperaturePref.setVisible(true);
+        pictureAdvancedColorCustomizePref.setVisible(true);
 
-        if (true) {//Leave blank first, add conditions later
-            pictureAdvancedColorCustomizePref.setVisible(true);
-        } else {
-            pictureAdvancedColorCustomizePref.setVisible(false);
-        }
-
-        if (true) {//Leave blank first, add conditions later
+        if (mHasMemc) {
             pictureAdvancedMemcPref.setVisible(true);
         } else {
             pictureAdvancedMemcPref.setVisible(false);
@@ -271,6 +225,17 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (CanDebug()) Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
+        // Because the type of "PQ_PICTURE_ADVANCED_DARK_DETAIL" is inconsistent with the other preferences,
+        // the processing logic is separated separately
+        if (TextUtils.equals(preference.getKey(), PQ_PICTURE_ADVANCED_DARK_DETAIL)) {
+            mPQSettingsManager.setDolbyDarkDetail((boolean) newValue);
+            return true;
+        }
+        if (TextUtils.equals(preference.getKey(), PQ_PICTURE_ADVANCED_VRR)) {
+            mPQSettingsManager.setVrr((boolean) newValue);
+            return true;
+        }
+
         final int selection = Integer.parseInt((String)newValue);
         switch (preference.getKey()) {
             case PQ_PICTURE_ADVANCED_DYNAMIC_TONE_MAPPING:

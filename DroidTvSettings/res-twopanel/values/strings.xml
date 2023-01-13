@@ -2435,6 +2435,8 @@
     <string name="pq_picture_advanced">Advanced</string>
     <string name="pq_picture_advanced_dynamic_tone_mapping">Dynamic Tone Mapping</string>
     <string name="pq_picture_advanced_gamma">Gamma</string>
+    <string name="pq_picture_advanced_dark_detail">Dark Detail</string>
+    <string name="pq_picture_advanced_vrr_or_freesync">AMD FreeSync Premium Pro</string>
     <string name="pq_picture_advanced_manual_gamma">Manual Gamma</string>
     <string name="pq_picture_advanced_color_temperature">Color Temperature</string>
     <string name="pq_picture_advanced_color_management">Color Management</string>

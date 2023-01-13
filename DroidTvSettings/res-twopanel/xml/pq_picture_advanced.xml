@@ -25,6 +25,20 @@
         android:entryValues="@array/pq_picture_advanced_dynamic_tone_mapping_entry_values"
         android:title="@string/pq_picture_advanced_dynamic_tone_mapping"
         android:summary="%s" />
+    <SwitchPreference
+        android:key="pq_picture_advanced_dark_detail"
+        android:persistent="true"
+        android:title="@string/pq_picture_advanced_dark_detail" />
+
+    <!--
+      The function of "VRR" is equivalent to the function of "Free Sync".
+      Therefore, a button is reused, and the name of the button is named
+      function-sync according to the requirements of each household.
+    -->
+    <SwitchPreference
+        android:key="pq_picture_advanced_vrr"
+        android:persistent="true"
+        android:title="@string/pq_picture_advanced_vrr_or_freesync" />
     <Preference
         android:fragment="com.droidlogic.tv.settings.pqsettings.advanced.PQAdvancedGammaFragment"
         android:key="pq_picture_advanced_gamma"

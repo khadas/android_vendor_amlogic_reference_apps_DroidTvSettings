@@ -88,6 +88,13 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
     private static final String PQ_PICTURE_T5 = "T963";
 
     private SwitchPreference mAisrSwitch;
+    private ListPreference mPicturemodesdrPref;
+    private ListPreference mPicturemodehdr10Pref;
+    private ListPreference mPicturemodePref;
+    private ListPreference mPicturemodehdr10plusPref;
+    private ListPreference mPicturemodehlgPref;
+    private ListPreference mPicturemodedolbyvisionPref;
+    private ListPreference mPicturemodecvuaPref;
 
     private PQSettingsManager mPQSettingsManager;
 
@@ -113,24 +120,45 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
     public void onResume() {
         super.onResume();
         //Use the interface to get the current source
-        final ListPreference picturemodePref = (ListPreference) findPreference(PQ_PICTURE_MODE);
+        mPicturemodePref = (ListPreference) findPreference(PQ_PICTURE_MODE);
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
         getCurrentSource();
 
         if (mPQSettingsManager.isHdmiSource()) {
-            picturemodePref.setEntries(setHdmiPicEntries());
-            picturemodePref.setEntryValues(setHdmiPicEntryValues());
+            mPicturemodePref.setEntries(setHdmiPicEntries());
+            mPicturemodePref.setEntryValues(setHdmiPicEntryValues());
         }
 
-        picturemodePref.setValue(mPQSettingsManager.getPictureModeStatus());
+        int currentPictureModeSource = mPQSettingsManager.getPictureModeSource();
+        if (currentPictureModeSource == Current_Source_Type.PQ_PICTURE_MODE_SDR.toInt()) {
+            if (mPQSettingsManager.isAtvSource()
+                || mPQSettingsManager.isDtvSource()
+                || mPQSettingsManager.isAvSource()
+                || mPQSettingsManager.isMpegSource()
+                || mPQSettingsManager.isNullSource()) {
+                mPicturemodesdrPref.setEntries(R.array.pq_picture_mode_sdr_no_game_monitor_entries);
+                mPicturemodesdrPref.setEntryValues(R.array.pq_picture_mode_sdr_no_game_monitor_entry_values);
+            }
+        } else if (currentPictureModeSource == Current_Source_Type.PQ_PICTURE_MODE_HDR10.toInt()) {
+            if (mPQSettingsManager.isDtvSource()
+                || mPQSettingsManager.isMpegSource()) {
+                mPicturemodehdr10Pref.setEntries(R.array.pq_picture_mode_hdr10_no_game_entries);
+                mPicturemodehdr10Pref.setEntryValues(R.array.pq_picture_mode_hdr10_no_game_entry_values);
+            }
+        }
+
+        mPicturemodePref.setValue(mPQSettingsManager.getPictureModeStatus());
 
         int is_from_live_tv = getActivity().getIntent().getIntExtra("from_live_tv", 0);
         String currentInputInfoId = getActivity().getIntent().getStringExtra("current_tvinputinfo_id");
         boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
         boolean hasMboxFeature = SettingsConstant.hasMboxFeature(getActivity());
         String curPictureMode = mPQSettingsManager.getPictureModeStatus();
+
+        setPicturMode(isTv, curPictureMode);
+
         final Preference backlightPref = (Preference) findPreference(PQ_BACKLIGHT);
         if ((isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_backlight)) ||
                 (!isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_backlight)) ||
@@ -147,6 +175,22 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
         } else {
             pictureCustomerPref.setVisible(true);
         }
+
+        final ListPreference aspectratioPref = (ListPreference) findPreference(PQ_ASPECT_RATIO);
+        if (is_from_live_tv == 1 || (isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_aspect_ratio)) ||
+                    (!isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_aspect_ratio))) {
+            aspectratioPref.setValueIndex(mPQSettingsManager.getAspectRatioStatus());
+        } else {
+            aspectratioPref.setVisible(false);
+        }
+
+        mAisrSwitch = findPreference(PQ_AI_SR);
+        if (mPQSettingsManager.hasAisrFunc()) {
+            mAisrSwitch.setChecked(mPQSettingsManager.getAisr());
+        } else {
+            mAisrSwitch.setVisible(false);
+        }
+
     }
 
     @Override
@@ -172,70 +216,21 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
         boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
         boolean hasMboxFeature = SettingsConstant.hasMboxFeature(getActivity());
         String curPictureMode = mPQSettingsManager.getPictureModeStatus();
-        final ListPreference picturemodePref = (ListPreference) findPreference(PQ_PICTURE_MODE);
-        final ListPreference picturemodesdrPref = (ListPreference) findPreference(PQ_PICTURE_MODE_SDR);
-        final ListPreference picturemodehdr10Pref = (ListPreference) findPreference(PQ_PICTURE_MODE_HDR10);
-        final ListPreference picturemodehdr10plusPref = (ListPreference) findPreference(PQ_PICTURE_MODE_HDR10PLUS);
-        final ListPreference picturemodehlgPref = (ListPreference) findPreference(PQ_PICTURE_MODE_HLG);
-        final ListPreference picturemodedolbyvisionPref = (ListPreference) findPreference(PQ_PICTURE_MODE_DOLBYVISION);
-        final ListPreference picturemodecvuaPref = (ListPreference) findPreference(PQ_PICTURE_MODE_CVUA);
+        mPicturemodePref = (ListPreference) findPreference(PQ_PICTURE_MODE);
+        mPicturemodesdrPref = (ListPreference) findPreference(PQ_PICTURE_MODE_SDR);
+        mPicturemodehdr10Pref = (ListPreference) findPreference(PQ_PICTURE_MODE_HDR10);
+        mPicturemodehdr10plusPref = (ListPreference) findPreference(PQ_PICTURE_MODE_HDR10PLUS);
+        mPicturemodehlgPref = (ListPreference) findPreference(PQ_PICTURE_MODE_HLG);
+        mPicturemodedolbyvisionPref = (ListPreference) findPreference(PQ_PICTURE_MODE_DOLBYVISION);
+        mPicturemodecvuaPref = (ListPreference) findPreference(PQ_PICTURE_MODE_CVUA);
 
         if (mPQSettingsManager.isHdmiSource()) {
-            picturemodePref.setEntries(setHdmiPicEntries());
-            picturemodePref.setEntryValues(setHdmiPicEntryValues());
+            mPicturemodePref.setEntries(setHdmiPicEntries());
+            mPicturemodePref.setEntryValues(setHdmiPicEntryValues());
         }
 
-        Log.d(TAG, "curPictureMode: " + curPictureMode + "isTv: " + isTv + "isLiveTv: " + is_from_live_tv);
-
-        if ((FLAG_PQ_PICTURE_MODE && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
-                (FLAG_PQ_PICTURE_MODE && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
-            picturemodePref.setValue(curPictureMode);
-            picturemodePref.setOnPreferenceChangeListener(this);
-        } else {
-            picturemodePref.setVisible(false);
-        }
-
-        if ((FLAG_PQ_PICTURE_MODE_SDR && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
-                (FLAG_PQ_PICTURE_MODE_SDR && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
-            picturemodesdrPref.setVisible(true);
-        } else {
-            picturemodesdrPref.setVisible(false);
-        }
-
-        if ((FLAG_PQ_PICTURE_MODE_HDR10 && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
-                (FLAG_PQ_PICTURE_MODE_HDR10 && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
-            picturemodehdr10Pref.setVisible(true);
-        } else {
-            picturemodehdr10Pref.setVisible(false);
-        }
-
-        if ((FLAG_PQ_PICTURE_MODE_HDR10PLUS && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
-                (FLAG_PQ_PICTURE_MODE_HDR10PLUS && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
-            picturemodehdr10plusPref.setVisible(true);
-        } else {
-            picturemodehdr10plusPref.setVisible(false);
-        }
-
-        if ((FLAG_PQ_PICTURE_MODE_HLG && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
-                (FLAG_PQ_PICTURE_MODE_HLG && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
-            picturemodehlgPref.setVisible(true);
-        } else {
-            picturemodehlgPref.setVisible(false);
-        }
-
-        if ((FLAG_PQ_PICTURE_MODE_DOLBYVISION && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
-                (FLAG_PQ_PICTURE_MODE_DOLBYVISION && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
-            picturemodedolbyvisionPref.setVisible(true);
-        } else {
-            picturemodedolbyvisionPref.setVisible(false);
-        }
-
-        if ((FLAG_PQ_PICTURE_MODE_CVUA && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
-                (FLAG_PQ_PICTURE_MODE_CVUA && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
-            picturemodecvuaPref.setVisible(true);
-        } else {
-            picturemodecvuaPref.setVisible(false);
-        }
+        Log.d(TAG, "curPictureMode:" + curPictureMode + " isTv:" + isTv + " isLiveTv:" + is_from_live_tv);
+        setPicturMode(isTv, curPictureMode);
 
         final Preference pictureCustomerPref = (Preference) findPreference(PQ_CUSTOM);
         if (curPictureMode.equals(PQSettingsManager.STATUS_MONITOR) ||
@@ -296,6 +291,20 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
     public boolean onPreferenceTreeClick(Preference preference) {
         if (CanDebug()) Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
         switch (preference.getKey()) {
+            case PQ_PICTURE_MODE_SDR:
+                if (mPQSettingsManager.STATUS_GAME.equals( mPQSettingsManager.getPictureModeStatus())
+                        && null != mPQSettingsManager.getVRRModeName()) {
+                    mPicturemodesdrPref.setTitle(getActivity().getResources().getString(R.string.pq_picture_mode_sdr)
+                            + mPQSettingsManager.getVRRModeName());
+                }
+                break;
+            case  PQ_PICTURE_MODE_HDR10:
+                if (mPQSettingsManager.STATUS_GAME.equals( mPQSettingsManager.getPictureModeStatus())
+                        && null != mPQSettingsManager.getVRRModeName()) {
+                    mPicturemodehdr10Pref.setTitle(getActivity().getResources().getString(R.string.pq_picture_mode_hdr10)
+                            + mPQSettingsManager.getVRRModeName());
+                }
+                break;
             case PQ_ALLRESET:
                 Intent PQAllResetIntent = new Intent();
                 PQAllResetIntent.setClassName(
@@ -310,21 +319,29 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
-        //final int selection = Integer.parseInt((String)newValue);
-        if (TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE)) {
+        getCurrentSource();
+        if (FLAG_PQ_PICTURE_MODE &&
+            TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE)) {
             mPQSettingsManager.setPictureMode((String)newValue);
-        } else if (TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_SDR)) {
-            //mPQSettingsManager.setPictureMode((String)newValue);
-        } else if (TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_HDR10)) {
-            //mPQSettingsManager.setPictureMode((String)newValue);
-        } else if (TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_HDR10PLUS)) {
-            //mPQSettingsManager.setPictureMode((String)newValue);
-        } else if (TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_HLG)) {
-            //mPQSettingsManager.setPictureMode((String)newValue);
-        } else if (TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_DOLBYVISION)) {
-            //mPQSettingsManager.setPictureMode((String)newValue);
-        } else if (TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_CVUA)) {
-            //mPQSettingsManager.setPictureMode((String)newValue);
+        } else if (FLAG_PQ_PICTURE_MODE_SDR
+            && TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_SDR)) {
+            mPQSettingsManager.setPictureMode((String)newValue);
+            mPQSettingsManager.setPictureModeSDR((String)newValue);
+        } else if (FLAG_PQ_PICTURE_MODE_HDR10
+            && TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_HDR10)) {
+            mPQSettingsManager.setPictureMode((String)newValue);
+        } else if (FLAG_PQ_PICTURE_MODE_HDR10PLUS
+            && TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_HDR10PLUS)) {
+            mPQSettingsManager.setPictureMode((String)newValue);
+        } else if (FLAG_PQ_PICTURE_MODE_HLG
+            && TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_HLG)) {
+            mPQSettingsManager.setPictureMode((String)newValue);
+        } else if (FLAG_PQ_PICTURE_MODE_DOLBYVISION
+            && TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_DOLBYVISION)) {
+            mPQSettingsManager.setPictureMode((String)newValue);
+        } else if (FLAG_PQ_PICTURE_MODE_CVUA
+            && TextUtils.equals(preference.getKey(), PQ_PICTURE_MODE_CVUA)) {
+            mPQSettingsManager.setPictureMode((String)newValue);
         } else if (TextUtils.equals(preference.getKey(), PQ_ASPECT_RATIO)) {
             final int selection = Integer.parseInt((String)newValue);
             mPQSettingsManager.setAspectRatio(selection);
@@ -342,9 +359,24 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
         return 0;
     }
 
-    private final int[] HDMI_PIC_RES = {R.string.pq_standard, R.string.pq_vivid, R.string.pq_soft, R.string.pq_sport, R.string.pq_movie, R.string.pq_monitor,R.string.pq_game,R.string.pq_user};
-    private final String[] HDMI_PIC_MODE = {PQSettingsManager.STATUS_STANDARD, PQSettingsManager.STATUS_VIVID, PQSettingsManager.STATUS_SOFT,
-        PQSettingsManager.STATUS_SPORT, PQSettingsManager.STATUS_MOVIE, PQSettingsManager.STATUS_MONITOR, PQSettingsManager.STATUS_GAME, PQSettingsManager.STATUS_USER};
+    private final int[] HDMI_PIC_RES = {
+            R.string.pq_standard,
+            R.string.pq_vivid,
+            R.string.pq_soft,
+            R.string.pq_sport,
+            R.string.pq_movie,
+            R.string.pq_monitor,
+            R.string.pq_game,
+            R.string.pq_user};
+    private final String[] HDMI_PIC_MODE = {
+            PQSettingsManager.STATUS_STANDARD,
+            PQSettingsManager.STATUS_VIVID,
+            PQSettingsManager.STATUS_SOFT,
+            PQSettingsManager.STATUS_SPORT,
+            PQSettingsManager.STATUS_MOVIE,
+            PQSettingsManager.STATUS_MONITOR,
+            PQSettingsManager.STATUS_GAME,
+            PQSettingsManager.STATUS_USER};
 
     private String[] setHdmiPicEntries() {
         String[] temp = null;//new String[HDMI_PIC_RES.length];
@@ -407,9 +439,83 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
         }
     }
 
+    private void setPicturMode(boolean isTv, String curPictureMode){
+        if ((FLAG_PQ_PICTURE_MODE && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
+                (FLAG_PQ_PICTURE_MODE && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
+            mPicturemodePref.setValue(curPictureMode);
+            mPicturemodePref.setVisible(true);
+            mPicturemodePref.setOnPreferenceChangeListener(this);
+        } else {
+            mPicturemodePref.setVisible(false);
+        }
+
+        if ((FLAG_PQ_PICTURE_MODE_SDR && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
+                (FLAG_PQ_PICTURE_MODE_SDR && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
+            if (mPQSettingsManager.STATUS_GAME.equals(curPictureMode) && null != mPQSettingsManager.getVRRModeName()) {
+                mPicturemodesdrPref.setTitle(getActivity().getResources().getString(R.string.pq_picture_mode_sdr)
+                        + mPQSettingsManager.getVRRModeName());
+            }
+            mPicturemodesdrPref.setValue(curPictureMode);
+            mPicturemodesdrPref.setVisible(true);
+            mPicturemodesdrPref.setOnPreferenceChangeListener(this);
+        } else {
+            mPicturemodesdrPref.setVisible(false);
+        }
+
+        if ((FLAG_PQ_PICTURE_MODE_HDR10 && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
+                (FLAG_PQ_PICTURE_MODE_HDR10 && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
+            if (mPQSettingsManager.STATUS_GAME.equals(curPictureMode) && null != mPQSettingsManager.getVRRModeName()) {
+                mPicturemodehdr10Pref.setTitle(getActivity().getResources().getString(R.string.pq_picture_mode_hdr10)
+                        + mPQSettingsManager.getVRRModeName());
+            }
+            mPicturemodehdr10Pref.setValue(curPictureMode);
+            mPicturemodehdr10Pref.setVisible(true);
+            mPicturemodehdr10Pref.setOnPreferenceChangeListener(this);
+        } else {
+            mPicturemodehdr10Pref.setVisible(false);
+        }
+
+        if ((FLAG_PQ_PICTURE_MODE_HDR10PLUS && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
+                (FLAG_PQ_PICTURE_MODE_HDR10PLUS && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
+            mPicturemodehdr10plusPref.setValue(curPictureMode);
+            mPicturemodehdr10plusPref.setVisible(true);
+            mPicturemodehdr10plusPref.setOnPreferenceChangeListener(this);
+        } else {
+            mPicturemodehdr10plusPref.setVisible(false);
+        }
+
+        if ((FLAG_PQ_PICTURE_MODE_HLG && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
+                (FLAG_PQ_PICTURE_MODE_HLG && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
+            mPicturemodehlgPref.setValue(curPictureMode);
+            mPicturemodehlgPref.setVisible(true);
+            mPicturemodehlgPref.setOnPreferenceChangeListener(this);
+        } else {
+            mPicturemodehlgPref.setVisible(false);
+        }
+
+        if ((FLAG_PQ_PICTURE_MODE_DOLBYVISION && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
+                (FLAG_PQ_PICTURE_MODE_DOLBYVISION && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
+            mPicturemodedolbyvisionPref.setValue(curPictureMode);
+            mPicturemodedolbyvisionPref.setVisible(true);
+            mPicturemodedolbyvisionPref.setOnPreferenceChangeListener(this);
+        } else {
+            mPicturemodedolbyvisionPref.setVisible(false);
+        }
+
+        if ((FLAG_PQ_PICTURE_MODE_CVUA && isTv && getActivity().getResources().getBoolean(R.bool.tv_pq_need_picture_mode)) ||
+                (FLAG_PQ_PICTURE_MODE_CVUA && !isTv && getActivity().getResources().getBoolean(R.bool.box_pq_need_picture_mode))) {
+            mPicturemodecvuaPref.setValue(curPictureMode);
+            mPicturemodecvuaPref.setVisible(true);
+            mPicturemodecvuaPref.setOnPreferenceChangeListener(this);
+        } else {
+            mPicturemodecvuaPref.setVisible(false);
+        }
+    }
+
     private void getCurrentSource() {
         ////Use the interface to get the current source
-        int currentPictureModeSource = 0; //mPQSettingsManager.getPictureModeSource();
+        int currentPictureModeSource = mPQSettingsManager.getPictureModeSource();
+        if (CanDebug()) Log.d(TAG, "currentPictureModeSource: " + currentPictureModeSource);
         if (currentPictureModeSource == Current_Source_Type.PQ_PICTURE_MODE_SDR.toInt()) {
             FLAG_PQ_PICTURE_MODE_SDR = true;
             FLAG_PQ_PICTURE_MODE_HDR10= false;

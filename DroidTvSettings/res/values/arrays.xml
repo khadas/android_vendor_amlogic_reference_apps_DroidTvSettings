@@ -546,6 +546,19 @@
         <item>user</item>
     </string-array>
 
+    <string-array name="pq_picture_mode_sdr_no_game_monitor_entries">
+        <item>vivid</item>
+        <item>standard</item>
+        <item>cinema</item>
+        <item>sport</item>
+    </string-array>
+    <string-array name="pq_picture_mode_sdr_no_game_monitor_entry_values" translatable="false">
+        <item>vivid</item>
+        <item>standard</item>
+        <item>cinema</item>
+        <item>sport</item>
+    </string-array>
+
     <string-array name="pq_picture_mode_sdr_entries">
         <item>vivid</item>
         <item>standard</item>
@@ -562,6 +575,18 @@
         <item>monitor</item>
         <item>game</item>
     </string-array>
+    <string-array name="pq_picture_mode_hdr10_no_game_entries">
+        <item>hdr10 vivid</item>
+        <item>hdr10 standard</item>
+        <item>hdr10 cinema</item>
+        <item>hdr10 sport</item>
+    </string-array>
+    <string-array name="pq_picture_mode_hdr10_no_game_entry_values" translatable="false">
+        <item>vivid</item>
+        <item>standard</item>
+        <item>cinema</item>
+        <item>sport</item>
+    </string-array>
 
     <string-array name="pq_picture_mode_hdr10_entries">
         <item>hdr10 vivid</item>
@@ -571,11 +596,11 @@
         <item>hdr10 game</item>
     </string-array>
     <string-array name="pq_picture_mode_hdr10_entry_values" translatable="false">
-        <item>hdr10 vivid</item>
-        <item>hdr10 standard</item>
-        <item>hdr10 cinema</item>
-        <item>hdr10 sport</item>
-        <item>hdr10 game</item>
+        <item>vivid</item>
+        <item>standard</item>
+        <item>cinema</item>
+        <item>sport</item>
+        <item>game</item>
     </string-array>
 
     <string-array name="pq_picture_mode_hdr10plus_entries">
@@ -585,10 +610,10 @@
         <item>hdr10+ sport</item>
     </string-array>
     <string-array name="pq_picture_mode_hdr10plus_entry_values" translatable="false">
-        <item>hdr10+ vivid</item>
-        <item>hdr10+ standard</item>
-        <item>hdr10+ cinema</item>
-        <item>hdr10+ sport</item>
+        <item>vivid</item>
+        <item>standard</item>
+        <item>cinema</item>
+        <item>sport</item>
     </string-array>
 
     <string-array name="pq_picture_mode_hlg_entries">
@@ -598,10 +623,10 @@
         <item>hlg sport</item>
     </string-array>
     <string-array name="pq_picture_mode_hlg_entry_values" translatable="false">
-        <item>hlg vivid</item>
-        <item>hlg standard</item>
-        <item>hlg cinema</item>
-        <item>hlg sport</item>
+        <item>vivid</item>
+        <item>standard</item>
+        <item>cinema</item>
+        <item>sport</item>
     </string-array>
 
     <string-array name="pq_picture_mode_dolbyvision_entries">
@@ -609,15 +634,15 @@
         <item>dolbyvision dark</item>
     </string-array>
     <string-array name="pq_picture_mode_dolbyvision_entry_values" translatable="false">
-        <item>dolbyvision bright</item>
-        <item>dolbyvision dark</item>
+        <item>bright</item>
+        <item>dark</item>
     </string-array>
 
     <string-array name="pq_picture_mode_cvua_entries">
         <item>china hdr</item>
     </string-array>
     <string-array name="pq_picture_mode_cvua_entry_values" translatable="false">
-        <item>china hdr</item>
+        <item>hdr</item>
     </string-array>
 
     <string-array name="pq_color_temperature_entries">
