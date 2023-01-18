@@ -119,14 +119,16 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
         mMEMCPref.setVisible(isT3Device);
         mMEMCPref.setOnPreferenceChangeListener(this);
 
-        final TwoStatePreference deviceDlgPref = (TwoStatePreference) findPreference(KEY_DLG);
-        deviceDlgPref.setOnPreferenceChangeListener(this);
-        deviceDlgPref.setVisible(mTvControlManager.IsSupportDLG());
-        int dlgState = mTvControlManager.GetDLGEnable();
-        if (DroidUtils.CanDebug()) {
-            Log.d(TAG, "GetDLGEnable: " + dlgState);
+        if (SettingsConstant.isTvFeature(getContext())) {
+            final TwoStatePreference deviceDlgPref = (TwoStatePreference) findPreference(KEY_DLG);
+            deviceDlgPref.setOnPreferenceChangeListener(this);
+            deviceDlgPref.setVisible(mTvControlManager.IsSupportDLG());
+            int dlgState = mTvControlManager.GetDLGEnable();
+            if (DroidUtils.CanDebug()) {
+                Log.d(TAG, "GetDLGEnable: " + dlgState);
+            }
+            deviceDlgPref.setChecked(dlgState == 1 ? true : false);
         }
-        deviceDlgPref.setChecked(dlgState == 1 ? true : false);
     }
 
     @Override
