@@ -250,28 +250,31 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         CachedBluetoothDevice cachedDevice =
                 AccessoryUtils.getCachedBluetoothDevice(getContext(), device);
         String deviceName = "";
-
-        if (device != null && device.isConnected()) {
-            Log.d(TAG, deviceAddr + " connecting " + " device.getType: " + device.getType());
-
-            // Only LE devices have info information
-            if (device.getType() == BluetoothDevice.DEVICE_TYPE_LE) {
-                mDataConditionVariable.close();
-                mNotifyChangeCount = 0;
-                mBluetoothGatt = device.connectGatt(getContext(), true, new GattBatteryCallbacks());
-                mDataConditionVariable.block(3500);
-                //mBluetoothGatt.discoverServices();
-            } else {
-                /**
-                 * BluetoothGattCallback may not be able to connect between the client and the server
-                 * when it is quickly connected and disconnected, which will lead to no data to be displayed
-                 * in the interface when the underlying layer does not call back the data, so it cannot be
-                 * deleted directly, but can be deleted when it is a non-BLE device.
-                 */
-                deviceBatteryLevel = "-1";
-                deviceFirmwareVersion = "";
-            }
+        if (device != null) {
             deviceName = AccessoryUtils.getLocalName(device);
+
+            if (device.isConnected()) {
+                Log.d(TAG, deviceAddr + " connecting " + " device.getType: " + device.getType());
+
+                // Only LE devices have info information
+                if (device.getType() == BluetoothDevice.DEVICE_TYPE_LE) {
+                    mDataConditionVariable.close();
+                    mNotifyChangeCount = 0;
+                    mBluetoothGatt = device.connectGatt(getContext(), true, new GattBatteryCallbacks());
+                    mDataConditionVariable.block(3500);
+                    //mBluetoothGatt.discoverServices();
+                } else {
+                    /**
+                     * BluetoothGattCallback may not be able to connect between the client and the server
+                     * when it is quickly connected and disconnected, which will lead to no data to be displayed
+                     * in the interface when the underlying layer does not call back the data, so it cannot be
+                     * deleted directly, but can be deleted when it is a non-BLE device.
+                     */
+                    deviceBatteryLevel = "-1";
+                    deviceFirmwareVersion = "";
+                }
+            }
+
         }
 
         PreferenceSliceBuilder psb = new PreferenceSliceBuilder(getContext(), sliceUri);
