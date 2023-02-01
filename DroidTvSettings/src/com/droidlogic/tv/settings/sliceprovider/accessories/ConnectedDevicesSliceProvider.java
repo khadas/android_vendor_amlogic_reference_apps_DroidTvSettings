@@ -389,18 +389,25 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
 
         // Update "bluetooth device info preference".
         BluetoothDeviceProvider provider = mLocalBluetoothDeviceProvider;
+        boolean isBtConnectioned = AccessoryUtils.isConnected(device)
+               && cachedDevice != null
+               && cachedDevice.isConnected();
 
         RowBuilder infoPref = new RowBuilder()
                 .setIcon(IconCompat.createWithResource(context, R.drawable.ic_baseline_info_24dp));
 
-        if ("-1" != deviceBatteryLevel) {
+        if (isBtConnectioned && !"-1".equals(deviceBatteryLevel)) {
             infoPref.addInfoItem(getString(R.string.bluetooth_battery_label), deviceBatteryLevel);
         }
-        if ("" != deviceFirmwareVersion) {
+        if (isBtConnectioned && !"".equals(deviceFirmwareVersion)) {
             infoPref.addInfoItem(getString(R.string.bluetooth_fireware_label), deviceFirmwareVersion);
         }
         infoPref.addInfoItem(getString(R.string.bluetooth_serial_number_label), deviceAddr);
         psb.addPreference(infoPref);
+
+        // For Bluetooth devices actively disconnected scenario cachedDevice status update
+        // will be a short delay, so in the need to initiate a notify update general device
+        notifyGeneralDeviceSlice();
         return psb.build();
     }
 
@@ -747,5 +754,12 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
             versionRequest = gatt.readCharacteristic(bleVersion);
             mNotifyChangeCount++;
         }
+    }
+
+    private void notifyGeneralDeviceSlice () {
+        mHandler.post(() -> {
+            getContext().getContentResolver()
+                    .notifyChange(ConnectedDevicesSliceUtils.GENERAL_SLICE_URI, null);
+        });
     }
 }
