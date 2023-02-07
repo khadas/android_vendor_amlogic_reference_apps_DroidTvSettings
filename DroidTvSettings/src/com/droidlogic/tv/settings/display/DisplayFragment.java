@@ -47,20 +47,11 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
     private static final String KEY_DOLBY_VISION       = "dolby_vision";
     private static final String KEY_ALLM_MODE          = "allm_mode";
     private static final String KEY_GAME_CONTENT_TYPE  = "game_content_type";
-    private static final String KEY_MEMC               = "memc";
-    private static final String PROP_MEMC              = "persist.vendor.sys.memc";
     private static final String KEY_DLG               = "device_dlg";
 
-    private static final int MEMC_OFF                  = 0;
-    private static final int MEMC_ON                   = 1;
-    private final int memcSave = 1;
-
     private ListPreference mAllmPref;
-    private ListPreference mMEMCPref;
     private SystemControlManager mSystemControlManager;
     private TvControlManager mTvControlManager;
-    private String memcStatus = "0";
-    private static boolean isT3Device = false;
 
     public static DisplayFragment newInstance() {
         return new DisplayFragment();
@@ -109,16 +100,6 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
         mAllmPref.setOnPreferenceChangeListener(this);
         mAllmPref.setVisible(SystemProperties.getBoolean("ro.vendor.debug.allm", false));
 
-        memcStatus = Integer.toString(mSystemControlManager.GetMemcMode());
-        if (DroidUtils.CanDebug()) {
-            Log.d(TAG, "get memcStatus: " + memcStatus);
-        }
-        isT3Device = mSystemControlManager.hasMemcFunc();
-        mMEMCPref = (ListPreference) findPreference(KEY_MEMC);
-        mMEMCPref.setValue(memcStatus);
-        mMEMCPref.setVisible(isT3Device);
-        mMEMCPref.setOnPreferenceChangeListener(this);
-
         if (SettingsConstant.isTvFeature(getContext())) {
             final TwoStatePreference deviceDlgPref = (TwoStatePreference) findPreference(KEY_DLG);
             deviceDlgPref.setOnPreferenceChangeListener(this);
@@ -145,15 +126,6 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
                 allmmode = -1;
             }
             mSystemControlManager.setALLMMode(allmmode);
-        }
-
-        if (TextUtils.equals(preference.getKey(), KEY_MEMC)) {
-            int tep_memcStatus = Integer.parseInt((String)newValue);
-            //mSystemControlManager.setALLMMode(allmmode);
-            if (mSystemControlManager.hasMemcFunc()) {
-                Log.d(TAG, "set memcStatus: " + tep_memcStatus);
-                mSystemControlManager.SetMemcMode(tep_memcStatus, memcSave);
-            }
         }
 
         // SetDLGEnable param:1 enable; 0 disable.

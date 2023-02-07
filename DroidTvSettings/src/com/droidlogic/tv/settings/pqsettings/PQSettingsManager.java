@@ -387,7 +387,6 @@ public class PQSettingsManager {
     }
 
     public int getAIPQStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAspectRatioStatus");
         boolean AIPQStatus = mSystemControlManager.getAipqEnable();
         return AIPQStatus ? 0: 1;//0 is on ,1 is off
@@ -406,14 +405,12 @@ public class PQSettingsManager {
     }
 
     public int getAdvancedDynamicToneMappingStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedDynamicToneMappingStatus");
         int dynamicToneMappingStatus = mSystemControlManager.GetHDRTMOMode();
         return dynamicToneMappingStatus != -1 ? dynamicToneMappingStatus: 0;//0 is on ,1 is off
     }
 
     public int getAdvancedColorManagementStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedColorManagementStatus");
         int colorManagementStatus = mSystemControlManager.GetColorBaseMode();
         return colorManagementStatus != -1 ? colorManagementStatus : 0;
@@ -426,7 +423,6 @@ public class PQSettingsManager {
     }
 
     public int getAdvancedGlobalDimmingStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedGlobalDimmingStatus");
         return mSystemControlManager.GetDynamicBacklight();
     }
@@ -438,13 +434,11 @@ public class PQSettingsManager {
     }
 
     public int getAdvancedBlackStretchStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedBlackStretchStatus");
         return mSystemControlManager.GetBlackExtensionMode();
     }
 
     public int getAdvancedDNLPStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedDNLPStatus");
         int CurrentSourceInfo[] = mSystemControlManager.GetCurrentSourceInfo();
         int DNLPStatus = mSystemControlManager.getDNLPCurveParams(SystemControlManager.SourceInput.valueOf(CurrentSourceInfo[0]), SystemControlManager.SignalFmt.valueOf(CurrentSourceInfo[1]), SystemControlManager.TransFmt.valueOf(CurrentSourceInfo[2]));
@@ -452,7 +446,6 @@ public class PQSettingsManager {
     }
 
     public int getAdvancedLocalContrastStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedLocalContrastStatus");
         return mSystemControlManager.GetLocalContrastMode();
     }
@@ -464,31 +457,23 @@ public class PQSettingsManager {
     }
 
     public int getAdvancedDeBlockStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedDeBlockStatus");
         int deBlockStatus = mSystemControlManager.GetDeblockMode();
         return deBlockStatus != -1? deBlockStatus :0;
     }
 
     public int getAdvancedDeMosquitoStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedDeMosquitoStatus");
         int deMosquitoStatus = mSystemControlManager.GetDemoSquitoMode();
         return deMosquitoStatus != -1? deMosquitoStatus :0;
     }
 
     public int getAdvancedDecontourStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedDecontourStatus");
         return mSystemControlManager.GetSmoothPlusMode();
     }
 
     public int getAdvancedMemcSwitchStatus () {
-        // Leave blank first, add later
-        /*if (CanDebug()) Log.d(TAG, "getAdvancedMemcSwitchStatus");
-        if (SystemProperties.getBoolean(PROP_MEMC, false)  == true) {
-            return 1;
-        }*/
         memcStatus = mSystemControlManager.GetMemcMode();
         Log.d(TAG, "getAdvancedGlobalDimmingStatus value: " + memcStatus);
         return memcStatus;
@@ -507,7 +492,6 @@ public class PQSettingsManager {
     }
 
     public int getAdvancedGammaStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedGammaStatus");
         return mSystemControlManager.GetGammaValue() + ADVANCED_GAMMA_FIXED_DIFFERENCE;
     }
@@ -543,37 +527,31 @@ public class PQSettingsManager {
     }
 
     public int getAdvancedColorTemperatureRGainStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedColorTemperatureRGainStatus");
         return mSystemControlManager.GetColorTemperatureUserParam().r_gain;
     }
 
     public int getAdvancedColorTemperatureGGainStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedColorTemperatureGGainStatus");
         return mSystemControlManager.GetColorTemperatureUserParam().g_gain;
     }
 
     public int getAdvancedColorTemperatureBGainStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedColorTemperatureBGainStatus");
         return mSystemControlManager.GetColorTemperatureUserParam().b_gain;
     }
 
     public int getAdvancedColorTemperatureROffsetStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedColorTemperatureROffsetStatus");
         return mSystemControlManager.GetColorTemperatureUserParam().r_offset;
     }
 
     public int getAdvancedColorTemperatureGOffsetStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedColorTemperatureGOffsetStatus");
         return mSystemControlManager.GetColorTemperatureUserParam().g_offset;
     }
 
     public int getAdvancedColorTemperatureBOffsetStatus () {
-        // Leave blank first, add later
         if (CanDebug()) Log.d(TAG, "getAdvancedColorTemperatureBOffsetStatus");
         return mSystemControlManager.GetColorTemperatureUserParam().b_offset;
     }

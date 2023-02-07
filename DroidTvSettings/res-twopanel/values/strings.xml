@@ -2069,6 +2069,7 @@
     <string name="device_position_description">current scaling is</string>
     <string name="device_allm_mode">Auto Low Latency Mode</string>
     <string name="device_game_content_type">Game Content Type</string>
+    <string name="device_dlg">DLG</string>
 
     <string name="hdr_policy_sink">Always Hdr</string>
     <string name="hdr_policy_source">Adaptive Hdr</string>

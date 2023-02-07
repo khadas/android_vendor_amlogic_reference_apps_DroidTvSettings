@@ -53,7 +53,7 @@ public class PQAdvancedMEMCFragment extends SettingsPreferenceFragment implement
     private SeekBarPreference PQPictureAdvancedMemcCustomizeDejudderPref;
     private SeekBarPreference PQPictureAdvancedMemcCustomizeDeblurPref;
 
-    private boolean isT3Device = false;
+    private boolean hasMemc = false;
     private SystemControlManager mSystemControlManager;
 
     private PQSettingsManager mPQSettingsManager;
@@ -87,8 +87,8 @@ public class PQAdvancedMEMCFragment extends SettingsPreferenceFragment implement
         PQPictureAdvancedMemcCustomizeDeblurPref = (SeekBarPreference) findPreference(PQ_PICTURE_ADVANCED_MEMC_CUSTOMIZE_DEBLUR);
         mSystemControlManager = SystemControlManager.getInstance();
 
-        isT3Device = mSystemControlManager.hasMemcFunc();
-        if (isT3Device) {//Leave blank first, add conditions later
+        hasMemc = mSystemControlManager.hasMemcFunc();
+        if (hasMemc) {//Leave blank first, add conditions later
             pictureAdvancedMemcSwitchPref.setVisible(true);
             pictureAdvancedMemcSwitchPref.setValueIndex(mPQSettingsManager.getAdvancedMemcSwitchStatus());
             pictureAdvancedMemcSwitchPref.setOnPreferenceChangeListener(this);
@@ -96,7 +96,7 @@ public class PQAdvancedMEMCFragment extends SettingsPreferenceFragment implement
             pictureAdvancedMemcSwitchPref.setVisible(false);
         }
 
-        if (isT3Device) {//Leave blank first, add conditions later
+        if (hasMemc) {//Leave blank first, add conditions later
             PQPictureAdvancedMemcCustomizeDejudderPref.setOnPreferenceChangeListener(this);
             PQPictureAdvancedMemcCustomizeDejudderPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_MEMC_CUSTOMIZE_STEP);
             PQPictureAdvancedMemcCustomizeDejudderPref.setMin(0);
@@ -107,7 +107,7 @@ public class PQAdvancedMEMCFragment extends SettingsPreferenceFragment implement
             PQPictureAdvancedMemcCustomizeDejudderPref.setVisible(false);
         }
 
-        if (isT3Device) {//Leave blank first, add conditions later
+        if (hasMemc) {//Leave blank first, add conditions later
             PQPictureAdvancedMemcCustomizeDeblurPref.setOnPreferenceChangeListener(this);
             PQPictureAdvancedMemcCustomizeDeblurPref.setSeekBarIncrement(PQ_PICTURE_ADVANCED_MEMC_CUSTOMIZE_STEP);
             PQPictureAdvancedMemcCustomizeDeblurPref.setMin(0);

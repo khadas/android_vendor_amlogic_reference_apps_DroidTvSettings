@@ -51,11 +51,6 @@
             android:entryValues="@array/game_content_type_entry_values"
             android:title="@string/device_game_content_type"
             android:summary="%s" />
-        <ListPreference
-            android:key="memc"
-            android:title="@string/memc"
-            android:entries="@array/memc_entries"
-            android:entryValues="@array/memc_entry_values" />
         <SwitchPreference
             android:key="device_dlg"
             android:persistent="false"

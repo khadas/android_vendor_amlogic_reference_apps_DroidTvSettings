@@ -197,16 +197,15 @@
              android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-                  android:excludeFromRecents="true"
-                  android:exported="true"
-                  android:name=".tvoption.HdmiCecActivity"
-                  android:theme="@style/TvSettingsActivityTheme"/>
-        <activity
-            android:name=".pqsettings.PictureModeActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
+            android:exported="true"
+            android:name=".tvoption.HdmiCecActivity"
+            android:theme="@style/TvSettingsActivityTheme"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation"
+            android:name=".pqsettings.PictureModeActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.Settings.Transparent"
+            android:exported="true" />
         <activity
             android:name=".pqsettings.AdjustValueActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
