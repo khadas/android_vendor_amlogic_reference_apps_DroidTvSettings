@@ -39,6 +39,11 @@
         android:title="@string/title_cec_auto_wake_up"
         android:summary="@string/cec_auto_wake_up_description"/>
     <SwitchPreference
+        android:key="key_cec_volume_control"
+        android:persistent="false"
+        android:title="@string/title_cec_volume_control"
+        android:summary="@string/cec_volume_control_description"/>
+    <SwitchPreference
         android:key="key_cec_auto_change_language"
         android:persistent="false"
         android:title="@string/title_cec_auto_change_language"
