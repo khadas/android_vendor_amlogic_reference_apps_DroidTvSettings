@@ -83,7 +83,7 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
     private static final int RESULT_OK = -1;
     private static final int LOGICAL_ADDRESS_AUDIO_SYSTEM = 5;
 
-    private TvInputManager mTvInputManager;
+    private static TvInputManager mTvInputManager;
     private TvControlManager mTvControlManager;
     private HdmiControlManager mHdmiControlManager;
 
@@ -103,7 +103,9 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
 
     public TvSourceFragment(Context context) {
         mContext = context;
-        mTvInputManager = (TvInputManager)context.getSystemService(Context.TV_INPUT_SERVICE);
+        if (mTvInputManager == null) {
+            mTvInputManager = context.getSystemService(TvInputManager.class);
+        }
         mTvControlManager = TvControlManager.getInstance();
         mHdmiControlManager = (HdmiControlManager) context.getSystemService(Context.HDMI_CONTROL_SERVICE);
         if (mHdmiControlManager != null) {
