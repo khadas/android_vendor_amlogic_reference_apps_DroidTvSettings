@@ -125,17 +125,16 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
     private ArrayList<Action> getMainActions() {
         ArrayList<Action> actions = new ArrayList<Action>();
         colorTitleList.clear();
-        ArrayList<String> mList = mOutputUiManager.getColorTitleList();
-        for (String color:mList) {
-            colorTitleList.add(color);
-        }
+        ArrayList<String> colorTitleList = mOutputUiManager.getColorTitleList();
         ArrayList<String> colorValueList = mOutputUiManager.getColorValueList();
         String value = null;
         String filterValue = null;
         String  curColorSpaceValue = mOutputUiManager.getCurrentColorAttribute();
-        Log.i(LOG_TAG,"curColorSpaceValue: "+curColorSpaceValue);
-        if (curColorSpaceValue.equals("default"))
+        Log.i(LOG_TAG, "curColorSpaceValue: " + curColorSpaceValue);
+        if ("default".equals(curColorSpaceValue)) {
             curColorSpaceValue = DEFAULT_VALUE;
+        }
+
         for (int i = 0; i < colorTitleList.size(); i++) {
             value = colorValueList.get(i).trim();
             curMode = mOutputUiManager.getCurrentMode().trim();
@@ -146,6 +145,9 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
         }
 
         for (int i = 0; i < OutputUiManager.HDMI_COLOR_LIST.length; i++) {
+            if (filterValue ==null) {
+                break;
+            }
             if (filterValue.contains(OutputUiManager.HDMI_COLOR_LIST[i])) {
                 if (curColorSpaceValue.contains(OutputUiManager.HDMI_COLOR_LIST[i])) {
                     actions.add(new Action.Builder().key(OutputUiManager.HDMI_COLOR_LIST[i])
