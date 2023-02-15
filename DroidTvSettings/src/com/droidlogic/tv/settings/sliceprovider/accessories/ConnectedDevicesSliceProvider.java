@@ -133,6 +133,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
     static final String KEY_PAIR_REMOTE = "pair_remote";
     static final String KEY_ACCESSORIES = "accessories";
     static final String KEY_OFFICIAL_REMOTE = "official_remote";
+    static final String KEY_OFFICIAL_REMOTE_CATEGORY = "official_remote_category";
     static final String KEY_IR = "ir";
     static final String KEY_CONNECT = "connect";
     static final String KEY_DISCONNECT = "disconnect";
@@ -540,7 +541,8 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         boolean isIrSettingsUriValid = isSliceProviderValid(irSettingsUri);
         if (isOfficialRemoteSettingsUriValid || isIrSettingsUriValid) {
             psb.addPreferenceCategory(new RowBuilder()
-                    .setTitle(getString(R.string.bluetooth_official_remote_category)));
+                    .setTitle(getString(R.string.bluetooth_official_remote_category))
+                    .setKey(KEY_OFFICIAL_REMOTE_CATEGORY));
         }
         if (isIrSettingsUriValid) {
             psb.addPreference(new RowBuilder()
