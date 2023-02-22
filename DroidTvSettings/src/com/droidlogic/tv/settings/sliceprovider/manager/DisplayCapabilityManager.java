@@ -608,6 +608,10 @@ public class DisplayCapabilityManager {
     }
   }
 
+  public void clearUserPreferredDisplayMode() {
+    mDisplayManager.clearGlobalUserPreferredDisplayMode();
+  }
+
   private void setUserPreferredDisplayModeByPrivate(String userSetMode, boolean isBestMode) {
     mSystemControlManager.setMboxOutputMode(userSetMode);
     if (!isBestMode) {

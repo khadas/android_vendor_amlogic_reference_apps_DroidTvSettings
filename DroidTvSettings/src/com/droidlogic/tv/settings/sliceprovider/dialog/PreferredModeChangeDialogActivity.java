@@ -43,23 +43,15 @@ public class PreferredModeChangeDialogActivity extends Activity {
         HdrFormat.fromKey(getIntent().getStringExtra(EXTRA_PREFERENCE_KEY));
     if (currentPreferredFormat == targetPreferredFormat) finish();
     String currentMode = mDisplayCapabilityManager.getCurrentMode();
-    if (MediaSliceUtil.CanDebug()) Log.d(TAG,"onCreate currentPreferredFormat:"+currentPreferredFormat+" targetPreferredFormat:"+targetPreferredFormat+" currentMode:"+currentMode);
-    //wasHdrPolicyChanged = changeHdrPolicyIfNeeded(currentPreferredFormat, targetPreferredFormat);
-    //mDisplayModeWasChanged = changeDisplayModeIfNeeded(targetPreferredFormat, currentMode);
+    Log.d(TAG, "onCreate currentPreferredFormat:" + currentPreferredFormat
+            + " targetPreferredFormat:" + targetPreferredFormat + " currentMode:" + currentMode);
     mDisplayCapabilityManager.setPreferredFormat(targetPreferredFormat);
 
     mRestoreCallback =
         () -> {
-          if (MediaSliceUtil.CanDebug()) Log.d(TAG,"mRestoreCallback currentPreferredFormat:"+currentPreferredFormat);
+          Log.d(TAG, "mRestoreCallback currentPreferredFormat:" + currentPreferredFormat);
           mDisplayCapabilityManager.setPreferredFormat(currentPreferredFormat);
           mDisplayCapabilityManager.notifyChangeSlice(getContentResolver());
-          /*if (mDisplayModeWasChanged) {
-            mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(currentMode);
-          }
-          if (wasHdrPolicyChanged) {
-            mDisplayCapabilityManager.setHdrPolicySource(
-                !mDisplayCapabilityManager.isHdrPolicySource());
-          }*/
         };
     initAlertDialog();
     showDialog();
@@ -99,11 +91,11 @@ public class PreferredModeChangeDialogActivity extends Activity {
             mCountDownTimer.cancel();
           }
           finish();
-          if (MediaSliceUtil.CanDebug()) Log.d(TAG,"initAlertDialog OK reboot");
           // click ok
+          //first clear user preferred mode
+          mDisplayCapabilityManager.clearUserPreferredDisplayMode();
           mDisplayCapabilityManager.setPreferredFormat(targetPreferredFormat);
           mDisplayCapabilityManager.setHdrPriority(targetPreferredFormat);
-          reboot();
         });
     builder.setNegativeButton(
         R.string.preferred_mode_change_dialog_cancel_msg,
@@ -112,7 +104,6 @@ public class PreferredModeChangeDialogActivity extends Activity {
             mCountDownTimer.cancel();
           }
           // click cancel
-          if (MediaSliceUtil.CanDebug()) Log.d(TAG,"initAlertDialog cancel");
           mRestoreCallback.run();
           finish();
         });
@@ -156,14 +147,14 @@ public class PreferredModeChangeDialogActivity extends Activity {
             mAlertDialog.dismiss();
             mRestoreCallback.run();
             finish();
-            if (MediaSliceUtil.CanDebug()) Log.d(TAG,"showDialog timeout");
+            Log.d(TAG,"showDialog timeout");
           }
         };
     mCountDownTimer.start();
   }
 
     private void reboot() {
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG,"reboot");
+        Log.d(TAG,"reboot");
         Context context = (Context) (getApplicationContext());
         ((PowerManager) context.getSystemService(Context.POWER_SERVICE)).reboot(null);
     }
