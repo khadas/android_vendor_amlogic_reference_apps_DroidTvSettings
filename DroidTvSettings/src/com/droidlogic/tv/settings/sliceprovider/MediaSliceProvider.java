@@ -12,8 +12,8 @@ abstract class MediaSliceProvider extends SliceProvider {
     final Intent intent = new Intent(action);
     intent.setClass(context, receiverClass);
     if (Activity.class.isAssignableFrom(receiverClass)) {
-      return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_MUTABLE);
+      return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
     }
-    return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE);
+    return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
   }
 }
