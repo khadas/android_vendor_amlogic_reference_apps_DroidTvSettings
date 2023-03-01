@@ -32,6 +32,7 @@ import android.text.TextUtils;
 import com.droidlogic.tv.settings.dialog.old.Action;
 import com.droidlogic.tv.settings.RadioPreference;
 import com.droidlogic.tv.settings.R;
+import com.droidlogic.tv.settings.sliceprovider.ueventobserver.SetModeUEventObserver;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,13 +61,14 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
     public boolean hpdFlag = false;
     private static final String DEFAULT_VALUE = "444,8bit";
     private static final String DEFAULT_TITLE = "YCbCr444 8bit";
+    private SetModeUEventObserver mSetModeUEventObserver;
 
     private ArrayList<String> colorTitleList = new ArrayList();
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             hpdFlag = intent.getBooleanExtra ("state", false);
-            mHandler.sendEmptyMessageDelayed(MSG_FRESH_UI, hpdFlag ^ isHdmiMode() ? 2000 : 1000);
+            mHandler.sendEmptyMessage(MSG_FRESH_UI);
         }
     };
     public static ColorAttributeFragment newInstance() {
@@ -78,23 +80,15 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
         updatePreferenceFragment();
+        getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
+
+        mSetModeUEventObserver = SetModeUEventObserver.getInstance();
+        mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.sendEmptyMessage(MSG_FRESH_UI));
+        mSetModeUEventObserver.startObserving();
     }
-    private boolean needfresh() {
-        ArrayList<String> list = mOutputUiManager.getColorTitleList();
-        Log.d(LOG_TAG, "colorTitleList: " + colorTitleList.toString() + "\n list: " + list.toString());
-        if (colorTitleList.size() > 0 && colorTitleList.size() == list.size()) {
-            for (String title : colorTitleList) {
-                if (!list.contains(title))
-                    return true;
-            }
-        }else {
-            return true;
-        }
-        return false;
-    }
+
     private void updatePreferenceFragment() {
         mOutputUiManager.updateUiMode();
-        if (!needfresh()) return;
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
                 themedContext);
@@ -118,6 +112,7 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
             screen.addPreference(radioPreference);
         }
     }
+
     private boolean isModeSupportColor(final String curMode, final String curValue){
         return mOutputUiManager.isModeSupportColor(curMode, curValue);
     }
@@ -170,18 +165,18 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
-        mHandler.sendEmptyMessage(MSG_FRESH_UI);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(mIntentReceiver);
     }
 
     @Override
     public void onDestroy() {
+        getActivity().unregisterReceiver(mIntentReceiver);
+        mSetModeUEventObserver.stopObserving();
+        mHandler.removeMessages(MSG_FRESH_UI);
         super.onDestroy();
     }
 
@@ -236,6 +231,7 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
             }
         }
     };
+
     private boolean isHdmiMode() {
         return mOutputUiManager.isHdmiMode();
     }
