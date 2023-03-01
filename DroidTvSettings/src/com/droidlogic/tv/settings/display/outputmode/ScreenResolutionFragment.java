@@ -185,6 +185,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
     @Override
     public void onDestroy() {
+        mSetModeUEventObserver.stopObserving();
         getActivity().unregisterReceiver(mIntentReceiver);
         super.onDestroy();
     }

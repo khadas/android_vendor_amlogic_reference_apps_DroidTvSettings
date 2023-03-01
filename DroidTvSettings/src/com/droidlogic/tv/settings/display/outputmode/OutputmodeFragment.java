@@ -21,7 +21,6 @@ import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 
-import androidx.annotation.Keep;
 import static com.android.tv.twopanelsettings.slices.SlicesConstants.EXTRA_PREFERENCE_KEY;
 
 import com.droidlogic.tv.settings.PreferenceControllerFragment;
@@ -30,17 +29,14 @@ import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
-
-import android.os.CountDownTimer;
 import android.text.TextUtils;
 
 import com.droidlogic.tv.settings.R;
 
 
-import java.util.Comparator;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.dialog.old.Action;
 import com.droidlogic.tv.settings.RadioPreference;
 import com.droidlogic.tv.settings.sliceprovider.ueventobserver.SetModeUEventObserver;
@@ -54,42 +50,23 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.view.Display;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.LayoutInflater;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
+import android.view.View;
 
 public class OutputmodeFragment extends SettingsPreferenceFragment {
     private static final String TAG = "OutputmodeFragment";
     private OutputUiManager mOutputUiManager;
-    private TvSettingsActivity mTvSettingsActivity;
-    private static String preMode;
+    private SetModeUEventObserver mSetModeUEventObserver;
     private static String curMode;
     RadioPreference prePreference;
     RadioPreference curPreference;
     private static final int MSG_PLUG_FRESH_UI = 0;
     private IntentFilter mIntentFilter;
-    private SetModeUEventObserver mSetModeUEventObserver;
-    public boolean hpdFlag = false;
+
     public ArrayList<String> outputmodeTitleList = new ArrayList();
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            hpdFlag = intent.getBooleanExtra("state", false);
             mHandler.sendEmptyMessage(MSG_PLUG_FRESH_UI);
         }
     };
@@ -102,7 +79,6 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         mOutputUiManager = new OutputUiManager(getActivity());
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
-        mTvSettingsActivity = (TvSettingsActivity) getActivity();
         updatePreferenceFragment();
         getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
 
@@ -120,6 +96,7 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
             outputmodeTitleList.add(title);
         }
         int currentModeIndex = mOutputUiManager.getCurrentModeIndex();
+        Log.d(TAG, "outputmodeValueList: " + outputmodeValueList + "; currentModeIndex: " + currentModeIndex);
         for (int i = 0; i < outputmodeTitleList.size(); i++) {
             if (i == currentModeIndex) {
                 actions.add(new Action.Builder().key(outputmodeValueList.get(i))
@@ -146,6 +123,7 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
 
     @Override
     public void onDestroy() {
+        mSetModeUEventObserver.stopObserving();
         getActivity().unregisterReceiver(mIntentReceiver);
         mHandler.removeMessages(MSG_PLUG_FRESH_UI);
         super.onDestroy();
@@ -157,15 +135,18 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
             final RadioPreference radioPreference = (RadioPreference) preference;
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
-                preMode = mOutputUiManager.getCurrentMode().trim();
-                curMode = radioPreference.getKey();
+                String sysCurrentMode = mOutputUiManager.getCurrentMode().trim();
+                String UserPreferredDisplayMode = radioPreference.getKey();
+                curMode = UserPreferredDisplayMode; //update currentmode
+                String UserPreferredDisplayModeTitle = (String)radioPreference.getTitle();
                 curPreference = radioPreference;
-                Log.d(TAG, "currentMode: " + preMode + "; NewMode" + curMode);
+
+                Log.d(TAG, "currentMode:" + sysCurrentMode + "; NewMode:"
+                        + UserPreferredDisplayMode + "modeTitle:" + UserPreferredDisplayModeTitle);
                 Intent intent = new Intent();
-                intent.setClass(mTvSettingsActivity,
-                        AdjustResolutionDialogActivity.class);
-                intent.putExtra(EXTRA_PREFERENCE_KEY, curMode);
-                mTvSettingsActivity.startActivity(intent);
+                intent.setClass(getActivity(), AdjustResolutionDialogActivity.class);
+                intent.putExtra(EXTRA_PREFERENCE_KEY, UserPreferredDisplayMode);
+                getActivity().startActivity(intent);
                 curPreference.setChecked(true);
             } else {
                 radioPreference.setChecked(true);
