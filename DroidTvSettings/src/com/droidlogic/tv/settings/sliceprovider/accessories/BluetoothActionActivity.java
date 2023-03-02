@@ -28,12 +28,16 @@ import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevi
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
+
+import java.lang.Thread;
 
 /**
  * The {@Activity} for handling confirmation UI of Bluetooth-related actions such as connection and
@@ -41,6 +45,7 @@ import android.os.IBinder;
  */
 public class BluetoothActionActivity extends Activity implements BluetoothActionFragment.Listener {
 
+    private final String TAG = "BluetoothActionActivity";
     private boolean mBtDeviceServiceBound;
     private BluetoothDevice mDevice;
     private BluetoothDevicesService.LocalBinder mBtDeviceServiceBinder;
@@ -87,9 +92,19 @@ public class BluetoothActionActivity extends Activity implements BluetoothAction
         switch (key) {
             case KEY_BLUETOOTH_TOGGLE:
                 if (choice == YES) {
-                    if (AccessoryUtils.getDefaultBluetoothAdapter() != null) {
-                        AccessoryUtils.getDefaultBluetoothAdapter().disable();
+                    BluetoothAdapter bluetoothAdapter = AccessoryUtils.getDefaultBluetoothAdapter();
+                    if (bluetoothAdapter != null) {
+                        bluetoothAdapter.disable(true);
                     }
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (AccessoryUtils.isBluetoothEnabled()) {
+                                SystemClock.sleep(50);
+                            }
+                            getContentResolver().notifyChange(ConnectedDevicesSliceUtils.GENERAL_SLICE_URI, null);
+                        }
+                    }).start();
                     i.putExtra(EXTRAS_DIRECTION, DIRECTION_BACK);
                 }
                 break;
@@ -112,6 +127,7 @@ public class BluetoothActionActivity extends Activity implements BluetoothAction
                 }
                 break;
         }
+        getContentResolver().notifyChange(ConnectedDevicesSliceUtils.GENERAL_SLICE_URI, null);
         setResult(RESULT_OK, i);
         finish();
     }

@@ -27,6 +27,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
+import android.app.ProgressDialog;
+import android.os.Handler;
+import android.os.Message;
+import android.view.WindowManager;
+
+import android.bluetooth.BluetoothAdapter;
 
 /**
  * This broadcast receiver handles these cases:
@@ -45,24 +52,70 @@ public class ConnectedDevicesSliceBroadcastReceiver extends BroadcastReceiver {
     // Bluetooth off is handled differently by ResponseActivity with confirmation dialog.
     static final String BLUETOOTH_ON = "BLUETOOTH_ON";
 
+    private ProgressDialog mProgress;
+    private static final int MSG_ENABLE_BLUETOOTH_SWITCH = 0;
+    private static final int TIME_DELAYED = 50;
+    private static final String blueToothDialogMessage =
+            "It takes a few seconds to update bluetooth status, please wait...";
+    private static Context mContext;
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        // Handle CEC control toggle.
+        mContext = context;
         final String action = intent.getAction();
+        Log.d(TAG, "onReceive action: " + action);
         final boolean isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, false);
         if (ACTION_TOGGLE_CHANGED.equals(action)) {
             if (BLUETOOTH_ON.equals(intent.getStringExtra(EXTRA_TOGGLE_TYPE))) {
-                if (AccessoryUtils.getDefaultBluetoothAdapter() != null) {
-                    AccessoryUtils.getDefaultBluetoothAdapter().enable();
+                BluetoothAdapter bluetoothAdapter = AccessoryUtils.getDefaultBluetoothAdapter();
+                if (bluetoothAdapter != null) {
+                    bluetoothAdapter.enable();
                 }
-                return;
             }
         }
 
         // Notify TvSettings to go back to the previous level.
         String direction = intent.getStringExtra(EXTRAS_DIRECTION);
         if (DIRECTION_BACK.equals(direction)) {
+            Log.d(TAG, "DIRECTION_BACK ");
             notifyToGoBack(context, Uri.parse(intent.getStringExtra(EXTRAS_SLICE_URI)));
         }
+
+        mProgress = new ProgressDialog(context);
+        showBlueToothConnectionDialog(context, mProgress,
+                "It takes a few seconds to update bluetooth status," +
+                        "\nplease wait...");
+        mHandler.sendEmptyMessageDelayed(MSG_ENABLE_BLUETOOTH_SWITCH, TIME_DELAYED);
     }
+
+    private void showBlueToothConnectionDialog(Context context,
+                                               ProgressDialog progressDialog,
+                                               String blueToothDialogMessage) {
+        progressDialog.setMessage(blueToothDialogMessage);
+        progressDialog.setIndeterminate(false);
+        progressDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        if (progressDialog != null && !progressDialog.isShowing()) {
+            progressDialog.show();
+        }
+    }
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_ENABLE_BLUETOOTH_SWITCH:
+                    if (mProgress != null && mProgress.isShowing()
+                            && AccessoryUtils.isBluetoothEnabled()) {
+                        mContext.getContentResolver()
+                                .notifyChange(ConnectedDevicesSliceUtils.GENERAL_SLICE_URI, null);
+                        mProgress.dismiss();
+                    } else {
+                        mHandler.sendEmptyMessageDelayed(MSG_ENABLE_BLUETOOTH_SWITCH, TIME_DELAYED);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 }

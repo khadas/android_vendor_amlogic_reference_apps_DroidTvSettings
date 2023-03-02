@@ -22,6 +22,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
+import android.os.RemoteException;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -106,14 +107,18 @@ final class AccessoryUtils {
     }
 
     public static boolean isBluetoothEnabled() {
-        return getDefaultBluetoothAdapter() != null && getDefaultBluetoothAdapter().isEnabled();
+        boolean isEnable = getDefaultBluetoothAdapter().isEnabled();
+        Log.i(TAG, "isBluetoothEnabled : " + isEnable);
+        return isEnable;
     }
 
     public static boolean isConnected(BluetoothDevice device) {
         if (device == null) {
             return false;
         }
-        return device.getBondState() == BluetoothDevice.BOND_BONDED && device.isConnected();
+        boolean isConnected = device.getBondState() == BluetoothDevice.BOND_BONDED && device.isConnected();
+        Log.i(TAG, "isConnected: " + isConnected);
+        return isConnected;
     }
 
     public static boolean isBonded(BluetoothDevice device) {
