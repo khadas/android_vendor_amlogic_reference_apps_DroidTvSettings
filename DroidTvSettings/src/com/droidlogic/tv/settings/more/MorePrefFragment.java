@@ -100,6 +100,12 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     private static final String DEBUG_GLOBAL_SETTING = "droidsetting_debug";
     private static final String KEY_AI_PQ = "ai_pq";
 
+    public static final String WATCH_FEATURE = "android.hardware.type.watch";
+    public static final String TV_FEATURE = "android.hardware.type.television";
+    public static final String AUTOMOTIVE_FEATURE = "android.hardware.type.automotive";
+    public static final String FEATURE_SOFTWARE_NETFLIX = "droidlogic.software.netflix";
+    public static final String FEATURE_HDMI_CEC = "android.hardware.hdmi.cec";
+
     private Preference mUpgradeBluetoothRemote;
     private Preference mSoundsPref;
 
@@ -150,7 +156,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
                 && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false);
         mSystemControlManager = SystemControlManager.getInstance();
 
-        boolean customConfig = getContext().getPackageManager().hasSystemFeature("droidlogic.software.netflix");
+        boolean isSupportNetflix = isSupportFeature(FEATURE_SOFTWARE_NETFLIX);
         boolean debugConfig = mSystemControlManager.getPropertyBoolean(DEBUG_DISPLAY_PROP, false);
 
         final Preference morePref = findPreference(KEY_MAIN_MENU);
@@ -176,7 +182,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         if (SettingsConstant.needGTVFeature(getContext())) {
             hdmicecPref.setVisible(false);
         } else {
-            hdmicecPref.setVisible((getContext().getPackageManager().hasSystemFeature("android.hardware.hdmi.cec")
+            hdmicecPref.setVisible((isSupportFeature(FEATURE_HDMI_CEC)
                     && SettingsConstant.needDroidlogicHdmicecFeature(getContext())) && !is_from_live_tv);
         }
         playbackPref.setVisible(false);
@@ -184,7 +190,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             if (is_from_live_tv) {
                 netflixesnPref.setVisible(false);
                 versionPref.setVisible(false);
-            } else if (getContext().getPackageManager().hasSystemFeature("droidlogic.software.netflix")) {
+            } else if (isSupportNetflix) {
                 netflixesnPref.setVisible(true);
                 netflixesnPref.setSummary(mEsnText);
                 versionPref.setVisible(true);
@@ -244,6 +250,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
                 DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_SHOW_STARTUP);
             }
         } else {
+            wifiHotspotPref.setVisible(!isHandheld());  //Tablet devices do not display.
             picturePref.setVisible(!SettingsConstant.needDroidlogicTvFeature(getContext()));
             mTvOption.setVisible(false);
             mSoundsPref.setVisible(false);
@@ -255,7 +262,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_HIDE_STARTUP);
         }
 
-        if (!debugConfig && customConfig) {
+        if (!debugConfig && isSupportNetflix) {
             picturePref.setVisible(false);
         }
 
@@ -399,5 +406,17 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             Log.i(TAG, "isPassthroughInput Exception = " + e.getMessage());
         }
         return result;
+    }
+
+    private boolean isHandheld(){
+        return isSupportFeature(PackageManager.FEATURE_TOUCHSCREEN)
+                && !isSupportFeature(PackageManager.FEATURE_PC)
+                && !isSupportFeature(WATCH_FEATURE)
+                && !isSupportFeature(TV_FEATURE)
+                && !isSupportFeature(AUTOMOTIVE_FEATURE);
+    }
+
+    private boolean isSupportFeature(String featureName) {
+        return getActivity().getPackageManager().hasSystemFeature(featureName);
     }
 }
