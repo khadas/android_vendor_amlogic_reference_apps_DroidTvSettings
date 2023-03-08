@@ -116,7 +116,50 @@ android_app {
         "droidlogic.tv.software.core",
     ],
 }
+android_app {
+    name: "DroidTvSettingsEdla",
+    manifest: "AndroidManifest_edla.xml",
+    srcs: [
+        "src/**/*.java",
+        "src/**/I*.aidl",
+    ],
+    resource_dirs: ["res"],
+    platform_apis: true,
+    certificate: "platform",
+    system_ext_specific: true,
+    optimize: {
+        proguard_flags_files: ["proguard.cfg"],
+    },
+    privileged: true,
+    static_libs: [
+        "androidx.recyclerview_recyclerview",
+        "androidx.preference_preference",
+        "androidx.appcompat_appcompat",
+        "androidx.legacy_legacy-preference-v14",
+        "androidx.leanback_leanback-preference",
+        "androidx.leanback_leanback",
+        "androidx.lifecycle_lifecycle-extensions",
+        "androidx.lifecycle_lifecycle-common-java8",
+        "androidx.annotation_annotation",
+        "guava",
+        "statslog-tvsettings",
+        "TwoPanelSettingsLib",
+    ],
 
+    libs: [
+        "droidlogic.software.core",
+        "droidlogic.tv.software.core",
+    ],
+    uses_libs: [
+        "droidlogic.software.core",
+        "droidlogic.tv.software.core",
+    ],
+    required: [
+        "com.droidlogic.tv.settings",
+        "droidlogic.software.core",
+        "droidlogic.tv.software.core",
+    ],
+} 
 prebuilt_etc {
     name: "com.droidlogic.tv.settings",
     system_ext_specific: true,
