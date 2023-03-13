@@ -632,10 +632,12 @@
     <string-array name="pq_picture_mode_dolbyvision_entries">
         <item>dolbyvision bright</item>
         <item>dolbyvision dark</item>
+        <item>dolbyvision game</item>
     </string-array>
     <string-array name="pq_picture_mode_dolbyvision_entry_values" translatable="false">
         <item>bright</item>
         <item>dark</item>
+        <item>game</item>
     </string-array>
 
     <string-array name="pq_picture_mode_cvua_entries">
