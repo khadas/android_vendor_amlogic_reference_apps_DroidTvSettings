@@ -87,6 +87,8 @@
     <!-- DroidLogic start -->
     <item name="android:backgroundDimEnabled">false</item>
     <item name="android:windowShowWallpaper">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     <!-- DroidLogic end -->
     </style>
 
