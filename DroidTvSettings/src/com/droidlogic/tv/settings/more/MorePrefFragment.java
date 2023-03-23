@@ -260,10 +260,9 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
                 powerKeyOnModePref.setVisible(false);
             }
             DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_HIDE_STARTUP);
-        }
-
-        if (!debugConfig && isSupportNetflix) {
-            picturePref.setVisible(false);
+            if (!debugConfig && isSupportNetflix) {
+                picturePref.setVisible(false);
+            }
         }
 
         if (DroidUtils.hasGtvsUiMode()) {

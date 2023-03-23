@@ -561,7 +561,9 @@ public class DisplayCapabilityManager {
   }
 
   public boolean isBestResolution() {
-        return mOutputModeManager.isBestOutputmode();
+    boolean isBestMode = mOutputModeManager.isBestOutputmode();
+    Log.d(TAG, "isBestMode: " + isBestMode);
+    return isBestMode;
   }
 
   public void change2BestMode() {
