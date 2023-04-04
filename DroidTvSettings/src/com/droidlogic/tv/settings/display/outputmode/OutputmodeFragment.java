@@ -81,10 +81,6 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         updatePreferenceFragment();
         getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
-
-        mSetModeUEventObserver = SetModeUEventObserver.getInstance();
-        mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.sendEmptyMessage(MSG_PLUG_FRESH_UI));
-        mSetModeUEventObserver.startObserving();
     }
 
     private ArrayList<Action> getMainActions() {
@@ -113,17 +109,20 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
 
     @Override
     public void onResume() {
+        mSetModeUEventObserver = SetModeUEventObserver.getInstance();
+        mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.sendEmptyMessage(MSG_PLUG_FRESH_UI));
+        mSetModeUEventObserver.startObserving();
         super.onResume();
     }
 
     @Override
     public void onPause() {
+        mSetModeUEventObserver.stopObserving();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        mSetModeUEventObserver.stopObserving();
         getActivity().unregisterReceiver(mIntentReceiver);
         mHandler.removeMessages(MSG_PLUG_FRESH_UI);
         super.onDestroy();

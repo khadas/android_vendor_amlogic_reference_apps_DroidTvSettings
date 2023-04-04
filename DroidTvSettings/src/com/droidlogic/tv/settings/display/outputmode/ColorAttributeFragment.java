@@ -81,10 +81,6 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
         mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
         updatePreferenceFragment();
         getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
-
-        mSetModeUEventObserver = SetModeUEventObserver.getInstance();
-        mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.sendEmptyMessage(MSG_FRESH_UI));
-        mSetModeUEventObserver.startObserving();
     }
 
     private void updatePreferenceFragment() {
@@ -164,18 +160,21 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
     }
     @Override
     public void onResume() {
+        mSetModeUEventObserver = SetModeUEventObserver.getInstance();
+        mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.sendEmptyMessage(MSG_FRESH_UI));
+        mSetModeUEventObserver.startObserving();
         super.onResume();
     }
 
     @Override
     public void onPause() {
+        mSetModeUEventObserver.stopObserving();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
         getActivity().unregisterReceiver(mIntentReceiver);
-        mSetModeUEventObserver.stopObserving();
         mHandler.removeMessages(MSG_FRESH_UI);
         super.onDestroy();
     }

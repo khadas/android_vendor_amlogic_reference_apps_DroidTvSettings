@@ -147,9 +147,6 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mOutputUiManager = new OutputUiManager(getActivity());
-        mSetModeUEventObserver = SetModeUEventObserver.getInstance();
-        mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.sendEmptyMessage(MSG_FRESH_UI));
-        mSetModeUEventObserver.startObserving();
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
         getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
@@ -179,13 +176,21 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
     @Override
     public void onResume() {
+        mSetModeUEventObserver = SetModeUEventObserver.getInstance();
+        mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.sendEmptyMessage(MSG_FRESH_UI));
+        mSetModeUEventObserver.startObserving();
         mHandler.sendEmptyMessage(MSG_FRESH_UI);
         super.onResume();
     }
 
     @Override
-    public void onDestroy() {
+    public void onPause() {
         mSetModeUEventObserver.stopObserving();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
         getActivity().unregisterReceiver(mIntentReceiver);
         super.onDestroy();
     }
