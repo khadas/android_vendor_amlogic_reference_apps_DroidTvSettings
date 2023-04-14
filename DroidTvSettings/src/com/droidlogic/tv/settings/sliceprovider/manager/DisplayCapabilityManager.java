@@ -268,7 +268,7 @@ public class DisplayCapabilityManager {
 
   private DisplayCapabilityManager(final Context context) {
     mContext = context;
-    mDisplayManager = (DisplayManager)context.getSystemService(Context.DISPLAY_SERVICE);
+    mDisplayManager = context.getSystemService(DisplayManager.class);
     // mDisplayDensityManager = new DisplayDensityManager(mDisplayManager);
     mSystemControlManager = SystemControlManager.getInstance();
     mOutputModeManager = new OutputModeManager(context);
@@ -347,7 +347,7 @@ public class DisplayCapabilityManager {
 
     Lock lock = mRWLock.writeLock();
     lock.lock();
-    filterNoSupportMode(mHdmiModeList);
+    mHdmiModeList = filterNoSupportMode(mHdmiModeList);
     lock.unlock();
 
     return preModeList == null || !preModeList.equals(mHdmiModeList);
@@ -377,21 +377,21 @@ public class DisplayCapabilityManager {
     return matched;
   }
 
-  private void filterNoSupportMode(List<String> systemControlModeList) {
-    Iterator<String> sysHdmiModeIterator = (new ArrayList(systemControlModeList)).iterator();
+  private List<String> filterNoSupportMode(List<String> systemControlModeList) {
+    List<String> filterNoSupportModeList = new ArrayList(systemControlModeList);
+    Iterator<String> sysHdmiModeIterator = filterNoSupportModeList.iterator();
     while (sysHdmiModeIterator.hasNext()) {
       String hdmiModeTmp = filterHdmiModes(sysHdmiModeIterator.next());
       if (!hdmiModeTmp.isEmpty() && !isContainsInFW(hdmiModeTmp)) {
         sysHdmiModeIterator.remove();
+        Log.d(TAG, hdmiModeTmp + " is removed");
       }
     }
-    if (MediaSliceUtil.CanDebug()) {
-      Log.d(TAG, "filterNoSupportModeList: " + systemControlModeList);
-    }
+
+    return filterNoSupportModeList;
   }
 
   private String filterHdmiModes(String filterHdmiMode) {
-    Log.d(TAG, "filterHdmiMode: " + filterHdmiMode);
     if (!mOutputModeManager.getFrameRateOffset().contains("1")
             || filterHdmiMode == null) {
 
@@ -413,7 +413,9 @@ public class DisplayCapabilityManager {
       filterHdmiModeStr = filterHdmiMode.replace("24hz", "23.976hz");
     }
 
-    Log.d(TAG, "filterHdmiModeStr: " + filterHdmiModeStr);
+    if (MediaSliceUtil.CanDebug()) {
+      Log.d(TAG, "filterHdmiMode: " + filterHdmiMode + "; filterHdmiModeStr: " + filterHdmiModeStr);
+    }
     return filterHdmiModeStr;
   }
 
@@ -680,10 +682,11 @@ public class DisplayCapabilityManager {
 
   private Display.Mode checkUserPreferredMode(Display.Mode[] modeArr, Display.Mode mode, String userSetMode) {
     for (Display.Mode mode2 : modeArr) {
-      /*In cvbs mode, the value of the resolution rate reported by hwc to the framework is fake
-      data (Google[b/229605079] needs to filter 16:9 mode), so only fps verification is performed in this mode
-      (the width and height of cvbs mode are determined, only fps is unique).
-      * */
+      /**
+       * In cvbs mode, the value of the resolution rate reported by hwc to the framework is fake
+       * data (Google[b/229605079] needs to filter 16:9 mode), so only fps verification is performed in this mode
+       * (the width and height of cvbs mode are determined, only fps is unique).
+       */
       boolean refreshRate = Float.floatToIntBits(mode2.getRefreshRate()) == Float.floatToIntBits(mode.getRefreshRate());
       if ((isCvbsMode() && refreshRate)
           || (!isCvbsMode()
