@@ -49,6 +49,7 @@ import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.tv.DroidLogicTvUtils;
 import com.droidlogic.app.tv.TvControlManager;
+import com.droidlogic.app.SystemControlManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +86,6 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
     private static final String TV_CURRENT_DEVICE_ID = "tv_current_device_id";
     private static final String DTVKIT_PACKAGE = "org.dtvkit.inputsource";
 
-    private static final String PQ_PICTURE_T5 = "T963";
-
     private SwitchPreference mAisrSwitch;
     private ListPreference mPicturemodesdrPref;
     private ListPreference mPicturemodehdr10Pref;
@@ -97,6 +96,7 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
     private ListPreference mPicturemodecvuaPref;
 
     private PQSettingsManager mPQSettingsManager;
+    private SystemControlManager mSystemControlManager;
 
     public static PictureModeFragment newInstance() {
         return new PictureModeFragment();
@@ -123,6 +123,9 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
         mPicturemodePref = (ListPreference) findPreference(PQ_PICTURE_MODE);
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
+        }
+        if (mSystemControlManager == null) {
+            mSystemControlManager = SystemControlManager.getInstance();
         }
         getCurrentSource();
 
@@ -211,6 +214,9 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
         if (mPQSettingsManager == null) {
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
+        if (mSystemControlManager == null) {
+            mSystemControlManager = SystemControlManager.getInstance();
+        }
         getCurrentSource();
         int is_from_live_tv = getActivity().getIntent().getIntExtra("from_live_tv", 0);
         boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
@@ -251,8 +257,7 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
 
         final ListPreference aipqPref = (ListPreference) findPreference(PQ_AI_PQ);
         // First judge like this, and add specific judgment criteria later
-        if (mPQSettingsManager.getChipVersionInfo() != null &&
-                    PQ_PICTURE_T5 == mPQSettingsManager.getChipVersionInfo()) {
+        if (mSystemControlManager.hasAipqFunc()) {
             aipqPref.setValueIndex(mPQSettingsManager.getAIPQStatus());
             //aipqPref.setValueIndex(1);
             aipqPref.setOnPreferenceChangeListener(this);

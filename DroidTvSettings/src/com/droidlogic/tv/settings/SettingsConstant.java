@@ -99,7 +99,7 @@ public class SettingsConstant {
         return sm.getPropertyBoolean("ro.vendor.platform.customize_tvsetting", false);
     }
 
-    public static boolean isTvFeature(Context context) {
+    public static boolean isTvFeature() {
         SystemControlManager sm = SystemControlManager.getInstance();
         return ("1".equals(sm.getPropertyString("ro.vendor.platform.is.tv", "")));
     }

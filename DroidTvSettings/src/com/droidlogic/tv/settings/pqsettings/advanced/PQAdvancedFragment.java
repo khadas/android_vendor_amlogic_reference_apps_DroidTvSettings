@@ -69,8 +69,6 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
     private static final String PQ_PICTURE_ADVANCED_COLOR_TEMPERATURE = "pq_picture_advanced_color_temperature";
     private static final String PQ_PICTURE_ADVANCED_COLOR_CUSTOMIZE = "pq_picture_advanced_color_customize";
     private static final String PQ_PICTURE_ADVANCED_MEMC = "pq_picture_advanced_memc";
-
-    private static final String PQ_PICTURE_T3 = "NNNN";
     private static final String PQ_PICTURE_T5 = "T963";
 
     private static final int PQ_PICTURE_ADVANCED_SOURCE_HDR = 1;
@@ -171,9 +169,7 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
         pictureAdvancedDeMosquitoPref.setValueIndex(mPQSettingsManager.getAdvancedDeMosquitoStatus());
         pictureAdvancedDeMosquitoPref.setOnPreferenceChangeListener(this);
 
-        if (mPQSettingsManager.getChipVersionInfo() != null
-                && (PQ_PICTURE_T5 == mPQSettingsManager.getChipVersionInfo()
-                || PQ_PICTURE_T3 == mPQSettingsManager.getChipVersionInfo())) {
+        if (mPQSettingsManager.hasSmoothPlusFunc()) {
             pictureAdvancedDecontourPref.setValueIndex(mPQSettingsManager.getAdvancedDecontourStatus());
             pictureAdvancedDecontourPref.setOnPreferenceChangeListener(this);
         } else {

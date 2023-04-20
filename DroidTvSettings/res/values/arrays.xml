@@ -828,20 +828,28 @@
 
     <string-array name="pq_picture_advanced_deblock_entries">
         <item>off</item>
-        <item>on</item>
+        <item>low</item>
+        <item>middle</item>
+        <item>high</item>>
     </string-array>
     <string-array name="pq_picture_advanced_deblock_entry_values" translatable="false">
         <item>0</item>
         <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string-array name="pq_picture_advanced_demosquito_entries">
         <item>off</item>
-        <item>on</item>
+        <item>low</item>
+        <item>middle</item>
+        <item>high</item>>
     </string-array>
     <string-array name="pq_picture_advanced_demosquito_entry_values" translatable="false">
         <item>0</item>
         <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string-array name="pq_picture_advanced_decontour_entries">

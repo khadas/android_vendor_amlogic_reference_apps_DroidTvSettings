@@ -1505,4 +1505,8 @@ public class PQSettingsManager {
         }
         return false;
     }
+
+    public boolean hasSmoothPlusFunc() {
+        return mSystemControlManager.hasSmoothPlusFunc();
+    }
 }

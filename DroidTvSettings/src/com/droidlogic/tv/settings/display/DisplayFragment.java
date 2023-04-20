@@ -100,7 +100,7 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
         mAllmPref.setOnPreferenceChangeListener(this);
         mAllmPref.setVisible(SystemProperties.getBoolean("ro.vendor.debug.allm", false));
 
-        if (SettingsConstant.isTvFeature(getContext())) {
+        if (SettingsConstant.isTvFeature()) {
             final TwoStatePreference deviceDlgPref = (TwoStatePreference) findPreference(KEY_DLG);
             deviceDlgPref.setOnPreferenceChangeListener(this);
             deviceDlgPref.setVisible(mTvControlManager.IsSupportDLG());

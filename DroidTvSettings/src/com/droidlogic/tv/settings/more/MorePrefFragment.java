@@ -178,7 +178,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         final Preference aipq = findPreference(KEY_AI_PQ);
         //hide it forcedly as new bluetooth remote upgrade application is not available now
         mUpgradeBluetoothRemote.setVisible(false/*is_from_live_tv ? false : (SettingsConstant.needDroidlogicBluetoothRemoteFeature(getContext()) && !tvFlag)*/);
-        aipq.setVisible(mSystemControlManager.hasAipqFunc() ? true : false);
+        aipq.setVisible(mSystemControlManager.hasAipqFunc());
         if (SettingsConstant.needGTVFeature(getContext())) {
             hdmicecPref.setVisible(false);
         } else {
