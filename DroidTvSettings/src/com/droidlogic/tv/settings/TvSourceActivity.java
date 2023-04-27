@@ -52,14 +52,4 @@ public class TvSourceActivity extends TvSettingsActivity {
             startPreferenceFragment(fragment);
         }
     }
-
-    @Override
-    public boolean dispatchKeyEvent (KeyEvent event) {
-        if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_TV_INPUT) {
-            Log.d(TAG, "consume KeyEvent.KEYCODE_TV_INPUT here");
-            return true;
-        } else {
-            return super.dispatchKeyEvent(event);
-        }
-    }
 }

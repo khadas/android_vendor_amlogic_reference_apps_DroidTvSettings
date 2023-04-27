@@ -123,7 +123,7 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
         Intent intent = null;
 
         if (mContext != null) {
-            intent = ((Activity)mContext).getIntent();
+            intent = getActivity().getIntent();
         }
 
         if (DEBUG)  Log.d(TAG, "onCreatePreferences  intent= "+ intent);
