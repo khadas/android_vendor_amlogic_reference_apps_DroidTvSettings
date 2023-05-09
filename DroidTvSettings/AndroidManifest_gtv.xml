@@ -104,10 +104,15 @@
 
         <!-- DroidLogic start -->
         <activity android:name=".more.MorePrefFragmentActivity"
+              android:label="@string/picture_settings_title"
               android:theme="@style/TvSettingsActivityTheme"
               android:configChanges="keyboard|keyboardHidden|navigation"
               android:excludeFromRecents="true"
               android:exported="true">
+              <intent-filter>
+                <action android:name="android.settings.DISPLAY_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+              </intent-filter>
         </activity>
 
         <!--
@@ -120,11 +125,16 @@
               android:theme="@style/TvSettingsActivityTheme"
               android:configChanges="keyboard|keyboardHidden|navigation"
               android:excludeFromRecents="true"
+              android:label="@string/settings_app_name_gtv"
               android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.android.tv.action.VIEW_INPUTS" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
@@ -286,6 +296,30 @@
         </activity>
 
         <activity
+            android:name=".sliceprovider.dialog.MatchContentChangeDialogActivity"
+            android:label="Match Content Change Dialog Activity"
+            android:launchMode="singleInstance"
+            android:exported="false"
+            android:theme="@style/DialogActivityTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.google.android.settings.usage.ACTION_MATCH_CONTENT_POLICY_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+             android:name=".sliceprovider.dialog.DolbyVisionModeChangeActivity"
+             android:label="DolbyVision Mode Change Dialog Activity"
+             android:launchMode="singleInstance"
+             android:exported="false"
+             android:theme="@style/DialogActivityTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.google.android.settings.usage.ACTION_SET_DOLBY_VISION_MODE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".sliceprovider.dialog.PreferredModeChangeDialogActivity"
             android:label="Prefer Dolby Vision Dialog Activity"
             android:launchMode="singleInstance"
@@ -364,9 +398,10 @@
              android:exported="false" />
 
         <service
-             android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService"
+            android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService"
             android:exported="false" />
-
+        <service android:name=".FrameRateService"
+            android:exported="false"/>git d
         <!-- <service android:name="com.droidlogic.tv.settings.sliceprovider.DisplayDensityManagerService"
             android:exported="false"/>-->
 

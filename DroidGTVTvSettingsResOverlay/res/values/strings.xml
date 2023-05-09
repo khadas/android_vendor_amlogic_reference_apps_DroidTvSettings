@@ -205,7 +205,9 @@
     <string name="power_and_energy">Power &amp; Energy</string>
     <!-- Title of power on behavior item [CHAR LIMIT=60] -->
     <string name="power_on_behavior">Power on behavior</string>
+    <!--
     <string name="power_boot_resume_slice_uri" translatable="false">content://com.google.android.tv.settings.powerbehavior.sliceprovider/power_boot_resume</string>
+    -->
     <!-- Title for preference screen controlling display & sound settings. [CHAR LIMIT=50] -->
     <string name="device_display_sound">Display &amp; Sound</string>
     <!-- A category title for the settings related to display. [CHAR LIMIT=50] -->

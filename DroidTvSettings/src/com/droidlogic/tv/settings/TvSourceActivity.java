@@ -18,6 +18,7 @@ package com.droidlogic.tv.settings;
 
 import androidx.fragment.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -37,6 +38,13 @@ public class TvSourceActivity extends TvSettingsActivity {
         //return FlavorUtils.getFeatureFactory(this).getSettingsFragmentProvider()
         //  .newSettingsFragment(TvSourceFragment.class.getName(), null);
         return new SettingsFragment(this);
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     public static class SettingsFragment extends BaseSettingsFragment {

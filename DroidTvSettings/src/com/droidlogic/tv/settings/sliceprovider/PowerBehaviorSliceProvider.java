@@ -32,7 +32,6 @@ public class PowerBehaviorSliceProvider extends MediaSliceProvider {
         Log.d(TAG, "onBindSlice: " + sliceUri);
         switch (MediaSliceUtil.getFirstSegment(sliceUri)) {
             case MediaSliceConstants.DEVICE_POWER_BEHAVIOR_PATH:
-                // fill in Netfilx Esn into general info purposely
                 return createPowerBehaviorSlice(sliceUri);
             default:
                 return null;
@@ -47,6 +46,11 @@ public class PowerBehaviorSliceProvider extends MediaSliceProvider {
     }
 
     private Slice createPowerBehaviorSlice(Uri sliceUri) {
+        if (!showDroidPowerBehaviorToggle()) {
+            Log.d(TAG, "LauncherX on Slice!!");
+            return null;
+        }
+
         final PreferenceSliceBuilder psb = new PreferenceSliceBuilder(getContext(), sliceUri);
         psb.addScreenTitle(
                 new RowBuilder().setTitle(getContext().getString(R.string.power_and_energy)));
@@ -90,5 +94,9 @@ public class PowerBehaviorSliceProvider extends MediaSliceProvider {
         }
 
 
+    }
+
+    private boolean showDroidPowerBehaviorToggle() {
+        return getContext().getResources().getBoolean(R.bool.show_droid_power_behavior);
     }
 }

@@ -40,6 +40,12 @@ public class BootReceiver extends BroadcastReceiver {
             Log.d(TAG, "onReceive");
         }
 
+        try {
+            Log.i(TAG, "start FrameRateService");
+            context.startService(new Intent(context,FrameRateService.class));
+        } catch (Exception e) {
+            Log.e(TAG, "startFrameRateService error !!", e);
+        }
         /*try {
             context.startService(new Intent(context, DisplayDensityManagerService.class));
         } catch (Exception e) {

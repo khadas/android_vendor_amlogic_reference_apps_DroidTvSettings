@@ -157,7 +157,7 @@ public abstract class TvSettingsActivity extends FragmentActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(INTENT_ACTION_FINISH_FRAGMENT);
         intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-        registerReceiver(mReceiver, intentFilter);
+        registerReceiver(mReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
     }
 
     public void unregisterSomeReceivers() {

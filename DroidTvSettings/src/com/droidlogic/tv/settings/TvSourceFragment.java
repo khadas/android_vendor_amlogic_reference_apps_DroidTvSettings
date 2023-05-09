@@ -20,9 +20,12 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
 import android.hardware.hdmi.HdmiDeviceInfo;
 import android.media.tv.TvInputInfo;
 import android.media.tv.TvInputManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.SystemProperties;
@@ -38,6 +41,7 @@ import android.widget.ListAdapter;
 import com.droidlogic.app.DataProviderManager;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
+import com.droidlogic.tv.settings.overlay.FlavorUtils;
 import com.droidlogic.tv.settings.R;
 
 import java.util.Collections;
@@ -67,7 +71,7 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
     private static final String PACKAGE_DROIDLOGIC_TVINPUT = "com.droidlogic.tvinput";
     private static final String PACKAGE_DROIDLOGIC_DTVKIT = "com.droidlogic.dtvkit.inputsource";
     private static final String PACKAGE_GOOGLE_VIDEOS = "com.google.android.videos";
-
+    private static final String AMATI_FEATURE = "com.google.android.feature.AMATI_EXPERIENCE";
     private static final String DATA_FROM_TV_APP = "from_live_tv";
     private static final String DATA_REQUEST_PACKAGE = "requestpackage";
 
@@ -119,6 +123,12 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updatePreferenceFragment();
+    }
+
+    @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         Intent intent = null;
 
@@ -131,8 +141,13 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
             mFromTvApp = intent.getIntExtra(DATA_FROM_TV_APP, MODE_GLOBAL) == MODE_LIVE_TV;
             mStartPackage = intent.getStringExtra(DATA_REQUEST_PACKAGE);
         }
-        updatePreferenceFragment();
+        final Context themedContext = getPreferenceManager().getContext();
+        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
+                themedContext);
+        screen.setTitle(R.string.tv_source);
+        setPreferenceScreen(screen);
     }
+
     public void calculatePreSrcToCurSrc(Preference preference) {
         String currentInputId = DroidLogicTvUtils.getCurrentInputId(mContext);
         if (currentInputId != null) {
@@ -167,6 +182,15 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
             float Time= (float) SystemClock.uptimeMillis() / 1000;
             Log.d(TAG, "onPreferenceTreeClick SwitchSourceTime = " + Time);
             final Preference sourcePreference = preference;
+            if (sourcePreference.getKey().equals("home")) {
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                homeIntent.addCategory(Intent.CATEGORY_HOME);
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                getPreferenceManager().getContext().startActivity(homeIntent);
+                ((Activity)mContext).finish();
+                return true;
+            }
             List<TvInputInfo> inputList = mTvInputManager.getTvInputList();
             for (TvInputInfo input : inputList) {
                 if (sourcePreference.getKey().equals(input.getId())) {
@@ -232,6 +256,29 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
             List<HdmiDeviceInfo> hdmiList = getHdmiList();
             HdmiDeviceInfo audioSystem = getOrigHdmiDevice(LOGICAL_ADDRESS_AUDIO_SYSTEM, hdmiList);
 
+            boolean isGTV = themedContext.getPackageManager().hasSystemFeature(AMATI_FEATURE);
+            boolean calledByIntent = false;
+            if (mContext != null) {
+                Intent intent = ((Activity)mContext).getIntent();
+                Log.d(TAG, "updatePreferenceFragment " + intent);
+                if (intent != null) {
+                    if (TextUtils.equals(intent.getAction(), "com.android.tv.action.VIEW_INPUTS")) {
+                        calledByIntent = true;
+                    }
+                }
+            }
+            if (isGTV && calledByIntent) {
+                Preference sourcePreference = new Preference(themedContext);
+                sourcePreference.setKey("home");
+                sourcePreference.setPersistent(false);
+                sourcePreference.setIcon(R.drawable.ic_home);
+                if (isBasicMode(themedContext)) {
+                    sourcePreference.setTitle("Home");
+                } else {
+                    sourcePreference.setTitle("Google TV Home");
+                }
+                preferenceList.add(sourcePreference);
+            }
             for (TvInputInfo input : inputList) {
                 Log.d(TAG,"updatePreferenceFragment input " + input + "-->" + input.getType());
                 if (input.isHidden(themedContext)) {
@@ -242,6 +289,10 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
                     // DroidSettings always show the fixed hdmi port related sources, even though
                     // there are no devices connected, so we should only care about the parent
                     // sources.
+                    continue;
+                }
+                if (isGTV && calledByIntent && !input.isHardwareInput()) {
+                    Log.d(TAG, "updatePreferenceFragment, Input switcher don't show " + input);
                     continue;
                 }
                 Preference sourcePreference = new Preference(themedContext);
@@ -259,6 +310,40 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
             Log.d(TAG, "inputList is "+e);
         }
 
+    }
+
+    public boolean isBasicMode(Context context) {
+        final String SETTINGS_PACKAGE_NAME = "com.android.tv.settings";
+        String providerUriString = "";
+        try {
+            Resources resources = context.getPackageManager()
+                    .getResourcesForApplication(SETTINGS_PACKAGE_NAME);
+            int id = resources.getIdentifier("basic_mode_provider_uri", "string", SETTINGS_PACKAGE_NAME);
+            if (id != 0) {
+                providerUriString = resources.getString(id);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        if (TextUtils.isEmpty(providerUriString)) {
+            Log.e(TAG, "ContentProvider for basic mode is undefined.");
+            return false;
+        }
+        // The string "offline_mode" is a static protocol and should not be changed in general.
+        final String KEY_BASIC_MODE = "offline_mode";
+        try {
+            Uri contentUri = Uri.parse(providerUriString);
+            Cursor cursor = context.getContentResolver().query(contentUri, null, null, null);
+            if (cursor != null && cursor.getCount() != 0) {
+                cursor.moveToFirst();
+                String basicMode = cursor.getString(cursor.getColumnIndex(KEY_BASIC_MODE));
+                return "1".equals(basicMode);
+            }
+        } catch (IllegalArgumentException | NullPointerException e) {
+            Log.e(TAG, "Unable to query the ContentProvider for basic mode.", e);
+            return false;
+        }
+        return false;
     }
 
     private void addSpecificDtv(Context themedContext, TvInputInfo input, List<Preference> preferenceList) {

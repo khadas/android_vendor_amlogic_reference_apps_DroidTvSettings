@@ -291,6 +291,30 @@
         </activity>
 
         <activity
+            android:name=".sliceprovider.dialog.MatchContentChangeDialogActivity"
+            android:label="Match Content Change Dialog Activity"
+            android:launchMode="singleInstance"
+            android:exported="false"
+            android:theme="@style/DialogActivityTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.google.android.settings.usage.ACTION_MATCH_CONTENT_POLICY_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".sliceprovider.dialog.DolbyVisionModeChangeActivity"
+            android:label="DolbyVision Mode Change Dialog Activity"
+            android:launchMode="singleInstance"
+            android:exported="false"
+            android:theme="@style/DialogActivityTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.google.android.settings.usage.ACTION_SET_DOLBY_VISION_MODE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".sliceprovider.dialog.PreferredModeChangeDialogActivity"
             android:label="Prefer Dolby Vision Dialog Activity"
             android:launchMode="singleInstance"
@@ -363,6 +387,8 @@
 
         <!-- <service android:name="com.droidlogic.tv.settings.sliceprovider.DisplayDensityManagerService"
             android:exported="false"/>-->
+        <service android:name=".FrameRateService"
+            android:exported="false"/>
 
         <provider
             android:authorities="com.google.android.tv.btservices.settings.sliceprovider"

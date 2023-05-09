@@ -52,6 +52,10 @@
         be able to turn it back on and have to perform FDR. -->
     <bool name="show_bluetooth_toggle">false</bool>
 
+    <!-- power_behavior's sliceProvider will be implemented in Launcher,
+    the current Droid adaptation is closed without displaying -->
+    <bool name="show_droid_power_behavior">false</bool>
+
     <!-- DroidLogic start -->
     <bool name="display_need_digital_sounds">true</bool>
     <bool name="display_need_screen_resolution">true</bool>
