@@ -66,7 +66,6 @@ public class NoSignalScreenStatusFragment extends SettingsPreferenceFragment imp
     @Override
     public void onResume() {
         super.onResume();
-        update();
     }
 
     @Override
@@ -81,6 +80,7 @@ public class NoSignalScreenStatusFragment extends SettingsPreferenceFragment imp
         mStaticFramePreference = (TwoStatePreference) findPreference(STATIC_FRAME);
         mBlackScreenPreference = (TwoStatePreference) findPreference(BLACK_SCREEN);
         mBlueScreenPreference = (TwoStatePreference) findPreference(BLUE_SCREEN);
+        update();
     }
 
     @Override
