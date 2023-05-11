@@ -209,7 +209,8 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         // output mode.
         mDisplayModePref.setSummary(mOutputUiManager.getOutputmodeTitleList().get(mOutputUiManager.getCurrentModeIndex()));
 
-        boolean dvFlag = mOutputUiManager.isDolbyVisionEnable() && mOutputUiManager.isTvSupportDolbyVision();
+        boolean dvFlag = mOutputUiManager.isTvSupportDolbyVision()
+                && (mOutputModeManager.getHdrPriority() == OutputUiManager.DV_PRIORITY);
         //socSupportDv: if the chip is G12A/G12B/SM1 and T962E/E2 etc, it will be true
         //platformSupportDv: if the chip support dv and the code contains dovi.ko, it will be true
         boolean isSocSupportDv = mDolbyVisionSettingManager.isSocSupportDolbyVision();
@@ -251,8 +252,8 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
             // dolby vision
             mDolbyVisionPref.setVisible(platformSupportDv && displayConfig);
-            mDolbyVisionPref.setEnabled(displayConfig);
-            if (true == mOutputUiManager.isDolbyVisionEnable()) {
+            mDolbyVisionPref.setEnabled(displayConfig && dvFlag);
+            if (mOutputUiManager.isDolbyVisionEnable()) {
                 if (mDolbyVisionSettingManager.getDolbyVisionType() == 2) {
                     mDolbyVisionPref.setSummary(R.string.dolby_vision_low_latency_yuv);
                 } else if (mDolbyVisionSettingManager.getDolbyVisionType() == 3) {

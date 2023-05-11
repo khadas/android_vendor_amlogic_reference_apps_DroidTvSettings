@@ -77,12 +77,12 @@ public class DolbyVisionSettingFragment extends SettingsPreferenceFragment {
                 mDolbyVisionSettingManager.setDolbyVisionEnable(DV_LL_RGB);
                 serviceIntent = new Intent(getPreferenceManager().getContext(), DolbyVisionService.class);
                 getPreferenceManager().getContext().startService(serviceIntent);
-            } else if (DOLBY_VISION_DISABLE.equals(mNewDvMode)) {
+            } /*else if (DOLBY_VISION_DISABLE.equals(mNewDvMode)) {
                 mDolbyVisionSettingManager.setDolbyVisionEnable(DV_DISABLE);
                 if (serviceIntent != null) {
                     getPreferenceManager().getContext().stopService(serviceIntent);
                 }
-            }
+            }*/
         }
     };
 
@@ -160,11 +160,11 @@ public class DolbyVisionSettingFragment extends SettingsPreferenceFragment {
                     .build());
             }
         }
-        actions.add(new Action.Builder()
+        /*actions.add(new Action.Builder()
             .key(DOLBY_VISION_DISABLE)
             .title(getString(R.string.dolby_vision_off))
             .checked(enable == false)
-            .build());
+            .build());*/
         return actions;
     }
 

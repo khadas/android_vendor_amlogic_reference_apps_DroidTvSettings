@@ -154,6 +154,7 @@ public class OutputUiManager {
     private static final int DV_ENABLE            = 1;
     private static final int DV_DISABLE           = 0;
 
+    public static final int DV_PRIORITY  = 0;
     private static final int DEFAULT_HDMI_MODE = 0;
     private static final int DEFAULT_CVBS_MODE = 1;
     private static String[] mHdmiValueList;
