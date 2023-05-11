@@ -45,8 +45,8 @@ public class DisplayCapabilityManager {
   private static final String DISPLAY_MODE_FALSE = "false";
   private static final String UBOOTENV_HDR_POLICY = "ubootenv.var.hdr_policy";
   private static final String ENV_IS_BEST_MODE = "ubootenv.var.is.bestmode";
+  private static final String ENV_IS_BEST_COLORSPACE = "ubootenv.var.bestcolorspace";
   private static final String ENV_SAVE_USER_MODE = "ubootenv.var.hdmimode";
-
   private static final String SYSTEM_PROPERTY_HDR_PREFERENCE = "persist.vendor.sys.hdr_preference";
   private static final String VENDOR_PROPERTY_BOOT_CONFIG = "ro.vendor.default.config";
 
@@ -354,7 +354,9 @@ public class DisplayCapabilityManager {
   }
   private boolean isContainsInFW(String sysCtrlMode) {
     // CVBS mode does not do mode display contrast filtering.
-    if (isCvbsMode()) {
+    // Currently the tablet uses private api for mode switching
+    // framework does not support so do not filter.
+    if (isCvbsMode() || DroidUtils.hasBdsUiMode()) {
       return true;
     }
     Display.Mode[] frameworkSupportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
@@ -569,10 +571,16 @@ public class DisplayCapabilityManager {
   }
 
   public void change2BestMode() {
+    Log.d(TAG, "set user BestMode.");
+
+    if (!DISPLAY_MODE_TRUE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_COLORSPACE, DISPLAY_MODE_FALSE))) {
+      mSystemControlManager.setBootenv(ENV_IS_BEST_COLORSPACE, DISPLAY_MODE_TRUE);
+    }
+
     String systemBestOutputMode = mSystemControlManager.getPreferredDisplayConfig();
     if (isSetDisplayModeByPrivate(systemBestOutputMode)) {
       mSystemControlManager.clearBootDisplayConfig("true");
-      setUserPreferredDisplayModeByPrivate(systemBestOutputMode, true);
+      setUserPreferredDisplayModeByPrivate(systemBestOutputMode);
     } else {
       mDisplayManager.clearGlobalUserPreferredDisplayMode();
     }
@@ -602,7 +610,9 @@ public class DisplayCapabilityManager {
       mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_FALSE);
     }
     if (isSetDisplayModeByPrivate(userSetMode)) {
-      setUserPreferredDisplayModeByPrivate(userSetMode, false);
+      //doesn't save when change to auto best
+      saveUserSetMode(userSetMode);
+      setUserPreferredDisplayModeByPrivate(userSetMode);
     } else {
       setUserPreferredDisplayMode(userSetMode);
     }
@@ -612,11 +622,8 @@ public class DisplayCapabilityManager {
     mDisplayManager.clearGlobalUserPreferredDisplayMode();
   }
 
-  private void setUserPreferredDisplayModeByPrivate(String userSetMode, boolean isBestMode) {
+  private void setUserPreferredDisplayModeByPrivate(String userSetMode) {
     mSystemControlManager.setMboxOutputMode(userSetMode);
-    if (!isBestMode) {
-      saveUserSetMode(userSetMode);
-    }
     Log.d(TAG, "Switching mode using private methods");
   }
 

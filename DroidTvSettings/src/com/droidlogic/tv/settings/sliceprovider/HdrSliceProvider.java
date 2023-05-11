@@ -403,6 +403,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
             new RowBuilder()
                 .setKey(colorAttr)
                 .setTitle(mDisplayCapabilityManager.getTitleByColorAttr(colorAttr))
+                .setInfoSummary(getContext().getString(R.string.color_format_info_summary))
                 .addRadioButton(
                     generatePendingIntent(
                         getContext(),

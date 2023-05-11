@@ -201,8 +201,6 @@ public class HdrPriorityFragment extends SettingsPreferenceFragment implements O
                 if (mAlertDialog != null) {
                     mAlertDialog.dismiss();
                     prePreference = curPreference;
-                    Context context = (Context) (getActivity());
-                    ((PowerManager) context.getSystemService(Context.POWER_SERVICE)).reboot("");
                 }
                 break;
         }
