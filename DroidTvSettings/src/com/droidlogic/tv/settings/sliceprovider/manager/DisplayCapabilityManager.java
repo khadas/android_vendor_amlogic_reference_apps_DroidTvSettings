@@ -1036,4 +1036,8 @@ public class DisplayCapabilityManager {
 
     return DroidUtils.hasBdsUiMode() || isSystemHdmiDispMode;
   }
+
+  public int getSupportedHdrOutputTypes (){
+      return mDisplayManager.getSupportedHdrOutputTypes().length;
+  }
 }

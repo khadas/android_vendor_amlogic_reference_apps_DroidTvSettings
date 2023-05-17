@@ -241,10 +241,6 @@ public class HdrSliceProvider extends MediaSliceProvider {
 
   private Slice createHdrAndColorFormatSlice(Uri sliceUri) {
     final PreferenceSliceBuilder psb = new PreferenceSliceBuilder(getContext(), sliceUri);
-    psb.addScreenTitle(
-        new RowBuilder()
-            .setTitle(getContext().getString(R.string.dynamic_range_and_color_format_title)));
-
     if (!initDisplayCapabilityManager(sliceUri)) {
       return psb.build();
     } else {
@@ -256,54 +252,70 @@ public class HdrSliceProvider extends MediaSliceProvider {
       return null;
     }
 
-    psb.setEmbeddedPreference(
-        new RowBuilder()
-            .setTitle(getContext().getString(R.string.dynamic_range_and_color_format_title))
-            .setSubtitle(hdrFormatToTitle(mDisplayCapabilityManager.getPreferredFormat())));
+    boolean isSupportedHdrOutput = mDisplayCapabilityManager.getSupportedHdrOutputTypes() > 0;
+    psb.addScreenTitle(
+            new RowBuilder()
+                .setTitle(getContext().getString(isSupportedHdrOutput ?
+                    R.string.color_format_title : R.string.dynamic_range_and_color_format_title)));
 
-    psb.addPreference(
-        new RowBuilder()
-            .setTitle(getContext().getString(R.string.dynamic_range_format_preference_title))
-            .setSubtitle(hdrFormatToTitle(mDisplayCapabilityManager.getPreferredFormat()))
-            .setTargetSliceUri(
-                MediaSliceUtil.generateTargetSliceUri(
-                    MediaSliceConstants.HDR_FORMAT_PREFERENCE_PATH)));
+    // The sliceprovider hides the HDR priority and HDR policy when the
+    // framework has access to the supported HDR output types.
+    if (!isSupportedHdrOutput) {
+        psb.setEmbeddedPreference(
+            new RowBuilder()
+                .setTitle(getContext().getString(R.string.dynamic_range_and_color_format_title))
+                .setSubtitle(hdrFormatToTitle(mDisplayCapabilityManager.getPreferredFormat())));
 
-    if (HdrFormat.SDR != mDisplayCapabilityManager.getPreferredFormat()) {
-      psb.addPreference(
-          new RowBuilder()
-              .setTitle(getContext().getString(R.string.hdr_match_content_title))
-              .setSubtitle(
-                  mDisplayCapabilityManager.isHdrPolicySource()
-                      ? getContext().getString(R.string.hdr_match_content_source_title)
-                      : getMatchSinkTitle())
-              .setTargetSliceUri(
-                  MediaSliceUtil.generateTargetSliceUri(MediaSliceConstants.MATCH_CONTENT_PATH)));
-    }
+        psb.addPreference(
+            new RowBuilder()
+                .setTitle(getContext().getString(R.string.dynamic_range_format_preference_title))
+                .setSubtitle(hdrFormatToTitle(mDisplayCapabilityManager.getPreferredFormat()))
+                .setTargetSliceUri(
+                    MediaSliceUtil.generateTargetSliceUri(
+                        MediaSliceConstants.HDR_FORMAT_PREFERENCE_PATH)));
 
-    if (HdrFormat.DOLBY_VISION == mDisplayCapabilityManager.getPreferredFormat()) {
-      String subtitle =
-          mDisplayCapabilityManager.isDolbyVisionModeLLPreferred()
-              ? getContext().getString(R.string.dolby_vision_mode_low_latency_title)
-              : getContext().getString(R.string.dolby_vision_mode_standard_title);
-      if (MediaSliceUtil.CanDebug()) Log.d(TAG,"DOLBY_VISION subtitle:"+subtitle);
-      psb.addPreference(
-          new RowBuilder()
-              .setTitle(getContext().getString(R.string.dolby_vision_mode_title))
-              .setSubtitle(subtitle)
-              .setTargetSliceUri(
-                  MediaSliceUtil.generateTargetSliceUri(
-                      MediaSliceConstants.DOLBY_VISION_MODE_PATH)));
+        if (HdrFormat.SDR != mDisplayCapabilityManager.getPreferredFormat()) {
+            psb.addPreference(
+                new RowBuilder()
+                    .setTitle(getContext().getString(R.string.hdr_match_content_title))
+                    .setSubtitle(
+                        mDisplayCapabilityManager.isHdrPolicySource()
+                            ? getContext().getString(R.string.hdr_match_content_source_title)
+                            : getMatchSinkTitle())
+                    .setTargetSliceUri(
+                        MediaSliceUtil.generateTargetSliceUri(MediaSliceConstants.MATCH_CONTENT_PATH)));
+        }
+
+        if (HdrFormat.DOLBY_VISION == mDisplayCapabilityManager.getPreferredFormat()) {
+          String subtitle =
+              mDisplayCapabilityManager.isDolbyVisionModeLLPreferred()
+                  ? getContext().getString(R.string.dolby_vision_mode_low_latency_title)
+                  : getContext().getString(R.string.dolby_vision_mode_standard_title);
+          if (MediaSliceUtil.CanDebug()) Log.d(TAG,"DOLBY_VISION subtitle:"+subtitle);
+          psb.addPreference(
+              new RowBuilder()
+                  .setTitle(getContext().getString(R.string.dolby_vision_mode_title))
+                  .setSubtitle(subtitle)
+                  .setTargetSliceUri(
+                      MediaSliceUtil.generateTargetSliceUri(
+                          MediaSliceConstants.DOLBY_VISION_MODE_PATH)));
+        }
     }
 
     if (HdrFormat.DOLBY_VISION != mDisplayCapabilityManager.getPreferredFormat()) {
-      List<String> colorAttrs = mDisplayCapabilityManager.getColorAttributes();
-      String currentColorAttr = mDisplayCapabilityManager.getCurrentColorAttribute();
-      currentColorAttr = currentColorAttr.trim();
+        List<String> colorAttrs = mDisplayCapabilityManager.getColorAttributes();
+        String currentColorAttr = mDisplayCapabilityManager.getCurrentColorAttribute();
+        currentColorAttr = currentColorAttr.trim();
 
-      Log.d(TAG, "createHdrAndColorFormatSlice; colorAttrsList: " + colorAttrs);
-      Log.d(TAG, "createHdrAndColorFormatSlice; currentColorAttr: " + currentColorAttr);
+        Log.d(TAG, "createHdrAndColorFormatSlice; colorAttrsList: " + colorAttrs);
+        Log.d(TAG, "createHdrAndColorFormatSlice; currentColorAttr: " + currentColorAttr);
 
+        if (isSupportedHdrOutput) {
+            psb.setEmbeddedPreference(
+                new RowBuilder()
+                    .setTitle(getContext().getString(R.string.color_format_title))
+                    .setSubtitle(mDisplayCapabilityManager.getTitleByColorAttr(currentColorAttr)));
+        }
       psb.addPreference(
           new RowBuilder()
               .setTitle(getContext().getString(R.string.color_format_title))
