@@ -370,27 +370,26 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (tipsType == TIPS_TYPE_CEC) {
-                            Log.d(TAG, "onClick yes, Type CEC, sure to turn off CEC,also turn off arc/eARC");
+                            Log.d(TAG, "onClick yes, Type CEC, turn off CEC and arc/eARC");
                             //TODO:turn off CEC
                             mCecSwitchPref.setChecked(false);
+                            mHdmiCecManager.enableArc(false);
                             sendMsgEnableCECSwitch();
                             enablePreferences(false);
                             //TODO:turn off ARC\eARC
                             mArcNEarcSwitchPref.setChecked(false);
                             mArcEarcModeAutoPref.setVisible(SUPPORT_EARC && mArcNEarcSwitchPref.isChecked());
                             mArcEarcModeARCPref.setVisible(SUPPORT_EARC && mArcNEarcSwitchPref.isChecked());
-                            mHdmiCecManager.enableArc(mArcNEarcSwitchPref.isChecked());
-
                         } else if (tipsType == TIPS_TYPE_ARC) {
                             //TODO:turn on cec ui ref
-                            Log.d(TAG, "onClick yes, Type ARC/eARC,sure to turn on arc, also turn on cec");
+                            Log.d(TAG, "onClick yes, Type ARC/eARC, turn on arc and cec");
                             mCecSwitchPref.setChecked(true);
+                            mHdmiCecManager.enableArc(mArcNEarcSwitchPref.isChecked());
                             sendMsgEnableCECSwitch();
                             enablePreferences(false);
                             //turn on ARC
                             mArcEarcModeAutoPref.setVisible(SUPPORT_EARC && mArcNEarcSwitchPref.isChecked());
                             mArcEarcModeARCPref.setVisible(SUPPORT_EARC && mArcNEarcSwitchPref.isChecked());
-                            mHdmiCecManager.enableArc(mArcNEarcSwitchPref.isChecked());
                             if (mArcEarcModeAutoPref.isChecked()) {
                                 mHdmiCecManager.enableEarc(true);
                             } else {
