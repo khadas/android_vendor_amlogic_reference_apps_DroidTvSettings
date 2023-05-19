@@ -77,29 +77,29 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private static final String KEY_DPE                                     = "key_dpe_audio_effect";
     private static final String KEY_AUDIO_LATENCY                           = "key_audio_latency";
     private static final String KEY_TV_SOUND_AUDIO_DEVICE                   = "key_tv_sound_output_device";
+    private static final String KEY_COEXIST_SPDIF_OTHER                     = "key_coexist_spdif_other";
     private static final String KEY_VAD_SWITCH                              = "key_tv_vad_switch";
 
     /* index value, refer to array_audio_settings_output_dev_entries in xml*/
-    public static final int UI_INDEX_DEVICE_OUT_SPEAKER                     = 0;
-    public static final int UI_INDEX_DEVICE_OUT_SPDIF                       = 1;
-    public static final int UI_INDEX_DEVICE_OUT_HDMI_OUT                    = 2;
-    public static final int UI_INDEX_DEVICE_OUT_HEADPHONE                   = 3;
-    public static final int UI_INDEX_DEVICE_OUT_HDMI_ARC                    = 4;
-    public static final int UI_INDEX_DEVICE_OUT_USB                         = 5;
-    public static final int UI_INDEX_DEVICE_OUT_BLUETOOTH                   = 6;
-    public static final int UI_INDEX_DEVICE_OUT_SPK_SPDIF                   = 7;
+    public static final int UI_INDEX_DEVICE_OUT_AUTO                        = 0;
+    public static final int UI_INDEX_DEVICE_OUT_SPEAKER                     = 1;
+    public static final int UI_INDEX_DEVICE_OUT_SPDIF                       = 2;
+    public static final int UI_INDEX_DEVICE_OUT_HDMI_ARC                    = 3;
+    public static final int UI_INDEX_DEVICE_OUT_HDMI_OUT                    = 4;
+    public static final int UI_INDEX_DEVICE_OUT_HEADPHONE                   = 5;
+    public static final int UI_INDEX_DEVICE_OUT_USB                         = 6;
+    public static final int UI_INDEX_DEVICE_OUT_BLUETOOTH                   = 7;
     public static final int UI_INDEX_DEVICE_OUT_MAX                         = 8;
 
     private AudioConfigManager mAudioConfigManager;
     private AudioEffectManager mAudioEffectManager;
-    //private TvControlManager mTvControlManager;
     private SoundParameterSettingManager mSoundParameterSettingManager;
     private OutputModeManager mOutputModeManager;
     private AudioSystemCmdManager mAudioSystemCmdManager = null;
     private AudioManager mAudioManager;
     private SystemControlManager mSystemControl;
-    private boolean mCoexistSpdif = false;
     private ListPreference mAudioOutputDevPref;
+    private TwoStatePreference mCoexistSpdifSwitchPref;
     private TwoStatePreference mVadSwitchPref;
     private int mAudioDeviceOutputStrategy = AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO;
     private Context mContext = null;
@@ -209,12 +209,14 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
         mAudioOutputDevPref = (ListPreference) findPreference(KEY_TV_SOUND_AUDIO_DEVICE);
         mAudioOutputDevPref.setOnPreferenceChangeListener(this);
-        mCoexistSpdif = mSystemControl.getPropertyBoolean("ro.vendor.media.audio.spdif.coexist", true);
-        mAudioDeviceOutputStrategy = mSystemControl.getPropertyInt("ro.vendor.media.audio.output.strategy", AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO);
+        mAudioDeviceOutputStrategy = mSystemControl.getPropertyInt(AudioSystemCmdManager.PROP_AUDIO_OUTPUT_STRATEGY, AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO);
         if (mAudioDeviceOutputStrategy < AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO || mAudioDeviceOutputStrategy > AudioSystemCmdManager.OUTPUT_STRATEGY_MANUAL) {
             Log.w(TAG, "refreshPref strategy invalid:" + mAudioDeviceOutputStrategy);
             mAudioDeviceOutputStrategy = AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO;
         }
+
+        mCoexistSpdifSwitchPref = (TwoStatePreference) findPreference(KEY_COEXIST_SPDIF_OTHER);
+        mCoexistSpdifSwitchPref.setChecked(mSystemControl.getPropertyBoolean("persist.vendor.media.audio.spdif.coexist", true));
 
         mVadSwitchPref = (TwoStatePreference) findPreference(KEY_VAD_SWITCH);
         mVadSwitchPref.setChecked(mSoundParameterSettingManager.isVadOn());
@@ -270,6 +272,8 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             refreshPref();
         } else if (TextUtils.equals(key, KEY_VAD_SWITCH)) {
             mSoundParameterSettingManager.setVadOn(mVadSwitchPref.isChecked());
+        } else if (TextUtils.equals(key, KEY_COEXIST_SPDIF_OTHER)) {
+            mAudioSystemCmdManager.setCoexistSpdifOther(mCoexistSpdifSwitchPref.isChecked());
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -286,7 +290,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         } else if (TextUtils.equals(preference.getKey(), TV_VIRTUAL_SURROUND_SETTINGS)) {
             mAudioEffectManager.setVirtualSurround(selection);
         } else if (TextUtils.equals(preference.getKey(), KEY_TV_SOUND_AUDIO_DEVICE)) {
-            byte[] devices = convertUiDisplayToDevices(selection);
+            byte[] devices = new byte[] {(byte) indexToAudioDev(selection)};
             mAudioSystemCmdManager.setOutputDevices(devices);
             refreshPref();
         }
@@ -608,6 +612,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         String[] entryValue = getArrayString(R.array.tv_sound_output_device_entry_values);
         List<String> entryList = new ArrayList<String>(Arrays.asList(entry));
         List<String> entryValueList = new ArrayList<String>(Arrays.asList(entryValue));
+
         for (int i = 0; i < UI_INDEX_DEVICE_OUT_MAX; i++ ) {
             if (!isConnectedDev(i)) {
                 entryList.remove(getActivity().getResources().getString(indexToStringIndex(i)));
@@ -617,11 +622,17 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         mAudioOutputDevPref.setEntries(entryList.toArray(new String[]{}));
         mAudioOutputDevPref.setEntryValues(entryValueList.toArray(new String[]{}));
 
+        mAudioDeviceOutputStrategy = mSystemControl.getPropertyInt(AudioSystemCmdManager.PROP_AUDIO_OUTPUT_STRATEGY, AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO);
         int uiIndex = convertDevicesToUiDisplay(mAudioSystemCmdManager.getOutputDevices());
-        mAudioOutputDevPref.setValue(uiIndex + "");
+        int prefIndex = uiIndex;
+        if (mAudioDeviceOutputStrategy == AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO) {
+            prefIndex = UI_INDEX_DEVICE_OUT_AUTO;
+        }
+        mAudioOutputDevPref.setValue(prefIndex + "");
+
         String strategy = AudioSystemCmdManager.strategyToString(mAudioDeviceOutputStrategy);
         mAudioOutputDevPref.setSummary(getActivity().getResources().getString(indexToStringIndex(uiIndex)) + " (" + strategy +  ")");
-        mAudioOutputDevPref.setEnabled(isAllowSetDevice());
+        mAudioOutputDevPref.setEnabled(true);
     }
 
     private int convertDevicesToUiDisplay(byte[] devices) {
@@ -632,36 +643,21 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         if (devices.length == 1) {
             return audioDevToIndex(devices[0]);
         } else if (devices.length == 2) {
-            if (mCoexistSpdif) {
-                if (devices[0] == AudioDeviceInfo.TYPE_LINE_DIGITAL) {
-                    return audioDevToIndex(devices[1]);
-                } else if (devices[1] == AudioDeviceInfo.TYPE_LINE_DIGITAL) {
-                    return audioDevToIndex(devices[0]);
-                }
+            Log.w(TAG, "convertDevicesToUiDisplay not supported dev0:" + devices[0] + ", dev1:" + devices[1]);
+            if (devices[0] == AudioDeviceInfo.TYPE_LINE_DIGITAL) {
+                return audioDevToIndex(devices[1]);
             } else {
-                if ((devices[0] == AudioDeviceInfo.TYPE_LINE_DIGITAL && devices[1] == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER) ||
-                        (devices[1] == AudioDeviceInfo.TYPE_LINE_DIGITAL && devices[0] == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER)) {
-                    return UI_INDEX_DEVICE_OUT_SPK_SPDIF;
-                } else {
-                    Log.w(TAG, "convertDevicesToUiDisplay not supported dev0:" + devices[0] + ", dev1:" + devices[1]);
-                    return audioDevToIndex(devices[0]);
-                }
+                return audioDevToIndex(devices[0]);
             }
         }
         Log.w(TAG, "convertDevicesToUiDisplay not supported device length:" + devices.length);
         return UI_INDEX_DEVICE_OUT_SPEAKER;
     }
 
-    private byte[] convertUiDisplayToDevices(int uiIndex) {
-        if (uiIndex == UI_INDEX_DEVICE_OUT_SPK_SPDIF) {
-            return new byte[] {AudioDeviceInfo.TYPE_BUILTIN_SPEAKER, AudioDeviceInfo.TYPE_LINE_DIGITAL};
-        } else {
-            return new byte[] {(byte) indexToAudioDev(uiIndex)};
-        }
-    }
-
     private int indexToStringIndex(int index) {
         switch (index) {
+            case UI_INDEX_DEVICE_OUT_AUTO:
+                return R.string.title_tv_sound_output_device_auto;
             case UI_INDEX_DEVICE_OUT_SPEAKER:
                 return R.string.title_tv_sound_output_device_speaker;
             case UI_INDEX_DEVICE_OUT_SPDIF:
@@ -676,8 +672,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
                 return R.string.title_tv_sound_output_device_usb;
             case UI_INDEX_DEVICE_OUT_BLUETOOTH:
                 return R.string.title_tv_sound_output_device_bluetooth;
-            case UI_INDEX_DEVICE_OUT_SPK_SPDIF:
-                return R.string.title_tv_sound_output_device_speaker_spdif;
             default:
                 Log.w(TAG, "audioDevToIndex not supported device:" + index);
                 return 0;
@@ -712,6 +706,8 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     private int indexToAudioDev(int index) {
         switch (index) {
+            case UI_INDEX_DEVICE_OUT_AUTO:
+                return AudioDeviceInfo.TYPE_UNKNOWN;
             case UI_INDEX_DEVICE_OUT_SPEAKER:
                 return AudioDeviceInfo.TYPE_BUILTIN_SPEAKER;
             case UI_INDEX_DEVICE_OUT_SPDIF:
@@ -751,36 +747,51 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     }
 
     private boolean isConnectedDev(int index) {
-        if (index == UI_INDEX_DEVICE_OUT_SPK_SPDIF) {
-            return !mCoexistSpdif;
-        }
-        if (mAudioDeviceOutputStrategy == AudioSystemCmdManager.OUTPUT_STRATEGY_SEMI_AUTO) {
-            if (index == UI_INDEX_DEVICE_OUT_SPEAKER  || index == UI_INDEX_DEVICE_OUT_HDMI_ARC || index == UI_INDEX_DEVICE_OUT_SPDIF) {
-                // Semi-Auto need display SPK/ARC/SPDIF
-                return true;
-            }
-        } else if (mAudioDeviceOutputStrategy == AudioSystemCmdManager.OUTPUT_STRATEGY_MANUAL) {
-            return true;
-        }
-        AudioDeviceInfo[] outputDevices = mAudioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
-        for (AudioDeviceInfo info : outputDevices) {
-            if (info.isSink()) {
-                if (index == UI_INDEX_DEVICE_OUT_HEADPHONE) {
-                    if (info.getType() == AudioDeviceInfo.TYPE_WIRED_HEADPHONES ||
-                            info.getType() == AudioDeviceInfo.TYPE_WIRED_HEADSET) {
-                        return true;
-                    }
-                } else if (index == UI_INDEX_DEVICE_OUT_USB) {
-                    if (info.getType() == AudioDeviceInfo.TYPE_USB_ACCESSORY ||
-                            info.getType() == AudioDeviceInfo.TYPE_USB_DEVICE ||
-                            info.getType() == AudioDeviceInfo.TYPE_USB_HEADSET) {
-                        return true;
-                    }
-                } else if (info.getType() == indexToAudioDev(index)) {
+        if (index == UI_INDEX_DEVICE_OUT_SPDIF) {
+            AudioDeviceInfo[] outputDevices = mAudioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
+            for (AudioDeviceInfo info : outputDevices) {
+                if (info.isSink() && info.getType() == AudioDeviceInfo.TYPE_LINE_DIGITAL) {
                     return true;
                 }
             }
+            return false;
+        } else if (index == UI_INDEX_DEVICE_OUT_HDMI_OUT) {
+            return !DroidLogicUtils.isTv();
+        } else if (index == UI_INDEX_DEVICE_OUT_HDMI_ARC || index == UI_INDEX_DEVICE_OUT_HEADPHONE){
+            return DroidLogicUtils.isTv();
+        } else {
+            return true;
         }
-        return false;
+//        // reserve auto ui code.
+//        if (mAudioDeviceOutputStrategy == AudioSystemCmdManager.OUTPUT_STRATEGY_SEMI_AUTO) {
+//            if (index == UI_INDEX_DEVICE_OUT_SPEAKER  || index == UI_INDEX_DEVICE_OUT_HDMI_ARC || index == UI_INDEX_DEVICE_OUT_SPDIF) {
+//                // Semi-Auto need display SPK/ARC/SPDIF
+//                return true;
+//            }
+//        } else if (mAudioDeviceOutputStrategy == AudioSystemCmdManager.OUTPUT_STRATEGY_MANUAL) {
+//            return true;
+//        } else {
+//            return true;
+//        }
+//        AudioDeviceInfo[] outputDevices = mAudioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
+//        for (AudioDeviceInfo info : outputDevices) {
+//            if (info.isSink()) {
+//                if (index == UI_INDEX_DEVICE_OUT_HEADPHONE) {
+//                    if (info.getType() == AudioDeviceInfo.TYPE_WIRED_HEADPHONES ||
+//                            info.getType() == AudioDeviceInfo.TYPE_WIRED_HEADSET) {
+//                        return true;
+//                    }
+//                } else if (index == UI_INDEX_DEVICE_OUT_USB) {
+//                    if (info.getType() == AudioDeviceInfo.TYPE_USB_ACCESSORY ||
+//                            info.getType() == AudioDeviceInfo.TYPE_USB_DEVICE ||
+//                            info.getType() == AudioDeviceInfo.TYPE_USB_HEADSET) {
+//                        return true;
+//                    }
+//                } else if (info.getType() == indexToAudioDev(index)) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
     }
 }

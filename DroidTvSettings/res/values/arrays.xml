@@ -946,14 +946,14 @@
     </string-array>
 
     <string-array name="tv_sound_output_device_entries">
+        <item>@string/title_tv_sound_output_device_auto</item>
         <item>@string/title_tv_sound_output_device_speaker</item>
         <item>@string/title_tv_sound_output_device_spdif</item>
+        <item>@string/title_tv_sound_output_device_hdmi_arc</item>
         <item>@string/title_tv_sound_output_device_hdmi_out</item>
         <item>@string/title_tv_sound_output_device_headphone</item>
-        <item>@string/title_tv_sound_output_device_hdmi_arc</item>
         <item>@string/title_tv_sound_output_device_usb</item>
         <item>@string/title_tv_sound_output_device_bluetooth</item>
-        <item>@string/title_tv_sound_output_device_speaker_spdif</item>
     </string-array>
 
     <string-array name="tv_sound_output_device_entry_values" translatable="false">

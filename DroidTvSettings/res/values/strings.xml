@@ -2165,6 +2165,7 @@
 
     <!--audio out switch-->
     <string name="title_audio_settings_audio_output_dev">Audio Output Devices</string>
+    <string name="title_tv_sound_output_device_auto">Auto</string>
     <string name="title_tv_sound_output_device_speaker">Speaker</string>
     <string name="title_tv_sound_output_device_spdif">Spdif</string>
     <string name="title_tv_sound_output_device_hdmi_out">HDMI OUT</string>
@@ -2172,7 +2173,7 @@
     <string name="title_tv_sound_output_device_hdmi_arc">HDMI ARC</string>
     <string name="title_tv_sound_output_device_usb">USB Speaker</string>
     <string name="title_tv_sound_output_device_bluetooth">Bluetooth</string>
-    <string name="title_tv_sound_output_device_speaker_spdif">Spk + Spdif</string>
+    <string name="title_coexist_spdif_other">Spdif Coexist</string>
 
     <string name="title_tv_vad_switch">Voice Wake Up</string>
 

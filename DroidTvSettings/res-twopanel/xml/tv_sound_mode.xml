@@ -28,6 +28,10 @@
         android:persistent="false"
         android:summary="%s"
         android:title="@string/title_audio_settings_audio_output_dev" />
+    <SwitchPreference
+        android:key="key_coexist_spdif_other"
+        android:persistent="false"
+        android:title="@string/title_coexist_spdif_other" />
     <Preference
         android:persistent="false"
         android:key="tv_sound_audio_only"
