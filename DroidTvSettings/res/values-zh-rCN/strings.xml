@@ -45,6 +45,10 @@
     <string name="preferred_mode_change_dialog_cancel_msg" msgid="3884797091071820430">"取消（COUNTDOWN_PLACEHOLDER）"</string>
     <string name="adjust_color_format_dialog_desc" msgid="4348299142529904365">"选择“确定”，从现在开始使用这个新颜色格式"</string>
     <string name="adjust_color_format_dialog_title" msgid="5188225093554649734">"颜色格式已更改。"</string>
+    <string name="adjust_dolby_vision_mode_dialog_desc" msgid="9370825557459989275">"选择“确定”，从现在开始使用这个新的 Dolby Vision 模式"</string>
+    <string name="adjust_dolby_vision_mode_dialog_title" msgid="2694814035888551290">"Dolby Vision 模式已更改"</string>
+    <string name="adjust_match_content_dialog_desc" msgid="7458926063752751314">"选择“确定”，从现在开始使用这个新的 Match Content"</string>
+    <string name="adjust_match_content_dialog_title" msgid="5831604826124592894">"Match Content 已更改"</string>
     <string name="adjust_color_format_dialog_ok_msg" msgid="6097309625810879990">"确定"</string>
     <string name="adjust_color_format_dialog_cancel_msg" msgid="4764637205687491542">"取消（COUNTDOWN_PLACEHOLDER）"</string>
     <string name="surround_sound_switch_title" msgid="6365932517760898638">"环绕声"</string>

@@ -57,30 +57,6 @@ public class PreferredModeChangeDialogActivity extends Activity {
     showDialog();
   }
 
-  private boolean changeDisplayModeIfNeeded(HdrFormat targetPreferredFormat, String currentMode) {
-    if (targetPreferredFormat == HdrFormat.DOLBY_VISION
-        && !mDisplayCapabilityManager.doesModeSupportDolbyVision(currentMode)) {
-      mDisplayCapabilityManager.setModeSupportingDolbyVision();
-      return true;
-    }
-    return false;
-  }
-
-  private boolean changeHdrPolicyIfNeeded(
-      HdrFormat currentPreferredFormat, HdrFormat targetPreferredFormat) {
-    if (HdrFormat.SDR == targetPreferredFormat && !mDisplayCapabilityManager.isHdrPolicySource()) {
-      // set to follow source to make sure we don't force SDR content to HDR
-      mDisplayCapabilityManager.setHdrPolicySource(true);
-      return true;
-    } else if (HdrFormat.SDR == currentPreferredFormat
-        && mDisplayCapabilityManager.isHdrPolicySource()) {
-      // set to "Always HDR/Dolby Vision" when changed from SDR
-      mDisplayCapabilityManager.setHdrPolicySource(false);
-      return true;
-    }
-    return false;
-  }
-
   private void initAlertDialog() {
     AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogBackground);
     builder.setCancelable(false);
@@ -152,11 +128,5 @@ public class PreferredModeChangeDialogActivity extends Activity {
         };
     mCountDownTimer.start();
   }
-
-    private void reboot() {
-        Log.d(TAG,"reboot");
-        Context context = (Context) (getApplicationContext());
-        ((PowerManager) context.getSystemService(Context.POWER_SERVICE)).reboot(null);
-    }
 
 }

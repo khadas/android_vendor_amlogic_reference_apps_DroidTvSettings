@@ -29,6 +29,7 @@ import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 import android.text.TextUtils;
+import com.droidlogic.tv.settings.dialog.ProgressingDialogUtil;
 import com.droidlogic.tv.settings.dialog.old.Action;
 import com.droidlogic.tv.settings.RadioPreference;
 import com.droidlogic.tv.settings.R;
@@ -61,6 +62,10 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
     public boolean hpdFlag = false;
     private static final String DEFAULT_VALUE = "444,8bit";
     private static final String DEFAULT_TITLE = "YCbCr444 8bit";
+    private Context themedContext;
+    private ProgressingDialogUtil mProgressingDialogUtil;
+    private String mOldColorSpace;
+    private String mNewColorSpace;
     private SetModeUEventObserver mSetModeUEventObserver;
 
     private ArrayList<String> colorTitleList = new ArrayList();
@@ -71,21 +76,24 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
             mHandler.sendEmptyMessage(MSG_FRESH_UI);
         }
     };
+
     public static ColorAttributeFragment newInstance() {
         return new ColorAttributeFragment();
     }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         mOutputUiManager = new OutputUiManager(getActivity());
+        themedContext = getPreferenceManager().getContext();
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
+        mProgressingDialogUtil = new ProgressingDialogUtil();
         updatePreferenceFragment();
         getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
     }
 
     private void updatePreferenceFragment() {
         mOutputUiManager.updateUiMode();
-        final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
                 themedContext);
         screen.setTitle(R.string.device_outputmode_color_space);
@@ -103,6 +111,7 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
             radioPreference.setTitle(Info.getTitle());
             radioPreference.setLayoutResource(R.layout.preference_reversed_widget);
             if (Info.isChecked()) {
+                mNewColorSpace = InfoTag;
                 radioPreference.setChecked(true);
             }
             screen.addPreference(radioPreference);
@@ -142,18 +151,18 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
             if (filterValue.contains(OutputUiManager.HDMI_COLOR_LIST[i])) {
                 if (curColorSpaceValue.contains(OutputUiManager.HDMI_COLOR_LIST[i])) {
                     actions.add(new Action.Builder().key(OutputUiManager.HDMI_COLOR_LIST[i])
-                        .title("        " + OutputUiManager.HDMI_COLOR_TITLE[i])
+                        .title(OutputUiManager.HDMI_COLOR_TITLE[i])
                         .checked(true).build());
                 } else {
                     actions.add(new Action.Builder().key(OutputUiManager.HDMI_COLOR_LIST[i])
-                        .title("        " + OutputUiManager.HDMI_COLOR_TITLE[i])
+                        .title(OutputUiManager.HDMI_COLOR_TITLE[i])
                         .description("").build());
                 }
             }
         }
         if (actions.size() == 0) {
             actions.add(new Action.Builder().key(DEFAULT_VALUE)
-                .title("        " + DEFAULT_TITLE)
+                .title(DEFAULT_TITLE)
                 .checked(true).build());
         }
         return actions;
@@ -181,13 +190,29 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
+        mOldColorSpace = mNewColorSpace;
         if (preference instanceof RadioPreference) {
             final RadioPreference radioPreference = (RadioPreference) preference;
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
-                if (onClickHandle(radioPreference.getKey()) == true) {
+                mNewColorSpace = radioPreference.getKey();
+                Log.d(LOG_TAG, "mOldColorSpace = " + mOldColorSpace + ", mNewColorSpace = " + mNewColorSpace);
+                if (onClickHandle(mNewColorSpace) == true) {
                     radioPreference.setChecked(true);
                 }
+                String newHdrPolicyTitle = radioPreference.getTitle().toString();
+                mProgressingDialogUtil.showWarningDialogOnResolutionChange(themedContext, newHdrPolicyTitle,
+                        new ProgressingDialogUtil.DialogCallBackInterface() {
+                            @Override
+                            public void positiveCallBack() {
+
+                            }
+                            @Override
+                            public void negativeCallBack() {
+                                onClickHandle(mOldColorSpace);
+                                mHandler.sendEmptyMessage(MSG_FRESH_UI);
+                            }
+                        });
             } else {
                 radioPreference.setChecked(true);
                 Log.i(LOG_TAG,"not checked");

@@ -2781,6 +2781,13 @@
 
     <string name="adjust_color_format_dialog_desc">Select OK to use this new color format from now on</string>
     <string name="adjust_color_format_dialog_title">Color format has been changed.</string>
+
+    <string name="adjust_match_content_dialog_desc">Select OK to use this new match content from now on</string>
+    <string name="adjust_match_content_dialog_title">Match content has been changed.</string>
+
+    <string name="adjust_dolby_vision_mode_dialog_desc">Select OK to use this new dolby vision mode from now on</string>
+    <string name="adjust_dolby_vision_mode_dialog_title">Dolby vision mode has been changed.</string>
+
     <string name="adjust_color_format_dialog_ok_msg">OK</string>
     <string description="The word COUNTDOWN_PLACEHOLDER should not be translated. It will be replaced with a countdown message." name="adjust_color_format_dialog_cancel_msg">"Cancel (COUNTDOWN_PLACEHOLDER)"</string>
 
@@ -2839,5 +2846,11 @@
     <string name="frame_rate" translatable="false">FrameRate</string>
     <string name="frame_rate_enable" translatable="false">Enable FrameRate</string>
     <string name="frame_rate_prepare">invalid value...</string>
+    <!-- Processing Dialog -->
+    <string name="resolution_selection_dialog_desc">Select OK to use %1$s from now on.</string>
+    <string name="resolution_selection_dialog_title">New Settings has been applied</string>
+    <string name="resolution_selection_dialog_ok">OK</string>
+    <string name="resolution_selection_dialog_cancel">Cancel</string>
+    <string name="start_activity">Start Activity</string>
     <!-- DroidLogic end -->
 </resources>

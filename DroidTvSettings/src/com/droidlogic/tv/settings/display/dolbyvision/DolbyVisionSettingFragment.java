@@ -12,26 +12,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.RemoteException;
-import android.provider.Settings;
+import android.util.Log;
 import androidx.preference.SwitchPreference;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.TwoStatePreference;
-import android.util.ArrayMap;
-import android.util.Log;
-import android.text.TextUtils;
 
 import com.droidlogic.app.DolbyVisionSettingManager;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.RadioPreference;
+import com.droidlogic.tv.settings.dialog.ProgressingDialogUtil;
 import com.droidlogic.tv.settings.dialog.old.Action;
 
 import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
 
 public class DolbyVisionSettingFragment extends SettingsPreferenceFragment {
@@ -52,13 +48,17 @@ public class DolbyVisionSettingFragment extends SettingsPreferenceFragment {
 
     private DolbyVisionSettingManager mDolbyVisionSettingManager;
     private OutputModeManager mOutputModeManager;
+    private ProgressingDialogUtil mProgressingDialogUtil;
 
     // Adjust this value to keep things relatively responsive without janking
     // animations
     private static final int DV_SET_DELAY_MS = 500;
-    private final Handler mDelayHandler = new Handler();
+    private final Handler mDVModeHandler = new Handler();
     private String mNewDvMode;
+    private String mOldDVMode;
     Intent serviceIntent;
+    private Context themedContext;
+    private Bundle mSavedInstanceState;
     private final Runnable mSetDvRunnable = new Runnable() {
         @Override
         public void run() {
@@ -83,6 +83,7 @@ public class DolbyVisionSettingFragment extends SettingsPreferenceFragment {
                     getPreferenceManager().getContext().stopService(serviceIntent);
                 }
             }*/
+            mUIHandler.sendEmptyMessage(MSG_PLUG_FRESH_UI);
         }
     };
 
@@ -94,33 +95,10 @@ public class DolbyVisionSettingFragment extends SettingsPreferenceFragment {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         mDolbyVisionSettingManager = new DolbyVisionSettingManager((Context) getActivity());
         mOutputModeManager = OutputModeManager.getInstance(getActivity());
-        final Context themedContext = getPreferenceManager().getContext();
-        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);
-        screen.setTitle(R.string.dolby_vision_set);
-        String currentDvMode = null;
-        Preference activePref = null;
-
-        final List<Action> dvInfoList = getActions();
-        for (final Action dvInfo : dvInfoList) {
-            final String dvTag = dvInfo.getKey();
-            final RadioPreference radioPreference = new RadioPreference(themedContext);
-            radioPreference.setKey(dvTag);
-            radioPreference.setPersistent(false);
-            radioPreference.setTitle(dvInfo.getTitle());
-            radioPreference.setRadioGroup(DV_RADIO_GROUP);
-            radioPreference.setLayoutResource(R.layout.preference_reversed_widget);
-
-            if (dvInfo.isChecked()) {
-                mNewDvMode = dvTag;
-                radioPreference.setChecked(true);
-                activePref = radioPreference;
-            }
-            screen.addPreference(radioPreference);
-        }
-        if (activePref != null && savedInstanceState == null) {
-            scrollToPreference(activePref);
-        }
-        setPreferenceScreen(screen);
+        themedContext = getPreferenceManager().getContext();
+        mProgressingDialogUtil = new ProgressingDialogUtil();
+        mSavedInstanceState = savedInstanceState;
+        updatePreferenceFragment(mSavedInstanceState);
     }
 
     private ArrayList<Action> getActions() {
@@ -170,13 +148,30 @@ public class DolbyVisionSettingFragment extends SettingsPreferenceFragment {
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
+        mOldDVMode = mNewDvMode;
         if (preference instanceof RadioPreference) {
             final RadioPreference radioPreference = (RadioPreference) preference;
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
                 mNewDvMode = radioPreference.getKey().toString();
-                mDelayHandler.removeCallbacks(mSetDvRunnable);
-                mDelayHandler.postDelayed(mSetDvRunnable, DV_SET_DELAY_MS);
+                Log.d(TAG, "mOldDVMode = " + mOldDVMode + ", mNewDvMode = " + mNewDvMode);
+                mDVModeHandler.removeCallbacks(mSetDvRunnable);
+                mDVModeHandler.post(mSetDvRunnable);
+
+                String newDvModeTitle = radioPreference.getTitle().toString();
+                mProgressingDialogUtil.showWarningDialogOnResolutionChange(themedContext, newDvModeTitle,
+                        new ProgressingDialogUtil.DialogCallBackInterface() {
+                            @Override
+                            public void positiveCallBack() {
+
+                            }
+                            @Override
+                            public void negativeCallBack() {
+                                mNewDvMode = mOldDVMode;
+                                mDVModeHandler.removeCallbacks(mSetDvRunnable);
+                                mDVModeHandler.post(mSetDvRunnable);
+                            }
+                        });
             } else {
                 radioPreference.setChecked(true);
             }
@@ -188,5 +183,46 @@ public class DolbyVisionSettingFragment extends SettingsPreferenceFragment {
     public int getMetricsCategory() {
         return 0;
     }
+
+    private void updatePreferenceFragment(Bundle savedInstanceState) {
+        Log.d(TAG, "updatePreferenceFragment: updateUI!!");
+        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);
+        screen.setTitle(R.string.dolby_vision_set);
+        Preference activePref = null;
+
+        final List<Action> dvInfoList = getActions();
+        for (final Action dvInfo : dvInfoList) {
+            final String dvTag = dvInfo.getKey();
+            final RadioPreference radioPreference = new RadioPreference(themedContext);
+            radioPreference.setKey(dvTag);
+            radioPreference.setPersistent(false);
+            radioPreference.setTitle(dvInfo.getTitle());
+            radioPreference.setRadioGroup(DV_RADIO_GROUP);
+            radioPreference.setLayoutResource(R.layout.preference_reversed_widget);
+
+            if (dvInfo.isChecked()) {
+                mNewDvMode = dvTag;
+                radioPreference.setChecked(true);
+                activePref = radioPreference;
+            }
+            screen.addPreference(radioPreference);
+        }
+        if (activePref != null && savedInstanceState == null) {
+            scrollToPreference(activePref);
+        }
+        setPreferenceScreen(screen);
+    }
+
+    private static final int MSG_PLUG_FRESH_UI = 0;
+    private Handler mUIHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_PLUG_FRESH_UI:
+                    updatePreferenceFragment(mSavedInstanceState);
+                    break;
+            }
+        }
+    };
 
 }

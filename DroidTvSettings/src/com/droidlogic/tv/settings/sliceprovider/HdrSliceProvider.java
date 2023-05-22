@@ -11,9 +11,7 @@ import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder;
 import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder.RowBuilder;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.HdrSliceBroadcastReceiver;
-import com.droidlogic.tv.settings.sliceprovider.dialog.AdjustColorFormatDialogActivity;
-import com.droidlogic.tv.settings.sliceprovider.dialog.AdjustResolutionDialogActivity;
-import com.droidlogic.tv.settings.sliceprovider.dialog.PreferredModeChangeDialogActivity;
+import com.droidlogic.tv.settings.sliceprovider.dialog.*;
 import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager;
 import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager.HdrFormat;
 import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager.HdrFormatConfig;
@@ -100,7 +98,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
                 generatePendingIntent(
                     getContext(),
                     MediaSliceConstants.ACTION_MATCH_CONTENT_POLICY_CHANGED,
-                    HdrSliceBroadcastReceiver.class),
+                    MatchContentChangeDialogActivity.class),
                 !mDisplayCapabilityManager.isHdrPolicySource(),
                 getContext().getString(R.string.hdr_match_content_type_radio_group_name)));
 
@@ -113,14 +111,14 @@ public class HdrSliceProvider extends MediaSliceProvider {
                 generatePendingIntent(
                     getContext(),
                     MediaSliceConstants.ACTION_MATCH_CONTENT_POLICY_CHANGED,
-                    HdrSliceBroadcastReceiver.class),
+                    MatchContentChangeDialogActivity.class),
                 mDisplayCapabilityManager.isHdrPolicySource(),
                 getContext().getString(R.string.hdr_match_content_type_radio_group_name)));
 
     return psb.build();
   }
 
-  private String getMatchSinkTitle() {
+  public String getMatchSinkTitle() {
     if (HdrFormat.HDR == mDisplayCapabilityManager.getPreferredFormat()) {
       return getContext().getString(R.string.hdr_format_always_hdr_title);
     } else if (HdrFormat.DOLBY_VISION == mDisplayCapabilityManager.getPreferredFormat()) {
@@ -458,7 +456,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
                   generatePendingIntent(
                       getContext(),
                       MediaSliceConstants.ACTION_SET_DOLBY_VISION_MODE,
-                      HdrSliceBroadcastReceiver.class),
+                      DolbyVisionModeChangeActivity.class),
                   isDolbyVisionModeLL,
                   getContext().getString(R.string.dolby_vision_mode_select_type_radio_group_name)));
     }
@@ -472,7 +470,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
                   generatePendingIntent(
                       getContext(),
                       MediaSliceConstants.ACTION_SET_DOLBY_VISION_MODE,
-                      HdrSliceBroadcastReceiver.class),
+                      DolbyVisionModeChangeActivity.class),
                   !isDolbyVisionModeLL,
                   getContext().getString(R.string.dolby_vision_mode_select_type_radio_group_name)));
     }

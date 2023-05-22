@@ -28,6 +28,7 @@ import com.droidlogic.app.DolbyVisionSettingManager;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.RadioPreference;
+import com.droidlogic.tv.settings.dialog.ProgressingDialogUtil;
 import com.droidlogic.tv.settings.dialog.old.Action;
 import com.droidlogic.tv.settings.display.outputmode.OutputUiManager;
 
@@ -44,6 +45,11 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
     private static final String DV_HDR_SOURCE     = "1";
     private static final String DV_HDR_SINK       = "0";
     private OutputUiManager mOutputUiManager;
+    private String mNewHdrPolicy;
+    private String mOldHdrPolicy;
+    private ProgressingDialogUtil mProgressingDialogUtil;
+    private Context themedContext;
+    private Bundle mSavedInstanceState;
     // Adjust this value to keep things relatively responsive without janking
     // animations
 
@@ -54,30 +60,10 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         mOutputUiManager = new OutputUiManager((Context) getActivity());
-        final Context themedContext = getPreferenceManager().getContext();
-        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);
-        screen.setTitle(R.string.device_hdr_policy);
-        Preference activePref = null;
-
-        final List<Action> dvInfoList = getActions();
-        for (final Action dvInfo : dvInfoList) {
-            final String dvTag = dvInfo.getKey();
-            final RadioPreference radioPreference = new RadioPreference(themedContext);
-            radioPreference.setKey(dvTag);
-            radioPreference.setPersistent(false);
-            radioPreference.setTitle(dvInfo.getTitle());
-            //radioPreference.setRadioGroup(DV_RADIO_GROUP);
-            radioPreference.setLayoutResource(R.layout.preference_reversed_widget);
-
-            if (dvInfo.isChecked()) {
-                radioPreference.setChecked(true);
-            }
-            screen.addPreference(radioPreference);
-        }
-        if (activePref != null && savedInstanceState == null) {
-            scrollToPreference(activePref);
-        }
-        setPreferenceScreen(screen);
+        themedContext = getPreferenceManager().getContext();
+        mProgressingDialogUtil = new ProgressingDialogUtil();
+        mSavedInstanceState = savedInstanceState;
+        updatePreferenceFragment(mSavedInstanceState);
     }
 
     private ArrayList<Action> getActions() {
@@ -115,13 +101,30 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
+        mOldHdrPolicy = mNewHdrPolicy;
         if (preference instanceof RadioPreference) {
             final RadioPreference radioPreference = (RadioPreference) preference;
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
-                if (onClickHandle(radioPreference.getKey()) == true) {
+                mNewHdrPolicy = radioPreference.getKey();
+                Log.d(LOG_TAG, "mOldHdrPolicy = " + mOldHdrPolicy + ", mNewHdrPolicy = " + mNewHdrPolicy);
+                if (onClickHandle(mNewHdrPolicy) == true) {
                     radioPreference.setChecked(true);
                 }
+                String newHdrPolicyTitle = radioPreference.getTitle().toString();
+                mProgressingDialogUtil.showWarningDialogOnResolutionChange(themedContext, newHdrPolicyTitle,
+                        new ProgressingDialogUtil.DialogCallBackInterface() {
+                            @Override
+                            public void positiveCallBack() {
+
+                            }
+                            @Override
+                            public void negativeCallBack() {
+                                onClickHandle(mOldHdrPolicy);
+                                mUIHandler.sendEmptyMessage(MSG_PLUG_FRESH_UI);
+                            }
+                        });
+
             } else {
                 radioPreference.setChecked(true);
                 Log.i(LOG_TAG,"not checked");
@@ -134,5 +137,45 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
     public int getMetricsCategory() {
         return 0;
     }
+
+    private void updatePreferenceFragment(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "updatePreferenceFragment: updateUI!!");
+        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);
+        screen.setTitle(R.string.device_hdr_policy);
+        Preference activePref = null;
+
+        final List<Action> dvInfoList = getActions();
+        for (final Action dvInfo : dvInfoList) {
+            final String dvTag = dvInfo.getKey();
+            final RadioPreference radioPreference = new RadioPreference(themedContext);
+            radioPreference.setKey(dvTag);
+            radioPreference.setPersistent(false);
+            radioPreference.setTitle(dvInfo.getTitle());
+            //radioPreference.setRadioGroup(DV_RADIO_GROUP);
+            radioPreference.setLayoutResource(R.layout.preference_reversed_widget);
+
+            if (dvInfo.isChecked()) {
+                mNewHdrPolicy = dvTag;
+                radioPreference.setChecked(true);
+            }
+            screen.addPreference(radioPreference);
+        }
+        if (activePref != null && savedInstanceState == null) {
+            scrollToPreference(activePref);
+        }
+        setPreferenceScreen(screen);
+    }
+
+    private static final int MSG_PLUG_FRESH_UI = 0;
+    private Handler mUIHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_PLUG_FRESH_UI:
+                    updatePreferenceFragment(mSavedInstanceState);
+                    break;
+            }
+        }
+    };
 
 }
