@@ -211,6 +211,8 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
         boolean dvFlag = mOutputUiManager.isTvSupportDolbyVision()
                 && (mOutputModeManager.getHdrPriority() == OutputUiManager.DV_PRIORITY);
+        boolean cfFlag = !(mOutputUiManager.isDolbyVisionEnable() && mOutputUiManager.isTvSupportDolbyVision()
+                && (mOutputModeManager.getHdrPriority() == OutputUiManager.DV_PRIORITY));
         //socSupportDv: if the chip is G12A/G12B/SM1 and T962E/E2 etc, it will be true
         //platformSupportDv: if the chip support dv and the code contains dovi.ko, it will be true
         boolean isSocSupportDv = mDolbyVisionSettingManager.isSocSupportDolbyVision();
@@ -241,12 +243,12 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
             // deep space
             mDeepColorPref.setVisible(true);
-            mDeepColorPref.setEnabled(!dvFlag);
+            mDeepColorPref.setEnabled(cfFlag);
             mDeepColorPref.setSummary(mOutputUiManager.getCurrentColorSpaceTitle());
 
             // color space
             mColorDepthPref.setVisible(false);
-            mColorDepthPref.setEnabled(!dvFlag);
+            mColorDepthPref.setEnabled(cfFlag);
             mColorDepthPref.setSummary(
                 mOutputUiManager.getCurrentColorDepthAttr().contains("8bit") ? "off":"on");
 

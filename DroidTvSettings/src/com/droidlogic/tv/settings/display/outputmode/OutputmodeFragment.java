@@ -117,13 +117,13 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
 
     @Override
     public void onPause() {
-        mSetModeUEventObserver.stopObserving();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
         getActivity().unregisterReceiver(mIntentReceiver);
+        mSetModeUEventObserver.stopObserving();
         mHandler.removeMessages(MSG_PLUG_FRESH_UI);
         super.onDestroy();
     }
@@ -174,6 +174,8 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
      * Display Outputmode list based on RadioPreference style.
      */
     private void updatePreferenceFragment() {
+        Log.d(TAG, "updatePreferenceFragment");
+
         mOutputUiManager.updateUiMode();
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
