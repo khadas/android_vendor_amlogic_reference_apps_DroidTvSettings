@@ -46,6 +46,7 @@ public class TvInputContentManager {
     private static final String PACKAGE_GOOGLE_VIDEOS = "com.google.android.videos";
     private static final String DATA_FROM_TV_INPUT_TABLE = "tv_current_inputid";
 
+    private static final String INPUT_SOURCE_GOOGLE_HOME_KEY = "home";
     private static final String INPUT_ADTV = "ADTV";
     private static final String INPUT_ATV = "ATV";
     private static final String INPUT_DTV = "DTV";
@@ -104,6 +105,14 @@ public class TvInputContentManager {
     }
 
     public void setTvInputSource(String UserPreferredSource) {
+        if (INPUT_SOURCE_GOOGLE_HOME_KEY.equals(UserPreferredSource)) {
+            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+            homeIntent.addCategory(Intent.CATEGORY_HOME);
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            mContext.startActivity(homeIntent);
+            return;
+        }
+
         List<TvInputInfo> inputList = mTvInputManager.getTvInputList();
         List<HdmiDeviceInfo> hdmiList = getHdmiList();
         HdmiDeviceInfo audioSystem = getOrigHdmiDevice(LOGICAL_ADDRESS_AUDIO_SYSTEM, hdmiList);

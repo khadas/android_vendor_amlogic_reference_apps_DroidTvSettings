@@ -75,6 +75,7 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
     private static final String DATA_FROM_TV_APP = "from_live_tv";
     private static final String DATA_REQUEST_PACKAGE = "requestpackage";
 
+    private static final String INPUT_SOURCE_GOOGLE_HOME_KEY = "home";
     private static final String INPUT_ADTV = "ADTV";
     private static final String INPUT_ATV = "ATV";
     private static final String INPUT_DTV = "DTV";
@@ -125,7 +126,7 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        updatePreferenceFragment();
+
     }
 
     @Override
@@ -141,11 +142,8 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
             mFromTvApp = intent.getIntExtra(DATA_FROM_TV_APP, MODE_GLOBAL) == MODE_LIVE_TV;
             mStartPackage = intent.getStringExtra(DATA_REQUEST_PACKAGE);
         }
-        final Context themedContext = getPreferenceManager().getContext();
-        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
-                themedContext);
-        screen.setTitle(R.string.tv_source);
-        setPreferenceScreen(screen);
+
+        updatePreferenceFragment();
     }
 
     public void calculatePreSrcToCurSrc(Preference preference) {
@@ -182,7 +180,7 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
             float Time= (float) SystemClock.uptimeMillis() / 1000;
             Log.d(TAG, "onPreferenceTreeClick SwitchSourceTime = " + Time);
             final Preference sourcePreference = preference;
-            if (sourcePreference.getKey().equals("home")) {
+            if (sourcePreference.getKey().equals(INPUT_SOURCE_GOOGLE_HOME_KEY)) {
                 Intent homeIntent = new Intent(Intent.ACTION_MAIN);
                 homeIntent.addCategory(Intent.CATEGORY_HOME);
                 homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -269,13 +267,13 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
             }
             if (isGTV && calledByIntent) {
                 Preference sourcePreference = new Preference(themedContext);
-                sourcePreference.setKey("home");
+                sourcePreference.setKey(INPUT_SOURCE_GOOGLE_HOME_KEY);
                 sourcePreference.setPersistent(false);
                 sourcePreference.setIcon(R.drawable.ic_home);
                 if (isBasicMode(themedContext)) {
-                    sourcePreference.setTitle("Home");
+                    sourcePreference.setTitle(R.string.channels_and_inputs_home_title);
                 } else {
-                    sourcePreference.setTitle("Google TV Home");
+                    sourcePreference.setTitle(R.string.channels_and_inputs_home_google_title);
                 }
                 preferenceList.add(sourcePreference);
             }

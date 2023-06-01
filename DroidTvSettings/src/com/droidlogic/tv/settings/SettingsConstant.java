@@ -32,6 +32,7 @@ public class SettingsConstant {
     public static String PACKAGE = "com.droidlogic.tv.settings";
     public static String PACKAGENAME_LAUNCHERX = "com.google.android.apps.tv.launcherx";
     public static String PACKAGENAME_MBOX_LAUNCHER2 = "com.droidlogic.mboxlauncher";
+    private static final String AMATI_FEATURE = "com.google.android.feature.AMATI_EXPERIENCE";
 
     public static boolean needDroidlogicMboxFeature(Context context){
         SystemControlManager sm = SystemControlManager.getInstance();
@@ -47,6 +48,10 @@ public class SettingsConstant {
             return true;
         }
         return false;
+    }
+
+    public static boolean amatiFeature(Context context) {
+        return context.getPackageManager().hasSystemFeature(AMATI_FEATURE);
     }
 
     public static boolean needAospFeature(Context context) {

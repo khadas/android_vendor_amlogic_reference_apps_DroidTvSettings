@@ -121,7 +121,6 @@ public class DroidSettingsModeFragment extends SettingsPreferenceFragment implem
         }
         boolean is_from_new_live_tv = getActivity().getIntent().getIntExtra("from_new_live_tv", 0) == 1;
         boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
-        boolean hideStartUp = DroidUtils.VALUE_HIDE_STARTUP.equals(DroidUtils.read(getActivity(), DroidUtils.KEY_HIDE_STARTUP));
 
         final Preference pip = (Preference) findPreference(CLOSED_CAPTIONS);
         pip.setVisible(false);
@@ -154,7 +153,7 @@ public class DroidSettingsModeFragment extends SettingsPreferenceFragment implem
             avParentalControls.setSummary(AV_PARENTAL_CONTROLS_OFF);
         }
         final ListPreference startUpSetting = (ListPreference) findPreference(STARTUP_SETTING);
-        if (!DroidUtils.hasGtvsUiMode() && !hideStartUp) {
+        if (!SettingsConstant.amatiFeature(getContext())) {
             startUpSetting.setValueIndex(mTvOptionSettingManager.getStartupSettingStatus());
             startUpSetting.setOnPreferenceChangeListener(this);
         } else {

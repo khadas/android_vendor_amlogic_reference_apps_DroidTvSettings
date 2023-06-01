@@ -8,6 +8,9 @@ import android.util.Log;
 import android.media.tv.TvInputInfo;
 import android.hardware.hdmi.HdmiDeviceInfo;
 import android.content.Context;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.text.TextUtils;
 
 import androidx.slice.Slice;
 import androidx.slice.SliceProvider;
@@ -18,7 +21,6 @@ import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.TvInputSliceBroadcastReceiver;
 import com.droidlogic.tv.settings.sliceprovider.manager.TvInputContentManager;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
-import com.droidlogic.app.tv.DroidLogicTvUtils;
 
 import java.util.List;
 
@@ -29,11 +31,8 @@ import java.util.List;
 public class TvInputSliceProvider extends MediaSliceProvider {
     private static final String TAG = "TvInputSliceProvider";
     private TvInputContentManager mTvInputContentManager;
-    private static final String COMMANDACTION = "action.startlivetv.settingui";
-    private static final String PACKAGE_DROIDLOGIC_TVINPUT = "com.droidlogic.tvinput";
-    private static final String PACKAGE_DROIDLOGIC_DTVKIT = "com.droidlogic.dtvkit.inputsource";
-    private static final String PACKAGE_GOOGLE_VIDEOS = "com.google.android.videos";
 
+    private static final String INPUT_SOURCE_GOOGLE_HOME_KEY = "home";
     private static final int LOGICAL_ADDRESS_AUDIO_SYSTEM = 5;
     private Handler mHandler = new Handler();
 
@@ -106,8 +105,9 @@ public class TvInputSliceProvider extends MediaSliceProvider {
         Log.d(TAG, "inputSourceList: " + inputSourceSupportList);
         Log.d(TAG, "currentInputSource: " + currentInputSource);
 
+        updateInputGoogTvHome(psb, currentInputSource); // add Google Tv home source
         for (TvInputInfo input : inputSourceSupportList) {
-            android.util.Log.d(TAG, "updateChannelsAndInputsDetails: inputId = " + input.getId());
+            Log.d(TAG, "updateChannelsAndInputsDetails: inputId = " + input.getId());
             psb.addPreference(
                 new RowBuilder()
                     .setKey(input.getId())
@@ -121,5 +121,55 @@ public class TvInputSliceProvider extends MediaSliceProvider {
                         input.getId().equals(currentInputSource),
                         getContext().getString(R.string.hdr_resolution_radio_group_name)));
         }
+    }
+
+    private void updateInputGoogTvHome(PreferenceSliceBuilder psb, String currentInputSource) {
+        psb.addPreference(
+            new RowBuilder()
+                .setKey(INPUT_SOURCE_GOOGLE_HOME_KEY)
+                .setTitle(isBasicMode(getContext())
+                    ? getContext().getString(R.string.channels_and_inputs_home_title)
+                    : getContext().getString(R.string.channels_and_inputs_home_google_title))
+                .addRadioButton(
+                    generatePendingIntent(
+                        getContext(),
+                        MediaSliceConstants.CHANNELS_AND_INPUTS,
+                        TvInputSliceBroadcastReceiver.class),
+                    INPUT_SOURCE_GOOGLE_HOME_KEY.equals(currentInputSource),
+                    getContext().getString(R.string.hdr_resolution_radio_group_name)));
+    }
+
+    public boolean isBasicMode(Context context) {
+        final String SETTINGS_PACKAGE_NAME = "com.android.tv.settings";
+        String providerUriString = "";
+        try {
+            Resources resources = context.getPackageManager()
+                    .getResourcesForApplication(SETTINGS_PACKAGE_NAME);
+            int id = resources.getIdentifier("basic_mode_provider_uri", "string", SETTINGS_PACKAGE_NAME);
+            if (id != 0) {
+                providerUriString = resources.getString(id);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        if (TextUtils.isEmpty(providerUriString)) {
+            Log.e(TAG, "ContentProvider for basic mode is undefined.");
+            return false;
+        }
+        // The string "offline_mode" is a static protocol and should not be changed in general.
+        final String KEY_BASIC_MODE = "offline_mode";
+        try {
+            Uri contentUri = Uri.parse(providerUriString);
+            Cursor cursor = context.getContentResolver().query(contentUri, null, null, null);
+            if (cursor != null && cursor.getCount() != 0) {
+                cursor.moveToFirst();
+                String basicMode = cursor.getString(cursor.getColumnIndex(KEY_BASIC_MODE));
+                return "1".equals(basicMode);
+            }
+        } catch (IllegalArgumentException | NullPointerException e) {
+            Log.e(TAG, "Unable to query the ContentProvider for basic mode.", e);
+            return false;
+        }
+        return false;
     }
 }

@@ -2003,6 +2003,10 @@
     <string name="vendor_sample_settings_summary" translatable="false">(Subtitle is suggested to give further information)</string>
     <!-- Title for "Channels & Inputs" settings [CHAR LIMIT=60] -->
     <string name="channels_and_inputs_title">Channels &amp; Inputs</string>
+    <!-- Title for "Home" settings [CHAR LIMIT=60] -->
+    <string name="channels_and_inputs_home_title">Home</string>
+    <!-- Title for "Google TV Home" settings [CHAR LIMIT=60] -->
+    <string name="channels_and_inputs_home_google_title">Google TV Home</string>
     <!-- Summary for "Channels & Inputs" settings [CHAR LIMIT=60] -->
     <string name="channels_and_inputs_summary">Signal Source</string>
     <!-- Title for "Channels" settings [CHAR LIMIT=60] -->
@@ -2526,7 +2530,7 @@
     <string name="pq_picture_advanced_color_customize">Color Customize</string>
     <string name="pq_picture_advanced_color_space">Color Space</string>
     <string name="pq_picture_advanced_global_dimming">Global Dimming</string>
-    <string name="pq_picture_advanced_local_dimming">Lobal Dimming</string>
+    <string name="pq_picture_advanced_local_dimming">Local Dimming</string>
     <string name="pq_picture_advanced_black_stretch">Black Stretch</string>
     <string name="pq_picture_advanced_dnlp">DNLP</string>
     <string name="pq_picture_advanced_local_contrast">Local Contrast</string>

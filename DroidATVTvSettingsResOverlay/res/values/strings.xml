@@ -393,7 +393,7 @@
     <string name="pq_picture_advanced_color_customize">Color Customize</string>
     <string name="pq_picture_advanced_color_space">Color Space</string>
     <string name="pq_picture_advanced_global_dimming">Global Dimming</string>
-    <string name="pq_picture_advanced_local_dimming">Lobal Dimming</string>
+    <string name="pq_picture_advanced_local_dimming">Local Dimming</string>
     <string name="pq_picture_advanced_black_stretch">Black Stretch</string>
     <string name="pq_picture_advanced_dnlp">DNLP</string>
     <string name="pq_picture_advanced_local_contrast">Local Contrast</string>

@@ -97,8 +97,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     private static final String KEY_AI_PQ = "ai_pq";
     private static final String KEY_FRAME_RATE = "frame_rate";
     private static final String KEY_POWER_AND_ENERGY = "power_and_energy_settings";
-
-    private static final String DTVKIT_PACKAGE = "org.dtvkit.inputsource";
     private static final String HAILSTORM_VERSION_PROP = "ro.vendor.hailstorm.version";
     private static final String DEBUG_DISPLAY_PROP = "vendor.display.debug";
     private static final String FRAME_RATE_PROP = "persist.vendor.sys.framerate.feature";
@@ -132,25 +130,9 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         super.onCreate(savedInstanceState);
     }
 
-    private int getPreferenceScreenResId() {
-        Log.d(TAG, "getPreferenceScreenResId = " + FlavorUtils.getFlavor(getContext()));
-        switch (FlavorUtils.getFlavor(getContext())) {
-            case FLAVOR_CLASSIC:
-                return R.xml.more;
-            case FLAVOR_TWO_PANEL:
-                return R.xml.more_two_panel;
-            case FLAVOR_X:
-                return R.xml.more_x;
-            case FLAVOR_VENDOR:
-                return R.xml.more_vendor;
-            default:
-                return R.xml.more;
-        }
-    }
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(getPreferenceScreenResId(), null);
+        setPreferencesFromResource(R.xml.more, null);
         boolean onlyShowPicture = false;
         String action = getActivity().getIntent().getAction();
         if (action != null && action.equals("android.settings.DISPLAY_SETTINGS")) {
@@ -241,10 +223,12 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             keyStone.setVisible(false);
             mSoundsPref.setVisible(false);
             picturePref.setVisible(true);
-            mTvOption.setVisible(false);
             channelPref.setVisible(false);
             settingsPref.setVisible(false);
             powerAndEnergyPref.setVisible(false);
+            frameRatePref.setVisible(false);
+            netflixesnPref.setVisible(false);
+            versionPref.setVisible(false);
         } else if (is_from_live_tv) {
             morePref.setTitle(R.string.settings_menu);
             displayPref.setVisible(false);
@@ -255,23 +239,12 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             mTvOption.setVisible(false);
             //moreSettingsPref.setVisible(false);
             keyStone.setVisible(false);
-            /*boolean isPassthrough = isPassthroughInput(inputId);
-            if (isPassthrough || is_from_new_live_tv) {
-                channelPref.setVisible(false);
-            } else {
-                channelPref.setVisible(true);
-            }*/
             channelPref.setVisible(false);
             if (!SettingsConstant.needDroidlogicTvFeature(getContext())) {
                 mSoundsPref.setVisible(false);//mbox doesn't support sound effect
             }
-            if (inputId != null && inputId.startsWith(DTVKIT_PACKAGE)) {
-                DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_HIDE_STARTUP);
-            } else {
-                DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_SHOW_STARTUP);
-            }
 
-            if (! DroidUtils.hasGtvsUiMode()) {
+            if (!SettingsConstant.needGTVFeature(getContext())) {
                 powerAndEnergyPref.setVisible(false);
             }
         } else {
@@ -330,7 +303,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         getActivity().finish();
     }
 
-    public static void startKeyStoneCorrectionActivity(Context context) {
+    public void startKeyStoneCorrectionActivity(Context context) {
         try {
             Intent intent = new Intent();
             intent.setClassName("com.android.keystone", "com.android.keystone.keyStoneCorrectionActivity");
@@ -341,7 +314,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         }
     }
 
-    public static void startAdvancedSoundSettingsActivity(Context context) {
+    public void startAdvancedSoundSettingsActivity(Context context) {
         try {
             Intent intent = new Intent();
             intent.setClassName("com.droidlogic.tv.settings", "com.droidlogic.tv.settings.soundeffect.AdvancedVolumeActivity");
@@ -417,22 +390,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         return null;
     }
 
-    public boolean isPassthroughInput(String inputId) {
-        boolean result = false;
-        try {
-            TvInputManager tvInputManager = (TvInputManager) getActivity().getSystemService(Context.TV_INPUT_SERVICE);
-            List<TvInputInfo> inputList = tvInputManager.getTvInputList();
-            for (TvInputInfo input : inputList) {
-                if (input.isPassthroughInput() && TextUtils.equals(inputId, input.getId())) {
-                    result = true;
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            Log.i(TAG, "isPassthroughInput Exception = " + e.getMessage());
-        }
-        return result;
-    }
 
     private boolean isHandheld(){
         return isSupportFeature(PackageManager.FEATURE_TOUCHSCREEN)
