@@ -68,6 +68,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import android.os.SystemProperties;
+
 /** The SliceProvider for "connected devices" settings */
 public class ConnectedDevicesSliceProvider extends SliceProvider implements
         BluetoothDeviceProvider.Listener {
@@ -324,7 +326,13 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
                     PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
             connectionActionPref.setPendingIntent(pendingIntent);
             connectionActionPref.setFollowupPendingIntent(followupIntent);
-            psb.addPreference(connectionActionPref);
+
+            String remote_type = SystemProperties.get("sys.vendor.remote.type", "IR_NONE");
+            if (!remote_type.contains(deviceName)) {
+                Log.d(TAG, "add connectionActionPref");
+                psb.addPreference(connectionActionPref);
+            } else
+                Log.d(TAG, "Do not add connectionActionPref");
         }
 
         // Update "rename preference".
