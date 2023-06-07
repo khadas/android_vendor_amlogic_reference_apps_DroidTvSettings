@@ -242,7 +242,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             }
 
             // deep space
-            mDeepColorPref.setVisible(true);
+            mDeepColorPref.setVisible(cfFlag);
             mDeepColorPref.setEnabled(cfFlag);
             mDeepColorPref.setSummary(mOutputUiManager.getCurrentColorSpaceTitle());
 
@@ -253,7 +253,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
                 mOutputUiManager.getCurrentColorDepthAttr().contains("8bit") ? "off":"on");
 
             // dolby vision
-            mDolbyVisionPref.setVisible(platformSupportDv && displayConfig);
+            mDolbyVisionPref.setVisible(platformSupportDv && displayConfig & dvFlag);
             mDolbyVisionPref.setEnabled(displayConfig && dvFlag);
             if (mOutputUiManager.isDolbyVisionEnable()) {
                 if (mDolbyVisionSettingManager.getDolbyVisionType() == 2) {
