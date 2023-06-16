@@ -21,60 +21,60 @@ import com.droidlogic.tv.settings.sliceprovider.manager.HdmiCecContentManager;
 
 
 public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
-  private static final String TAG = HdmiCecSliceBroadcastReceiver.class.getSimpleName();
-  private ProgressDialog mProgress;
-  private static final int MSG_ENABLE_CEC_SWITCH = 0;
-  private static final int TIME_DELAYED = 5000;//ms
+    private static final String TAG = HdmiCecSliceBroadcastReceiver.class.getSimpleName();
+    private ProgressDialog mProgress;
+    private static final int MSG_ENABLE_CEC_SWITCH = 0;
+    private static final int TIME_DELAYED = 5000;//ms
 
-  private static final int ENABLED = 1;
-  private static final int DISABLED = 0;
+    private static final int ENABLED = 1;
+    private static final int DISABLED = 0;
 
-  private Handler mHandler = new Handler() {
-      @Override
-      public void handleMessage(Message msg) {
-          switch (msg.what) {
-              case MSG_ENABLE_CEC_SWITCH:
-                  if (MediaSliceUtil.CanDebug()) Log.d(TAG, "enable cec switch");
-                  if (mProgress != null && mProgress.isShowing()) {
-                      mProgress.dismiss();
-                  }
-                  break;
-              default:
-                  break;
-          }
-      }
-  };
-
-  @Override
-  public void onReceive(Context context, Intent intent) {
-    final String action = intent.getAction();
-    Log.d(TAG, "onReceive " + intent);
-    boolean isChecked;
-    mProgress = new ProgressDialog(context);
-    mProgress.setMessage("It takes a few seconds to update cec status, please wait...");
-    mProgress.setIndeterminate(false);
-    mProgress.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-    String key;
-    switch (action) {
-      case MediaSliceConstants.ACTION_HDMI_SWITCH_CEC_CHANGED:
-        key = intent.getStringExtra(EXTRA_PREFERENCE_KEY);
-        isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
-        getHdmiCecContentManager(context).setHdmiCecEnabled(isChecked);
-        if (mProgress != null && !mProgress.isShowing()) {
-            if (MediaSliceUtil.CanDebug()) Log.d(TAG, "check enable show dialog");
-            mProgress.show();
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_ENABLE_CEC_SWITCH:
+                    if (MediaSliceUtil.CanDebug()) Log.d(TAG, "enable cec switch");
+                    if (mProgress != null && mProgress.isShowing()) {
+                        mProgress.dismiss();
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
-        mHandler.sendEmptyMessageDelayed(MSG_ENABLE_CEC_SWITCH, TIME_DELAYED);
-        break;
-      case MediaSliceConstants.ACTION_HDMI_VOLUME_CONTROL_CHANGED:
-        isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
-        getHdmiCecContentManager(context).setVolumeControlStatus(isChecked ? 1 : 0);
-        break;
-    }
-  }
+    };
 
-  private HdmiCecContentManager getHdmiCecContentManager(Context context) {
-    return HdmiCecContentManager.getHdmiCecContentManager(context);
-  }
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        final String action = intent.getAction();
+        Log.d(TAG, "onReceive " + intent);
+        boolean isChecked;
+        mProgress = new ProgressDialog(context);
+        mProgress.setMessage("It takes a few seconds to update cec status, please wait...");
+        mProgress.setIndeterminate(false);
+        mProgress.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        String key;
+        switch (action) {
+            case MediaSliceConstants.ACTION_HDMI_SWITCH_CEC_CHANGED:
+                key = intent.getStringExtra(EXTRA_PREFERENCE_KEY);
+                isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
+                getHdmiCecContentManager(context).setHdmiCecEnabled(isChecked);
+                if (mProgress != null && !mProgress.isShowing()) {
+                    if (MediaSliceUtil.CanDebug()) Log.d(TAG, "check enable show dialog");
+                    mProgress.show();
+                }
+                mHandler.sendEmptyMessageDelayed(MSG_ENABLE_CEC_SWITCH, TIME_DELAYED);
+                break;
+            case MediaSliceConstants.ACTION_HDMI_VOLUME_CONTROL_CHANGED:
+                isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
+                getHdmiCecContentManager(context).setVolumeControlStatus(isChecked ? 1 : 0);
+                break;
+        }
+    }
+
+    private HdmiCecContentManager getHdmiCecContentManager(Context context) {
+        return HdmiCecContentManager.getHdmiCecContentManager(context);
+    }
 
 }

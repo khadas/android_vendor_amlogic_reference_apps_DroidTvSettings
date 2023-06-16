@@ -16,70 +16,71 @@ import android.provider.Settings;
 
 
 public class HdmiCecContentSliceProvider extends MediaSliceProvider {
-  private static final String TAG = HdmiCecContentSliceProvider.class.getSimpleName();
-  private static final boolean DEBUG = true;
-  private HdmiCecContentManager mHdmiCecContentManager;
+    private static final String TAG = HdmiCecContentSliceProvider.class.getSimpleName();
+    private static final boolean DEBUG = true;
+    private HdmiCecContentManager mHdmiCecContentManager;
 
-  @Override
-  public boolean onCreateSliceProvider() {
-    return true;
-  }
-
-  @Override
-  public Slice onBindSlice(final Uri sliceUri) {
-    if (MediaSliceUtil.CanDebug()) {
-       Log.d(TAG, "onBindSlice: " + sliceUri);
-    }
-    switch (MediaSliceUtil.getFirstSegment(sliceUri)) {
-      case MediaSliceConstants.HDMI_CEC_PATH:
-        // fill in Netfilx Esn into general info purposely
-        return createHdmiCecSlice(sliceUri);
-      default:
-        return null;
-    }
-  }
-
-  @Override
-  public void shutdown() {
-    HdmiCecContentManager.shutdown(getContext());
-    mHdmiCecContentManager = null;
-    super.shutdown();
-  }
-
-  private Slice createHdmiCecSlice(Uri sliceUri) {
-    final PreferenceSliceBuilder psb = new PreferenceSliceBuilder(getContext(), sliceUri);
-
-    if (!HdmiCecContentManager.isInit()) {
-      mHdmiCecContentManager = HdmiCecContentManager.getHdmiCecContentManager(getContext());
+    @Override
+    public boolean onCreateSliceProvider() {
+        return true;
     }
 
-    psb.addPreference(
-        new RowBuilder()
-            .setKey(getContext().getString(R.string.hdmi_cec_switch_key))
-            .setTitle(getContext().getString(R.string.hdmi_cec_switch_title))
-            .setSubtitle(mHdmiCecContentManager.isHdmiControlEnabledName())
-            .addSwitch(
-                generatePendingIntent(
-                    getContext(),
-                    MediaSliceConstants.ACTION_HDMI_SWITCH_CEC_CHANGED,
-                    HdmiCecSliceBroadcastReceiver.class),
-                    mHdmiCecContentManager.isHdmiControlEnabled()));
+    @Override
+    public Slice onBindSlice(final Uri sliceUri) {
+        if (MediaSliceUtil.CanDebug()) {
+            Log.d(TAG, "onBindSlice: " + sliceUri);
+        }
+        switch (MediaSliceUtil.getFirstSegment(sliceUri)) {
+            case MediaSliceConstants.HDMI_CEC_PATH:
+                // fill in Netfilx Esn into general info purposely
+                return createHdmiCecSlice(sliceUri);
+            default:
+                return null;
+        }
+    }
 
-    boolean volumeControl = mHdmiCecContentManager.getVolumeControlStatus();
-    String title = volumeControl ? getContext().getString(R.string.enabled)
-                                : getContext().getString(R.string.disabled);
-    psb.addPreference(
-        new RowBuilder()
-            .setKey(getContext().getString(R.string.hdmi_volume_control_key))
-            .setTitle(getContext().getString(R.string.hdmi_volume_control_title))
-            .setSubtitle(title)
-            .addSwitch(
-                generatePendingIntent(
-                    getContext(),
-                    MediaSliceConstants.ACTION_HDMI_VOLUME_CONTROL_CHANGED,
-                    HdmiCecSliceBroadcastReceiver.class),
-                    mHdmiCecContentManager.getVolumeControlStatus()));
+    @Override
+    public void shutdown() {
+        HdmiCecContentManager.shutdown(getContext());
+        mHdmiCecContentManager = null;
+        super.shutdown();
+    }
 
-    return psb.build();
-  }
+    private Slice createHdmiCecSlice(Uri sliceUri) {
+        final PreferenceSliceBuilder psb = new PreferenceSliceBuilder(getContext(), sliceUri);
+
+        if (!HdmiCecContentManager.isInit()) {
+            mHdmiCecContentManager = HdmiCecContentManager.getHdmiCecContentManager(getContext());
+        }
+
+        psb.addPreference(
+                new RowBuilder()
+                        .setKey(getContext().getString(R.string.hdmi_cec_switch_key))
+                        .setTitle(getContext().getString(R.string.hdmi_cec_switch_title))
+                        .setSubtitle(mHdmiCecContentManager.isHdmiControlEnabledName())
+                        .setInfoSummary(getContext().getString(R.string.settings_cec_explain))
+                        .addSwitch(
+                                generatePendingIntent(
+                                        getContext(),
+                                        MediaSliceConstants.ACTION_HDMI_SWITCH_CEC_CHANGED,
+                                        HdmiCecSliceBroadcastReceiver.class),
+                                mHdmiCecContentManager.isHdmiControlEnabled()));
+
+        boolean volumeControl = mHdmiCecContentManager.getVolumeControlStatus();
+        String title = volumeControl ? getContext().getString(R.string.enabled)
+                : getContext().getString(R.string.disabled);
+        psb.addPreference(
+                new RowBuilder()
+                        .setKey(getContext().getString(R.string.hdmi_volume_control_key))
+                        .setTitle(getContext().getString(R.string.hdmi_volume_control_title))
+                        .setSubtitle(title)
+                        .addSwitch(
+                                generatePendingIntent(
+                                        getContext(),
+                                        MediaSliceConstants.ACTION_HDMI_VOLUME_CONTROL_CHANGED,
+                                        HdmiCecSliceBroadcastReceiver.class),
+                                mHdmiCecContentManager.getVolumeControlStatus()));
+
+        return psb.build();
+    }
 }

@@ -2825,6 +2825,7 @@
     <string name="hdmi_cec_switch_key" translatable="false">HDMI-CEC</string>
     <string name="hdmi_volume_control_title" translatable="false">Enable Volume Control</string>
     <string name="hdmi_volume_control_key" translatable="false">Volume Control</string>
+    <string name="settings_cec_explain">HDMI-CEC allows you to control and automatically turn on/off other HDMI-CEC enabled devices with a single remote control.\n\nNote: Ensure HDMI-CEC is enabled on your TV and other HDMI devices. Manufacturers often have different names for HDMI-CEC, for example:\nSamsung: Anynet+\nLG: SimpLink\nSony: BRAVIA Sync\nPhilips: EasyLink\nSharp: Aquos Link</string>
 
     <!-- Uri to be overlaid by partner to show remote control infrared settings. -->
     <string name="bluetooth_ir_entry_slice_uri" translatable="false" />
