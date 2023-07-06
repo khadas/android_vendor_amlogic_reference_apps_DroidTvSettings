@@ -2754,6 +2754,7 @@
 
     <string name="hdr_resolution_title">Resolution</string>
     <string name="hdr_resolution_list_title">Resolution List</string>
+    <string name="hdr_resolution_cvbs_subtitle">CVBS</string>
     <string translatable="false" name="hdr_resolution_radio_group_name">resolution_radio_group</string>
 
     <string name="dolby_vision_mode_title">Dolby Vision Mode</string>

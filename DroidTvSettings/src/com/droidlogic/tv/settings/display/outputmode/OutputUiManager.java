@@ -53,63 +53,15 @@ public class OutputUiManager {
     private static boolean DEBUG = false;
 
     public static final String CVBS_MODE = "cvbs";
+    public static final String PAL_MODE  = "pal";
+    public static final String NTSC_MODE = "ntsc";
     public static final String HDMI_MODE = "hdmi";
 
-    private static final String[] HDMI_LIST = {
-        "2160p60hz",
-        "2160p50hz",
-        "2160p30hz",
-        "2160p25hz",
-        "2160p24hz",
-        "smpte24hz",
-        "1080p60hz",
-        "1080p50hz",
-        "1080p24hz",
-        "720p60hz",
-        "720p50hz",
-        "576p50hz",
-        "480p60hz"
-    };
-    private static final String[] HDMI_TITLE = {
-        "4k2k 60hz",
-        "4k2k 50hz",
-        "4k2k 30hz",
-        "4k2k 25hz",
-        "4k2k 24hz",
-        "4k2k smpte",
-        "1080p 60hz",
-        "1080p 50hz",
-        "1080p 24hz",
-        "720p 60hz",
-        "720p 50hz",
-        "576p 50hz",
-        "480p 60hz"
-    };
+    private static final String[] HDMI_LIST = OutputModeManager.HDMI_LIST;
+    private static final String[] HDMI_TITLE = OutputModeManager.HDMI_TITLE;
 
-    public static final String[] HDMI_COLOR_LIST = {
-        "444,12bit",
-        "444,10bit",
-        "444,8bit",
-        "422,12bit",
-        "420,12bit",
-        "420,10bit",
-        "420,8bit",
-        "rgb,12bit",
-        "rgb,10bit",
-        "rgb,8bit"
-    };
-    public static final String[] HDMI_COLOR_TITLE = {
-        "YCbCr444 12bit",
-        "YCbCr444 10bit",
-        "YCbCr444 8bit",
-        "YCbCr422 12bit",
-        "YCbCr420 12bit",
-        "YCbCr420 10bit",
-        "YCbCr420 8bit",
-        "RGB 12bit",
-        "RGB 10bit",
-        "RGB 8bit"
-    };
+    public static final String[] HDMI_COLOR_LIST = OutputModeManager.HDMI_COLOR_LIST;
+    public static final String[] HDMI_COLOR_TITLE = OutputModeManager.HDMI_COLOR_TITLE_LIST;
 
     public static final String[] COLOR_SPACE_LIST = {
         "444",
@@ -132,22 +84,9 @@ public class OutputUiManager {
         "8bit",
     };
 
-    private static final String[] CVBS_MODE_VALUE_LIST = {
-        "480cvbs",
-        "576cvbs"
-    };
-    private static final String[] CVBS_MODE_TITLE_LIST = {
-        "480 CVBS",
-        "576 CVBS"
-    };
+    private static final String[] CVBS_MODE_VALUE_LIST = OutputModeManager.ALL_CVBS_MODE_EXTERN_LIST;
 
-    private static final String[] DOLBY_VISION_TYPE = {
-         "DV_RGB_444_8BIT",
-//         "DV_YCbCr_422_12BIT",
-         "LL_YCbCr_422_12BIT",
-         "LL_RGB_444_12BIT",
-         "LL_RGB_444_10BIT"
-    };
+    private static final String[] DOLBY_VISION_TYPE = OutputModeManager.DOLBY_VISION_TYPE;
 
     private static final int DV_LL_RGB            = 3;
     private static final int DV_LL_YUV            = 2;
@@ -193,7 +132,9 @@ public class OutputUiManager {
     public String getUiMode(){
         String currentMode = mOutputModeManager.getCurrentOutputMode();
         Log.d(TAG,"getUiMode currentMode = " + currentMode);
-        if (currentMode.contains(CVBS_MODE)) {
+        if (currentMode.contains(CVBS_MODE)
+                || currentMode.contains(PAL_MODE)
+                || currentMode.contains(NTSC_MODE)) {
             mUiMode = CVBS_MODE;
         } else {
             mUiMode = HDMI_MODE;
