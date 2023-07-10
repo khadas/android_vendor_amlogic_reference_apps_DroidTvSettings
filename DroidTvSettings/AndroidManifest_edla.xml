@@ -317,6 +317,19 @@
             </intent-filter>
         </activity>
 
+	<activity
+            android:name=".sliceprovider.dialog.DisplayResetActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:turnScreenOn="true">
+            <intent-filter>
+                <action android:name="android.setting.intent.action.DISPLAY_RESET"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <provider
             android:authorities="com.google.android.tv.settings.hdr.sliceprovider"
             android:name="com.droidlogic.tv.settings.sliceprovider.HdrSliceProvider"

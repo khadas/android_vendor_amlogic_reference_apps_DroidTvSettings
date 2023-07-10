@@ -54,4 +54,7 @@
         android:key="hdr_priority"
         android:title="@string/hdr_priority"
         android:fragment="com.droidlogic.tv.settings.display.dolbyvision.HdrPriorityFragment"/>
+    <Preference
+        android:key="device_display_reset"
+        android:title="@string/device_display_reset" />
 </PreferenceScreen>

@@ -66,8 +66,14 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     private static final String KEY_HDR_PRIORITY = "hdr_priority";
     private static final String KEY_HDR_POLICY = "hdr_policy";
     private static final String KEY_DOLBYVISION_PRIORITY = "dolby_vision_graphics_priority";
+    private static final String DEVICE_DISPLAY_RESET = "device_display_reset";
+
     private static final String DEFAULT_VALUE = "444,8bit";
     private static final String HDMI_OUTPUT_MODE = "dummy_l";
+
+    private static final String SETTINGS_PACKAGE = "com.droidlogic.tv.settings";
+    private static final String SETTINGS_ACTIVITY_DisplayResetActivity =
+            "com.droidlogic.tv.settings.sliceprovider.dialog.DisplayResetActivity";
 
     private static boolean DEBUG = Log.isLoggable(LOG_TAG,Log.DEBUG);
     private static final int DV_LL_RGB            = 3;
@@ -393,6 +399,19 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             mHandler.sendEmptyMessage(MSG_FRESH_UI);
         }
         return true;
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(Preference preference) {
+        Log.i(LOG_TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
+        switch (preference.getKey()) {
+            case DEVICE_DISPLAY_RESET:
+                Intent displayResetIntent = new Intent();
+                displayResetIntent.setClassName(SETTINGS_PACKAGE, SETTINGS_ACTIVITY_DisplayResetActivity);
+                startActivity(displayResetIntent);
+                break;
+        }
+        return super.onPreferenceTreeClick(preference);
     }
 
     @Override

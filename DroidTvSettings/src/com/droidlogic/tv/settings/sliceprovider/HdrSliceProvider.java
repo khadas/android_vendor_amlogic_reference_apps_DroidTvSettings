@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
+import android.app.tvsettings.TvSettingsEnums;
 import androidx.slice.Slice;
 import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder;
 import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder.RowBuilder;
@@ -27,6 +28,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
     private static final String ACTION_HDMI_PLUGGED = "android.intent.action.HDMI_PLUGGED";
 
     private static final boolean DEBUG = true;
+    private  static final String KEY_RESET = "DISPLAY_RESET";
 
     private Handler mHandler = new Handler();
     private DisplayCapabilityManager mDisplayCapabilityManager;
@@ -329,6 +331,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
                             .setTargetSliceUri(
                                     MediaSliceUtil.generateTargetSliceUri(MediaSliceConstants.COLOR_ATTRIBUTE_PATH)));
         }
+        updateDisplayResetButton(psb);
         return psb.build();
     }
 
@@ -484,6 +487,22 @@ public class HdrSliceProvider extends MediaSliceProvider {
 
         return psb.build();
     }
+
+    private void updateDisplayResetButton(PreferenceSliceBuilder psb) {
+        psb.addPreference(
+            new RowBuilder()
+                .setKey(KEY_RESET)
+                .setTitle(getContext().getString(R.string.device_display_reset_Title))
+                .setInfoSummary(getContext().getString(R.string.device_display_reset_description))
+                .setActionId(TvSettingsEnums.DISPLAY_SOUND_ADVANCED_DISPLAY_GAME_MODE)
+                .setPendingIntent(
+                    generatePendingIntent(
+                        getContext(),
+                        MediaSliceConstants.ACTION_DISPLAY_RESET,
+                        DisplayResetActivity.class)
+                )
+        );
+  }
 
     private String hdrFormatToTitle(HdrFormat hdrFormat) {
         switch (hdrFormat) {
