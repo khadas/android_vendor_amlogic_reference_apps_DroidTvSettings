@@ -259,7 +259,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
                 mOutputUiManager.getCurrentColorDepthAttr().contains("8bit") ? "off":"on");
 
             // dolby vision
-            mDolbyVisionPref.setVisible(platformSupportDv && displayConfig & dvFlag);
+            mDolbyVisionPref.setVisible(platformSupportDv && displayConfig && dvFlag);
             mDolbyVisionPref.setEnabled(displayConfig && dvFlag);
             if (mOutputUiManager.isDolbyVisionEnable()) {
                 if (mDolbyVisionSettingManager.getDolbyVisionType() == 2) {
