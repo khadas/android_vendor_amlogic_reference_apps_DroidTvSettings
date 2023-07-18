@@ -23,8 +23,7 @@ import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevi
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceProvider.KEY_FORGET;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceProvider.KEY_RENAME;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceProvider.YES;
-import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.DIRECTION_BACK;
-import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.EXTRAS_DIRECTION;
+import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver.ACTION_BACK_AND_UPDATE_SLICE;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -45,7 +44,6 @@ import java.lang.Thread;
  */
 public class BluetoothActionActivity extends Activity implements BluetoothActionFragment.Listener {
 
-    private final String TAG = "BluetoothActionActivity";
     private boolean mBtDeviceServiceBound;
     private BluetoothDevice mDevice;
     private BluetoothDevicesService.LocalBinder mBtDeviceServiceBinder;
@@ -105,29 +103,28 @@ public class BluetoothActionActivity extends Activity implements BluetoothAction
                             getContentResolver().notifyChange(ConnectedDevicesSliceUtils.GENERAL_SLICE_URI, null);
                         }
                     }).start();
-                    i.putExtra(EXTRAS_DIRECTION, DIRECTION_BACK);
                 }
                 break;
             case KEY_CONNECT:
                 if (choice == YES) {
                     provider.connectDevice(mDevice);
-                    i.putExtra(EXTRAS_DIRECTION, DIRECTION_BACK);
                 }
                 break;
             case KEY_DISCONNECT:
                 if (choice == YES) {
                     provider.disconnectDevice(mDevice);
-                    i.putExtra(EXTRAS_DIRECTION, DIRECTION_BACK);
                 }
                 break;
             case KEY_FORGET:
                 if (choice == YES) {
                     provider.forgetDevice(mDevice);
-                    i.putExtra(EXTRAS_DIRECTION, DIRECTION_BACK);
                 }
                 break;
+            default:
+                // no-op
         }
         getContentResolver().notifyChange(ConnectedDevicesSliceUtils.GENERAL_SLICE_URI, null);
+        i.setAction(ACTION_BACK_AND_UPDATE_SLICE);
         setResult(RESULT_OK, i);
         finish();
     }
@@ -135,13 +132,10 @@ public class BluetoothActionActivity extends Activity implements BluetoothAction
     @Override
     public void onText(String key, String text) {
         BluetoothDeviceProvider provider = mBtDeviceServiceBinder;
-        if (KEY_RENAME.equals(key)) {
-            if (mDevice != null) {
-                provider.renameDevice(mDevice, text);
-            }
+        if (KEY_RENAME.equals(key) && (mDevice != null)) {
+            provider.renameDevice(mDevice, text);
         }
         Intent i = new Intent();
-        i.putExtra(EXTRAS_DIRECTION, DIRECTION_BACK);
         setResult(RESULT_OK, i);
         finish();
     }

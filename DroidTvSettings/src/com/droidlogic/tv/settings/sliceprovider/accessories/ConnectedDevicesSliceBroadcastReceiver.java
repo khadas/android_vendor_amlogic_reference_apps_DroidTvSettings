@@ -26,6 +26,7 @@ import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevi
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.app.PendingIntent;
 import android.net.Uri;
 import android.util.Log;
 import android.app.ProgressDialog;
@@ -51,6 +52,7 @@ public class ConnectedDevicesSliceBroadcastReceiver extends BroadcastReceiver {
     static final String EXTRA_TOGGLE_TYPE = "TOGGLE_TYPE";
     // Bluetooth off is handled differently by ResponseActivity with confirmation dialog.
     static final String BLUETOOTH_ON = "BLUETOOTH_ON";
+    static final String ACTION_BACK_AND_UPDATE_SLICE = "BACK_AND_UPDATE_SLICE";
 
     private ProgressDialog mProgress;
     private static final int MSG_ENABLE_BLUETOOTH_SWITCH = 0;
@@ -64,31 +66,34 @@ public class ConnectedDevicesSliceBroadcastReceiver extends BroadcastReceiver {
         mContext = context;
         final String action = intent.getAction();
         Log.d(TAG, "onReceive action: " + action);
-        final boolean isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, false);
-        if (ACTION_TOGGLE_CHANGED.equals(action)) {
-            if (BLUETOOTH_ON.equals(intent.getStringExtra(EXTRA_TOGGLE_TYPE))) {
-                BluetoothAdapter bluetoothAdapter = AccessoryUtils.getDefaultBluetoothAdapter();
-                if (bluetoothAdapter != null) {
-                    bluetoothAdapter.enable();
+
+        if (action == null) {
+            return;
+        }
+        switch (action) {
+            case ACTION_TOGGLE_CHANGED:
+                if (BLUETOOTH_ON.equals(intent.getStringExtra(EXTRA_TOGGLE_TYPE))) {
+                    BluetoothAdapter bluetoothAdapter = AccessoryUtils.getDefaultBluetoothAdapter();
+                    if (bluetoothAdapter != null) {
+                        bluetoothAdapter.enable();
+                    }
                 }
-            }
+
+                mProgress = new ProgressDialog(context);
+                showBlueToothEnablingDialog(context, mProgress,
+                        "It takes a few seconds to update bluetooth status," +
+                                "\nplease wait...");
+                mHandler.sendEmptyMessageDelayed(MSG_ENABLE_BLUETOOTH_SWITCH, TIME_DELAYED);
+                break;
+            case ACTION_BACK_AND_UPDATE_SLICE:
+                notifyToGoBack(context, Uri.parse(intent.getStringExtra(EXTRAS_SLICE_URI)));
+            default:
+                // no-op
         }
 
-        // Notify TvSettings to go back to the previous level.
-        String direction = intent.getStringExtra(EXTRAS_DIRECTION);
-        if (DIRECTION_BACK.equals(direction)) {
-            Log.d(TAG, "DIRECTION_BACK ");
-            notifyToGoBack(context, Uri.parse(intent.getStringExtra(EXTRAS_SLICE_URI)));
-        }
-
-        mProgress = new ProgressDialog(context);
-        showBlueToothConnectionDialog(context, mProgress,
-                "It takes a few seconds to update bluetooth status," +
-                        "\nplease wait...");
-        mHandler.sendEmptyMessageDelayed(MSG_ENABLE_BLUETOOTH_SWITCH, TIME_DELAYED);
     }
 
-    private void showBlueToothConnectionDialog(Context context,
+    private void showBlueToothEnablingDialog(Context context,
                                                ProgressDialog progressDialog,
                                                String blueToothDialogMessage) {
         progressDialog.setMessage(blueToothDialogMessage);
