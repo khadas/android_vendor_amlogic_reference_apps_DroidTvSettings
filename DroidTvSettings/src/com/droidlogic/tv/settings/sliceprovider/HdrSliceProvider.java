@@ -28,7 +28,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
     private static final String ACTION_HDMI_PLUGGED = "android.intent.action.HDMI_PLUGGED";
 
     private static final boolean DEBUG = true;
-    private  static final String KEY_RESET = "DISPLAY_RESET";
+    private static final String KEY_RESET = "DISPLAY_RESET";
 
     private Handler mHandler = new Handler();
     private DisplayCapabilityManager mDisplayCapabilityManager;
@@ -259,15 +259,14 @@ public class HdrSliceProvider extends MediaSliceProvider {
             return null;
         }
 
-        boolean isSupportedHdrOutput = mDisplayCapabilityManager.getSupportedHdrOutputTypes() > 0;
+
         psb.addScreenTitle(
                 new RowBuilder()
-                        .setTitle(getContext().getString(isSupportedHdrOutput ?
-                                R.string.color_format_title : R.string.dynamic_range_and_color_format_title)));
+                        .setTitle(getContext().getString(R.string.dynamic_range_and_color_format_title)));
 
         // The sliceprovider hides the HDR priority and HDR policy when the
         // framework has access to the supported HDR output types.
-        if (!isSupportedHdrOutput) {
+        if (mDisplayCapabilityManager.getSupportedHdrOutputTypes() == 0) {
             psb.setEmbeddedPreference(
                     new RowBuilder()
                             .setTitle(getContext().getString(R.string.dynamic_range_and_color_format_title))
@@ -292,21 +291,28 @@ public class HdrSliceProvider extends MediaSliceProvider {
                                 .setTargetSliceUri(
                                         MediaSliceUtil.generateTargetSliceUri(MediaSliceConstants.MATCH_CONTENT_PATH)));
             }
+        }
 
-            if (HdrFormat.DOLBY_VISION == mDisplayCapabilityManager.getPreferredFormat()) {
-                String subtitle =
-                        mDisplayCapabilityManager.isDolbyVisionModeLLPreferred()
-                                ? getContext().getString(R.string.dolby_vision_mode_low_latency_title)
-                                : getContext().getString(R.string.dolby_vision_mode_standard_title);
-                if (MediaSliceUtil.CanDebug()) Log.d(TAG, "DOLBY_VISION subtitle:" + subtitle);
-                psb.addPreference(
-                        new RowBuilder()
-                                .setTitle(getContext().getString(R.string.dolby_vision_mode_title))
-                                .setSubtitle(subtitle)
-                                .setTargetSliceUri(
-                                        MediaSliceUtil.generateTargetSliceUri(
-                                                MediaSliceConstants.DOLBY_VISION_MODE_PATH)));
-            }
+
+        if (HdrFormat.DOLBY_VISION == mDisplayCapabilityManager.getPreferredFormat()) {
+            String subtitle =
+                    mDisplayCapabilityManager.isDolbyVisionModeLLPreferred()
+                            ? getContext().getString(R.string.dolby_vision_mode_low_latency_title)
+                            : getContext().getString(R.string.dolby_vision_mode_standard_title);
+            Log.d(TAG, "DOLBY_VISION subtitle:" + subtitle);
+
+            psb.setEmbeddedPreference(
+                    new RowBuilder()
+                            .setTitle(getContext().getString(R.string.dynamic_range_and_color_format_title))
+                            .setSubtitle(subtitle));
+
+            psb.addPreference(
+                    new RowBuilder()
+                            .setTitle(getContext().getString(R.string.dolby_vision_mode_title))
+                            .setSubtitle(subtitle)
+                            .setTargetSliceUri(
+                                    MediaSliceUtil.generateTargetSliceUri(
+                                            MediaSliceConstants.DOLBY_VISION_MODE_PATH)));
         }
 
         if (HdrFormat.DOLBY_VISION != mDisplayCapabilityManager.getPreferredFormat()) {
@@ -317,12 +323,11 @@ public class HdrSliceProvider extends MediaSliceProvider {
             Log.d(TAG, "createHdrAndColorFormatSlice; colorAttrsList: " + colorAttrs);
             Log.d(TAG, "createHdrAndColorFormatSlice; currentColorAttr: " + currentColorAttr);
 
-            if (isSupportedHdrOutput) {
-                psb.setEmbeddedPreference(
-                        new RowBuilder()
-                                .setTitle(getContext().getString(R.string.color_format_title))
-                                .setSubtitle(mDisplayCapabilityManager.getTitleByColorAttr(currentColorAttr)));
-            }
+            psb.setEmbeddedPreference(
+                    new RowBuilder()
+                            .setTitle(getContext().getString(R.string.dynamic_range_and_color_format_title))
+                            .setSubtitle(mDisplayCapabilityManager.getTitleByColorAttr(currentColorAttr)));
+
             psb.addPreference(
                     new RowBuilder()
                             .setTitle(getContext().getString(R.string.color_format_title))
@@ -490,19 +495,19 @@ public class HdrSliceProvider extends MediaSliceProvider {
 
     private void updateDisplayResetButton(PreferenceSliceBuilder psb) {
         psb.addPreference(
-            new RowBuilder()
-                .setKey(KEY_RESET)
-                .setTitle(getContext().getString(R.string.device_display_reset_Title))
-                .setInfoSummary(getContext().getString(R.string.device_display_reset_description))
-                .setActionId(TvSettingsEnums.DISPLAY_SOUND_ADVANCED_DISPLAY_GAME_MODE)
-                .setPendingIntent(
-                    generatePendingIntent(
-                        getContext(),
-                        MediaSliceConstants.ACTION_DISPLAY_RESET,
-                        DisplayResetActivity.class)
-                )
+                new RowBuilder()
+                        .setKey(KEY_RESET)
+                        .setTitle(getContext().getString(R.string.device_display_reset_Title))
+                        .setInfoSummary(getContext().getString(R.string.device_display_reset_description))
+                        .setActionId(TvSettingsEnums.DISPLAY_SOUND_ADVANCED_DISPLAY_GAME_MODE)
+                        .setPendingIntent(
+                                generatePendingIntent(
+                                        getContext(),
+                                        MediaSliceConstants.ACTION_DISPLAY_RESET,
+                                        DisplayResetActivity.class)
+                        )
         );
-  }
+    }
 
     private String hdrFormatToTitle(HdrFormat hdrFormat) {
         switch (hdrFormat) {
