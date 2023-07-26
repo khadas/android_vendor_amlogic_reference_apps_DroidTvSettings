@@ -939,7 +939,12 @@ public class DisplayCapabilityManager {
             Log.d(TAG, "state: " + state + " systemPrefHdmiDispMode: " + systemPrefHdmiDispMode + " currentMode: " + currentMode);
         }
 
-        setUserPreferredDisplayMode(systemPrefHdmiDispMode);
+        if (currentMode.equals(systemPrefHdmiDispMode)) {
+            mSystemControlManager.setMboxOutputMode(systemPrefHdmiDispMode);
+            Log.d(TAG, "setMboxOutputMode");
+        } else {
+            setUserPreferredDisplayMode(systemPrefHdmiDispMode);
+        }
     }
 
     public boolean doesDolbyVisionSupportLL() {
