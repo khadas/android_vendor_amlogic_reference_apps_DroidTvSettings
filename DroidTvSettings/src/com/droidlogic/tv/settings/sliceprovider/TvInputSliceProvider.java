@@ -105,7 +105,7 @@ public class TvInputSliceProvider extends MediaSliceProvider {
         Log.d(TAG, "inputSourceList: " + inputSourceSupportList);
         Log.d(TAG, "currentInputSource: " + currentInputSource);
 
-        updateInputGoogTvHome(psb, currentInputSource); // add Google Tv home source
+        updateInputGoogleTvHome(psb, currentInputSource); // add Google Tv home source
         for (TvInputInfo input : inputSourceSupportList) {
             Log.d(TAG, "updateChannelsAndInputsDetails: inputId = " + input.getId());
             psb.addPreference(
@@ -123,13 +123,11 @@ public class TvInputSliceProvider extends MediaSliceProvider {
         }
     }
 
-    private void updateInputGoogTvHome(PreferenceSliceBuilder psb, String currentInputSource) {
+    private void updateInputGoogleTvHome(PreferenceSliceBuilder psb, String currentInputSource) {
         psb.addPreference(
             new RowBuilder()
                 .setKey(INPUT_SOURCE_GOOGLE_HOME_KEY)
-                .setTitle(isBasicMode(getContext())
-                    ? getContext().getString(R.string.channels_and_inputs_home_title)
-                    : getContext().getString(R.string.channels_and_inputs_home_google_title))
+                .setTitle(getContext().getString(R.string.channels_and_inputs_home_google_title))
                 .addRadioButton(
                     generatePendingIntent(
                         getContext(),
