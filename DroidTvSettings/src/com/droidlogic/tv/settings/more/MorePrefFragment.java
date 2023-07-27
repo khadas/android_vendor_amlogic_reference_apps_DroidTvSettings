@@ -335,7 +335,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         super.onResume();
         updateSounds();
         IntentFilter esnIntentFilter = new IntentFilter("com.netflix.ninja.intent.action.ESN_RESPONSE");
-        getActivity().getApplicationContext().registerReceiver(esnReceiver, esnIntentFilter, Context.RECEIVER_NOT_EXPORTED);
+        getActivity().getApplicationContext().registerReceiver(esnReceiver, esnIntentFilter, Context.RECEIVER_EXPORTED);
         Intent esnQueryIntent = new Intent("com.netflix.ninja.intent.action.ESN");
         esnQueryIntent.setPackage("com.netflix.ninja");
         esnQueryIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
