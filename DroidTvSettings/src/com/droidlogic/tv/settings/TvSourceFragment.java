@@ -448,7 +448,7 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
 
     private boolean isInputEnabled(TvInputInfo input) {
         HdmiDeviceInfo hdmiInfo = input.getHdmiDeviceInfo();
-        if (hdmiInfo != null) {
+        if (hdmiInfo != null && !TextUtils.isEmpty(input.getParentId())) {
             if (DEBUG) Log.d(TAG, "isInputEnabled:  hdmiInfo="+ hdmiInfo);
             return true;
         }
