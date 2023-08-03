@@ -357,7 +357,6 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         if (DEBUG)
             Log.d(LOG_TAG,"recoverOutputMode"+preMode+"/"+getCurrentDisplayMode());
 
-        mOutputUiManager.setDeepColorAttribute(preDeepColor);
         mOutputUiManager.change2NewMode(preMode);
 
         mHandler.sendEmptyMessage(MSG_FRESH_UI);

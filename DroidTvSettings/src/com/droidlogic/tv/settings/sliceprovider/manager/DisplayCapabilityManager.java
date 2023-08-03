@@ -703,9 +703,9 @@ public class DisplayCapabilityManager {
 
     private void setColorAttribute(String str, boolean isBestMode) {
         mOutputModeManager.setDeepColorAttribute(str);
-        if (isBestMode) {
+        /*if (isBestMode) {
             mOutputModeManager.setBestMode(getCurrentMode());
-        }
+        }*/
     }
 
     /**
@@ -753,7 +753,7 @@ public class DisplayCapabilityManager {
 
     public void setColorAttribute(String colorAttr) {
         mOutputModeManager.setDeepColorAttribute(colorAttr);
-        mOutputModeManager.setOutputMode(getCurrentMode());
+        //mOutputModeManager.setOutputMode(getCurrentMode());
     }
 
     public String getCurrentColorAttribute() {
@@ -924,14 +924,15 @@ public class DisplayCapabilityManager {
         } else {
             setDolbyVisionEnable(DV_ENABLE);
         }
-        mOutputModeManager.setBestDolbyVision(false);
+        //mOutputModeManager.setBestDolbyVision(false);
     }
 
     public void setDolbyVisionEnable(final int state) {
-        if (!DISPLAY_MODE_FALSE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
+        /*if (!DISPLAY_MODE_FALSE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
             mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_FALSE);
-        }
+        }*/
         mSystemControlManager.setDolbyVisionEnable(state);
+        /*
         String systemPrefHdmiDispMode = mSystemControlManager.getPrefHdmiDispMode();
         String currentMode = getCurrentMode();
 
@@ -945,6 +946,7 @@ public class DisplayCapabilityManager {
         } else {
             setUserPreferredDisplayMode(systemPrefHdmiDispMode);
         }
+        */
     }
 
     public boolean doesDolbyVisionSupportLL() {

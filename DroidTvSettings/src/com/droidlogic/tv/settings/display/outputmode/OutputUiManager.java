@@ -217,7 +217,7 @@ public class OutputUiManager {
 
     public void changeColorAttribute(final String colorValue) {
         mOutputModeManager.setDeepColorAttribute(colorValue);
-        mOutputModeManager.setOutputMode(getCurrentMode());
+        //mOutputModeManager.setOutputMode(getCurrentMode());
     }
 
     public ArrayList<String> getColorTitleList(){
