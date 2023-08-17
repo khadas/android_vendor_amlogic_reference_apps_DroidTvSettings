@@ -2766,9 +2766,9 @@
 
     <string name="dolby_vision_mode_title">Dolby Vision Mode</string>
     <string translatable="false" name="dolby_vision_mode_low_latency_key">dolby_vision_mode_low_latency_key</string>
-    <string name="dolby_vision_mode_low_latency_title">Low Latency</string>
+    <string name="dolby_vision_mode_low_latency_title">Source device-led</string>
     <string translatable="false" name="dolby_vision_mode_standard_key">dolby_vision_mode_standard_key</string>
-    <string name="dolby_vision_mode_standard_title">Standard</string>
+    <string name="dolby_vision_mode_standard_title">Sink device-led</string>
     <string translatable="false" name="dolby_vision_mode_select_type_radio_group_name">dolby_vision_mode_select_type_radio_group</string>
 
     <string description="The word RESOLUTION_PLACEHOLDER should not be translated. It will be replaced with a resolution message." name="adjust_resolution_dialog_desc">"Select OK to use this new resolution RESOLUTION_PLACEHOLDER from now on"</string>
