@@ -16,6 +16,15 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <bool name="enable_energy_modes">true</bool>
 
+
+
+   <!-- <string-array name="energy_mode_low_vendorExemptPackages" translatable="false" >
+        <item>oem.package</item>
+    </string-array>
+    <string-array name="energy_mode_low_vendorAllowedFeatures" translatable="false">
+        <item>oem.package.LOW_POWER_CUSTOM_FEATURE</item>
+    </string-array> -->
+
     <string-array name="energy_mode_low_baseExemptPackages" translatable="false" >
         <item>com.netflix.ninja</item>
         <item>com.droidlogic.android.tv</item>
@@ -26,6 +35,18 @@
     <string-array name="energy_mode_low_baseAllowedFeatures" translatable="false">
         <item>com.google.android.tv.NON_NETWORKED_STANDBY_FEATURES</item>
     </string-array>
+
+
+
+    <string-array name="energy_mode_moderate_features">
+        <item>Google Cast</item>
+    </string-array>
+    <!--<string-array name="energy_mode_moderate_vendorAllowedFeatures" translatable="false">
+        <item>oem.package.MODERATE_POWER_CUSTOM_FEATURE</item>
+    </string-array>
+     <string-array name="energy_mode_moderate_vendorExemptPackages" translatable="false">
+        <item>oem.package</item>
+    </string-array> -->
 
     <string-array name="energy_mode_moderate_baseExemptPackages" translatable="false">
         <item>com.google.android.gms</item>
@@ -40,6 +61,21 @@
         <item>com.google.android.gms.PUSH_NOTIFICATIONS</item>
         <item>com.google.android.apps.mediashell.CAST_WIFI</item>
     </string-array>
+
+
+
+
+    <!-- <string-array name="energy_mode_high_features">
+        <item>All recommended features</item>
+        <item>OEM home automation</item>
+    </string-array>
+     <string-array name="energy_mode_high_vendorAllowedFeatures" translatable="false">
+        <item>oem.package.MODERATE_POWER_CUSTOM_FEATURE</item>
+        <item>oem.package.HIGH_POWER_CUSTOM_FEATURE</item>
+    </string-array>
+     <string-array name="energy_mode_high_vendorExemptPackages" translatable="false">
+        <item>oem.package</item>
+    </string-array> -->
 
     <string-array name="energy_mode_high_baseExemptPackages" translatable="false">
         <item>com.google.android.gms</item>
