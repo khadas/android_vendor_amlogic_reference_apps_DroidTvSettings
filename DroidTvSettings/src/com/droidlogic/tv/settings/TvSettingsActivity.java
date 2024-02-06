@@ -41,6 +41,7 @@ import android.view.KeyEvent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 
 import com.droidlogic.tv.settings.overlay.FlavorUtils;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
@@ -60,12 +61,14 @@ public abstract class TvSettingsActivity extends FragmentActivity {
     private static final int REQUEST_CODE_STARTUP_VERIFICATION = 1;
 
     public static final String INTENT_ACTION_FINISH_FRAGMENT = "action.finish.droidsettingsmodefragment";
+    public static final String STOP_MENU_TIME_COUNTING = "action.stop.menu.time.counting";
     public static final int MODE_LAUNCHER = 0;
     public static final int MODE_LIVE_TV = 1;
     private static final String KEY_MENU_TIME = "menu_time";
     private int mStartMode = MODE_LAUNCHER;
     private SoundParameterSettingManager mSoundParameterSettingManager = null;
     private OptionParameterManager mOptionParameterManager = null;
+    SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -142,12 +145,16 @@ public abstract class TvSettingsActivity extends FragmentActivity {
                 case Intent.ACTION_CLOSE_SYSTEM_DIALOGS:
                     finish();
                     break;
+                case STOP_MENU_TIME_COUNTING:
+                    startShowActivityTimer();
+                    break;
             }
         }
     };
     public void registerSomeReceivers() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(INTENT_ACTION_FINISH_FRAGMENT);
+        intentFilter.addAction(STOP_MENU_TIME_COUNTING);
         intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         registerReceiver(mReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
     }
@@ -164,6 +171,19 @@ public abstract class TvSettingsActivity extends FragmentActivity {
                 startShowActivityTimer();
             }
         }
+
+        mSharedPreferences = super.getSharedPreferences("menu_time_count", Context.MODE_PRIVATE);
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if ("isCountStop".equals(key)) {
+                    if (sharedPreferences.getInt(key, 0) == 1) {
+                        handler.removeMessages(0);
+                    }
+                }
+            }
+        });
+
         super.onResume();
     }
 

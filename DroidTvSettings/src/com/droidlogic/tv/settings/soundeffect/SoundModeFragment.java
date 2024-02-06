@@ -37,8 +37,10 @@ import android.app.AlertDialog;
 import android.view.View.OnClickListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.content.Intent;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.SharedPreferences;
 import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
 import android.media.AudioFormat;
@@ -104,6 +106,9 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private Context mContext = null;
     private HashSet<AudioDeviceInfo> mAudioOutputDevices = new HashSet<AudioDeviceInfo>();
 
+    SharedPreferences mSharedPreferences;
+    SharedPreferences.Editor mEditor;
+
     private static final int UI_LOAD_TIMEOUT = 50;//100ms
     private static final int LOAD_UI = 0;
     private static final int AUDIO_ONLY_INT = 0;
@@ -159,6 +164,11 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
         }
         refreshPref();
+
+        mSharedPreferences = getActivity().getSharedPreferences("menu_time_count", Context.MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
+        mEditor.putInt("isCountStop", 0);
+        mEditor.commit();
     }
 
     @Override
@@ -293,6 +303,8 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     }
 
     private void createUiDialog () {
+        mEditor.putInt("isCountStop", 1);
+        mEditor.commit();
         Context context = (Context) (getActivity());
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.xml.tv_sound_effect_ui, null);//tv_sound_effect_ui
@@ -302,6 +314,12 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             @Override
             public void onDismiss(DialogInterface dialog) {
                 mIsAudioEqSeekBarInited = false;
+
+                mEditor.putInt("isCountStop", 0);
+                mEditor.commit();
+                Intent intent = new Intent();
+                intent.setAction(TvSettingsActivity.STOP_MENU_TIME_COUNTING);
+                getActivity().sendBroadcast(intent);
             }
         });
         mAlertDialog.show();
