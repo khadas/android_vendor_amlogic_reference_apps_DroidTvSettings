@@ -38,7 +38,7 @@ public class FrameRateService extends Service {
     public static int mThreadId = -1;
     private static final int EVENT_UPDATE_UI = 1;
     private static final int R_EVENT_READ = 2;
-    private static final int TIMEDELAY = 30;
+    private static final int TIMEDELAY = 300;
     private static boolean mEnabled;
     private static FrameRateRemoteView mRemoteView;
     private Handler mHandler;
@@ -53,6 +53,8 @@ public class FrameRateService extends Service {
 
     private static final String PROP_FRAME_RATE_ENABLE = "persist.vendor.sys.framerate.enable";
     private static final String FRAME_RATE_PROP = "persist.vendor.sys.framerate.feature";
+
+    private String mLastValue;
 
     public FrameRateService() {
         mSystemControlManager = SystemControlManager.getInstance();
@@ -117,7 +119,9 @@ public class FrameRateService extends Service {
                     String scenseVal = mSystemControlManager.readSysFs(SCENE_FS);
                     updateUI(scenseVal);
 
-                    workHandler.sendEmptyMessageDelayed(R_EVENT_READ, TIMEDELAY);
+                    if (mEnabled) {
+                        sendEmptyMessageDelayed(R_EVENT_READ, TIMEDELAY);
+                    }
                     break;
             }
         }
@@ -175,7 +179,9 @@ public class FrameRateService extends Service {
         if (newVal == null || newVal.length() <= 0) {
             newVal = getResources().getString(R.string.frame_rate_prepare);
         }
-        if (newVal != null && newVal.length() > 0) {
+        if (newVal != null && newVal.length() > 0 && (!newVal.equals(mLastValue))) {
+            mLastValue = newVal;
+            mHandler.removeMessages(EVENT_UPDATE_UI);
             Message msg = mHandler.obtainMessage();
             msg.what = EVENT_UPDATE_UI;
             msg.obj = newVal;

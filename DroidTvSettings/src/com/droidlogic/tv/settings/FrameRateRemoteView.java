@@ -32,6 +32,7 @@ public class FrameRateRemoteView {
     private boolean isShowing;
     private Handler mHandler;
     private static FrameRateRemoteView mInstance;
+    private TextView mShowInfo;
 
     public synchronized static FrameRateRemoteView getInstance() {
         if (mInstance == null) {
@@ -43,8 +44,10 @@ public class FrameRateRemoteView {
     public void createView(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         mFloatView = inflater.inflate(R.layout.framerate_layout, null, false);
+        mShowInfo = (TextView) mFloatView.findViewById(R.id.show_framerate);
         wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mParams = new WindowManager.LayoutParams();
+        mParams.setTitle("FrameRateRemoteView");
         mParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
         mParams.gravity = Gravity.RIGHT | Gravity.TOP;
         mParams.format = PixelFormat.TRANSLUCENT;
@@ -76,8 +79,7 @@ public class FrameRateRemoteView {
 
     public void updateUI(String value) {
         if (mFloatView == null) return;
-        TextView ShowINFO = (TextView) mFloatView.findViewById(R.id.show_framerate);
-        ShowINFO.setText(value);
+        mShowInfo.setText(value);
     }
 
     public boolean isShow() {

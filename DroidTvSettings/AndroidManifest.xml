@@ -65,6 +65,7 @@
     <uses-permission android:name="com.google.android.assistant.READ_HOTWORD_STATE"/>
     <uses-permission android:name="com.google.android.assistant.WRITE_HOTWORD_STATE"/>
     <uses-permission android:name="android.permission.MANAGE_SLICE_PERMISSIONS"/>
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES"/>
 
     <!-- DroidLogic start -->
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"/>
@@ -336,6 +337,7 @@
                 android:exported="false"/>
 
         <service android:name=".FrameRateService"
+                 android:enabled="true"
                  android:exported="false"/>
 
         <provider

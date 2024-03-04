@@ -48,5 +48,6 @@
         <permission name="com.netflix.ninja.permission.ESN" />
         <permission name="com.netflix.ninja.permission.ESN_RESPONSE"/>
         <permission name="android.permission.DEVICE_POWER" />
+        <permission name="android.permission.INSTALL_PACKAGES" />
     </privapp-permissions>
 </permissions>
