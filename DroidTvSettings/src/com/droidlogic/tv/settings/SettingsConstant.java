@@ -120,4 +120,9 @@ public class SettingsConstant {
         return ("1".equals(sm.getPropertyString("ro.vendor.platform.is.tv", "")));
     }
 
+    public static boolean supportedMultiTiming() {
+        SystemControlManager sm = SystemControlManager.getInstance();
+        return "1".equals(sm.getProperty("vendor.extended.mode.enable"));
+    }
+
 }

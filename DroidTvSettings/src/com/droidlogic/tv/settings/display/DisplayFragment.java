@@ -34,6 +34,7 @@ import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.app.SystemControlManager;
+import static com.droidlogic.tv.settings.SettingsConstant.supportedMultiTiming;
 
 public class DisplayFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -41,12 +42,15 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
 
     private static final String KEY_POSITION           = "position";
     private static final String KEY_OUTPUTMODE         = "outputmode";
+    // USE THIS MENU FOR RESOLUTIONS THAT SUPPORT MULTITIMING
+    private static final String KEY_DISPLAY_MODE_MULTI_TIMING = "display_mode";
     private static final String KEY_HDR                = "hdr";
     private static final String KEY_SDR                = "sdr";
     private static final String KEY_DOLBY_VISION       = "dolby_vision";
     private static final String KEY_ALLM_MODE          = "allm_mode";
     private static final String KEY_GAME_CONTENT_TYPE  = "game_content_type";
 
+    private Preference mDisplayModeMultiTimingPref;
     private ListPreference mAllmPref;
     private SystemControlManager mSystemControlManager;
 
@@ -73,6 +77,11 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
             outputmodePref.setVisible(false);
         } else {
             outputmodePref.setVisible(SettingsConstant.needScreenResolutionFeture(getContext()) && !tvFlag);
+        }
+
+        mDisplayModeMultiTimingPref = findPreference(KEY_DISPLAY_MODE_MULTI_TIMING);
+        if (!supportedMultiTiming()) {
+            getPreferenceScreen().removePreference(mDisplayModeMultiTimingPref);
         }
 
         final Preference screenPositionPref = findPreference(KEY_POSITION);

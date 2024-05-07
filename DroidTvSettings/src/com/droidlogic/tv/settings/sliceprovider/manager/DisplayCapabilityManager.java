@@ -237,6 +237,31 @@ public class DisplayCapabilityManager {
         refresh();
     }
 
+    public static DisplayCapabilityManager getDisplayCapabilityManagerForMultiTiming(
+            final Context context) {
+        if (mDisplayCapabilityManager == null) {
+            synchronized (DisplayCapabilityManager.class) {
+                if (mDisplayCapabilityManager == null) {
+                    mDisplayCapabilityManager = new DisplayCapabilityManager(context, false);
+                }
+            }
+        }
+        return mDisplayCapabilityManager;
+    }
+
+    private DisplayCapabilityManager(final Context context, boolean refresh) {
+        mContext = context;
+        mDisplayManager = context.getSystemService(DisplayManager.class);
+        // mDisplayDensityManager = new DisplayDensityManager(mDisplayManager);
+        mSystemControlManager = SystemControlManager.getInstance();
+        mOutputModeManager = new OutputModeManager(context);
+        mDolbyVisionSettingManager = new DolbyVisionSettingManager(context);
+        mContentResolver = context.getContentResolver();
+        mSetModeUEventObserver = SetModeUEventObserver.getInstance();
+        mSetModeUEventObserver.setOnUEventRunnable(() -> notifyModeChange(mContentResolver));
+        mSetModeUEventObserver.startObserving();
+    }
+
     private void notifyModeChange(ContentResolver contentResolver) {
         contentResolver.notifyChange(MediaSliceConstants.RESOLUTION_URI, null);
         contentResolver.notifyChange(MediaSliceConstants.HDR_AND_COLOR_FORMAT_URI, null);
@@ -492,6 +517,13 @@ public class DisplayCapabilityManager {
         return mHdmiModeList;
     }
 
+    public List<String> getDisplayModeListById(final int displayId) {
+        return mOutputModeManager.getConnectorModeList(displayId);
+    }
+    public String getCurrentModeById(final int displayId) {
+        return mOutputModeManager.getConnectorMode(displayId);
+    }
+
     public String[] getHdmiModes() {
         String[] modeList;
         Lock lock = mRWLock.readLock();
@@ -572,6 +604,11 @@ public class DisplayCapabilityManager {
         } else {
             setUserPreferredDisplayMode(userSetMode);
         }
+    }
+
+    public void setResolutionById(final String userSetMode, final int displayId) {
+        logDebug(TAG, true, "userSetMode:"+ userSetMode + ",displayId:" + displayId);
+        mOutputModeManager.setConnectorMode(userSetMode, displayId);
     }
 
     public void clearUserPreferredDisplayMode() {

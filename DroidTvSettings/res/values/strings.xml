@@ -2051,6 +2051,9 @@
     <string name="dtvkit_pip">Enable DTVKit PIP Feature</string>
     <string name="device_outputmode">Screen resolution</string>
     <string name="device_displaymode">Display Mode</string>
+    <string name="device_display_mode_title">Resolution</string>
+    <string name="device_display_0_title">Display 0</string>
+    <string name="device_display_1_title">Display 1</string>
     <string name="device_color">Color</string>
     <string name="device_colorattribute">Format and Depth</string>
     <string name="device_outputmode_color_space">Color Space Settings</string>
