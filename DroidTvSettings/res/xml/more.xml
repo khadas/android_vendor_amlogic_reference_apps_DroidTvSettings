@@ -49,16 +49,7 @@
         android:icon="@drawable/ic_network"
         android:key="wifi_hotspot"
         android:title="@string/tether_settings_title_wifi" />
-    <Preference
-        android:fragment="com.droidlogic.tv.settings.PowerKeyActionDefinitionFragment"
-        android:icon="@drawable/ic_settings_power"
-        android:key="powerkey_action"
-        android:title="@string/system_powerkeyaction" />
-    <Preference
-        android:fragment="com.droidlogic.tv.settings.PowerOnModeFragment"
-        android:icon="@drawable/ic_settings_power"
-        android:key="poweronmode_action"
-        android:title="@string/power_on_mode" />
+
     <Preference
         android:icon="@drawable/ic_bluetooth"
         android:key="upgrade_bluetooth_remote"
@@ -75,10 +66,6 @@
         android:icon="@drawable/ic_info_outline"
         android:key="hailstorm_ver"
         android:title="@string/hailstorm_ver"/>
-    <Preference
-        android:icon="@drawable/ic_settings_display"
-        android:key="keyStone"
-        android:title="@string/keystone" />
 
     <Preference
         android:key="advanced_sound_settings"
@@ -94,8 +81,5 @@
         android:key="frame_rate"
         android:title="@string/frame_rate"
         android:fragment="com.droidlogic.tv.settings.FrameRateFragment"/>
-    <Preference
-        android:icon="@drawable/ic_settings_tv"
-        android:key="tv_extras"
-        android:title="@string/tv_extras" />
+
 </PreferenceScreen>
